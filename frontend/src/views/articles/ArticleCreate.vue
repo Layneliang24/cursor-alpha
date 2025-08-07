@@ -90,16 +90,15 @@
         </el-upload>
       </el-form-item>
       
-      <el-form-item label="文章内容" prop="content">
-        <div class="editor-container">
-          <el-input
-            v-model="articleForm.content"
-            type="textarea"
-            :rows="20"
-            placeholder="请输入文章内容，支持 Markdown 格式..."
-            class="content-editor"
-          />
-        </div>
+      <el-form-item label="文章内容" prop="content" class="content-form-item">
+        <el-input
+          v-model="articleForm.content"
+          type="textarea"
+          :rows="25"
+          placeholder="请输入文章内容，支持 Markdown 格式..."
+          class="content-editor"
+          resize="vertical"
+        />
       </el-form-item>
       
       <el-form-item label="文章设置">
@@ -301,23 +300,33 @@ onMounted(() => {
   box-shadow: 0 2px 12px rgba(0,0,0,0.1);
 }
 
-.editor-container {
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
-  overflow: hidden;
+.content-form-item {
+  margin-bottom: 30px;
+}
+
+.content-form-item :deep(.el-form-item__content) {
+  width: 100% !important;
 }
 
 .content-editor {
-  border: none;
+  width: 100%;
 }
 
 .content-editor :deep(.el-textarea__inner) {
-  border: none;
-  box-shadow: none;
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  line-height: 1.6;
-  min-height: 500px;
+  line-height: 1.8;
+  min-height: 600px;
   resize: vertical;
+  font-size: 14px;
+  padding: 20px;
+  border: 2px solid #e4e7ed;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+}
+
+.content-editor :deep(.el-textarea__inner):focus {
+  border-color: #409eff;
+  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
 }
 
 .cover-uploader {
