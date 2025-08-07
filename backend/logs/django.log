@@ -1944,3 +1944,4 @@ INFO 2025-08-07 22:21:18,956 basehttp 20276 8264 "GET /api/v1/users/me/ HTTP/1.1
 INFO 2025-08-07 22:21:20,205 basehttp 20276 8264 "GET /api/v1/users/me/ HTTP/1.1" 200 186
 INFO 2025-08-07 22:21:30,879 basehttp 20276 8264 "GET /api/v1/users/me/ HTTP/1.1" 200 186
 INFO 2025-08-07 22:21:38,819 basehttp 20276 8264 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 22:24:26,116 autoreload 14680 26100 Watching for file changes with StatReloader

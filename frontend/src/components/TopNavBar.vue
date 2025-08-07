@@ -5,7 +5,7 @@
       <router-link to="/" class="navbar-brand">
         <div class="logo-container">
           <div class="logo-icon">
-            <i class="el-icon-star-on"></i>
+            <el-icon><Star /></el-icon>
           </div>
           <span class="logo-text">Alpha</span>
         </div>
@@ -14,7 +14,7 @@
       <!-- 搜索框 -->
       <div class="search-container">
         <div class="search-box">
-          <i class="el-icon-search search-icon"></i>
+          <el-icon class="search-icon"><Search /></el-icon>
           <input 
             type="text" 
             class="search-input" 
@@ -25,7 +25,7 @@
             @blur="searchFocused = false"
           >
           <button class="search-btn" @click="handleSearch" v-if="searchQuery">
-            <i class="el-icon-right"></i>
+            <el-icon><Right /></el-icon>
           </button>
         </div>
       </div>
@@ -34,10 +34,10 @@
       <div class="user-menu">
         <div class="nav-actions" v-if="authStore.isAuthenticated">
           <button class="action-btn" title="写文章">
-            <i class="el-icon-edit"></i>
+            <el-icon><Edit /></el-icon>
           </button>
           <button class="action-btn" title="通知">
-            <i class="el-icon-bell"></i>
+            <el-icon><Bell /></el-icon>
             <span class="notification-badge">3</span>
           </button>
           
@@ -45,7 +45,7 @@
             <button class="user-avatar" data-bs-toggle="dropdown">
               <img :src="userAvatar" alt="头像">
               <span class="user-name">{{ authStore.user?.username }}</span>
-              <i class="el-icon-arrow-down"></i>
+              <el-icon><ArrowDown /></el-icon>
             </button>
             <ul class="dropdown-menu dropdown-menu-end user-menu-dropdown">
               <li class="dropdown-header">
@@ -58,11 +58,11 @@
                 </div>
               </li>
               <li><hr class="dropdown-divider"></li>
-              <li><router-link class="dropdown-item" to="/profile"><i class="el-icon-user me-2"></i>个人资料</router-link></li>
-              <li><router-link class="dropdown-item" to="/user/articles"><i class="el-icon-document me-2"></i>我的文章</router-link></li>
-              <li><a class="dropdown-item" href="#"><i class="el-icon-setting me-2"></i>设置</a></li>
+              <li><router-link class="dropdown-item" to="/profile"><el-icon class="me-2"><User /></el-icon>个人资料</router-link></li>
+              <li><router-link class="dropdown-item" to="/user/articles"><el-icon class="me-2"><Document /></el-icon>我的文章</router-link></li>
+              <li><a class="dropdown-item" href="#"><el-icon class="me-2"><Setting /></el-icon>设置</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item text-danger" href="#" @click="handleLogout"><i class="el-icon-switch-button me-2"></i>退出登录</a></li>
+              <li><a class="dropdown-item text-danger" href="#" @click="handleLogout"><el-icon class="me-2"><SwitchButton /></el-icon>退出登录</a></li>
             </ul>
           </div>
         </div>
@@ -80,6 +80,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { Star, Search, Edit, Bell, ArrowDown, User, Document, Setting, SwitchButton, Right } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -87,7 +88,7 @@ const searchQuery = ref('')
 const searchFocused = ref(false)
 
 const userAvatar = computed(() => {
-  return authStore.user?.avatar || 'https://via.placeholder.com/32x32?text=U'
+  return authStore.user?.avatar || 'https://ui-avatars.com/api/?name=' + (authStore.user?.username || 'User') + '&background=667eea&color=fff&size=32'
 })
 
 const handleSearch = () => {

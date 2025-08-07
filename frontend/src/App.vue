@@ -1,21 +1,29 @@
 <template>
   <div id="app">
-    <!-- 顶部导航栏 -->
-    <TopNavBar />
-    
-    <!-- 主体布局 -->
-    <div class="d-flex">
-      <!-- 侧边菜单栏 -->
-      <SideMenu v-if="showSidebar" />
-      
-      <!-- 主内容区域 -->
-      <main class="flex-grow-1 p-4" :class="{ 'container-fluid': showSidebar, 'container': !showSidebar }">
-        <router-view />
-      </main>
+    <!-- 登录注册页面的简洁布局 -->
+    <div v-if="isAuthPage" class="auth-layout">
+      <router-view />
     </div>
     
-    <!-- 底部 -->
-    <FooterComponent />
+    <!-- 普通页面的完整布局 -->
+    <div v-else>
+      <!-- 顶部导航栏 -->
+      <TopNavBar />
+      
+      <!-- 主体布局 -->
+      <div class="d-flex">
+        <!-- 侧边菜单栏 -->
+        <SideMenu v-if="showSidebar" />
+        
+        <!-- 主内容区域 -->
+        <main class="flex-grow-1 p-4" :class="{ 'container-fluid': showSidebar, 'container': !showSidebar }">
+          <router-view />
+        </main>
+      </div>
+      
+      <!-- 底部 -->
+      <FooterComponent />
+    </div>
   </div>
 </template>
 
@@ -36,12 +44,18 @@ export default {
   setup() {
     const route = useRoute()
     
+    // 判断是否为认证页面
+    const isAuthPage = computed(() => {
+      return ['/login', '/register'].includes(route.path)
+    })
+    
     // 在登录和注册页面隐藏侧边栏
     const showSidebar = computed(() => {
-      return !['/login', '/register'].includes(route.path)
+      return !isAuthPage.value
     })
     
     return {
+      isAuthPage,
       showSidebar
     }
   }
@@ -78,5 +92,10 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
+}
+
+.auth-layout {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 </style>
