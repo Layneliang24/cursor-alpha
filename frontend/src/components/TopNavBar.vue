@@ -33,10 +33,10 @@
       <!-- 用户菜单 -->
       <div class="user-menu">
         <div class="nav-actions" v-if="authStore.isAuthenticated">
-          <button class="action-btn" title="写文章">
+          <router-link to="/articles/create" class="action-btn" title="写文章">
             <el-icon><Edit /></el-icon>
-          </button>
-          <button class="action-btn" title="通知">
+          </router-link>
+          <button class="action-btn" title="通知" @click="showNotifications">
             <el-icon><Bell /></el-icon>
             <span class="notification-badge">3</span>
           </button>
@@ -101,6 +101,11 @@ const handleLogout = async () => {
   await authStore.logout()
   router.push('/login')
 }
+
+const showNotifications = () => {
+  // 显示通知列表
+  console.log('显示通知')
+}
 </script>
 
 <style scoped>
@@ -152,8 +157,6 @@ const handleLogout = async () => {
   flex: 1;
   max-width: 500px;
   margin: 0 2rem;
-  display: flex;
-  justify-content: center;
 }
 
 .search-box {
@@ -227,6 +230,10 @@ const handleLogout = async () => {
   font-size: 1.1rem;
   transition: all 0.2s ease;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .action-btn:hover {
@@ -287,6 +294,7 @@ const handleLogout = async () => {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   padding: 0;
   margin-top: 0.5rem;
+  z-index: 9999 !important;
 }
 
 .dropdown-header {

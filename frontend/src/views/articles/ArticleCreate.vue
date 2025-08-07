@@ -270,7 +270,7 @@ onMounted(() => {
 
 <style scoped>
 .article-create-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -316,6 +316,8 @@ onMounted(() => {
   box-shadow: none;
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   line-height: 1.6;
+  min-height: 500px;
+  resize: vertical;
 }
 
 .cover-uploader {

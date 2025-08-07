@@ -1945,3 +1945,8 @@ INFO 2025-08-07 22:21:20,205 basehttp 20276 8264 "GET /api/v1/users/me/ HTTP/1.1
 INFO 2025-08-07 22:21:30,879 basehttp 20276 8264 "GET /api/v1/users/me/ HTTP/1.1" 200 186
 INFO 2025-08-07 22:21:38,819 basehttp 20276 8264 "GET /api/v1/users/me/ HTTP/1.1" 200 186
 INFO 2025-08-07 22:24:26,116 autoreload 14680 26100 Watching for file changes with StatReloader
+INFO 2025-08-07 22:24:34,027 basehttp 14680 21732 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 22:24:35,380 basehttp 14680 21732 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 22:24:40,118 basehttp 14680 21732 "POST /api/v1/auth/logout/ HTTP/1.1" 200 26
+INFO 2025-08-07 22:24:53,156 basehttp 14680 21732 "POST /api/v1/auth/login/ HTTP/1.1" 200 719
+INFO 2025-08-07 22:24:58,011 basehttp 14680 21732 "POST /api/v1/auth/logout/ HTTP/1.1" 200 26
