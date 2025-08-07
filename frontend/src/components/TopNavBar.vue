@@ -84,6 +84,7 @@ import { useAuthStore } from '@/stores/auth'
 const router = useRouter()
 const authStore = useAuthStore()
 const searchQuery = ref('')
+const searchFocused = ref(false)
 
 const userAvatar = computed(() => {
   return authStore.user?.avatar || 'https://via.placeholder.com/32x32?text=U'
@@ -108,6 +109,13 @@ const handleLogout = async () => {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.75rem 0;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.container-fluid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .navbar-brand {
@@ -143,6 +151,8 @@ const handleLogout = async () => {
   flex: 1;
   max-width: 500px;
   margin: 0 2rem;
+  display: flex;
+  justify-content: center;
 }
 
 .search-box {

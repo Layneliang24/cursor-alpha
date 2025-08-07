@@ -1939,3 +1939,8 @@ INFO 2025-08-07 22:16:54,818 basehttp 20568 1592 "GET /api/v1/categories/ HTTP/1
 INFO 2025-08-07 22:16:54,825 basehttp 20568 23352 "GET /api/v1/tags/ HTTP/1.1" 200 193
 INFO 2025-08-07 22:16:55,241 basehttp 20568 23352 "GET /api/v1/categories/ HTTP/1.1" 200 315
 INFO 2025-08-07 22:16:55,261 basehttp 20568 1592 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 1044
+INFO 2025-08-07 22:21:07,018 autoreload 20276 12644 Watching for file changes with StatReloader
+INFO 2025-08-07 22:21:18,956 basehttp 20276 8264 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 22:21:20,205 basehttp 20276 8264 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 22:21:30,879 basehttp 20276 8264 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 22:21:38,819 basehttp 20276 8264 "GET /api/v1/users/me/ HTTP/1.1" 200 186
