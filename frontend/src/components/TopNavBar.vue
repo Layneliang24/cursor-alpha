@@ -1,44 +1,75 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
+  <nav class="modern-navbar">
+    <div class="container-fluid px-4">
       <!-- Logo -->
-      <a class="navbar-brand fw-bold" href="/">
-        <i class="el-icon-star-on me-2"></i>Alpha系统
-      </a>
+      <router-link to="/" class="navbar-brand">
+        <div class="logo-container">
+          <div class="logo-icon">
+            <i class="el-icon-star-on"></i>
+          </div>
+          <span class="logo-text">Alpha</span>
+        </div>
+      </router-link>
 
       <!-- 搜索框 -->
-      <div class="d-flex flex-grow-1 mx-4">
-        <div class="input-group" style="max-width: 500px;">
+      <div class="search-container">
+        <div class="search-box">
+          <i class="el-icon-search search-icon"></i>
           <input 
             type="text" 
-            class="form-control" 
-            placeholder="搜索文章、用户..."
+            class="search-input" 
+            placeholder="搜索文章、用户、标签..."
             v-model="searchQuery"
             @keyup.enter="handleSearch"
+            @focus="searchFocused = true"
+            @blur="searchFocused = false"
           >
-          <button class="btn btn-outline-light" type="button" @click="handleSearch">
-            <i class="el-icon-search"></i>
+          <button class="search-btn" @click="handleSearch" v-if="searchQuery">
+            <i class="el-icon-right"></i>
           </button>
         </div>
       </div>
 
       <!-- 用户菜单 -->
-      <div class="navbar-nav">
-        <div class="nav-item dropdown" v-if="authStore.isAuthenticated">
-          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-            <img :src="userAvatar" class="rounded-circle me-2" width="32" height="32" alt="头像">
-            {{ authStore.user?.username }}
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><router-link class="dropdown-item" to="/profile">个人资料</router-link></li>
-            <li><router-link class="dropdown-item" to="/user/articles">我的文章</router-link></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#" @click="handleLogout">退出登录</a></li>
-          </ul>
+      <div class="user-menu">
+        <div class="nav-actions" v-if="authStore.isAuthenticated">
+          <button class="action-btn" title="写文章">
+            <i class="el-icon-edit"></i>
+          </button>
+          <button class="action-btn" title="通知">
+            <i class="el-icon-bell"></i>
+            <span class="notification-badge">3</span>
+          </button>
+          
+          <div class="user-dropdown">
+            <button class="user-avatar" data-bs-toggle="dropdown">
+              <img :src="userAvatar" alt="头像">
+              <span class="user-name">{{ authStore.user?.username }}</span>
+              <i class="el-icon-arrow-down"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end user-menu-dropdown">
+              <li class="dropdown-header">
+                <div class="user-info">
+                  <img :src="userAvatar" class="user-avatar-large" alt="头像">
+                  <div>
+                    <div class="user-name-large">{{ authStore.user?.username }}</div>
+                    <div class="user-email">{{ authStore.user?.email }}</div>
+                  </div>
+                </div>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li><router-link class="dropdown-item" to="/profile"><i class="el-icon-user me-2"></i>个人资料</router-link></li>
+              <li><router-link class="dropdown-item" to="/user/articles"><i class="el-icon-document me-2"></i>我的文章</router-link></li>
+              <li><a class="dropdown-item" href="#"><i class="el-icon-setting me-2"></i>设置</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="#" @click="handleLogout"><i class="el-icon-switch-button me-2"></i>退出登录</a></li>
+            </ul>
+          </div>
         </div>
-        <div class="nav-item" v-else>
-          <router-link class="btn btn-outline-light me-2" to="/login">登录</router-link>
-          <router-link class="btn btn-light" to="/register">注册</router-link>
+        
+        <div class="auth-buttons" v-else>
+          <router-link class="btn-login" to="/login">登录</router-link>
+          <router-link class="btn-register" to="/register">注册</router-link>
         </div>
       </div>
     </div>
@@ -71,7 +102,269 @@ const handleLogout = async () => {
 </script>
 
 <style scoped>
+.modern-navbar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 0;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
 .navbar-brand {
+  text-decoration: none;
+  color: white;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.5rem;
+  color: white;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.search-container {
+  flex: 1;
+  max-width: 500px;
+  margin: 0 2rem;
+}
+
+.search-box {
+  position: relative;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 25px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.search-box:focus-within {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.search-icon {
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: 0.75rem;
+}
+
+.search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 0.95rem;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.search-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.action-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #ff4757;
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.user-dropdown {
+  position: relative;
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 20px;
+  padding: 0.4rem 0.75rem;
+  color: white;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.user-avatar:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.user-avatar img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.user-menu-dropdown {
+  min-width: 280px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+.dropdown-header {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-avatar-large {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-name-large {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #2c3e50;
+}
+
+.user-email {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.dropdown-item {
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: #f8f9fa;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-login, .btn-register {
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.btn-login {
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-login:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.btn-register {
+  background: white;
+  color: #667eea;
+  border: 1px solid white;
+}
+
+.btn-register:hover {
+  background: #f8f9fa;
+  color: #667eea;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    margin: 0 1rem;
+  }
+  
+  .user-name {
+    display: none;
+  }
+  
+  .nav-actions {
+    gap: 0.5rem;
+  }
 }
 </style>

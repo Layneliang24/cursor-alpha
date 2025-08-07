@@ -1909,3 +1909,33 @@ INFO 2025-08-07 22:05:41,751 basehttp 10888 8220 - Broken pipe from ('127.0.0.1'
 INFO 2025-08-07 22:08:00,436 autoreload 23236 12580 Watching for file changes with StatReloader
 INFO 2025-08-07 22:08:36,299 basehttp 23236 15748 "GET / HTTP/1.1" 200 15885
 INFO 2025-08-07 22:09:13,102 autoreload 11860 19756 Watching for file changes with StatReloader
+WARNING 2025-08-07 22:09:27,137 log 11860 19452 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:09:27,137 basehttp 11860 19452 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:09:27,194 log 11860 19452 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:09:27,194 basehttp 11860 19452 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+INFO 2025-08-07 22:09:33,941 basehttp 11860 19452 "OPTIONS /api/v1/auth/login/ HTTP/1.1" 200 0
+INFO 2025-08-07 22:09:34,887 basehttp 11860 19452 "POST /api/v1/auth/login/ HTTP/1.1" 200 719
+INFO 2025-08-07 22:09:41,873 basehttp 11860 19452 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 22:09:41,920 basehttp 11860 19452 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 22:09:47,833 basehttp 11860 19452 "POST /api/v1/auth/logout/ HTTP/1.1" 200 26
+INFO 2025-08-07 22:16:12,591 autoreload 20568 11804 Watching for file changes with StatReloader
+INFO 2025-08-07 22:16:25,652 basehttp 20568 23352 "POST /api/v1/auth/login/ HTTP/1.1" 200 719
+INFO 2025-08-07 22:16:34,311 basehttp 20568 23352 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-07 22:16:34,356 basehttp 20568 1592 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 1044
+INFO 2025-08-07 22:16:35,215 basehttp 20568 1592 "OPTIONS /api/v1/tags/ HTTP/1.1" 200 0
+INFO 2025-08-07 22:16:35,265 basehttp 20568 23352 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-07 22:16:35,269 basehttp 20568 1592 "GET /api/v1/tags/ HTTP/1.1" 200 193
+INFO 2025-08-07 22:16:42,842 basehttp 20568 1592 "POST /api/v1/auth/logout/ HTTP/1.1" 200 26
+INFO 2025-08-07 22:16:45,559 basehttp 20568 1592 "POST /api/v1/auth/login/ HTTP/1.1" 200 719
+INFO 2025-08-07 22:16:47,376 basehttp 20568 1592 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-07 22:16:47,394 basehttp 20568 23352 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 1044
+INFO 2025-08-07 22:16:48,767 basehttp 20568 23352 "OPTIONS /api/v1/articles/3/ HTTP/1.1" 200 0
+INFO 2025-08-07 22:16:48,818 basehttp 20568 23352 "GET /api/v1/articles/3/ HTTP/1.1" 200 992
+INFO 2025-08-07 22:16:48,832 basehttp 20568 23352 "OPTIONS /api/v1/articles/3/comments/ HTTP/1.1" 200 0
+INFO 2025-08-07 22:16:48,890 basehttp 20568 23352 "GET /api/v1/articles/3/comments/ HTTP/1.1" 200 2
+INFO 2025-08-07 22:16:54,222 basehttp 20568 23352 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-07 22:16:54,235 basehttp 20568 1592 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 1044
+INFO 2025-08-07 22:16:54,818 basehttp 20568 1592 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-07 22:16:54,825 basehttp 20568 23352 "GET /api/v1/tags/ HTTP/1.1" 200 193
+INFO 2025-08-07 22:16:55,241 basehttp 20568 23352 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-07 22:16:55,261 basehttp 20568 1592 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 1044
