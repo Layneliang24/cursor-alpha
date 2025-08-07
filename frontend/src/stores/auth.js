@@ -31,7 +31,6 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('refresh_token', this.refreshToken)
         localStorage.setItem('user', JSON.stringify(this.user))
         
-        ElMessage.success('登录成功！')
         return response
       } catch (error) {
         console.error('登录失败:', error)

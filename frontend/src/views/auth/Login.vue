@@ -204,9 +204,14 @@ const handleLogin = async () => {
       password: loginForm.password
     })
     
+    ElMessage.success('登录成功！')
+    
     // 登录成功后跳转
     const redirectPath = route.query.redirect || '/'
-    router.push(redirectPath)
+    await router.push(redirectPath)
+    
+    // 刷新页面以更新导航栏状态
+    window.location.reload()
     
   } catch (error) {
     console.error('登录失败:', error)
