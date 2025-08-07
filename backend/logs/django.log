@@ -2090,3 +2090,14 @@ INFO 2025-08-07 23:02:45,879 basehttp 24536 23108 "GET /api/v1/users/me/ HTTP/1.
 INFO 2025-08-07 23:02:47,069 basehttp 24536 23108 "GET /api/v1/users/me/ HTTP/1.1" 200 186
 INFO 2025-08-07 23:02:51,144 basehttp 24536 23108 "POST /api/v1/auth/logout/ HTTP/1.1" 200 26
 INFO 2025-08-07 23:02:56,240 basehttp 24536 23108 "POST /api/v1/auth/login/ HTTP/1.1" 200 719
+INFO 2025-08-07 23:03:52,165 basehttp 24536 23108 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 23:03:53,066 basehttp 24536 23108 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 23:03:54,618 basehttp 24536 23108 "POST /api/v1/auth/logout/ HTTP/1.1" 200 26
+INFO 2025-08-07 23:03:59,238 basehttp 24536 23108 "POST /api/v1/auth/login/ HTTP/1.1" 200 719
+INFO 2025-08-07 23:04:14,839 autoreload 3508 9172 Watching for file changes with StatReloader
+INFO 2025-08-07 23:04:22,958 basehttp 3508 584 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 23:04:24,944 basehttp 3508 584 "POST /api/v1/auth/logout/ HTTP/1.1" 200 26
+INFO 2025-08-07 23:04:30,096 basehttp 3508 584 "POST /api/v1/auth/login/ HTTP/1.1" 200 719
+INFO 2025-08-07 23:04:33,179 basehttp 3508 584 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 23:04:33,893 basehttp 3508 584 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-07 23:04:34,268 basehttp 3508 584 "GET /api/v1/users/me/ HTTP/1.1" 200 186

@@ -208,10 +208,7 @@ const handleLogin = async () => {
     
     // 登录成功后跳转
     const redirectPath = route.query.redirect || '/'
-    await router.push(redirectPath)
-    
-    // 刷新页面以更新导航栏状态
-    window.location.reload()
+    router.push(redirectPath)
     
   } catch (error) {
     console.error('登录失败:', error)
