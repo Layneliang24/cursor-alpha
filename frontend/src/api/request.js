@@ -42,10 +42,16 @@ request.interceptors.response.use(
           ElMessage.error(data.message || '请求参数错误')
           break
         case 401:
-          ElMessage.error('登录已过期，请重新登录')
+          // 静默处理401错误，避免循环重定向
           const authStore = useAuthStore()
-          authStore.logout()
-          window.location.href = '/login'
+          if (authStore.token) {
+            console.log('认证失败，清除登录状态')
+            authStore.clearAuth()
+            // 只在不是登录页面时才重定向
+            if (!window.location.pathname.includes('/login')) {
+              window.location.href = '/login'
+            }
+          }
           break
         case 403:
           ElMessage.error('没有权限执行此操作')

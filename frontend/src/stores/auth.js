@@ -99,10 +99,23 @@ export const useAuthStore = defineStore('auth', {
           // 验证token是否有效
           await authAPI.getCurrentUser()
         } catch (error) {
-          // token无效，清除登录状态
-          this.logout()
+          console.log('Token验证失败，清除登录状态')
+          // token无效，静默清除登录状态，不显示错误消息
+          this.clearAuth()
         }
       }
+    },
+
+    // 静默清除认证状态
+    clearAuth() {
+      this.user = null
+      this.token = null
+      this.refreshToken = null
+      this.isLoggedIn = false
+      
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+      localStorage.removeItem('user')
     },
 
     // 刷新token
@@ -119,7 +132,7 @@ export const useAuthStore = defineStore('auth', {
         return response.access
       } catch (error) {
         console.error('刷新token失败:', error)
-        this.logout()
+        this.clearAuth()
         throw error
       }
     }
