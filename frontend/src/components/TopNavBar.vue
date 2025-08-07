@@ -11,6 +11,26 @@
         </div>
       </router-link>
 
+      <!-- 主导航菜单 -->
+      <nav class="main-nav">
+        <router-link to="/" class="nav-item">
+          <el-icon><House /></el-icon>
+          <span>首页</span>
+        </router-link>
+        <router-link to="/articles" class="nav-item">
+          <el-icon><Document /></el-icon>
+          <span>文章</span>
+        </router-link>
+        <router-link to="/categories" class="nav-item">
+          <el-icon><Folder /></el-icon>
+          <span>分类</span>
+        </router-link>
+        <router-link to="/trending" class="nav-item">
+          <el-icon><TrendCharts /></el-icon>
+          <span>热门</span>
+        </router-link>
+      </nav>
+
       <!-- 搜索框 -->
       <div class="search-container">
         <div class="search-box">
@@ -80,7 +100,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { Star, Search, Edit, Bell, ArrowDown, User, Document, Setting, SwitchButton, Right } from '@element-plus/icons-vue'
+import { Star, Search, Edit, Bell, ArrowDown, User, Document, Setting, SwitchButton, Right, House, Folder, TrendCharts } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -113,17 +133,21 @@ const showNotifications = () => {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.75rem 0;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  height: 64px;
 }
 
 .container-fluid {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
+  height: 100%;
+  padding: 0 1.5rem;
 }
 
 .navbar-brand {
@@ -138,34 +162,65 @@ const showNotifications = () => {
 }
 
 .logo-icon {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: white;
 }
 
 .logo-text {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: white;
 }
 
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: 3rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.nav-item.router-link-active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
 .search-container {
-  flex: 1;
-  max-width: 500px;
-  margin: 0 2rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: 2rem;
 }
 
 .search-box {
   position: relative;
   background: rgba(255, 255, 255, 0.15);
-  border-radius: 25px;
-  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  padding: 0.6rem 1.2rem;
   display: flex;
   align-items: center;
   transition: all 0.3s ease;
@@ -181,6 +236,7 @@ const showNotifications = () => {
 .search-icon {
   color: rgba(255, 255, 255, 0.7);
   margin-right: 0.75rem;
+  font-size: 1.1rem;
 }
 
 .search-input {
@@ -223,11 +279,11 @@ const showNotifications = () => {
 
 .action-btn {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   background: rgba(255, 255, 255, 0.15);
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   color: white;
   font-size: 1.1rem;
   transition: all 0.2s ease;
@@ -264,11 +320,11 @@ const showNotifications = () => {
 .user-avatar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   background: rgba(255, 255, 255, 0.15);
   border: none;
-  border-radius: 20px;
-  padding: 0.4rem 0.75rem;
+  border-radius: 22px;
+  padding: 0.5rem 1rem;
   color: white;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -345,8 +401,8 @@ const showNotifications = () => {
 }
 
 .btn-login, .btn-register {
-  padding: 0.5rem 1.25rem;
-  border-radius: 20px;
+  padding: 0.6rem 1.5rem;
+  border-radius: 22px;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;

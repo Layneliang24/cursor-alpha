@@ -1,28 +1,16 @@
 <template>
-  <div class="footer">
+  <footer class="footer">
     <div class="footer-content">
-      <div class="footer-section">
-        <h4>Alpha 技术共享平台</h4>
-        <p>分享技术，共同成长</p>
+      <div class="footer-left">
+        <span class="brand">Alpha 技术平台</span>
+        <span class="separator">|</span>
+        <span class="slogan">分享技术，共同成长</span>
       </div>
-      <div class="footer-section">
-        <h4>快速链接</h4>
-        <ul>
-          <li><router-link to="/">首页</router-link></li>
-          <li><router-link to="/articles">文章</router-link></li>
-          <li><router-link to="/categories">分类</router-link></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h4>联系我们</h4>
-        <p>邮箱: contact@alpha.com</p>
-        <p>GitHub: <a href="#" target="_blank">Alpha Platform</a></p>
+      <div class="footer-right">
+        <span class="copyright">&copy; 2024 All rights reserved</span>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>&copy; 2024 Alpha 技术共享平台. All rights reserved.</p>
-    </div>
-  </div>
+  </footer>
 </template>
 
 <script>
@@ -33,67 +21,66 @@ export default {
 
 <style scoped>
 .footer {
-  background-color: #f5f7fa;
-  padding: 20px 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #e4e7ed;
+  padding: 8px 0;
+  font-size: 12px;
+  z-index: 100;
+  height: 40px;
 }
 
 .footer-content {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  height: 100%;
 }
 
-.footer-section {
-  flex: 1;
-  margin: 0 20px;
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
 }
 
-.footer-section h4 {
-  color: #303133;
-  margin-bottom: 10px;
+.brand {
+  font-weight: 600;
+  color: #333;
 }
 
-.footer-section p {
-  color: #606266;
-  margin: 5px 0;
+.separator {
+  color: #ccc;
 }
 
-.footer-section ul {
-  list-style: none;
-  padding: 0;
+.slogan {
+  color: #888;
 }
 
-.footer-section ul li {
-  margin: 5px 0;
-}
-
-.footer-section ul li a {
-  color: #606266;
-  text-decoration: none;
-}
-
-.footer-section ul li a:hover {
-  color: #409eff;
-}
-
-.footer-bottom {
-  text-align: center;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #e4e7ed;
-  color: #909399;
+.footer-right {
+  color: #999;
 }
 
 @media (max-width: 768px) {
   .footer-content {
     flex-direction: column;
-    text-align: center;
+    gap: 4px;
+    padding: 4px 20px;
   }
   
-  .footer-section {
-    margin: 10px 0;
+  .footer {
+    height: 50px;
+  }
+  
+  .footer-left {
+    gap: 4px;
   }
 }
 </style> 

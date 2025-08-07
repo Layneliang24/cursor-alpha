@@ -16,13 +16,16 @@
         <SideMenu v-if="showSidebar" />
         
         <!-- 主内容区域 -->
-        <main class="flex-grow-1 p-4" :class="{ 'container-fluid': showSidebar, 'container': !showSidebar }">
+        <main class="main-content" :class="{ 'with-sidebar': showSidebar }">
           <router-view />
         </main>
       </div>
       
       <!-- 底部 -->
       <FooterComponent />
+      
+      <!-- 鼠标跟随特效 -->
+      <MouseEffects />
     </div>
   </div>
 </template>
@@ -33,13 +36,15 @@ import { useRoute } from 'vue-router'
 import TopNavBar from '@/components/TopNavBar.vue'
 import SideMenu from '@/components/SideMenu.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
+import MouseEffects from '@/components/MouseEffects.vue'
 
 export default {
   name: 'App',
   components: {
     TopNavBar,
     SideMenu,
-    FooterComponent
+    FooterComponent,
+    MouseEffects
   },
   setup() {
     const route = useRoute()
@@ -97,5 +102,18 @@ body {
 .auth-layout {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  margin-top: 64px;
+  margin-bottom: 40px;
+  transition: margin-left 0.3s ease;
+  min-height: calc(100vh - 104px);
+}
+
+.main-content.with-sidebar {
+  margin-left: 250px;
 }
 </style>

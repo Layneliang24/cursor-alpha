@@ -70,7 +70,7 @@
       
       <!-- 文章正文 -->
       <div class="article-body">
-        <div class="content" v-html="article.content"></div>
+        <MarkdownRenderer :content="article.content" />
       </div>
       
       <!-- 文章操作 -->
@@ -170,6 +170,7 @@ import { useArticlesStore } from '@/stores/articles'
 import { useAuthStore } from '@/stores/auth'
 import { articlesAPI } from '@/api/articles'
 import { ElMessage } from 'element-plus'
+import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -300,7 +301,7 @@ onMounted(() => {
 
 <style scoped>
 .article-detail-container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   line-height: 1.6;

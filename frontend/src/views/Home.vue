@@ -75,7 +75,7 @@
         <div class="card border-0 shadow-sm h-100">
           <div class="card-header bg-white border-bottom py-3">
             <h5 class="card-title mb-0">
-              <el-icon class="me-2 text-danger"><Hot /></el-icon>最新文章
+              <el-icon class="me-2 text-danger"><Promotion /></el-icon>最新文章
             </h5>
           </div>
           <div class="card-body p-0">
@@ -160,7 +160,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-import { Document, Edit, Star, User, View, ChatDotRound, Hot, Clock, PriceTag, Bell } from '@element-plus/icons-vue'
+import { Document, Edit, Star, User, View, ChatDotRound, Promotion, Clock, PriceTag, Bell } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
 

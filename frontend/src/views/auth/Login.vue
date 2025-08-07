@@ -1,12 +1,35 @@
 <template>
   <div class="login-container">
-    <el-card class="login-card">
-      <template #header>
-        <div class="card-header">
-          <h2>用户登录</h2>
-          <p>欢迎回到 Alpha 技术共享平台</p>
+    <AnimatedBackground />
+    
+    <div class="login-content">
+      <div class="login-left">
+        <div class="welcome-text">
+          <h1>Alpha</h1>
+          <p>技术共享平台</p>
+          <div class="features">
+            <div class="feature-item">
+              <el-icon><Document /></el-icon>
+              <span>丰富的技术文章</span>
+            </div>
+            <div class="feature-item">
+              <el-icon><User /></el-icon>
+              <span>专业的技术社区</span>
+            </div>
+            <div class="feature-item">
+              <el-icon><Star /></el-icon>
+              <span>优质的学习体验</span>
+            </div>
+          </div>
         </div>
-      </template>
+      </div>
+      
+      <div class="login-right">
+        <div class="login-card">
+          <div class="card-header">
+            <h2>欢迎回来</h2>
+            <p>登录您的账户</p>
+          </div>
       
       <el-form
         ref="loginFormRef"
@@ -73,8 +96,10 @@
             <router-link to="/register" class="link">立即注册</router-link>
           </p>
         </div>
-      </el-form>
-    </el-card>
+          </el-form>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -83,6 +108,8 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { ElMessage } from 'element-plus'
+import { Document, User, Star } from '@element-plus/icons-vue'
+import AnimatedBackground from '@/components/AnimatedBackground.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -212,9 +239,18 @@ const handleLogin = async () => {
     
   } catch (error) {
     console.error('登录失败:', error)
+    console.error('错误详情:', error.response)
+    
+    let errorMessage = '登录失败，请重试'
     if (error.response?.data?.error) {
-      ElMessage.error(error.response.data.error)
+      errorMessage = error.response.data.error
+    } else if (error.response?.data?.message) {
+      errorMessage = error.response.data.message
+    } else if (error.message) {
+      errorMessage = error.message
     }
+    
+    ElMessage.error(errorMessage)
     refreshCaptcha()
   } finally {
     loading.value = false
@@ -228,55 +264,165 @@ onMounted(() => {
 
 <style scoped>
 .login-container {
+  position: relative;
   min-height: 100vh;
+  overflow: hidden;
+}
+
+.login-content {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  z-index: 2;
+}
+
+.login-left {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+.welcome-text {
+  color: white;
+  text-align: center;
+  max-width: 500px;
+}
+
+.welcome-text h1 {
+  font-size: 4rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #fff, #f0f8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-text > p {
+  font-size: 1.5rem;
+  margin: 0 0 3rem 0;
+  opacity: 0.9;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.feature-item .el-icon {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.login-right {
+  width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem 3rem 2rem 2rem;
 }
 
 .login-card {
-  width: 400px;
-  margin: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+  max-width: 400px;
 }
 
 .card-header {
   text-align: center;
+  margin-bottom: 2rem;
 }
 
 .card-header h2 {
-  margin: 0 0 10px 0;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
   color: #333;
 }
 
 .card-header p {
   margin: 0;
   color: #666;
-  font-size: 14px;
+  font-size: 0.95rem;
+}
+
+:deep(.el-form-item) {
+  margin-bottom: 1.5rem;
+}
+
+:deep(.el-form-item__label) {
+  font-weight: 500;
+  color: #333;
+}
+
+:deep(.el-input__wrapper) {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e4e7ed;
+  transition: all 0.3s ease;
+}
+
+:deep(.el-input__wrapper:hover) {
+  border-color: #c0c4cc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+:deep(.el-input__wrapper.is-focus) {
+  border-color: #409eff;
+  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.2);
+}
+
+:deep(.el-button--primary) {
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  padding: 12px 0;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+}
+
+:deep(.el-button--primary:hover) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
 }
 
 .login-footer {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 1.5rem;
 }
 
 .login-footer p {
   margin: 0;
   color: #666;
-  font-size: 14px;
+  font-size: 0.9rem;
 }
 
 .link {
-  color: #409eff;
+  color: #667eea;
   text-decoration: none;
+  font-weight: 500;
 }
 
 .link:hover {
   text-decoration: underline;
-}
-
-:deep(.el-form-item__label) {
-  font-weight: 500;
 }
 
 .captcha-container {
@@ -286,8 +432,8 @@ onMounted(() => {
 
 .captcha-image {
   position: relative;
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
+  border: 1px solid #e4e7ed;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   overflow: hidden;
@@ -320,5 +466,24 @@ onMounted(() => {
 
 .captcha-image:hover .captcha-refresh {
   opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .login-content {
+    flex-direction: column;
+  }
+  
+  .login-left {
+    padding: 1rem;
+  }
+  
+  .welcome-text h1 {
+    font-size: 2.5rem;
+  }
+  
+  .login-right {
+    width: 100%;
+    padding: 1rem;
+  }
 }
 </style>

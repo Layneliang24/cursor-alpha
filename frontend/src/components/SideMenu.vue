@@ -76,8 +76,12 @@ onMounted(() => {
 
 <style scoped>
 .sidebar {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  z-index: 100;
 }
 
 .sidebar-heading {
