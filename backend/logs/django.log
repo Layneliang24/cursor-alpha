@@ -1,0 +1,756 @@
+INFO 2025-08-04 23:27:18,190 autoreload 48440 3108 Watching for file changes with StatReloader
+INFO 2025-08-04 23:34:50,631 autoreload 48440 3108 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-04 23:34:51,150 autoreload 52420 5560 Watching for file changes with StatReloader
+INFO 2025-08-04 23:41:34,602 autoreload 52420 5560 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-04 23:41:35,458 autoreload 36332 44808 Watching for file changes with StatReloader
+INFO 2025-08-04 23:43:47,643 autoreload 36332 44808 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-04 23:43:48,315 autoreload 50256 47268 Watching for file changes with StatReloader
+INFO 2025-08-04 23:46:16,013 autoreload 50256 47268 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-04 23:46:16,731 autoreload 44276 21932 Watching for file changes with StatReloader
+ERROR 2025-08-04 23:46:31,070 log 44276 32004 Internal Server Error: /
+Traceback (most recent call last):
+  File "S:\Python3.10\lib\site-packages\django\urls\base.py", line 81, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+KeyError: 'djdt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "S:\Python3.10\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\middleware.py", line 145, in __call__
+    return self._postprocess(request, response, toolbar)
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\middleware.py", line 187, in _postprocess
+    rendered = toolbar.render_toolbar()
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\toolbar.py", line 93, in render_toolbar
+    return render_to_string("debug_toolbar/base.html", context)
+  File "S:\Python3.10\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "S:\Python3.10\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "S:\Python3.10\lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "S:\Python3.10\lib\site-packages\django\urls\base.py", line 92, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace
+ERROR 2025-08-04 23:46:31,081 basehttp 44276 32004 "GET / HTTP/1.1" 500 143837
+INFO 2025-08-04 23:48:26,065 autoreload 44276 21932 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-04 23:48:26,965 autoreload 71492 27732 Watching for file changes with StatReloader
+INFO 2025-08-04 23:48:34,693 autoreload 71492 27732 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-04 23:48:35,566 autoreload 37800 68140 Watching for file changes with StatReloader
+INFO 2025-08-04 23:48:43,554 autoreload 37800 68140 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-04 23:48:44,191 autoreload 53736 40000 Watching for file changes with StatReloader
+INFO 2025-08-04 23:49:44,288 autoreload 53736 40000 S:\WorkShop\cursor\alpha\backend\apps\articles\models.py changed, reloading.
+INFO 2025-08-04 23:49:45,149 autoreload 72688 25912 Watching for file changes with StatReloader
+INFO 2025-08-05 20:01:26,555 autoreload 44376 57576 Watching for file changes with StatReloader
+ERROR 2025-08-05 20:02:21,547 log 44376 11784 Internal Server Error: /api/
+Traceback (most recent call last):
+  File "S:\Python3.10\lib\site-packages\django\urls\base.py", line 81, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+KeyError: 'djdt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "S:\Python3.10\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\middleware.py", line 145, in __call__
+    return self._postprocess(request, response, toolbar)
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\middleware.py", line 187, in _postprocess
+    rendered = toolbar.render_toolbar()
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\toolbar.py", line 93, in render_toolbar
+    return render_to_string("debug_toolbar/base.html", context)
+  File "S:\Python3.10\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "S:\Python3.10\lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "S:\Python3.10\lib\site-packages\django\test\utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "S:\Python3.10\lib\site-packages\django\urls\base.py", line 92, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace
+ERROR 2025-08-05 20:02:21,554 basehttp 44376 11784 "GET /api/ HTTP/1.1" 500 143778
+INFO 2025-08-05 20:02:21,569 basehttp 44376 11784 - Broken pipe from ('127.0.0.1', 59891)
+INFO 2025-08-05 20:02:56,452 autoreload 44376 57576 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-05 20:02:57,790 autoreload 19508 37884 Watching for file changes with StatReloader
+INFO 2025-08-05 20:03:02,681 basehttp 19508 8164 "GET /api/test/ HTTP/1.1" 200 71
+INFO 2025-08-05 20:03:05,866 basehttp 19508 8164 - Broken pipe from ('127.0.0.1', 60170)
+INFO 2025-08-05 20:03:10,334 basehttp 19508 71368 "GET /api/v1/articles/ HTTP/1.1" 200 1046
+INFO 2025-08-05 20:03:54,758 basehttp 19508 71368 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-05 20:03:57,476 basehttp 19508 71368 - Broken pipe from ('127.0.0.1', 60177)
+INFO 2025-08-05 20:04:45,898 autoreload 19508 37884 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-05 20:04:46,541 autoreload 39424 69956 Watching for file changes with StatReloader
+INFO 2025-08-05 20:06:27,985 basehttp 39424 11044 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:06:28,018 basehttp 39424 11044 "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 29468
+INFO 2025-08-05 20:06:28,022 basehttp 39424 48188 "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+INFO 2025-08-05 20:06:28,036 basehttp 39424 37644 "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 14879
+INFO 2025-08-05 20:06:28,106 basehttp 39424 37644 "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4700
+INFO 2025-08-05 20:06:35,223 basehttp 39424 37644 "GET /__debug__/render_panel/?request_id=8f8e968f6bba4b938fd1f8f107b3f6f2&panel_id=RequestPanel HTTP/1.1" 200 941
+INFO 2025-08-05 20:06:36,825 basehttp 39424 37644 "GET /__debug__/render_panel/?request_id=8f8e968f6bba4b938fd1f8f107b3f6f2&panel_id=SettingsPanel HTTP/1.1" 200 31412
+INFO 2025-08-05 20:06:39,136 basehttp 39424 37644 "GET /__debug__/render_panel/?request_id=8f8e968f6bba4b938fd1f8f107b3f6f2&panel_id=VersionsPanel HTTP/1.1" 200 1354
+INFO 2025-08-05 20:06:39,632 basehttp 39424 37644 "GET /__debug__/render_panel/?request_id=8f8e968f6bba4b938fd1f8f107b3f6f2&panel_id=HistoryPanel HTTP/1.1" 200 2316
+INFO 2025-08-05 20:06:39,650 basehttp 39424 37644 "GET /static/debug_toolbar/js/history.js HTTP/1.1" 200 3431
+INFO 2025-08-05 20:06:44,137 basehttp 39424 37644 "GET /api/ HTTP/1.1" 200 157
+INFO 2025-08-05 20:06:46,684 basehttp 39424 37644 "GET /api/test/ HTTP/1.1" 200 71
+INFO 2025-08-05 20:06:49,541 basehttp 39424 37644 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-05 20:06:49,667 basehttp 39424 37644 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 17329
+INFO 2025-08-05 20:06:49,678 basehttp 39424 48188 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-05 20:06:49,678 basehttp 39424 11044 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-05 20:06:49,679 basehttp 39424 37644 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-05 20:06:49,684 basehttp 39424 37644 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-05 20:06:49,684 basehttp 39424 44296 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-05 20:06:49,685 basehttp 39424 67276 "GET /static/admin/css/login.css HTTP/1.1" 304 0
+INFO 2025-08-05 20:06:49,686 basehttp 39424 40504 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+WARNING 2025-08-05 20:06:51,845 log 39424 40504 Not Found: /api/swagger/
+WARNING 2025-08-05 20:06:51,845 basehttp 39424 40504 "GET /api/swagger/ HTTP/1.1" 404 16564
+INFO 2025-08-05 20:06:59,957 basehttp 39424 40504 "GET /__debug__/render_panel/?request_id=8f8e968f6bba4b938fd1f8f107b3f6f2&panel_id=AlertsPanel HTTP/1.1" 200 66
+INFO 2025-08-05 20:07:07,239 basehttp 39424 40504 "GET /__debug__/history_refresh/?request_id=8f8e968f6bba4b938fd1f8f107b3f6f2&exclude_history=True HTTP/1.1" 200 9583
+INFO 2025-08-05 20:07:15,429 basehttp 39424 40504 "GET /__debug__/render_panel/?request_id=8f8e968f6bba4b938fd1f8f107b3f6f2&panel_id=SQLPanel HTTP/1.1" 200 115
+INFO 2025-08-05 20:07:16,502 basehttp 39424 40504 "GET /__debug__/render_panel/?request_id=8f8e968f6bba4b938fd1f8f107b3f6f2&panel_id=StaticFilesPanel HTTP/1.1" 200 137552
+INFO 2025-08-05 20:07:16,915 basehttp 39424 40504 "GET /__debug__/render_panel/?request_id=8f8e968f6bba4b938fd1f8f107b3f6f2&panel_id=TemplatesPanel HTTP/1.1" 200 173
+INFO 2025-08-05 20:07:17,891 basehttp 39424 40504 "GET /__debug__/render_panel/?request_id=8f8e968f6bba4b938fd1f8f107b3f6f2&panel_id=CachePanel HTTP/1.1" 200 1418
+INFO 2025-08-05 20:07:18,917 basehttp 39424 40504 "GET /__debug__/render_panel/?request_id=8f8e968f6bba4b938fd1f8f107b3f6f2&panel_id=SignalsPanel HTTP/1.1" 200 2465
+INFO 2025-08-05 20:07:42,251 basehttp 39424 40504 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:07:46,729 basehttp 39424 40504 "GET /api/test/ HTTP/1.1" 200 71
+INFO 2025-08-05 20:07:49,028 basehttp 39424 40504 "GET /api/ HTTP/1.1" 200 157
+INFO 2025-08-05 20:23:58,531 basehttp 39424 24832 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:24:01,223 basehttp 39424 24832 - Broken pipe from ('127.0.0.1', 50441)
+INFO 2025-08-05 20:27:35,498 basehttp 39424 47316 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:27:36,772 basehttp 39424 47316 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:27:37,565 basehttp 39424 47316 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:27:38,014 basehttp 39424 47316 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:32:12,252 basehttp 39424 57324 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:32:13,537 basehttp 39424 57324 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:32:14,234 basehttp 39424 57324 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:32:14,739 basehttp 39424 57324 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:32:15,518 basehttp 39424 57324 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:32:16,079 basehttp 39424 57324 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:32:16,689 basehttp 39424 57324 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:32:17,632 basehttp 39424 57324 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:32:26,571 basehttp 39424 57324 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:32:29,570 basehttp 39424 57324 "GET /api/ HTTP/1.1" 200 157
+INFO 2025-08-05 20:42:22,253 autoreload 2332 63452 Watching for file changes with StatReloader
+INFO 2025-08-05 20:43:23,040 autoreload 65428 15032 Watching for file changes with StatReloader
+INFO 2025-08-05 20:44:05,445 basehttp 39424 48568 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:44:06,338 basehttp 39424 48568 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:44:06,833 basehttp 39424 48568 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:44:07,383 basehttp 39424 48568 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:44:09,192 basehttp 39424 48568 "GET /api/ HTTP/1.1" 200 157
+INFO 2025-08-05 20:44:12,564 basehttp 39424 48568 "GET /__debug__/render_panel/?request_id=e2fd9f9f39fd4942bc9332d270354710&panel_id=StaticFilesPanel HTTP/1.1" 200 137552
+INFO 2025-08-05 20:44:14,084 basehttp 39424 48568 "GET /__debug__/render_panel/?request_id=e2fd9f9f39fd4942bc9332d270354710&panel_id=RequestPanel HTTP/1.1" 200 941
+INFO 2025-08-05 20:44:14,770 basehttp 39424 48568 "GET /__debug__/render_panel/?request_id=e2fd9f9f39fd4942bc9332d270354710&panel_id=HeadersPanel HTTP/1.1" 200 3857
+INFO 2025-08-05 20:44:15,808 basehttp 39424 48568 "GET /__debug__/render_panel/?request_id=e2fd9f9f39fd4942bc9332d270354710&panel_id=SettingsPanel HTTP/1.1" 200 31412
+INFO 2025-08-05 20:44:23,342 basehttp 39424 48568 "GET /__debug__/render_panel/?request_id=e2fd9f9f39fd4942bc9332d270354710&panel_id=TemplatesPanel HTTP/1.1" 200 173
+INFO 2025-08-05 20:44:23,875 basehttp 39424 48568 "GET /__debug__/render_panel/?request_id=e2fd9f9f39fd4942bc9332d270354710&panel_id=AlertsPanel HTTP/1.1" 200 66
+INFO 2025-08-05 20:44:24,380 basehttp 39424 48568 "GET /__debug__/render_panel/?request_id=e2fd9f9f39fd4942bc9332d270354710&panel_id=CachePanel HTTP/1.1" 200 1418
+INFO 2025-08-05 20:44:24,932 basehttp 39424 48568 "GET /__debug__/render_panel/?request_id=e2fd9f9f39fd4942bc9332d270354710&panel_id=SignalsPanel HTTP/1.1" 200 2465
+INFO 2025-08-05 20:44:27,655 basehttp 39424 48568 "GET /__debug__/render_panel/?request_id=e2fd9f9f39fd4942bc9332d270354710&panel_id=HistoryPanel HTTP/1.1" 200 39379
+INFO 2025-08-05 20:46:07,114 basehttp 39424 41452 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-05 20:46:07,140 basehttp 39424 57328 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 1046
+INFO 2025-08-05 20:46:09,318 basehttp 39424 57328 "GET /api/v1/articles/1/ HTTP/1.1" 200 994
+INFO 2025-08-05 20:46:09,459 basehttp 39424 57328 "GET /api/v1/articles/1/comments/ HTTP/1.1" 200 2
+INFO 2025-08-05 20:46:41,157 basehttp 39424 57328 "OPTIONS /api/v1/auth/register/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:46:42,456 basehttp 39424 57328 "POST /api/v1/auth/register/ HTTP/1.1" 201 689
+INFO 2025-08-05 20:46:51,154 basehttp 39424 57328 "OPTIONS /api/v1/articles/?author=3&page=1&page_size=20 HTTP/1.1" 200 0
+INFO 2025-08-05 20:46:51,390 basehttp 39424 57328 "GET /api/v1/articles/?author=3&page=1&page_size=20 HTTP/1.1" 200 1046
+INFO 2025-08-05 20:46:57,340 basehttp 39424 57328 "OPTIONS /api/v1/categories/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:46:57,340 basehttp 39424 41452 "OPTIONS /api/v1/tags/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:46:57,523 basehttp 39424 41452 "GET /api/v1/tags/ HTTP/1.1" 200 193
+INFO 2025-08-05 20:46:57,546 basehttp 39424 57328 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-05 20:47:44,034 basehttp 39424 57328 "OPTIONS /api/v1/articles/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:47:44,230 basehttp 39424 57328 "POST /api/v1/articles/ HTTP/1.1" 201 259
+INFO 2025-08-05 20:47:47,162 basehttp 39424 41452 "OPTIONS /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 0
+INFO 2025-08-05 20:47:47,394 basehttp 39424 57328 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-05 20:47:47,425 basehttp 39424 41452 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 2082
+INFO 2025-08-05 20:47:49,205 basehttp 39424 41452 "OPTIONS /api/v1/articles/2/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:47:49,344 basehttp 39424 41452 "GET /api/v1/articles/2/ HTTP/1.1" 200 1035
+INFO 2025-08-05 20:47:49,375 basehttp 39424 41452 "OPTIONS /api/v1/articles/2/comments/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:47:49,520 basehttp 39424 41452 "GET /api/v1/articles/2/comments/ HTTP/1.1" 200 2
+INFO 2025-08-05 20:48:04,258 basehttp 39424 41452 "OPTIONS /api/v1/comments/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:48:04,407 basehttp 39424 41452 "POST /api/v1/comments/ HTTP/1.1" 201 359
+INFO 2025-08-05 20:48:04,566 basehttp 39424 41452 "GET /api/v1/articles/2/comments/ HTTP/1.1" 200 361
+INFO 2025-08-05 20:48:04,755 basehttp 39424 41452 "GET /api/v1/articles/2/ HTTP/1.1" 200 1035
+INFO 2025-08-05 20:48:04,940 basehttp 39424 41452 "GET /api/v1/articles/2/comments/ HTTP/1.1" 200 361
+INFO 2025-08-05 20:48:09,565 basehttp 39424 41452 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-05 20:48:09,592 basehttp 39424 57328 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 2082
+INFO 2025-08-05 20:48:20,293 basehttp 39424 57328 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-05 20:48:20,315 basehttp 39424 41452 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 2082
+INFO 2025-08-05 20:48:26,145 basehttp 39424 41452 "GET /api/v1/articles/2/ HTTP/1.1" 200 1035
+INFO 2025-08-05 20:48:26,329 basehttp 39424 41452 "GET /api/v1/articles/2/comments/ HTTP/1.1" 200 361
+INFO 2025-08-05 20:48:30,236 basehttp 39424 41452 "OPTIONS /api/v1/articles/1/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:48:30,382 basehttp 39424 41452 "GET /api/v1/articles/1/ HTTP/1.1" 200 994
+INFO 2025-08-05 20:48:30,405 basehttp 39424 41452 "OPTIONS /api/v1/articles/1/comments/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:48:30,545 basehttp 39424 41452 "GET /api/v1/articles/1/comments/ HTTP/1.1" 200 2
+INFO 2025-08-05 20:48:35,858 basehttp 39424 41452 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-05 20:48:35,860 basehttp 39424 57328 "GET /api/v1/tags/ HTTP/1.1" 200 193
+INFO 2025-08-05 20:48:40,642 basehttp 39424 57328 "OPTIONS /api/v1/profiles/3/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:48:40,643 basehttp 39424 41452 "OPTIONS /api/v1/articles/?author=3 HTTP/1.1" 200 0
+WARNING 2025-08-05 20:48:40,844 log 39424 41452 Not Found: /api/v1/profiles/3/
+WARNING 2025-08-05 20:48:40,845 basehttp 39424 41452 "GET /api/v1/profiles/3/ HTTP/1.1" 404 52
+INFO 2025-08-05 20:48:40,878 basehttp 39424 57328 "GET /api/v1/articles/?author=3 HTTP/1.1" 200 2082
+INFO 2025-08-05 20:48:53,084 basehttp 39424 57328 "OPTIONS /api/v1/auth/logout/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:48:53,203 basehttp 39424 57328 "POST /api/v1/auth/logout/ HTTP/1.1" 200 26
+INFO 2025-08-05 20:49:58,829 basehttp 39424 58824 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:49:59,748 basehttp 39424 58824 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:52:17,166 autoreload 13096 25724 Watching for file changes with StatReloader
+INFO 2025-08-05 20:53:19,277 basehttp 39424 59896 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-05 20:53:22,950 basehttp 39424 57328 "OPTIONS /api/v1/auth/login/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:53:23,804 basehttp 39424 57328 "POST /api/v1/auth/login/ HTTP/1.1" 200 719
+INFO 2025-08-05 20:55:08,603 basehttp 13096 25444 "OPTIONS /api/v1/users/me/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:55:08,603 basehttp 13096 61408 "OPTIONS /api/v1/users/me/ HTTP/1.1" 200 0
+INFO 2025-08-05 20:55:09,723 basehttp 13096 61408 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-05 20:55:09,835 basehttp 13096 61408 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-05 20:56:31,100 basehttp 13096 61408 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-05 20:56:31,165 basehttp 13096 61408 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-05 20:58:22,130 autoreload 28036 31424 Watching for file changes with StatReloader
+INFO 2025-08-05 20:58:27,036 basehttp 13096 61408 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-05 20:58:27,066 basehttp 13096 61408 "GET /api/v1/users/me/ HTTP/1.1" 200 186
+INFO 2025-08-05 20:58:31,324 basehttp 13096 61408 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-05 20:58:31,340 basehttp 13096 25444 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 2112
+INFO 2025-08-05 20:58:32,515 basehttp 13096 25444 "GET /api/v1/articles/1/ HTTP/1.1" 200 994
+INFO 2025-08-05 20:58:32,599 basehttp 13096 25444 "GET /api/v1/articles/1/comments/ HTTP/1.1" 200 2
+INFO 2025-08-05 20:58:34,404 basehttp 13096 25444 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-05 20:58:34,419 basehttp 13096 61408 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 2112
+INFO 2025-08-05 20:58:36,424 basehttp 13096 61408 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-05 20:58:36,424 basehttp 13096 25444 "GET /api/v1/tags/ HTTP/1.1" 200 193
+INFO 2025-08-05 20:58:41,900 basehttp 13096 25444 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-05 20:58:41,915 basehttp 13096 61408 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 2112
+INFO 2025-08-05 20:58:43,182 basehttp 13096 61408 "GET /api/v1/articles/2/ HTTP/1.1" 200 1065
+INFO 2025-08-05 20:58:43,267 basehttp 13096 61408 "GET /api/v1/articles/2/comments/ HTTP/1.1" 200 391
+INFO 2025-08-05 20:58:47,261 basehttp 13096 25444 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 2112
+INFO 2025-08-05 20:58:47,261 basehttp 13096 61408 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-06 20:14:27,401 autoreload 64400 43552 Watching for file changes with StatReloader
+INFO 2025-08-06 20:14:53,941 basehttp 64400 40284 "OPTIONS /api/v1/users/me/ HTTP/1.1" 200 0
+INFO 2025-08-06 20:14:53,950 basehttp 64400 40284 "OPTIONS /api/v1/users/me/ HTTP/1.1" 200 0
+WARNING 2025-08-06 20:14:54,417 log 64400 66388 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:54,418 basehttp 64400 66388 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+INFO 2025-08-06 20:14:54,436 basehttp 64400 40284 "OPTIONS /api/v1/auth/logout/ HTTP/1.1" 200 0
+INFO 2025-08-06 20:14:54,447 basehttp 64400 49868 "OPTIONS /api/v1/auth/logout/ HTTP/1.1" 200 0
+WARNING 2025-08-06 20:14:54,574 log 64400 66388 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:54,588 basehttp 64400 66388 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:54,590 log 64400 40284 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:54,593 basehttp 64400 40284 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:54,750 log 64400 49868 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-06 20:14:54,751 basehttp 64400 49868 - Broken pipe from ('127.0.0.1', 59514)
+WARNING 2025-08-06 20:14:54,806 log 64400 40284 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:54,808 basehttp 64400 40284 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:54,956 log 64400 66388 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:54,959 basehttp 64400 66388 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:54,977 log 64400 40284 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:54,979 basehttp 64400 40284 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:54,995 log 64400 61128 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:54,997 basehttp 64400 61128 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:55,158 log 64400 61128 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:55,162 basehttp 64400 61128 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:55,318 log 64400 40284 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:55,334 log 64400 66388 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:55,336 basehttp 64400 40284 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:55,338 basehttp 64400 66388 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:55,353 log 64400 61128 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:55,356 basehttp 64400 61128 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:55,531 log 64400 61128 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:55,532 basehttp 64400 61128 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:55,694 log 64400 40284 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:55,711 log 64400 61128 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:55,713 basehttp 64400 40284 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:55,714 basehttp 64400 61128 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:55,730 log 64400 66388 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:55,733 basehttp 64400 66388 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:55,932 log 64400 66388 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:55,933 basehttp 64400 66388 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,089 log 64400 61128 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:56,091 basehttp 64400 61128 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,109 log 64400 66388 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:56,110 basehttp 64400 66388 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,125 log 64400 40284 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:56,127 basehttp 64400 40284 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,277 log 64400 40284 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:56,278 basehttp 64400 40284 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,432 log 64400 40284 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:56,446 log 64400 61128 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:56,447 basehttp 64400 40284 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,464 log 64400 66388 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:56,465 basehttp 64400 61128 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,466 basehttp 64400 66388 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,628 log 64400 66388 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:56,630 basehttp 64400 66388 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,773 log 64400 61128 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:56,777 basehttp 64400 61128 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,799 log 64400 40284 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:56,800 basehttp 64400 40284 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,818 log 64400 66388 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:56,819 basehttp 64400 66388 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:56,963 log 64400 66388 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:56,966 basehttp 64400 66388 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,103 log 64400 40284 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:57,106 basehttp 64400 40284 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,127 log 64400 61128 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:57,129 basehttp 64400 61128 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,148 log 64400 66388 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:57,151 basehttp 64400 66388 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,282 log 64400 66388 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:57,283 basehttp 64400 66388 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,411 log 64400 40284 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:57,425 log 64400 61128 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:57,427 basehttp 64400 40284 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,427 basehttp 64400 61128 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,444 log 64400 66388 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:57,446 basehttp 64400 66388 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,562 log 64400 66388 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:57,563 basehttp 64400 66388 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,698 log 64400 40284 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:57,712 log 64400 61128 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:57,725 log 64400 66388 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:57,726 basehttp 64400 40284 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,727 basehttp 64400 61128 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,727 basehttp 64400 66388 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:57,862 log 64400 66388 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:57,864 basehttp 64400 66388 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,007 log 64400 40284 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-06 20:14:58,009 basehttp 64400 40284 - Broken pipe from ('127.0.0.1', 59511)
+WARNING 2025-08-06 20:14:58,026 log 64400 61128 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-06 20:14:58,030 basehttp 64400 61128 - Broken pipe from ('127.0.0.1', 59518)
+WARNING 2025-08-06 20:14:58,046 log 64400 66388 Unauthorized: /api/v1/users/me/
+INFO 2025-08-06 20:14:58,047 basehttp 64400 66388 - Broken pipe from ('127.0.0.1', 59512)
+WARNING 2025-08-06 20:14:58,187 log 64400 16828 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:58,188 basehttp 64400 16828 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,342 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:58,359 log 64400 16828 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:58,361 basehttp 64400 16828 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,362 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,381 log 64400 12232 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:58,383 basehttp 64400 12232 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,495 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:58,497 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,619 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:58,621 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,635 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:58,639 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,660 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:58,661 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,766 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:58,767 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,904 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:58,918 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:58,919 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,919 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:58,944 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:58,946 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,077 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:59,079 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,220 log 64400 16828 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:59,223 basehttp 64400 16828 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,242 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:59,243 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,277 log 64400 12232 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:59,279 basehttp 64400 12232 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,430 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:59,431 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,581 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:59,599 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:59,601 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,602 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,638 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:59,640 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,767 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:59,769 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,919 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:59,921 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,942 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:14:59,951 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:14:59,952 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:14:59,953 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:00,118 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:00,120 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:00,271 log 64400 16828 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:00,275 basehttp 64400 16828 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:00,304 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:00,306 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:00,326 log 64400 12232 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:00,328 basehttp 64400 12232 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:00,577 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:00,580 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:00,722 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:00,740 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:00,741 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:00,744 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:00,760 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:00,763 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:00,928 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:00,930 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,067 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:01,071 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,087 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:01,090 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,117 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:01,118 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,272 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:01,273 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,421 log 64400 28332 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:01,423 basehttp 64400 28332 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,447 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:01,449 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,478 log 64400 12232 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:01,479 basehttp 64400 12232 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,630 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:01,633 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,783 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:01,796 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:01,796 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,797 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,821 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:01,823 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:01,964 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:01,968 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,118 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:02,134 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:02,135 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,135 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,159 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:02,160 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,313 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:02,315 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,462 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:02,477 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:02,480 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,480 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,495 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:02,496 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,630 log 64400 28332 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:02,633 basehttp 64400 28332 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,764 log 64400 12232 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:02,775 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:02,777 basehttp 64400 12232 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,777 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,795 log 64400 28332 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:02,796 basehttp 64400 28332 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:02,921 log 64400 28332 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:02,924 basehttp 64400 28332 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:03,084 log 64400 28332 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:03,103 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:03,103 basehttp 64400 28332 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:03,104 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:03,127 log 64400 12232 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:03,130 basehttp 64400 12232 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:03,288 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:03,291 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:03,434 log 64400 16828 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:03,436 basehttp 64400 16828 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:03,460 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:03,462 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:03,487 log 64400 12232 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:03,489 basehttp 64400 12232 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:03,635 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:03,636 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:03,820 log 64400 16828 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:03,822 basehttp 64400 16828 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:03,860 log 64400 28332 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:03,862 basehttp 64400 28332 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:03,899 log 64400 12232 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:03,901 basehttp 64400 12232 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,039 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:04,041 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,201 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:04,203 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,227 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:04,229 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,245 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:04,247 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,396 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:04,397 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,521 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:04,529 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,534 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:04,536 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,552 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:04,552 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,695 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:04,696 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,875 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:04,877 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,894 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:04,896 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:04,925 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:04,927 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,047 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:05,049 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,203 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:05,205 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,222 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:05,244 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:05,245 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,246 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,397 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:05,398 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,551 log 64400 46912 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:05,557 basehttp 64400 46912 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,578 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:05,579 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,595 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:05,595 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,745 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:05,748 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,890 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:05,894 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,913 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:05,915 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:05,934 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:05,935 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,072 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:06,074 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,209 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:06,226 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:06,228 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,228 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,250 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:06,252 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,384 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:06,385 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,527 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:06,542 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:06,543 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,545 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,559 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:06,559 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,701 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:06,702 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,831 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:06,843 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:06,844 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,844 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,861 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:06,862 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:06,987 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:06,991 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,126 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:07,140 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:07,141 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,144 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,164 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:07,167 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,280 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:07,281 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,413 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:07,414 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,431 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:07,433 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,454 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:07,456 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,586 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:07,588 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,728 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:07,730 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,758 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:07,760 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,778 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:07,780 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:07,928 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:07,930 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,078 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:08,082 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,099 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:08,099 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,123 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:08,124 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,279 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:08,281 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,420 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:08,432 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:08,434 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,436 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,461 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:08,465 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,585 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:08,587 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,730 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:08,749 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:08,750 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,752 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,769 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:08,772 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:08,925 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:08,927 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,082 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:09,087 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,118 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:09,118 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,134 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:09,137 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,323 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:09,325 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,475 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:09,476 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,492 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:09,493 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,511 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:09,511 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,632 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:09,633 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,771 log 64400 39964 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:09,787 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:09,788 basehttp 64400 39964 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,789 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,818 log 64400 46256 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:09,820 basehttp 64400 46256 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:09,956 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:09,957 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,098 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:10,099 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,116 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:10,118 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,137 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:10,139 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,280 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:10,281 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,416 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:10,419 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,434 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:10,436 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,455 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:10,456 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,601 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:10,603 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,725 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:10,728 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,744 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:10,746 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,763 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:10,765 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:10,908 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:10,910 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:11,051 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:11,064 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:11,066 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:11,066 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:11,085 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:11,087 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:11,244 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:11,246 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:11,389 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:11,405 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:11,407 basehttp 64400 46912 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:11,409 basehttp 64400 39964 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:11,428 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:11,429 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:11,574 log 64400 46256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:11,577 basehttp 64400 46256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:11,722 log 64400 46912 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-06 20:15:11,724 basehttp 64400 46912 - Broken pipe from ('127.0.0.1', 59564)
+WARNING 2025-08-06 20:15:11,740 log 64400 39964 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-06 20:15:11,741 basehttp 64400 39964 - Broken pipe from ('127.0.0.1', 59562)
+WARNING 2025-08-06 20:15:11,758 log 64400 46256 Unauthorized: /api/v1/users/me/
+INFO 2025-08-06 20:15:11,760 basehttp 64400 46256 - Broken pipe from ('127.0.0.1', 59563)
+WARNING 2025-08-06 20:15:11,912 log 64400 64840 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:11,915 basehttp 64400 64840 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,050 log 64400 64840 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:12,053 basehttp 64400 64840 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,072 log 64400 32248 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:12,088 log 64400 53364 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:12,088 basehttp 64400 32248 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,089 basehttp 64400 53364 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,175 log 64400 53364 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:12,177 basehttp 64400 53364 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,310 log 64400 64840 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:12,312 basehttp 64400 64840 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,329 log 64400 32248 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:12,334 basehttp 64400 32248 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,350 log 64400 53364 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:12,352 basehttp 64400 53364 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,484 log 64400 53364 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:12,487 basehttp 64400 53364 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,626 log 64400 32248 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:12,643 log 64400 64840 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:12,657 log 64400 53364 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-06 20:15:12,659 basehttp 64400 32248 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,660 basehttp 64400 64840 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,660 basehttp 64400 53364 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,836 log 64400 32248 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:12,851 log 64400 64840 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:12,852 basehttp 64400 32248 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,868 log 64400 53364 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-06 20:15:12,869 basehttp 64400 64840 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+WARNING 2025-08-06 20:15:12,871 basehttp 64400 53364 "POST /api/v1/auth/logout/ HTTP/1.1" 401 171
+INFO 2025-08-06 20:15:56,370 basehttp 64400 53364 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-06 20:15:56,390 basehttp 64400 64840 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 2112
+INFO 2025-08-06 20:15:57,749 basehttp 64400 64840 "GET /api/v1/articles/1/ HTTP/1.1" 200 994
+INFO 2025-08-06 20:15:57,898 basehttp 64400 64840 "GET /api/v1/articles/1/comments/ HTTP/1.1" 200 2
+INFO 2025-08-06 20:16:07,267 basehttp 64400 64840 "OPTIONS /api/v1/auth/login/ HTTP/1.1" 200 0
+INFO 2025-08-06 20:16:08,011 basehttp 64400 64840 "POST /api/v1/auth/login/ HTTP/1.1" 200 719
+INFO 2025-08-06 20:16:23,005 basehttp 64400 64840 "OPTIONS /api/v1/categories/3/ HTTP/1.1" 200 0
+WARNING 2025-08-06 20:16:23,187 log 64400 64840 Not Found: /api/v1/categories/3/
+WARNING 2025-08-06 20:16:23,188 basehttp 64400 64840 "GET /api/v1/categories/3/ HTTP/1.1" 404 49
+INFO 2025-08-06 20:16:25,969 basehttp 64400 64840 "OPTIONS /api/v1/categories/ HTTP/1.1" 200 0
+INFO 2025-08-06 20:16:25,969 basehttp 64400 53364 "OPTIONS /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 0
+INFO 2025-08-06 20:16:26,202 basehttp 64400 53364 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-06 20:16:26,225 basehttp 64400 64840 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 2112
+INFO 2025-08-06 20:16:34,601 basehttp 64400 64840 "OPTIONS /api/v1/categories/2/ HTTP/1.1" 200 0
+WARNING 2025-08-06 20:16:34,722 log 64400 64840 Not Found: /api/v1/categories/2/
+WARNING 2025-08-06 20:16:34,722 basehttp 64400 64840 "GET /api/v1/categories/2/ HTTP/1.1" 404 49
+INFO 2025-08-06 20:16:46,420 basehttp 64400 64840 "OPTIONS /api/v1/articles/?author=3&page=1&page_size=20 HTTP/1.1" 200 0
+INFO 2025-08-06 20:16:46,606 basehttp 64400 64840 "GET /api/v1/articles/?author=3&page=1&page_size=20 HTTP/1.1" 200 2112
+INFO 2025-08-06 20:16:50,198 basehttp 64400 64840 "OPTIONS /api/v1/articles/2/ HTTP/1.1" 200 0
+INFO 2025-08-06 20:16:50,259 basehttp 64400 64840 "DELETE /api/v1/articles/2/ HTTP/1.1" 204 0
+INFO 2025-08-06 20:16:50,457 basehttp 64400 64840 "GET /api/v1/articles/?author=3&page=1&page_size=20 HTTP/1.1" 200 1046
+INFO 2025-08-06 20:16:52,660 basehttp 64400 64840 "OPTIONS /api/v1/articles/1/ HTTP/1.1" 200 0
+INFO 2025-08-06 20:16:52,730 basehttp 64400 64840 "DELETE /api/v1/articles/1/ HTTP/1.1" 204 0
+INFO 2025-08-06 20:16:52,849 basehttp 64400 64840 "GET /api/v1/articles/?author=3&page=1&page_size=20 HTTP/1.1" 200 52
+INFO 2025-08-06 20:16:55,738 basehttp 64400 64840 "OPTIONS /api/v1/articles/?author=3&page=1&page_size=20&status=draft HTTP/1.1" 200 0
+INFO 2025-08-06 20:16:55,842 basehttp 64400 64840 "GET /api/v1/articles/?author=3&page=1&page_size=20&status=draft HTTP/1.1" 200 52
+INFO 2025-08-06 20:16:56,462 basehttp 64400 64840 "OPTIONS /api/v1/articles/?author=3&page=1&page_size=20&status=published HTTP/1.1" 200 0
+INFO 2025-08-06 20:16:56,562 basehttp 64400 64840 "GET /api/v1/articles/?author=3&page=1&page_size=20&status=published HTTP/1.1" 200 52
+INFO 2025-08-06 20:16:57,230 basehttp 64400 64840 "OPTIONS /api/v1/articles/?author=3&page=1&page_size=20&status=archived HTTP/1.1" 200 0
+INFO 2025-08-06 20:16:57,332 basehttp 64400 64840 "GET /api/v1/articles/?author=3&page=1&page_size=20&status=archived HTTP/1.1" 200 52
+INFO 2025-08-06 20:16:58,115 basehttp 64400 64840 "GET /api/v1/articles/?author=3&page=1&page_size=20&status=draft HTTP/1.1" 200 52
+INFO 2025-08-06 20:16:58,463 basehttp 64400 64840 "GET /api/v1/articles/?author=3&page=1&page_size=20&status=published HTTP/1.1" 200 52
+INFO 2025-08-06 20:16:58,882 basehttp 64400 64840 "GET /api/v1/articles/?author=3&page=1&page_size=20 HTTP/1.1" 200 52
+INFO 2025-08-06 20:17:00,473 basehttp 64400 64840 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-06 20:17:00,491 basehttp 64400 53364 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 52
+INFO 2025-08-06 20:17:02,857 basehttp 64400 53364 "OPTIONS /api/v1/tags/ HTTP/1.1" 200 0
+INFO 2025-08-06 20:17:03,010 basehttp 64400 53364 "GET /api/v1/tags/ HTTP/1.1" 200 193
+INFO 2025-08-06 20:17:03,026 basehttp 64400 64840 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-06 20:17:37,694 basehttp 64400 64840 "OPTIONS /api/v1/articles/ HTTP/1.1" 200 0
+INFO 2025-08-06 20:17:37,904 basehttp 64400 64840 "POST /api/v1/articles/ HTTP/1.1" 201 175
+INFO 2025-08-06 20:17:40,498 basehttp 64400 64840 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-06 20:17:40,517 basehttp 64400 53364 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 1044
+INFO 2025-08-06 20:17:41,948 basehttp 64400 53364 "OPTIONS /api/v1/articles/3/ HTTP/1.1" 200 0
+INFO 2025-08-06 20:17:42,121 basehttp 64400 53364 "GET /api/v1/articles/3/ HTTP/1.1" 200 992
+INFO 2025-08-06 20:17:42,144 basehttp 64400 53364 "OPTIONS /api/v1/articles/3/comments/ HTTP/1.1" 200 0
+INFO 2025-08-06 20:17:42,266 basehttp 64400 53364 "GET /api/v1/articles/3/comments/ HTTP/1.1" 200 2
+INFO 2025-08-06 20:17:50,471 basehttp 64400 53364 "GET /api/v1/categories/ HTTP/1.1" 200 315
+INFO 2025-08-06 20:17:50,493 basehttp 64400 64840 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 1044
