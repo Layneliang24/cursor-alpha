@@ -366,6 +366,35 @@ onMounted(() => {
 .pagination-container {
   display: flex;
   justify-content: center;
-  padding: 20px 0;
+  padding: 40px 0 20px 0;
+  margin-top: 30px;
+  border-top: 1px solid #f0f0f0;
+}
+
+:deep(.el-pagination) {
+  --el-pagination-font-size: 14px;
+  --el-pagination-bg-color: #fff;
+  --el-pagination-text-color: #606266;
+  --el-pagination-border-radius: 6px;
+}
+
+:deep(.el-pagination .btn-next),
+:deep(.el-pagination .btn-prev) {
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  border-radius: 6px;
+}
+
+:deep(.el-pagination .el-pager li) {
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  border-radius: 6px;
+  margin: 0 4px;
+}
+
+:deep(.el-pagination .el-pager li.is-active) {
+  background: #409eff;
+  border-color: #409eff;
+  color: #fff;
 }
 </style>

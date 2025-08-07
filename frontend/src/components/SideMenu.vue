@@ -8,13 +8,13 @@
         <h6 class="sidebar-heading text-muted">主要功能</h6>
         <nav class="nav flex-column">
           <router-link class="nav-link" to="/" :class="{ active: $route.path === '/' }">
-            <i class="el-icon-house me-2"></i>首页
+            <el-icon class="me-2"><House /></el-icon>首页
           </router-link>
           <router-link class="nav-link" to="/articles" :class="{ active: $route.path === '/articles' }">
-            <i class="el-icon-document me-2"></i>文章列表
+            <el-icon class="me-2"><Document /></el-icon>文章列表
           </router-link>
           <router-link class="nav-link" to="/articles/create" :class="{ active: $route.path === '/articles/create' }" v-if="authStore.isAuthenticated">
-            <i class="el-icon-edit me-2"></i>写文章
+            <el-icon class="me-2"><Edit /></el-icon>写文章
           </router-link>
         </nav>
       </div>
@@ -23,10 +23,10 @@
       <div class="mb-4">
         <h6 class="sidebar-heading text-muted">文章分类</h6>
         <nav class="nav flex-column">
-          <a class="nav-link" href="#" v-for="category in categories" :key="category.id">
-            <i class="el-icon-folder me-2"></i>{{ category.name }}
+          <router-link class="nav-link" :to="`/articles?category=${category.id}`" v-for="category in categories" :key="category.id">
+            <el-icon class="me-2"><Folder /></el-icon>{{ category.name }}
             <span class="badge bg-secondary ms-auto">{{ category.article_count }}</span>
-          </a>
+          </router-link>
         </nav>
       </div>
 
@@ -35,10 +35,10 @@
         <h6 class="sidebar-heading text-muted">个人中心</h6>
         <nav class="nav flex-column">
           <router-link class="nav-link" to="/profile" :class="{ active: $route.path === '/profile' }">
-            <i class="el-icon-user me-2"></i>个人资料
+            <el-icon class="me-2"><User /></el-icon>个人资料
           </router-link>
           <router-link class="nav-link" to="/user/articles" :class="{ active: $route.path === '/user/articles' }">
-            <i class="el-icon-document-copy me-2"></i>我的文章
+            <el-icon class="me-2"><DocumentCopy /></el-icon>我的文章
           </router-link>
         </nav>
       </div>
@@ -57,6 +57,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { House, Document, Edit, Folder, User, DocumentCopy } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
 const categories = ref([

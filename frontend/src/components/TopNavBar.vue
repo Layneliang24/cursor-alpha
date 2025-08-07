@@ -115,6 +115,8 @@ const showNotifications = () => {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.75rem 0;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1000;
 }
 
 .container-fluid {
@@ -256,6 +258,7 @@ const showNotifications = () => {
 
 .user-dropdown {
   position: relative;
+  z-index: 1001;
 }
 
 .user-avatar {
@@ -294,7 +297,8 @@ const showNotifications = () => {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   padding: 0;
   margin-top: 0.5rem;
-  z-index: 9999 !important;
+  z-index: 10000 !important;
+  position: absolute !important;
 }
 
 .dropdown-header {
