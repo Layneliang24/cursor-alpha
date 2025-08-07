@@ -755,3 +755,1157 @@ INFO 2025-08-06 20:17:42,266 basehttp 64400 53364 "GET /api/v1/articles/3/commen
 INFO 2025-08-06 20:17:50,471 basehttp 64400 53364 "GET /api/v1/categories/ HTTP/1.1" 200 315
 INFO 2025-08-06 20:17:50,493 basehttp 64400 64840 "GET /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 1044
 INFO 2025-08-07 22:04:27,901 autoreload 10888 25528 Watching for file changes with StatReloader
+INFO 2025-08-07 22:04:45,618 basehttp 10888 19756 "GET / HTTP/1.1" 200 15886
+INFO 2025-08-07 22:04:45,627 basehttp 10888 11860 "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 304 0
+INFO 2025-08-07 22:04:45,629 basehttp 10888 19756 "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 304 0
+INFO 2025-08-07 22:04:45,630 basehttp 10888 11860 "GET /static/debug_toolbar/css/print.css HTTP/1.1" 304 0
+INFO 2025-08-07 22:04:45,674 basehttp 10888 11860 "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 304 0
+WARNING 2025-08-07 22:04:45,731 log 10888 11860 Not Found: /favicon.ico
+WARNING 2025-08-07 22:04:45,736 basehttp 10888 11860 "GET /favicon.ico HTTP/1.1" 404 16560
+INFO 2025-08-07 22:05:10,000 basehttp 10888 18204 "OPTIONS /api/v1/users/me/ HTTP/1.1" 200 0
+INFO 2025-08-07 22:05:10,005 basehttp 10888 24348 "OPTIONS /api/v1/users/me/ HTTP/1.1" 200 0
+WARNING 2025-08-07 22:05:10,236 log 10888 18204 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:10,237 basehttp 10888 18204 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+INFO 2025-08-07 22:05:10,242 basehttp 10888 24348 "OPTIONS /api/v1/auth/logout/ HTTP/1.1" 200 0
+INFO 2025-08-07 22:05:10,248 basehttp 10888 23792 "OPTIONS /api/v1/auth/logout/ HTTP/1.1" 200 0
+WARNING 2025-08-07 22:05:10,323 log 10888 24348 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:10,328 basehttp 10888 24348 - Broken pipe from ('127.0.0.1', 63697)
+WARNING 2025-08-07 22:05:10,374 log 10888 18204 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:10,380 basehttp 10888 18204 - Broken pipe from ('127.0.0.1', 63696)
+WARNING 2025-08-07 22:05:10,392 log 10888 23792 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:10,394 basehttp 10888 23792 - Broken pipe from ('127.0.0.1', 63699)
+WARNING 2025-08-07 22:05:10,428 log 10888 3408 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:10,429 basehttp 10888 3408 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:10,555 log 10888 3408 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:10,555 basehttp 10888 3408 - Broken pipe from ('127.0.0.1', 63701)
+WARNING 2025-08-07 22:05:10,584 log 10888 20892 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:10,592 log 10888 21928 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:10,592 basehttp 10888 21928 - Broken pipe from ('127.0.0.1', 63702)
+INFO 2025-08-07 22:05:10,592 basehttp 10888 20892 - Broken pipe from ('127.0.0.1', 63703)
+WARNING 2025-08-07 22:05:10,637 log 10888 15676 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:10,638 basehttp 10888 15676 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:10,774 log 10888 15676 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:10,781 basehttp 10888 15676 - Broken pipe from ('127.0.0.1', 63705)
+WARNING 2025-08-07 22:05:10,789 log 10888 12916 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:10,799 log 10888 24740 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:10,800 basehttp 10888 12916 - Broken pipe from ('127.0.0.1', 63707)
+INFO 2025-08-07 22:05:10,802 basehttp 10888 24740 - Broken pipe from ('127.0.0.1', 63706)
+WARNING 2025-08-07 22:05:10,854 log 10888 18892 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:10,856 basehttp 10888 18892 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:11,023 log 10888 18892 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:11,024 basehttp 10888 18892 - Broken pipe from ('127.0.0.1', 63709)
+WARNING 2025-08-07 22:05:11,038 log 10888 568 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:11,039 basehttp 10888 568 - Broken pipe from ('127.0.0.1', 63710)
+WARNING 2025-08-07 22:05:11,052 log 10888 23844 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:11,059 basehttp 10888 23844 - Broken pipe from ('127.0.0.1', 63711)
+WARNING 2025-08-07 22:05:11,083 log 10888 25440 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:11,083 basehttp 10888 25440 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:11,221 log 10888 25440 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:11,222 basehttp 10888 25440 - Broken pipe from ('127.0.0.1', 63713)
+WARNING 2025-08-07 22:05:11,245 log 10888 23836 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:11,247 basehttp 10888 23836 - Broken pipe from ('127.0.0.1', 63715)
+WARNING 2025-08-07 22:05:11,264 log 10888 9104 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:11,271 basehttp 10888 9104 - Broken pipe from ('127.0.0.1', 63714)
+WARNING 2025-08-07 22:05:11,292 log 10888 18656 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:11,293 basehttp 10888 18656 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:11,435 log 10888 18656 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:11,443 basehttp 10888 18656 - Broken pipe from ('127.0.0.1', 63717)
+WARNING 2025-08-07 22:05:11,447 log 10888 12804 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:11,457 log 10888 25204 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:11,458 basehttp 10888 12804 - Broken pipe from ('127.0.0.1', 63719)
+INFO 2025-08-07 22:05:11,459 basehttp 10888 25204 - Broken pipe from ('127.0.0.1', 63718)
+WARNING 2025-08-07 22:05:11,488 log 10888 6240 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:11,489 basehttp 10888 6240 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:11,629 log 10888 6240 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:11,631 basehttp 10888 6240 - Broken pipe from ('127.0.0.1', 63721)
+WARNING 2025-08-07 22:05:11,640 log 10888 3564 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:11,641 basehttp 10888 3564 - Broken pipe from ('127.0.0.1', 63722)
+WARNING 2025-08-07 22:05:11,646 log 10888 10480 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:11,646 basehttp 10888 10480 - Broken pipe from ('127.0.0.1', 63723)
+WARNING 2025-08-07 22:05:11,674 log 10888 22260 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:11,674 basehttp 10888 22260 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:11,801 log 10888 22260 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:11,802 basehttp 10888 22260 - Broken pipe from ('127.0.0.1', 63725)
+WARNING 2025-08-07 22:05:11,818 log 10888 19728 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:11,820 basehttp 10888 19728 - Broken pipe from ('127.0.0.1', 63726)
+WARNING 2025-08-07 22:05:11,828 log 10888 22680 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:11,835 basehttp 10888 22680 - Broken pipe from ('127.0.0.1', 63727)
+WARNING 2025-08-07 22:05:11,876 log 10888 22448 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:11,877 basehttp 10888 22448 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:12,015 log 10888 17716 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:12,016 basehttp 10888 17716 - Broken pipe from ('127.0.0.1', 63731)
+WARNING 2025-08-07 22:05:12,027 log 10888 22448 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:12,035 log 10888 10928 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:12,038 basehttp 10888 10928 - Broken pipe from ('127.0.0.1', 63730)
+INFO 2025-08-07 22:05:12,036 basehttp 10888 22448 - Broken pipe from ('127.0.0.1', 63729)
+WARNING 2025-08-07 22:05:12,074 log 10888 19920 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:12,075 basehttp 10888 19920 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:12,215 log 10888 19920 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:12,222 log 10888 5940 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:12,222 basehttp 10888 19920 - Broken pipe from ('127.0.0.1', 63733)
+INFO 2025-08-07 22:05:12,223 basehttp 10888 5940 - Broken pipe from ('127.0.0.1', 63734)
+WARNING 2025-08-07 22:05:12,228 log 10888 24064 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:12,228 basehttp 10888 24064 - Broken pipe from ('127.0.0.1', 63735)
+WARNING 2025-08-07 22:05:12,264 log 10888 4800 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:12,270 basehttp 10888 4800 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:12,404 log 10888 4800 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:12,405 basehttp 10888 4800 - Broken pipe from ('127.0.0.1', 63737)
+WARNING 2025-08-07 22:05:12,410 log 10888 7992 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:12,410 basehttp 10888 7992 - Broken pipe from ('127.0.0.1', 63738)
+WARNING 2025-08-07 22:05:12,420 log 10888 24892 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:12,425 basehttp 10888 24892 - Broken pipe from ('127.0.0.1', 63739)
+WARNING 2025-08-07 22:05:12,458 log 10888 9832 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:12,459 basehttp 10888 9832 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:12,597 log 10888 21848 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:12,598 basehttp 10888 21848 - Broken pipe from ('127.0.0.1', 63743)
+WARNING 2025-08-07 22:05:12,604 log 10888 9832 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:12,605 basehttp 10888 9832 - Broken pipe from ('127.0.0.1', 63741)
+WARNING 2025-08-07 22:05:12,634 log 10888 14452 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:12,636 basehttp 10888 14452 - Broken pipe from ('127.0.0.1', 63742)
+WARNING 2025-08-07 22:05:12,656 log 10888 17960 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:12,657 basehttp 10888 17960 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:12,795 log 10888 4880 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:12,796 basehttp 10888 4880 - Broken pipe from ('127.0.0.1', 63747)
+WARNING 2025-08-07 22:05:12,810 log 10888 12164 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:12,816 log 10888 17960 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:12,822 basehttp 10888 12164 - Broken pipe from ('127.0.0.1', 63746)
+INFO 2025-08-07 22:05:12,824 basehttp 10888 17960 - Broken pipe from ('127.0.0.1', 63745)
+WARNING 2025-08-07 22:05:12,866 log 10888 2288 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:12,867 basehttp 10888 2288 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:13,012 log 10888 2288 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:13,013 basehttp 10888 2288 - Broken pipe from ('127.0.0.1', 63749)
+WARNING 2025-08-07 22:05:13,028 log 10888 23696 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:13,028 basehttp 10888 23696 - Broken pipe from ('127.0.0.1', 63751)
+WARNING 2025-08-07 22:05:13,045 log 10888 2352 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:13,047 basehttp 10888 2352 - Broken pipe from ('127.0.0.1', 63750)
+WARNING 2025-08-07 22:05:13,079 log 10888 20612 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:13,080 basehttp 10888 20612 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:13,201 log 10888 20612 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:13,202 basehttp 10888 20612 - Broken pipe from ('127.0.0.1', 63753)
+WARNING 2025-08-07 22:05:13,225 log 10888 6588 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:13,228 basehttp 10888 6588 - Broken pipe from ('127.0.0.1', 63754)
+WARNING 2025-08-07 22:05:13,237 log 10888 10068 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:13,238 basehttp 10888 10068 - Broken pipe from ('127.0.0.1', 63755)
+WARNING 2025-08-07 22:05:13,263 log 10888 20064 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:13,264 basehttp 10888 20064 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:13,390 log 10888 9792 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:13,402 log 10888 20064 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:13,403 basehttp 10888 9792 - Broken pipe from ('127.0.0.1', 63758)
+INFO 2025-08-07 22:05:13,405 basehttp 10888 20064 - Broken pipe from ('127.0.0.1', 63757)
+WARNING 2025-08-07 22:05:13,419 log 10888 24856 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:13,421 basehttp 10888 24856 - Broken pipe from ('127.0.0.1', 63759)
+WARNING 2025-08-07 22:05:13,449 log 10888 14104 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:13,449 basehttp 10888 14104 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:13,573 log 10888 14104 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:13,573 basehttp 10888 14104 - Broken pipe from ('127.0.0.1', 63761)
+WARNING 2025-08-07 22:05:13,590 log 10888 12032 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:13,591 basehttp 10888 12032 - Broken pipe from ('127.0.0.1', 63763)
+WARNING 2025-08-07 22:05:13,601 log 10888 23252 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:13,604 basehttp 10888 23252 - Broken pipe from ('127.0.0.1', 63762)
+WARNING 2025-08-07 22:05:13,637 log 10888 18604 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:13,638 basehttp 10888 18604 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:13,761 log 10888 17196 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:13,763 basehttp 10888 17196 - Broken pipe from ('127.0.0.1', 63766)
+WARNING 2025-08-07 22:05:13,771 log 10888 18604 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:13,773 basehttp 10888 18604 - Broken pipe from ('127.0.0.1', 63765)
+WARNING 2025-08-07 22:05:13,783 log 10888 10812 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:13,785 basehttp 10888 10812 - Broken pipe from ('127.0.0.1', 63767)
+WARNING 2025-08-07 22:05:13,814 log 10888 4452 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:13,815 basehttp 10888 4452 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:13,934 log 10888 22024 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:13,935 basehttp 10888 22024 - Broken pipe from ('127.0.0.1', 63770)
+WARNING 2025-08-07 22:05:13,944 log 10888 4456 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:13,945 basehttp 10888 4456 - Broken pipe from ('127.0.0.1', 63771)
+WARNING 2025-08-07 22:05:13,953 log 10888 4452 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:13,954 basehttp 10888 4452 - Broken pipe from ('127.0.0.1', 63769)
+WARNING 2025-08-07 22:05:13,994 log 10888 12556 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:13,994 basehttp 10888 12556 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:14,115 log 10888 12556 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:14,116 basehttp 10888 12556 - Broken pipe from ('127.0.0.1', 63773)
+WARNING 2025-08-07 22:05:14,128 log 10888 22468 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:14,129 basehttp 10888 22468 - Broken pipe from ('127.0.0.1', 63775)
+WARNING 2025-08-07 22:05:14,139 log 10888 10152 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:14,141 basehttp 10888 10152 - Broken pipe from ('127.0.0.1', 63774)
+WARNING 2025-08-07 22:05:14,181 log 10888 22616 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:14,183 basehttp 10888 22616 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:14,322 log 10888 22616 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:14,327 basehttp 10888 22616 - Broken pipe from ('127.0.0.1', 63777)
+WARNING 2025-08-07 22:05:14,336 log 10888 16664 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:14,339 basehttp 10888 16664 - Broken pipe from ('127.0.0.1', 63779)
+WARNING 2025-08-07 22:05:14,351 log 10888 1912 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:14,353 basehttp 10888 1912 - Broken pipe from ('127.0.0.1', 63778)
+WARNING 2025-08-07 22:05:14,393 log 10888 12340 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:14,396 basehttp 10888 12340 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:14,545 log 10888 12340 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:14,550 basehttp 10888 12340 - Broken pipe from ('127.0.0.1', 63781)
+WARNING 2025-08-07 22:05:14,561 log 10888 9244 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:14,563 basehttp 10888 9244 - Broken pipe from ('127.0.0.1', 63782)
+WARNING 2025-08-07 22:05:14,572 log 10888 21348 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:14,573 basehttp 10888 21348 - Broken pipe from ('127.0.0.1', 63783)
+WARNING 2025-08-07 22:05:14,600 log 10888 3368 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:14,604 basehttp 10888 3368 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:14,743 log 10888 3368 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:14,745 basehttp 10888 3368 - Broken pipe from ('127.0.0.1', 63785)
+WARNING 2025-08-07 22:05:14,757 log 10888 14860 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:14,758 basehttp 10888 14860 - Broken pipe from ('127.0.0.1', 63787)
+WARNING 2025-08-07 22:05:14,773 log 10888 2720 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:14,773 basehttp 10888 2720 - Broken pipe from ('127.0.0.1', 63786)
+WARNING 2025-08-07 22:05:14,809 log 10888 20988 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:14,809 basehttp 10888 20988 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:14,971 log 10888 22204 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:14,977 basehttp 10888 22204 - Broken pipe from ('127.0.0.1', 63791)
+WARNING 2025-08-07 22:05:14,986 log 10888 13296 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:14,991 log 10888 20988 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:14,998 basehttp 10888 13296 - Broken pipe from ('127.0.0.1', 63790)
+INFO 2025-08-07 22:05:14,999 basehttp 10888 20988 - Broken pipe from ('127.0.0.1', 63789)
+WARNING 2025-08-07 22:05:15,038 log 10888 12484 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:15,039 basehttp 10888 12484 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:15,173 log 10888 12484 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:15,173 basehttp 10888 12484 - Broken pipe from ('127.0.0.1', 63793)
+WARNING 2025-08-07 22:05:15,192 log 10888 4384 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:15,201 log 10888 24128 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:15,202 basehttp 10888 4384 - Broken pipe from ('127.0.0.1', 63794)
+INFO 2025-08-07 22:05:15,203 basehttp 10888 24128 - Broken pipe from ('127.0.0.1', 63795)
+WARNING 2025-08-07 22:05:15,235 log 10888 25568 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:15,235 basehttp 10888 25568 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:15,373 log 10888 25568 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:15,374 basehttp 10888 25568 - Broken pipe from ('127.0.0.1', 63799)
+WARNING 2025-08-07 22:05:15,382 log 10888 15380 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:15,383 basehttp 10888 15380 - Broken pipe from ('127.0.0.1', 63800)
+WARNING 2025-08-07 22:05:15,398 log 10888 6664 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:15,400 basehttp 10888 6664 - Broken pipe from ('127.0.0.1', 63801)
+WARNING 2025-08-07 22:05:15,434 log 10888 6336 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:15,435 basehttp 10888 6336 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:15,573 log 10888 6336 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:15,573 basehttp 10888 6336 - Broken pipe from ('127.0.0.1', 63803)
+WARNING 2025-08-07 22:05:15,588 log 10888 11036 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:15,598 basehttp 10888 11036 - Broken pipe from ('127.0.0.1', 63804)
+WARNING 2025-08-07 22:05:15,605 log 10888 24644 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:15,608 basehttp 10888 24644 - Broken pipe from ('127.0.0.1', 63805)
+WARNING 2025-08-07 22:05:15,641 log 10888 21004 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:15,642 basehttp 10888 21004 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:15,767 log 10888 21004 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:15,770 basehttp 10888 21004 - Broken pipe from ('127.0.0.1', 63807)
+WARNING 2025-08-07 22:05:15,787 log 10888 16092 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:15,789 basehttp 10888 16092 - Broken pipe from ('127.0.0.1', 63808)
+WARNING 2025-08-07 22:05:15,807 log 10888 19052 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:15,808 basehttp 10888 19052 - Broken pipe from ('127.0.0.1', 63809)
+WARNING 2025-08-07 22:05:15,846 log 10888 22520 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:15,846 basehttp 10888 22520 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:16,017 log 10888 22520 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:16,019 basehttp 10888 22520 - Broken pipe from ('127.0.0.1', 63811)
+WARNING 2025-08-07 22:05:16,044 log 10888 9068 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:16,045 log 10888 20200 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:16,053 basehttp 10888 9068 - Broken pipe from ('127.0.0.1', 63813)
+INFO 2025-08-07 22:05:16,056 basehttp 10888 20200 - Broken pipe from ('127.0.0.1', 63812)
+WARNING 2025-08-07 22:05:16,089 log 10888 24140 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:16,091 basehttp 10888 24140 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:16,222 log 10888 24140 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:16,224 basehttp 10888 24140 - Broken pipe from ('127.0.0.1', 63815)
+WARNING 2025-08-07 22:05:16,240 log 10888 25224 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:16,252 log 10888 25400 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:16,253 basehttp 10888 25224 - Broken pipe from ('127.0.0.1', 63817)
+INFO 2025-08-07 22:05:16,254 basehttp 10888 25400 - Broken pipe from ('127.0.0.1', 63816)
+WARNING 2025-08-07 22:05:16,291 log 10888 7196 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:16,292 basehttp 10888 7196 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:16,435 log 10888 20292 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:16,435 basehttp 10888 20292 - Broken pipe from ('127.0.0.1', 63820)
+WARNING 2025-08-07 22:05:16,446 log 10888 9736 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:16,457 log 10888 7196 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:16,459 basehttp 10888 9736 - Broken pipe from ('127.0.0.1', 63821)
+INFO 2025-08-07 22:05:16,462 basehttp 10888 7196 - Broken pipe from ('127.0.0.1', 63819)
+WARNING 2025-08-07 22:05:16,499 log 10888 13952 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:16,501 basehttp 10888 13952 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:16,646 log 10888 14704 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:16,647 basehttp 10888 14704 - Broken pipe from ('127.0.0.1', 63825)
+WARNING 2025-08-07 22:05:16,657 log 10888 21376 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:16,657 basehttp 10888 21376 - Broken pipe from ('127.0.0.1', 63824)
+WARNING 2025-08-07 22:05:16,663 log 10888 13952 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:16,663 basehttp 10888 13952 - Broken pipe from ('127.0.0.1', 63823)
+WARNING 2025-08-07 22:05:16,692 log 10888 4768 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:16,694 basehttp 10888 4768 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:16,825 log 10888 4768 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:16,826 basehttp 10888 4768 - Broken pipe from ('127.0.0.1', 63827)
+WARNING 2025-08-07 22:05:16,836 log 10888 23932 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:16,837 basehttp 10888 23932 - Broken pipe from ('127.0.0.1', 63829)
+WARNING 2025-08-07 22:05:16,845 log 10888 24560 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:16,845 basehttp 10888 24560 - Broken pipe from ('127.0.0.1', 63828)
+WARNING 2025-08-07 22:05:16,879 log 10888 1896 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:16,879 basehttp 10888 1896 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:17,001 log 10888 1896 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:17,004 basehttp 10888 1896 - Broken pipe from ('127.0.0.1', 63831)
+WARNING 2025-08-07 22:05:17,019 log 10888 8140 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:17,020 basehttp 10888 8140 - Broken pipe from ('127.0.0.1', 63832)
+WARNING 2025-08-07 22:05:17,025 log 10888 12492 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:17,026 basehttp 10888 12492 - Broken pipe from ('127.0.0.1', 63833)
+WARNING 2025-08-07 22:05:17,063 log 10888 9428 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:17,063 basehttp 10888 9428 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:17,190 log 10888 9428 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:17,191 basehttp 10888 9428 - Broken pipe from ('127.0.0.1', 63835)
+WARNING 2025-08-07 22:05:17,203 log 10888 19940 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:17,204 basehttp 10888 19940 - Broken pipe from ('127.0.0.1', 63837)
+WARNING 2025-08-07 22:05:17,208 log 10888 17428 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:17,208 basehttp 10888 17428 - Broken pipe from ('127.0.0.1', 63836)
+WARNING 2025-08-07 22:05:17,224 log 10888 5244 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:17,224 basehttp 10888 5244 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:17,350 log 10888 5244 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:17,351 basehttp 10888 5244 - Broken pipe from ('127.0.0.1', 63839)
+WARNING 2025-08-07 22:05:17,378 log 10888 8764 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:17,380 basehttp 10888 8764 - Broken pipe from ('127.0.0.1', 63840)
+WARNING 2025-08-07 22:05:17,390 log 10888 14584 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:17,396 basehttp 10888 14584 - Broken pipe from ('127.0.0.1', 63841)
+WARNING 2025-08-07 22:05:17,426 log 10888 4576 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:17,426 basehttp 10888 4576 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:17,572 log 10888 24328 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:17,584 log 10888 4576 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:17,585 basehttp 10888 24328 - Broken pipe from ('127.0.0.1', 63845)
+INFO 2025-08-07 22:05:17,586 basehttp 10888 4576 - Broken pipe from ('127.0.0.1', 63843)
+WARNING 2025-08-07 22:05:17,595 log 10888 20568 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:17,596 basehttp 10888 20568 - Broken pipe from ('127.0.0.1', 63844)
+WARNING 2025-08-07 22:05:17,627 log 10888 6740 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:17,628 basehttp 10888 6740 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:17,744 log 10888 6740 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:17,745 basehttp 10888 6740 - Broken pipe from ('127.0.0.1', 63851)
+WARNING 2025-08-07 22:05:17,754 log 10888 20980 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:17,754 basehttp 10888 20980 - Broken pipe from ('127.0.0.1', 63853)
+WARNING 2025-08-07 22:05:17,770 log 10888 3828 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:17,770 basehttp 10888 3828 - Broken pipe from ('127.0.0.1', 63852)
+WARNING 2025-08-07 22:05:17,785 log 10888 18224 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:17,786 basehttp 10888 18224 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:17,908 log 10888 2588 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:17,909 basehttp 10888 2588 - Broken pipe from ('127.0.0.1', 63856)
+WARNING 2025-08-07 22:05:17,919 log 10888 19468 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:17,920 basehttp 10888 19468 - Broken pipe from ('127.0.0.1', 63857)
+WARNING 2025-08-07 22:05:17,927 log 10888 18224 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:17,927 basehttp 10888 18224 - Broken pipe from ('127.0.0.1', 63855)
+WARNING 2025-08-07 22:05:17,949 log 10888 12584 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:17,949 basehttp 10888 12584 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:18,064 log 10888 12584 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:18,066 basehttp 10888 12584 - Broken pipe from ('127.0.0.1', 63859)
+WARNING 2025-08-07 22:05:18,081 log 10888 9140 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:18,081 basehttp 10888 9140 - Broken pipe from ('127.0.0.1', 63860)
+WARNING 2025-08-07 22:05:18,093 log 10888 18608 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:18,094 basehttp 10888 18608 - Broken pipe from ('127.0.0.1', 63861)
+WARNING 2025-08-07 22:05:18,130 log 10888 4796 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:18,131 basehttp 10888 4796 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:18,242 log 10888 4796 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:18,243 basehttp 10888 4796 - Broken pipe from ('127.0.0.1', 63863)
+WARNING 2025-08-07 22:05:18,255 log 10888 23592 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:18,270 log 10888 23840 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:18,270 basehttp 10888 23592 - Broken pipe from ('127.0.0.1', 63864)
+INFO 2025-08-07 22:05:18,271 basehttp 10888 23840 - Broken pipe from ('127.0.0.1', 63865)
+WARNING 2025-08-07 22:05:18,316 log 10888 2404 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:18,317 basehttp 10888 2404 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:18,446 log 10888 5868 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:18,447 basehttp 10888 5868 - Broken pipe from ('127.0.0.1', 63868)
+WARNING 2025-08-07 22:05:18,457 log 10888 2404 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:18,459 basehttp 10888 2404 - Broken pipe from ('127.0.0.1', 63867)
+WARNING 2025-08-07 22:05:18,468 log 10888 13516 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:18,469 basehttp 10888 13516 - Broken pipe from ('127.0.0.1', 63869)
+WARNING 2025-08-07 22:05:18,497 log 10888 12024 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:18,498 basehttp 10888 12024 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:18,633 log 10888 12024 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:18,637 basehttp 10888 12024 - Broken pipe from ('127.0.0.1', 63871)
+WARNING 2025-08-07 22:05:18,652 log 10888 20996 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:18,653 basehttp 10888 20996 - Broken pipe from ('127.0.0.1', 63872)
+WARNING 2025-08-07 22:05:18,663 log 10888 15148 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:18,663 basehttp 10888 15148 - Broken pipe from ('127.0.0.1', 63873)
+WARNING 2025-08-07 22:05:18,707 log 10888 23880 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:18,708 basehttp 10888 23880 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:18,853 log 10888 17348 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:18,856 basehttp 10888 17348 - Broken pipe from ('127.0.0.1', 63876)
+WARNING 2025-08-07 22:05:18,867 log 10888 23880 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:18,879 log 10888 4984 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:18,881 basehttp 10888 23880 - Broken pipe from ('127.0.0.1', 63875)
+INFO 2025-08-07 22:05:18,881 basehttp 10888 4984 - Broken pipe from ('127.0.0.1', 63877)
+WARNING 2025-08-07 22:05:18,917 log 10888 14948 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:18,917 basehttp 10888 14948 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:19,072 log 10888 24836 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:19,074 basehttp 10888 24836 - Broken pipe from ('127.0.0.1', 63881)
+WARNING 2025-08-07 22:05:19,083 log 10888 14948 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:19,092 log 10888 23660 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:19,094 basehttp 10888 14948 - Broken pipe from ('127.0.0.1', 63879)
+INFO 2025-08-07 22:05:19,096 basehttp 10888 23660 - Broken pipe from ('127.0.0.1', 63880)
+WARNING 2025-08-07 22:05:19,130 log 10888 17928 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:19,132 basehttp 10888 17928 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:19,272 log 10888 8988 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:19,274 basehttp 10888 8988 - Broken pipe from ('127.0.0.1', 63884)
+WARNING 2025-08-07 22:05:19,286 log 10888 22576 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:19,287 basehttp 10888 22576 - Broken pipe from ('127.0.0.1', 63885)
+WARNING 2025-08-07 22:05:19,297 log 10888 17928 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:19,298 basehttp 10888 17928 - Broken pipe from ('127.0.0.1', 63883)
+WARNING 2025-08-07 22:05:19,333 log 10888 21992 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:19,335 basehttp 10888 21992 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:19,469 log 10888 21992 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:19,471 basehttp 10888 21992 - Broken pipe from ('127.0.0.1', 63887)
+WARNING 2025-08-07 22:05:19,486 log 10888 22076 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:19,487 basehttp 10888 22076 - Broken pipe from ('127.0.0.1', 63888)
+WARNING 2025-08-07 22:05:19,499 log 10888 17860 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:19,499 basehttp 10888 17860 - Broken pipe from ('127.0.0.1', 63889)
+WARNING 2025-08-07 22:05:19,531 log 10888 12320 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:19,533 basehttp 10888 12320 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:19,674 log 10888 12320 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:19,675 basehttp 10888 12320 - Broken pipe from ('127.0.0.1', 63891)
+WARNING 2025-08-07 22:05:19,681 log 10888 18176 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:19,681 basehttp 10888 18176 - Broken pipe from ('127.0.0.1', 63893)
+WARNING 2025-08-07 22:05:19,699 log 10888 8364 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:19,701 basehttp 10888 8364 - Broken pipe from ('127.0.0.1', 63894)
+WARNING 2025-08-07 22:05:19,724 log 10888 15444 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:19,724 basehttp 10888 15444 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:19,855 log 10888 24852 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:19,885 log 10888 18812 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:19,887 log 10888 15444 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:19,889 basehttp 10888 15444 - Broken pipe from ('127.0.0.1', 63896)
+INFO 2025-08-07 22:05:19,889 basehttp 10888 24852 - Broken pipe from ('127.0.0.1', 63898)
+INFO 2025-08-07 22:05:19,888 basehttp 10888 18812 - Broken pipe from ('127.0.0.1', 63897)
+WARNING 2025-08-07 22:05:19,936 log 10888 2144 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:19,936 basehttp 10888 2144 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:20,060 log 10888 2144 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:20,061 basehttp 10888 2144 - Broken pipe from ('127.0.0.1', 63900)
+WARNING 2025-08-07 22:05:20,071 log 10888 14088 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:20,072 basehttp 10888 14088 - Broken pipe from ('127.0.0.1', 63908)
+WARNING 2025-08-07 22:05:20,081 log 10888 13368 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:20,081 basehttp 10888 13368 - Broken pipe from ('127.0.0.1', 63907)
+WARNING 2025-08-07 22:05:20,117 log 10888 23680 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:20,117 basehttp 10888 23680 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:20,227 log 10888 23680 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:20,227 basehttp 10888 23680 - Broken pipe from ('127.0.0.1', 63910)
+WARNING 2025-08-07 22:05:20,243 log 10888 12628 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:20,252 log 10888 21732 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:20,252 basehttp 10888 12628 - Broken pipe from ('127.0.0.1', 63914)
+INFO 2025-08-07 22:05:20,253 basehttp 10888 21732 - Broken pipe from ('127.0.0.1', 63915)
+WARNING 2025-08-07 22:05:20,293 log 10888 12300 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:20,294 basehttp 10888 12300 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:20,415 log 10888 12300 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:20,416 basehttp 10888 12300 - Broken pipe from ('127.0.0.1', 63917)
+WARNING 2025-08-07 22:05:20,423 log 10888 6552 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:20,424 basehttp 10888 6552 - Broken pipe from ('127.0.0.1', 63920)
+WARNING 2025-08-07 22:05:20,434 log 10888 11880 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:20,435 basehttp 10888 11880 - Broken pipe from ('127.0.0.1', 63919)
+WARNING 2025-08-07 22:05:20,474 log 10888 11228 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:20,475 basehttp 10888 11228 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:20,590 log 10888 11228 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:20,595 basehttp 10888 11228 - Broken pipe from ('127.0.0.1', 63922)
+WARNING 2025-08-07 22:05:20,614 log 10888 24804 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:20,617 log 10888 10424 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:20,618 basehttp 10888 24804 - Broken pipe from ('127.0.0.1', 63923)
+INFO 2025-08-07 22:05:20,620 basehttp 10888 10424 - Broken pipe from ('127.0.0.1', 63924)
+WARNING 2025-08-07 22:05:20,663 log 10888 13156 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:20,663 basehttp 10888 13156 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:20,801 log 10888 10572 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:20,803 basehttp 10888 10572 - Broken pipe from ('127.0.0.1', 63927)
+WARNING 2025-08-07 22:05:20,808 log 10888 13156 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:20,821 log 10888 20428 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:20,821 basehttp 10888 13156 - Broken pipe from ('127.0.0.1', 63926)
+INFO 2025-08-07 22:05:20,823 basehttp 10888 20428 - Broken pipe from ('127.0.0.1', 63928)
+WARNING 2025-08-07 22:05:20,857 log 10888 23472 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:20,858 basehttp 10888 23472 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:20,979 log 10888 23472 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:20,980 basehttp 10888 23472 - Broken pipe from ('127.0.0.1', 63930)
+WARNING 2025-08-07 22:05:21,003 log 10888 13808 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:21,004 basehttp 10888 13808 - Broken pipe from ('127.0.0.1', 63931)
+WARNING 2025-08-07 22:05:21,014 log 10888 18716 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:21,015 basehttp 10888 18716 - Broken pipe from ('127.0.0.1', 63932)
+WARNING 2025-08-07 22:05:21,064 log 10888 25448 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:21,064 basehttp 10888 25448 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:21,200 log 10888 25448 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:21,205 basehttp 10888 25448 - Broken pipe from ('127.0.0.1', 63935)
+WARNING 2025-08-07 22:05:21,221 log 10888 16084 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:21,222 basehttp 10888 16084 - Broken pipe from ('127.0.0.1', 63939)
+WARNING 2025-08-07 22:05:21,233 log 10888 18684 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:21,235 basehttp 10888 18684 - Broken pipe from ('127.0.0.1', 63938)
+WARNING 2025-08-07 22:05:21,281 log 10888 7020 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:21,281 basehttp 10888 7020 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:21,421 log 10888 7020 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:21,424 basehttp 10888 7020 - Broken pipe from ('127.0.0.1', 63942)
+WARNING 2025-08-07 22:05:21,439 log 10888 5936 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:21,440 basehttp 10888 5936 - Broken pipe from ('127.0.0.1', 63944)
+WARNING 2025-08-07 22:05:21,449 log 10888 11332 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:21,450 basehttp 10888 11332 - Broken pipe from ('127.0.0.1', 63945)
+WARNING 2025-08-07 22:05:21,478 log 10888 23244 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:21,479 basehttp 10888 23244 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:21,609 log 10888 23244 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:21,614 basehttp 10888 23244 - Broken pipe from ('127.0.0.1', 63948)
+WARNING 2025-08-07 22:05:21,626 log 10888 13020 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:21,629 basehttp 10888 13020 - Broken pipe from ('127.0.0.1', 63950)
+WARNING 2025-08-07 22:05:21,650 log 10888 16416 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:21,651 basehttp 10888 16416 - Broken pipe from ('127.0.0.1', 63951)
+WARNING 2025-08-07 22:05:21,678 log 10888 7044 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:21,679 basehttp 10888 7044 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:21,803 log 10888 7044 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:21,804 basehttp 10888 7044 - Broken pipe from ('127.0.0.1', 63953)
+WARNING 2025-08-07 22:05:21,813 log 10888 6312 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:21,822 log 10888 16272 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:21,823 basehttp 10888 6312 - Broken pipe from ('127.0.0.1', 63955)
+INFO 2025-08-07 22:05:21,823 basehttp 10888 16272 - Broken pipe from ('127.0.0.1', 63954)
+WARNING 2025-08-07 22:05:21,857 log 10888 9988 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:21,858 basehttp 10888 9988 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:21,972 log 10888 9988 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:21,972 basehttp 10888 9988 - Broken pipe from ('127.0.0.1', 63957)
+WARNING 2025-08-07 22:05:21,986 log 10888 9380 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:21,987 basehttp 10888 9380 - Broken pipe from ('127.0.0.1', 63959)
+WARNING 2025-08-07 22:05:21,999 log 10888 7448 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:22,001 basehttp 10888 7448 - Broken pipe from ('127.0.0.1', 63960)
+WARNING 2025-08-07 22:05:22,033 log 10888 22104 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:22,034 basehttp 10888 22104 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:22,142 log 10888 22104 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:22,144 basehttp 10888 22104 - Broken pipe from ('127.0.0.1', 63962)
+WARNING 2025-08-07 22:05:22,152 log 10888 18936 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:22,152 basehttp 10888 18936 - Broken pipe from ('127.0.0.1', 63964)
+WARNING 2025-08-07 22:05:22,163 log 10888 2624 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:22,164 basehttp 10888 2624 - Broken pipe from ('127.0.0.1', 63963)
+WARNING 2025-08-07 22:05:22,203 log 10888 12412 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:22,204 basehttp 10888 12412 - Broken pipe from ('127.0.0.1', 63966)
+WARNING 2025-08-07 22:05:26,546 log 10888 536 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:26,547 basehttp 10888 536 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:26,664 log 10888 536 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:26,665 basehttp 10888 536 - Broken pipe from ('127.0.0.1', 64011)
+WARNING 2025-08-07 22:05:26,677 log 10888 4512 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:26,679 basehttp 10888 4512 - Broken pipe from ('127.0.0.1', 64013)
+WARNING 2025-08-07 22:05:26,688 log 10888 11052 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:26,689 basehttp 10888 11052 - Broken pipe from ('127.0.0.1', 64012)
+WARNING 2025-08-07 22:05:26,725 log 10888 21668 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:26,726 basehttp 10888 21668 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:26,842 log 10888 21668 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:26,846 basehttp 10888 21668 - Broken pipe from ('127.0.0.1', 64015)
+WARNING 2025-08-07 22:05:26,858 log 10888 15188 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:26,859 basehttp 10888 15188 - Broken pipe from ('127.0.0.1', 64016)
+WARNING 2025-08-07 22:05:26,870 log 10888 10336 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:26,871 basehttp 10888 10336 - Broken pipe from ('127.0.0.1', 64017)
+WARNING 2025-08-07 22:05:26,902 log 10888 11148 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:26,902 basehttp 10888 11148 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:27,018 log 10888 11148 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:27,020 basehttp 10888 11148 - Broken pipe from ('127.0.0.1', 64019)
+WARNING 2025-08-07 22:05:27,037 log 10888 9864 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:27,038 basehttp 10888 9864 - Broken pipe from ('127.0.0.1', 64021)
+WARNING 2025-08-07 22:05:27,052 log 10888 2360 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:27,053 basehttp 10888 2360 - Broken pipe from ('127.0.0.1', 64020)
+WARNING 2025-08-07 22:05:27,081 log 10888 10492 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:27,082 basehttp 10888 10492 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:27,227 log 10888 10492 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:27,228 basehttp 10888 10492 - Broken pipe from ('127.0.0.1', 64023)
+WARNING 2025-08-07 22:05:27,239 log 10888 12496 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:27,240 basehttp 10888 12496 - Broken pipe from ('127.0.0.1', 64025)
+WARNING 2025-08-07 22:05:27,254 log 10888 22100 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:27,255 basehttp 10888 22100 - Broken pipe from ('127.0.0.1', 64024)
+WARNING 2025-08-07 22:05:27,276 log 10888 6256 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:27,277 basehttp 10888 6256 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:27,398 log 10888 6256 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:27,399 basehttp 10888 6256 - Broken pipe from ('127.0.0.1', 64027)
+WARNING 2025-08-07 22:05:27,414 log 10888 7812 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:27,423 log 10888 12580 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:27,424 basehttp 10888 7812 - Broken pipe from ('127.0.0.1', 64029)
+INFO 2025-08-07 22:05:27,424 basehttp 10888 12580 - Broken pipe from ('127.0.0.1', 64028)
+WARNING 2025-08-07 22:05:27,455 log 10888 13212 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:27,456 basehttp 10888 13212 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:27,584 log 10888 13212 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:27,585 basehttp 10888 13212 - Broken pipe from ('127.0.0.1', 64031)
+WARNING 2025-08-07 22:05:27,601 log 10888 10348 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:27,602 basehttp 10888 10348 - Broken pipe from ('127.0.0.1', 64033)
+WARNING 2025-08-07 22:05:27,614 log 10888 24572 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:27,615 basehttp 10888 24572 - Broken pipe from ('127.0.0.1', 64032)
+WARNING 2025-08-07 22:05:27,646 log 10888 9716 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:27,646 basehttp 10888 9716 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:27,769 log 10888 9716 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:27,769 basehttp 10888 9716 - Broken pipe from ('127.0.0.1', 64035)
+WARNING 2025-08-07 22:05:27,792 log 10888 21460 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:27,794 basehttp 10888 21460 - Broken pipe from ('127.0.0.1', 64037)
+WARNING 2025-08-07 22:05:27,808 log 10888 11832 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:27,809 basehttp 10888 11832 - Broken pipe from ('127.0.0.1', 64036)
+WARNING 2025-08-07 22:05:27,844 log 10888 21852 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:27,846 basehttp 10888 21852 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:27,984 log 10888 12996 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:27,985 basehttp 10888 12996 - Broken pipe from ('127.0.0.1', 64041)
+WARNING 2025-08-07 22:05:27,997 log 10888 21852 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:27,998 basehttp 10888 21852 - Broken pipe from ('127.0.0.1', 64039)
+WARNING 2025-08-07 22:05:28,006 log 10888 7416 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:28,006 basehttp 10888 7416 - Broken pipe from ('127.0.0.1', 64040)
+WARNING 2025-08-07 22:05:28,041 log 10888 23404 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:28,042 basehttp 10888 23404 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:28,173 log 10888 2848 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:28,174 basehttp 10888 2848 - Broken pipe from ('127.0.0.1', 64044)
+WARNING 2025-08-07 22:05:28,185 log 10888 23404 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:28,193 log 10888 19464 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:28,194 basehttp 10888 23404 - Broken pipe from ('127.0.0.1', 64043)
+INFO 2025-08-07 22:05:28,195 basehttp 10888 19464 - Broken pipe from ('127.0.0.1', 64045)
+WARNING 2025-08-07 22:05:28,235 log 10888 22096 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:28,237 basehttp 10888 22096 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:28,394 log 10888 9432 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:28,406 basehttp 10888 9432 - Broken pipe from ('127.0.0.1', 64049)
+WARNING 2025-08-07 22:05:28,407 log 10888 22096 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:28,409 basehttp 10888 22096 - Broken pipe from ('127.0.0.1', 64047)
+WARNING 2025-08-07 22:05:28,425 log 10888 25244 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:28,427 basehttp 10888 25244 - Broken pipe from ('127.0.0.1', 64048)
+WARNING 2025-08-07 22:05:28,458 log 10888 20040 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:28,459 basehttp 10888 20040 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:28,580 log 10888 20040 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:28,581 basehttp 10888 20040 - Broken pipe from ('127.0.0.1', 64051)
+WARNING 2025-08-07 22:05:28,587 log 10888 10728 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:28,587 basehttp 10888 10728 - Broken pipe from ('127.0.0.1', 64052)
+WARNING 2025-08-07 22:05:28,600 log 10888 4524 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:28,601 basehttp 10888 4524 - Broken pipe from ('127.0.0.1', 64053)
+WARNING 2025-08-07 22:05:28,630 log 10888 23580 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:28,630 basehttp 10888 23580 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:28,753 log 10888 23580 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:28,754 basehttp 10888 23580 - Broken pipe from ('127.0.0.1', 64055)
+WARNING 2025-08-07 22:05:28,765 log 10888 24648 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:28,767 basehttp 10888 24648 - Broken pipe from ('127.0.0.1', 64056)
+WARNING 2025-08-07 22:05:28,778 log 10888 24640 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:28,779 basehttp 10888 24640 - Broken pipe from ('127.0.0.1', 64057)
+WARNING 2025-08-07 22:05:28,807 log 10888 6248 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:28,809 basehttp 10888 6248 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:28,924 log 10888 6248 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:28,926 basehttp 10888 6248 - Broken pipe from ('127.0.0.1', 64059)
+WARNING 2025-08-07 22:05:28,936 log 10888 14368 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:28,937 basehttp 10888 14368 - Broken pipe from ('127.0.0.1', 64060)
+WARNING 2025-08-07 22:05:28,953 log 10888 10828 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:28,953 basehttp 10888 10828 - Broken pipe from ('127.0.0.1', 64061)
+WARNING 2025-08-07 22:05:28,985 log 10888 6212 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:28,985 basehttp 10888 6212 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:29,117 log 10888 14120 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:29,125 log 10888 6212 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:29,134 log 10888 13720 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:29,136 basehttp 10888 13720 - Broken pipe from ('127.0.0.1', 64064)
+INFO 2025-08-07 22:05:29,134 basehttp 10888 6212 - Broken pipe from ('127.0.0.1', 64063)
+INFO 2025-08-07 22:05:29,134 basehttp 10888 14120 - Broken pipe from ('127.0.0.1', 64065)
+WARNING 2025-08-07 22:05:29,165 log 10888 20548 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:29,166 basehttp 10888 20548 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:29,293 log 10888 20548 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:29,294 basehttp 10888 20548 - Broken pipe from ('127.0.0.1', 64067)
+WARNING 2025-08-07 22:05:29,310 log 10888 13588 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:29,311 basehttp 10888 13588 - Broken pipe from ('127.0.0.1', 64068)
+WARNING 2025-08-07 22:05:29,322 log 10888 7312 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:29,324 basehttp 10888 7312 - Broken pipe from ('127.0.0.1', 64069)
+WARNING 2025-08-07 22:05:29,352 log 10888 12132 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:29,352 basehttp 10888 12132 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:29,467 log 10888 9604 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:29,469 basehttp 10888 9604 - Broken pipe from ('127.0.0.1', 64073)
+WARNING 2025-08-07 22:05:29,476 log 10888 12132 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:29,479 basehttp 10888 12132 - Broken pipe from ('127.0.0.1', 64071)
+WARNING 2025-08-07 22:05:29,488 log 10888 9548 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:29,488 basehttp 10888 9548 - Broken pipe from ('127.0.0.1', 64074)
+WARNING 2025-08-07 22:05:29,531 log 10888 11676 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:29,531 basehttp 10888 11676 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:29,679 log 10888 20212 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:29,679 basehttp 10888 20212 - Broken pipe from ('127.0.0.1', 64077)
+WARNING 2025-08-07 22:05:29,696 log 10888 11676 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:29,706 basehttp 10888 11676 - Broken pipe from ('127.0.0.1', 64076)
+WARNING 2025-08-07 22:05:29,709 log 10888 19608 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:29,713 basehttp 10888 19608 - Broken pipe from ('127.0.0.1', 64078)
+WARNING 2025-08-07 22:05:29,738 log 10888 18856 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:29,739 basehttp 10888 18856 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:29,923 log 10888 16844 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:29,924 basehttp 10888 16844 - Broken pipe from ('127.0.0.1', 64082)
+WARNING 2025-08-07 22:05:29,935 log 10888 18856 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:29,935 basehttp 10888 18856 - Broken pipe from ('127.0.0.1', 64080)
+WARNING 2025-08-07 22:05:29,948 log 10888 8980 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:29,951 basehttp 10888 8980 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:29,985 log 10888 19200 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:29,987 basehttp 10888 19200 - Broken pipe from ('127.0.0.1', 64081)
+WARNING 2025-08-07 22:05:30,101 log 10888 8980 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:30,105 basehttp 10888 8980 - Broken pipe from ('127.0.0.1', 64084)
+WARNING 2025-08-07 22:05:30,125 log 10888 25168 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:30,128 basehttp 10888 25168 - Broken pipe from ('127.0.0.1', 64085)
+WARNING 2025-08-07 22:05:30,134 log 10888 10016 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:30,134 basehttp 10888 10016 - Broken pipe from ('127.0.0.1', 64086)
+WARNING 2025-08-07 22:05:30,146 log 10888 6560 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:30,147 basehttp 10888 6560 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:30,290 log 10888 6560 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:30,291 basehttp 10888 6560 - Broken pipe from ('127.0.0.1', 64088)
+WARNING 2025-08-07 22:05:30,303 log 10888 19948 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:30,307 basehttp 10888 19948 - Broken pipe from ('127.0.0.1', 64089)
+WARNING 2025-08-07 22:05:30,317 log 10888 22164 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:30,319 basehttp 10888 22164 - Broken pipe from ('127.0.0.1', 64090)
+WARNING 2025-08-07 22:05:30,352 log 10888 14112 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:30,353 basehttp 10888 14112 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:30,499 log 10888 14112 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:30,500 basehttp 10888 14112 - Broken pipe from ('127.0.0.1', 64092)
+WARNING 2025-08-07 22:05:30,507 log 10888 18988 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:30,515 log 10888 4680 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:30,515 basehttp 10888 18988 - Broken pipe from ('127.0.0.1', 64094)
+INFO 2025-08-07 22:05:30,525 basehttp 10888 4680 - Broken pipe from ('127.0.0.1', 64095)
+WARNING 2025-08-07 22:05:30,568 log 10888 23012 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:30,569 basehttp 10888 23012 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:30,710 log 10888 11100 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:30,719 log 10888 20284 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:30,720 basehttp 10888 11100 - Broken pipe from ('127.0.0.1', 64098)
+INFO 2025-08-07 22:05:30,721 basehttp 10888 20284 - Broken pipe from ('127.0.0.1', 64099)
+WARNING 2025-08-07 22:05:30,729 log 10888 23012 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:30,730 basehttp 10888 23012 - Broken pipe from ('127.0.0.1', 64097)
+WARNING 2025-08-07 22:05:30,758 log 10888 3624 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:30,758 basehttp 10888 3624 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:30,862 log 10888 3624 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:30,862 basehttp 10888 3624 - Broken pipe from ('127.0.0.1', 64101)
+WARNING 2025-08-07 22:05:30,876 log 10888 17764 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:30,878 basehttp 10888 17764 - Broken pipe from ('127.0.0.1', 64103)
+WARNING 2025-08-07 22:05:30,889 log 10888 25248 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:30,890 basehttp 10888 25248 - Broken pipe from ('127.0.0.1', 64102)
+WARNING 2025-08-07 22:05:30,931 log 10888 9780 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:30,932 basehttp 10888 9780 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:31,063 log 10888 9780 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:31,065 basehttp 10888 9780 - Broken pipe from ('127.0.0.1', 64105)
+WARNING 2025-08-07 22:05:31,073 log 10888 17280 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:31,076 basehttp 10888 17280 - Broken pipe from ('127.0.0.1', 64107)
+WARNING 2025-08-07 22:05:31,085 log 10888 20964 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:31,087 basehttp 10888 20964 - Broken pipe from ('127.0.0.1', 64106)
+WARNING 2025-08-07 22:05:31,123 log 10888 8060 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:31,127 basehttp 10888 8060 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:31,251 log 10888 8060 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:31,252 basehttp 10888 8060 - Broken pipe from ('127.0.0.1', 64110)
+WARNING 2025-08-07 22:05:31,261 log 10888 5372 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:31,262 basehttp 10888 5372 - Broken pipe from ('127.0.0.1', 64113)
+WARNING 2025-08-07 22:05:31,275 log 10888 21264 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:31,276 basehttp 10888 21264 - Broken pipe from ('127.0.0.1', 64112)
+WARNING 2025-08-07 22:05:31,309 log 10888 3332 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:31,309 basehttp 10888 3332 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:31,424 log 10888 3332 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:31,424 basehttp 10888 3332 - Broken pipe from ('127.0.0.1', 64115)
+WARNING 2025-08-07 22:05:31,439 log 10888 19924 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:31,449 log 10888 7388 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:31,450 basehttp 10888 19924 - Broken pipe from ('127.0.0.1', 64118)
+INFO 2025-08-07 22:05:31,453 basehttp 10888 7388 - Broken pipe from ('127.0.0.1', 64117)
+WARNING 2025-08-07 22:05:31,486 log 10888 23192 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:31,486 basehttp 10888 23192 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:31,592 log 10888 23192 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:31,597 basehttp 10888 23192 - Broken pipe from ('127.0.0.1', 64120)
+WARNING 2025-08-07 22:05:31,608 log 10888 492 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:31,611 basehttp 10888 492 - Broken pipe from ('127.0.0.1', 64122)
+WARNING 2025-08-07 22:05:31,624 log 10888 8196 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:31,625 basehttp 10888 8196 - Broken pipe from ('127.0.0.1', 64121)
+WARNING 2025-08-07 22:05:31,656 log 10888 11008 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:31,656 basehttp 10888 11008 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:31,781 log 10888 11008 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:31,784 basehttp 10888 11008 - Broken pipe from ('127.0.0.1', 64125)
+WARNING 2025-08-07 22:05:31,816 log 10888 15196 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:31,817 basehttp 10888 15196 - Broken pipe from ('127.0.0.1', 64126)
+WARNING 2025-08-07 22:05:31,829 log 10888 22524 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:31,830 basehttp 10888 22524 - Broken pipe from ('127.0.0.1', 64127)
+WARNING 2025-08-07 22:05:31,860 log 10888 23464 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:31,860 basehttp 10888 23464 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:31,996 log 10888 12092 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:32,005 log 10888 8972 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:32,005 basehttp 10888 12092 - Broken pipe from ('127.0.0.1', 64130)
+INFO 2025-08-07 22:05:32,005 basehttp 10888 8972 - Broken pipe from ('127.0.0.1', 64131)
+WARNING 2025-08-07 22:05:32,015 log 10888 23464 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:32,017 basehttp 10888 23464 - Broken pipe from ('127.0.0.1', 64129)
+WARNING 2025-08-07 22:05:32,051 log 10888 3240 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:32,053 basehttp 10888 3240 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:32,182 log 10888 3240 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:32,183 basehttp 10888 3240 - Broken pipe from ('127.0.0.1', 64133)
+WARNING 2025-08-07 22:05:32,195 log 10888 7204 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:32,196 basehttp 10888 7204 - Broken pipe from ('127.0.0.1', 64134)
+WARNING 2025-08-07 22:05:32,203 log 10888 12048 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:32,206 basehttp 10888 12048 - Broken pipe from ('127.0.0.1', 64135)
+WARNING 2025-08-07 22:05:32,246 log 10888 22188 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:32,249 basehttp 10888 22188 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:32,408 log 10888 13280 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:32,415 basehttp 10888 13280 - Broken pipe from ('127.0.0.1', 64138)
+WARNING 2025-08-07 22:05:32,413 log 10888 19684 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:32,421 basehttp 10888 19684 - Broken pipe from ('127.0.0.1', 64139)
+WARNING 2025-08-07 22:05:32,430 log 10888 22188 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:32,432 basehttp 10888 22188 - Broken pipe from ('127.0.0.1', 64137)
+WARNING 2025-08-07 22:05:32,463 log 10888 15308 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:32,463 basehttp 10888 15308 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:32,608 log 10888 11560 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:32,611 log 10888 15308 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:32,612 basehttp 10888 11560 - Broken pipe from ('127.0.0.1', 64142)
+INFO 2025-08-07 22:05:32,616 basehttp 10888 15308 - Broken pipe from ('127.0.0.1', 64141)
+WARNING 2025-08-07 22:05:32,623 log 10888 12764 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:32,630 basehttp 10888 12764 - Broken pipe from ('127.0.0.1', 64143)
+WARNING 2025-08-07 22:05:32,659 log 10888 22120 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:32,659 basehttp 10888 22120 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:32,781 log 10888 22120 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:32,784 basehttp 10888 22120 - Broken pipe from ('127.0.0.1', 64145)
+WARNING 2025-08-07 22:05:32,801 log 10888 13628 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:32,806 basehttp 10888 13628 - Broken pipe from ('127.0.0.1', 64146)
+WARNING 2025-08-07 22:05:32,811 log 10888 14448 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:32,811 basehttp 10888 14448 - Broken pipe from ('127.0.0.1', 64147)
+WARNING 2025-08-07 22:05:32,842 log 10888 12072 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:32,842 basehttp 10888 12072 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:32,956 log 10888 12072 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:32,964 log 10888 13500 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:32,964 basehttp 10888 12072 - Broken pipe from ('127.0.0.1', 64149)
+INFO 2025-08-07 22:05:32,966 basehttp 10888 13500 - Broken pipe from ('127.0.0.1', 64152)
+WARNING 2025-08-07 22:05:32,974 log 10888 11084 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:32,975 basehttp 10888 11084 - Broken pipe from ('127.0.0.1', 64151)
+WARNING 2025-08-07 22:05:33,023 log 10888 11240 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:33,033 basehttp 10888 11240 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:33,160 log 10888 25120 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:33,162 basehttp 10888 25120 - Broken pipe from ('127.0.0.1', 64156)
+WARNING 2025-08-07 22:05:33,168 log 10888 11240 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:33,168 basehttp 10888 11240 - Broken pipe from ('127.0.0.1', 64154)
+WARNING 2025-08-07 22:05:33,188 log 10888 3620 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:33,188 basehttp 10888 3620 - Broken pipe from ('127.0.0.1', 64155)
+WARNING 2025-08-07 22:05:33,220 log 10888 24556 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:33,221 basehttp 10888 24556 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:33,350 log 10888 2748 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:33,350 basehttp 10888 2748 - Broken pipe from ('127.0.0.1', 64159)
+WARNING 2025-08-07 22:05:33,366 log 10888 18500 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:33,367 basehttp 10888 18500 - Broken pipe from ('127.0.0.1', 64160)
+WARNING 2025-08-07 22:05:33,376 log 10888 24556 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:33,376 basehttp 10888 24556 - Broken pipe from ('127.0.0.1', 64158)
+WARNING 2025-08-07 22:05:33,404 log 10888 10760 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:33,405 basehttp 10888 10760 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:33,518 log 10888 16964 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:33,523 basehttp 10888 16964 - Broken pipe from ('127.0.0.1', 64165)
+WARNING 2025-08-07 22:05:33,532 log 10888 10760 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:33,537 basehttp 10888 10760 - Broken pipe from ('127.0.0.1', 64163)
+WARNING 2025-08-07 22:05:33,547 log 10888 20552 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:33,548 basehttp 10888 20552 - Broken pipe from ('127.0.0.1', 64164)
+WARNING 2025-08-07 22:05:33,581 log 10888 7188 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:33,581 basehttp 10888 7188 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+INFO 2025-08-07 22:05:33,644 basehttp 10888 23272 "OPTIONS /api/v1/articles/?page=1&page_size=20&ordering=-created_at HTTP/1.1" 200 0
+INFO 2025-08-07 22:05:33,646 basehttp 10888 6892 "OPTIONS /api/v1/categories/ HTTP/1.1" 200 0
+WARNING 2025-08-07 22:05:33,732 log 10888 5032 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:33,742 log 10888 7460 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:33,744 basehttp 10888 5032 - Broken pipe from ('127.0.0.1', 64169)
+INFO 2025-08-07 22:05:33,744 basehttp 10888 7460 - Broken pipe from ('127.0.0.1', 64168)
+WARNING 2025-08-07 22:05:33,757 log 10888 7188 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:33,760 basehttp 10888 7188 - Broken pipe from ('127.0.0.1', 64167)
+WARNING 2025-08-07 22:05:33,830 log 10888 6892 Unauthorized: /api/v1/articles/
+INFO 2025-08-07 22:05:33,833 basehttp 10888 6892 - Broken pipe from ('127.0.0.1', 64170)
+WARNING 2025-08-07 22:05:33,847 log 10888 23272 Unauthorized: /api/v1/categories/
+INFO 2025-08-07 22:05:33,848 basehttp 10888 23272 - Broken pipe from ('127.0.0.1', 64171)
+WARNING 2025-08-07 22:05:33,867 log 10888 12500 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:33,868 basehttp 10888 12500 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:33,997 log 10888 12500 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:33,999 basehttp 10888 12500 - Broken pipe from ('127.0.0.1', 64173)
+WARNING 2025-08-07 22:05:34,016 log 10888 8688 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:34,017 basehttp 10888 8688 - Broken pipe from ('127.0.0.1', 64175)
+WARNING 2025-08-07 22:05:34,024 log 10888 24968 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:34,025 basehttp 10888 24968 - Broken pipe from ('127.0.0.1', 64174)
+WARNING 2025-08-07 22:05:34,057 log 10888 22312 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:34,057 basehttp 10888 22312 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:34,186 log 10888 22312 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:34,192 basehttp 10888 22312 - Broken pipe from ('127.0.0.1', 64177)
+WARNING 2025-08-07 22:05:34,204 log 10888 2368 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:34,211 log 10888 6284 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:34,211 basehttp 10888 2368 - Broken pipe from ('127.0.0.1', 64178)
+INFO 2025-08-07 22:05:34,212 basehttp 10888 6284 - Broken pipe from ('127.0.0.1', 64179)
+WARNING 2025-08-07 22:05:34,225 log 10888 20672 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:34,225 basehttp 10888 20672 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:34,352 log 10888 20672 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:34,353 basehttp 10888 20672 - Broken pipe from ('127.0.0.1', 64181)
+WARNING 2025-08-07 22:05:34,376 log 10888 6612 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:34,377 basehttp 10888 6612 - Broken pipe from ('127.0.0.1', 64182)
+WARNING 2025-08-07 22:05:34,387 log 10888 13840 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:34,388 basehttp 10888 13840 - Broken pipe from ('127.0.0.1', 64183)
+WARNING 2025-08-07 22:05:34,424 log 10888 23764 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:34,425 basehttp 10888 23764 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:34,543 log 10888 23764 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:34,545 basehttp 10888 23764 - Broken pipe from ('127.0.0.1', 64185)
+WARNING 2025-08-07 22:05:34,559 log 10888 23424 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:34,561 basehttp 10888 23424 - Broken pipe from ('127.0.0.1', 64187)
+WARNING 2025-08-07 22:05:34,570 log 10888 3060 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:34,571 basehttp 10888 3060 - Broken pipe from ('127.0.0.1', 64186)
+WARNING 2025-08-07 22:05:34,607 log 10888 18636 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:34,608 basehttp 10888 18636 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:34,731 log 10888 18920 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:34,732 log 10888 18636 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:34,736 basehttp 10888 18636 - Broken pipe from ('127.0.0.1', 64189)
+INFO 2025-08-07 22:05:34,736 basehttp 10888 18920 - Broken pipe from ('127.0.0.1', 64190)
+WARNING 2025-08-07 22:05:34,752 log 10888 23620 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:34,754 basehttp 10888 23620 - Broken pipe from ('127.0.0.1', 64191)
+WARNING 2025-08-07 22:05:34,781 log 10888 24540 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:34,781 basehttp 10888 24540 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:34,887 log 10888 24540 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:34,888 basehttp 10888 24540 - Broken pipe from ('127.0.0.1', 64193)
+WARNING 2025-08-07 22:05:34,898 log 10888 16356 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:34,899 basehttp 10888 16356 - Broken pipe from ('127.0.0.1', 64194)
+WARNING 2025-08-07 22:05:34,907 log 10888 20924 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:34,908 basehttp 10888 20924 - Broken pipe from ('127.0.0.1', 64195)
+WARNING 2025-08-07 22:05:34,946 log 10888 18008 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:34,946 basehttp 10888 18008 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:35,067 log 10888 18008 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:35,078 basehttp 10888 18008 - Broken pipe from ('127.0.0.1', 64197)
+WARNING 2025-08-07 22:05:35,079 log 10888 23444 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:35,088 log 10888 23188 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:35,089 basehttp 10888 23444 - Broken pipe from ('127.0.0.1', 64199)
+INFO 2025-08-07 22:05:35,089 basehttp 10888 23188 - Broken pipe from ('127.0.0.1', 64198)
+WARNING 2025-08-07 22:05:35,118 log 10888 21940 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:35,119 basehttp 10888 21940 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:35,230 log 10888 21940 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:35,231 basehttp 10888 21940 - Broken pipe from ('127.0.0.1', 64201)
+WARNING 2025-08-07 22:05:35,239 log 10888 7520 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:35,241 basehttp 10888 7520 - Broken pipe from ('127.0.0.1', 64202)
+WARNING 2025-08-07 22:05:35,254 log 10888 16504 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:35,255 basehttp 10888 16504 - Broken pipe from ('127.0.0.1', 64203)
+WARNING 2025-08-07 22:05:35,293 log 10888 7404 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:35,294 basehttp 10888 7404 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:35,421 log 10888 7404 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:35,422 basehttp 10888 7404 - Broken pipe from ('127.0.0.1', 64205)
+WARNING 2025-08-07 22:05:35,437 log 10888 11432 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:35,438 basehttp 10888 11432 - Broken pipe from ('127.0.0.1', 64207)
+WARNING 2025-08-07 22:05:35,449 log 10888 20416 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:35,450 basehttp 10888 20416 - Broken pipe from ('127.0.0.1', 64206)
+WARNING 2025-08-07 22:05:35,479 log 10888 24864 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:35,480 basehttp 10888 24864 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:35,593 log 10888 24864 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:35,594 basehttp 10888 24864 - Broken pipe from ('127.0.0.1', 64209)
+WARNING 2025-08-07 22:05:35,612 log 10888 21448 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:35,612 basehttp 10888 21448 - Broken pipe from ('127.0.0.1', 64211)
+WARNING 2025-08-07 22:05:35,618 log 10888 22340 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:35,618 basehttp 10888 22340 - Broken pipe from ('127.0.0.1', 64210)
+WARNING 2025-08-07 22:05:35,632 log 10888 4580 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:35,633 basehttp 10888 4580 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:35,759 log 10888 7068 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:35,761 basehttp 10888 7068 - Broken pipe from ('127.0.0.1', 64215)
+WARNING 2025-08-07 22:05:35,777 log 10888 4580 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:35,779 basehttp 10888 4580 - Broken pipe from ('127.0.0.1', 64213)
+WARNING 2025-08-07 22:05:35,793 log 10888 1592 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:35,794 basehttp 10888 1592 - Broken pipe from ('127.0.0.1', 64216)
+WARNING 2025-08-07 22:05:35,820 log 10888 22148 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:35,821 basehttp 10888 22148 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:35,966 log 10888 18108 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:35,970 basehttp 10888 18108 - Broken pipe from ('127.0.0.1', 64220)
+WARNING 2025-08-07 22:05:35,986 log 10888 22148 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:35,988 basehttp 10888 22148 - Broken pipe from ('127.0.0.1', 64218)
+WARNING 2025-08-07 22:05:36,006 log 10888 16448 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:36,011 basehttp 10888 16448 - Broken pipe from ('127.0.0.1', 64219)
+WARNING 2025-08-07 22:05:36,031 log 10888 8520 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:36,032 basehttp 10888 8520 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:36,160 log 10888 8520 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:36,162 basehttp 10888 8520 - Broken pipe from ('127.0.0.1', 64223)
+WARNING 2025-08-07 22:05:36,183 log 10888 2608 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:36,184 basehttp 10888 2608 - Broken pipe from ('127.0.0.1', 64224)
+WARNING 2025-08-07 22:05:36,193 log 10888 10024 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:36,194 basehttp 10888 10024 - Broken pipe from ('127.0.0.1', 64225)
+WARNING 2025-08-07 22:05:36,222 log 10888 21392 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:36,222 basehttp 10888 21392 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:36,345 log 10888 21392 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:36,348 basehttp 10888 21392 - Broken pipe from ('127.0.0.1', 64227)
+WARNING 2025-08-07 22:05:36,358 log 10888 19572 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:36,359 basehttp 10888 19572 - Broken pipe from ('127.0.0.1', 64229)
+WARNING 2025-08-07 22:05:36,368 log 10888 23800 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:36,368 basehttp 10888 23800 - Broken pipe from ('127.0.0.1', 64228)
+WARNING 2025-08-07 22:05:36,403 log 10888 21428 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:36,404 basehttp 10888 21428 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:36,523 log 10888 21428 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:36,524 basehttp 10888 21428 - Broken pipe from ('127.0.0.1', 64231)
+WARNING 2025-08-07 22:05:36,549 log 10888 23780 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:36,560 log 10888 18772 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:36,560 basehttp 10888 23780 - Broken pipe from ('127.0.0.1', 64234)
+INFO 2025-08-07 22:05:36,561 basehttp 10888 18772 - Broken pipe from ('127.0.0.1', 64233)
+WARNING 2025-08-07 22:05:36,594 log 10888 17224 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:36,596 basehttp 10888 17224 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:36,728 log 10888 17224 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:36,740 log 10888 6948 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:36,741 basehttp 10888 17224 - Broken pipe from ('127.0.0.1', 64236)
+INFO 2025-08-07 22:05:36,741 basehttp 10888 6948 - Broken pipe from ('127.0.0.1', 64237)
+WARNING 2025-08-07 22:05:36,750 log 10888 7420 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:36,751 basehttp 10888 7420 - Broken pipe from ('127.0.0.1', 64238)
+WARNING 2025-08-07 22:05:36,782 log 10888 23448 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:36,783 basehttp 10888 23448 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:36,903 log 10888 23448 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:36,904 basehttp 10888 23448 - Broken pipe from ('127.0.0.1', 64240)
+WARNING 2025-08-07 22:05:36,924 log 10888 21120 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:36,926 basehttp 10888 21120 - Broken pipe from ('127.0.0.1', 64241)
+WARNING 2025-08-07 22:05:36,936 log 10888 2432 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:36,941 basehttp 10888 2432 - Broken pipe from ('127.0.0.1', 64242)
+WARNING 2025-08-07 22:05:36,971 log 10888 5780 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:36,972 basehttp 10888 5780 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:37,094 log 10888 5780 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:37,094 basehttp 10888 5780 - Broken pipe from ('127.0.0.1', 64244)
+WARNING 2025-08-07 22:05:37,113 log 10888 19796 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:37,120 log 10888 14160 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:37,121 basehttp 10888 19796 - Broken pipe from ('127.0.0.1', 64246)
+INFO 2025-08-07 22:05:37,121 basehttp 10888 14160 - Broken pipe from ('127.0.0.1', 64245)
+WARNING 2025-08-07 22:05:37,152 log 10888 16744 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:37,152 basehttp 10888 16744 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:37,284 log 10888 4808 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:37,285 basehttp 10888 4808 - Broken pipe from ('127.0.0.1', 64250)
+WARNING 2025-08-07 22:05:37,293 log 10888 17568 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:37,300 basehttp 10888 17568 - Broken pipe from ('127.0.0.1', 64249)
+WARNING 2025-08-07 22:05:37,302 log 10888 16744 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:37,303 basehttp 10888 16744 - Broken pipe from ('127.0.0.1', 64248)
+WARNING 2025-08-07 22:05:37,336 log 10888 24760 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:37,336 basehttp 10888 24760 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:37,445 log 10888 24760 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:37,447 basehttp 10888 24760 - Broken pipe from ('127.0.0.1', 64253)
+WARNING 2025-08-07 22:05:37,467 log 10888 7156 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:37,475 log 10888 24120 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:37,475 basehttp 10888 7156 - Broken pipe from ('127.0.0.1', 64254)
+INFO 2025-08-07 22:05:37,476 basehttp 10888 24120 - Broken pipe from ('127.0.0.1', 64255)
+WARNING 2025-08-07 22:05:37,508 log 10888 13068 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:37,509 basehttp 10888 13068 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:37,621 log 10888 22592 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:37,623 basehttp 10888 22592 - Broken pipe from ('127.0.0.1', 64259)
+WARNING 2025-08-07 22:05:37,633 log 10888 13068 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:37,635 basehttp 10888 13068 - Broken pipe from ('127.0.0.1', 64257)
+WARNING 2025-08-07 22:05:37,641 log 10888 13860 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:37,647 basehttp 10888 13860 - Broken pipe from ('127.0.0.1', 64258)
+WARNING 2025-08-07 22:05:37,691 log 10888 3920 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:37,692 basehttp 10888 3920 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:37,865 log 10888 3920 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:37,867 basehttp 10888 3920 - Broken pipe from ('127.0.0.1', 64261)
+WARNING 2025-08-07 22:05:37,890 log 10888 9384 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:37,902 log 10888 11732 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:37,903 basehttp 10888 9384 - Broken pipe from ('127.0.0.1', 64264)
+INFO 2025-08-07 22:05:37,908 basehttp 10888 11732 - Broken pipe from ('127.0.0.1', 64263)
+WARNING 2025-08-07 22:05:37,923 log 10888 25524 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:37,924 basehttp 10888 25524 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:38,067 log 10888 13680 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:38,068 basehttp 10888 13680 - Broken pipe from ('127.0.0.1', 64268)
+WARNING 2025-08-07 22:05:38,082 log 10888 25524 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:38,083 basehttp 10888 25524 - Broken pipe from ('127.0.0.1', 64266)
+WARNING 2025-08-07 22:05:38,095 log 10888 17068 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:38,098 basehttp 10888 17068 - Broken pipe from ('127.0.0.1', 64267)
+WARNING 2025-08-07 22:05:38,127 log 10888 8116 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:38,127 basehttp 10888 8116 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:38,255 log 10888 8116 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:38,256 basehttp 10888 8116 - Broken pipe from ('127.0.0.1', 64271)
+WARNING 2025-08-07 22:05:38,271 log 10888 18892 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:38,272 basehttp 10888 18892 - Broken pipe from ('127.0.0.1', 64272)
+WARNING 2025-08-07 22:05:38,281 log 10888 568 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:38,282 basehttp 10888 568 - Broken pipe from ('127.0.0.1', 64273)
+WARNING 2025-08-07 22:05:38,318 log 10888 23836 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:38,319 basehttp 10888 23836 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:38,456 log 10888 23836 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:38,458 basehttp 10888 23836 - Broken pipe from ('127.0.0.1', 64275)
+WARNING 2025-08-07 22:05:38,467 log 10888 9104 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:38,468 basehttp 10888 9104 - Broken pipe from ('127.0.0.1', 64276)
+WARNING 2025-08-07 22:05:38,479 log 10888 17972 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:38,480 basehttp 10888 17972 - Broken pipe from ('127.0.0.1', 64277)
+WARNING 2025-08-07 22:05:38,511 log 10888 12328 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:38,511 basehttp 10888 12328 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:38,647 log 10888 22536 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:38,654 log 10888 12328 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:38,655 basehttp 10888 22536 - Broken pipe from ('127.0.0.1', 64281)
+INFO 2025-08-07 22:05:38,656 basehttp 10888 12328 - Broken pipe from ('127.0.0.1', 64279)
+WARNING 2025-08-07 22:05:38,664 log 10888 14808 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:38,665 basehttp 10888 14808 - Broken pipe from ('127.0.0.1', 64280)
+WARNING 2025-08-07 22:05:38,693 log 10888 4856 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:38,695 basehttp 10888 4856 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:38,817 log 10888 4856 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:38,819 basehttp 10888 4856 - Broken pipe from ('127.0.0.1', 64283)
+WARNING 2025-08-07 22:05:38,830 log 10888 10616 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:38,831 basehttp 10888 10616 - Broken pipe from ('127.0.0.1', 64284)
+WARNING 2025-08-07 22:05:38,840 log 10888 24756 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:38,840 basehttp 10888 24756 - Broken pipe from ('127.0.0.1', 64285)
+WARNING 2025-08-07 22:05:38,885 log 10888 13436 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:38,885 basehttp 10888 13436 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:38,996 log 10888 13436 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:38,998 basehttp 10888 13436 - Broken pipe from ('127.0.0.1', 64287)
+WARNING 2025-08-07 22:05:39,014 log 10888 11992 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:39,025 log 10888 20840 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:39,028 basehttp 10888 11992 - Broken pipe from ('127.0.0.1', 64289)
+INFO 2025-08-07 22:05:39,028 basehttp 10888 20840 - Broken pipe from ('127.0.0.1', 64290)
+WARNING 2025-08-07 22:05:39,058 log 10888 25212 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:39,058 basehttp 10888 25212 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:39,181 log 10888 25212 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:39,182 basehttp 10888 25212 - Broken pipe from ('127.0.0.1', 64292)
+WARNING 2025-08-07 22:05:39,195 log 10888 8100 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:39,196 basehttp 10888 8100 - Broken pipe from ('127.0.0.1', 64294)
+WARNING 2025-08-07 22:05:39,206 log 10888 22852 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:39,209 basehttp 10888 22852 - Broken pipe from ('127.0.0.1', 64293)
+WARNING 2025-08-07 22:05:39,239 log 10888 4892 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:39,240 basehttp 10888 4892 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:39,364 log 10888 25260 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:39,365 basehttp 10888 25260 - Broken pipe from ('127.0.0.1', 64298)
+WARNING 2025-08-07 22:05:39,373 log 10888 4892 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:39,382 log 10888 25132 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:39,382 basehttp 10888 4892 - Broken pipe from ('127.0.0.1', 64296)
+INFO 2025-08-07 22:05:39,383 basehttp 10888 25132 - Broken pipe from ('127.0.0.1', 64299)
+WARNING 2025-08-07 22:05:39,415 log 10888 2096 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:39,416 basehttp 10888 2096 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:39,546 log 10888 6956 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:39,547 basehttp 10888 6956 - Broken pipe from ('127.0.0.1', 64302)
+WARNING 2025-08-07 22:05:39,559 log 10888 18656 Unauthorized: /api/v1/auth/logout/
+WARNING 2025-08-07 22:05:39,567 log 10888 2096 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:39,567 basehttp 10888 18656 - Broken pipe from ('127.0.0.1', 64303)
+INFO 2025-08-07 22:05:39,567 basehttp 10888 2096 - Broken pipe from ('127.0.0.1', 64301)
+WARNING 2025-08-07 22:05:39,597 log 10888 25204 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:39,597 basehttp 10888 25204 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:39,725 log 10888 21820 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:39,726 basehttp 10888 21820 - Broken pipe from ('127.0.0.1', 64307)
+WARNING 2025-08-07 22:05:39,744 log 10888 25204 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:39,755 basehttp 10888 25204 - Broken pipe from ('127.0.0.1', 64305)
+WARNING 2025-08-07 22:05:39,757 log 10888 10032 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:39,760 basehttp 10888 10032 - Broken pipe from ('127.0.0.1', 64306)
+WARNING 2025-08-07 22:05:39,797 log 10888 6240 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:39,799 basehttp 10888 6240 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:39,930 log 10888 10480 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:39,930 basehttp 10888 10480 - Broken pipe from ('127.0.0.1', 64311)
+WARNING 2025-08-07 22:05:39,938 log 10888 3564 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:39,939 basehttp 10888 3564 - Broken pipe from ('127.0.0.1', 64310)
+WARNING 2025-08-07 22:05:39,961 log 10888 6240 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:39,964 basehttp 10888 6240 - Broken pipe from ('127.0.0.1', 64309)
+WARNING 2025-08-07 22:05:40,005 log 10888 6304 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:40,008 basehttp 10888 6304 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:40,143 log 10888 6304 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:40,144 basehttp 10888 6304 - Broken pipe from ('127.0.0.1', 64313)
+WARNING 2025-08-07 22:05:40,166 log 10888 11556 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:40,168 basehttp 10888 11556 - Broken pipe from ('127.0.0.1', 64315)
+WARNING 2025-08-07 22:05:40,182 log 10888 23008 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:40,184 basehttp 10888 23008 - Broken pipe from ('127.0.0.1', 64314)
+WARNING 2025-08-07 22:05:40,216 log 10888 16860 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:40,217 basehttp 10888 16860 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:40,266 log 10888 16860 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:40,267 basehttp 10888 16860 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:40,442 log 10888 16860 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:40,447 basehttp 10888 16860 - Broken pipe from ('127.0.0.1', 64317)
+WARNING 2025-08-07 22:05:40,475 log 10888 19728 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:40,481 basehttp 10888 19728 - Broken pipe from ('127.0.0.1', 64319)
+WARNING 2025-08-07 22:05:40,494 log 10888 11280 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:40,506 basehttp 10888 11280 - Broken pipe from ('127.0.0.1', 64321)
+WARNING 2025-08-07 22:05:40,507 log 10888 22680 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:40,517 basehttp 10888 22680 - Broken pipe from ('127.0.0.1', 64320)
+WARNING 2025-08-07 22:05:40,543 log 10888 17716 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:40,544 basehttp 10888 17716 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:40,658 log 10888 17716 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:40,660 basehttp 10888 17716 - Broken pipe from ('127.0.0.1', 64323)
+WARNING 2025-08-07 22:05:40,675 log 10888 10928 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:40,677 basehttp 10888 10928 - Broken pipe from ('127.0.0.1', 64324)
+WARNING 2025-08-07 22:05:40,685 log 10888 22448 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:40,686 basehttp 10888 22448 - Broken pipe from ('127.0.0.1', 64325)
+WARNING 2025-08-07 22:05:40,718 log 10888 19920 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:40,718 basehttp 10888 19920 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:40,824 log 10888 19920 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:40,826 basehttp 10888 19920 - Broken pipe from ('127.0.0.1', 64327)
+WARNING 2025-08-07 22:05:40,839 log 10888 24064 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:40,840 basehttp 10888 24064 - Broken pipe from ('127.0.0.1', 64328)
+WARNING 2025-08-07 22:05:40,849 log 10888 9576 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:40,849 basehttp 10888 9576 - Broken pipe from ('127.0.0.1', 64329)
+WARNING 2025-08-07 22:05:40,892 log 10888 24752 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:40,892 basehttp 10888 24752 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:41,018 log 10888 4800 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:41,020 basehttp 10888 4800 - Broken pipe from ('127.0.0.1', 64333)
+WARNING 2025-08-07 22:05:41,029 log 10888 24752 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:41,030 basehttp 10888 24752 - Broken pipe from ('127.0.0.1', 64331)
+WARNING 2025-08-07 22:05:41,041 log 10888 9892 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:41,042 basehttp 10888 9892 - Broken pipe from ('127.0.0.1', 64332)
+WARNING 2025-08-07 22:05:41,071 log 10888 7992 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:41,072 basehttp 10888 7992 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:41,187 log 10888 19736 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:41,188 basehttp 10888 19736 - Broken pipe from ('127.0.0.1', 64339)
+WARNING 2025-08-07 22:05:41,197 log 10888 7992 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:41,198 basehttp 10888 7992 - Broken pipe from ('127.0.0.1', 64338)
+WARNING 2025-08-07 22:05:41,209 log 10888 14768 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:41,210 basehttp 10888 14768 - Broken pipe from ('127.0.0.1', 64340)
+WARNING 2025-08-07 22:05:41,253 log 10888 14528 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:41,254 basehttp 10888 14528 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:41,359 log 10888 14528 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:41,361 basehttp 10888 14528 - Broken pipe from ('127.0.0.1', 64344)
+WARNING 2025-08-07 22:05:41,370 log 10888 16252 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:41,371 basehttp 10888 16252 - Broken pipe from ('127.0.0.1', 64346)
+WARNING 2025-08-07 22:05:41,383 log 10888 11972 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:41,385 basehttp 10888 11972 - Broken pipe from ('127.0.0.1', 64347)
+WARNING 2025-08-07 22:05:41,424 log 10888 1136 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:41,424 basehttp 10888 1136 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:41,544 log 10888 1136 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:41,548 basehttp 10888 1136 - Broken pipe from ('127.0.0.1', 64349)
+WARNING 2025-08-07 22:05:41,564 log 10888 19564 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:41,565 basehttp 10888 19564 - Broken pipe from ('127.0.0.1', 64350)
+WARNING 2025-08-07 22:05:41,576 log 10888 22296 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:41,578 basehttp 10888 22296 - Broken pipe from ('127.0.0.1', 64351)
+WARNING 2025-08-07 22:05:41,608 log 10888 24784 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-07 22:05:41,608 basehttp 10888 24784 "GET /api/v1/users/me/ HTTP/1.1" 401 171
+WARNING 2025-08-07 22:05:41,724 log 10888 24784 Unauthorized: /api/v1/users/me/
+INFO 2025-08-07 22:05:41,726 basehttp 10888 24784 - Broken pipe from ('127.0.0.1', 64353)
+WARNING 2025-08-07 22:05:41,739 log 10888 23488 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:41,742 basehttp 10888 23488 - Broken pipe from ('127.0.0.1', 64354)
+WARNING 2025-08-07 22:05:41,751 log 10888 8220 Unauthorized: /api/v1/auth/logout/
+INFO 2025-08-07 22:05:41,751 basehttp 10888 8220 - Broken pipe from ('127.0.0.1', 64355)
+INFO 2025-08-07 22:08:00,436 autoreload 23236 12580 Watching for file changes with StatReloader
+INFO 2025-08-07 22:08:36,299 basehttp 23236 15748 "GET / HTTP/1.1" 200 15885
+INFO 2025-08-07 22:09:13,102 autoreload 11860 19756 Watching for file changes with StatReloader

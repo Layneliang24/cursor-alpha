@@ -1,266 +1,241 @@
 <template>
   <div class="home">
-    <el-row :gutter="20">
-      <el-col :span="16">
-        <div class="welcome-section">
-          <h1>欢迎来到 Alpha 技术共享平台</h1>
-          <p>这是一个现代化的技术文章分享网站，提供优质的技术内容</p>
-          <el-button type="primary" size="large" @click="$router.push('/articles')">
-            浏览文章
-          </el-button>
+    <!-- 欢迎横幅 -->
+    <div class="hero-section bg-primary text-white rounded mb-4 p-4">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="display-5 fw-bold mb-3">欢迎来到Alpha系统</h1>
+          <p class="lead mb-4">一个现代化的文章管理和分享平台，让知识传播更简单</p>
+          <div class="d-flex gap-3">
+            <router-link to="/articles" class="btn btn-light btn-lg">
+              <i class="el-icon-document me-2"></i>浏览文章
+            </router-link>
+            <router-link to="/articles/create" class="btn btn-outline-light btn-lg" v-if="authStore.isAuthenticated">
+              <i class="el-icon-edit me-2"></i>开始写作
+            </router-link>
+          </div>
         </div>
-        
-        <div class="featured-articles">
-          <h2>推荐文章</h2>
-          <el-row :gutter="20">
-            <el-col :span="12" v-for="article in featuredArticles" :key="article.id">
-              <el-card class="article-card" @click="viewArticle(article.id)">
-                <template #header>
-                  <div class="article-header">
-                    <h3>{{ article.title }}</h3>
-                    <el-tag size="small" v-if="article.featured">推荐</el-tag>
-                  </div>
-                </template>
-                <div class="article-content">
-                  <p>{{ article.summary }}</p>
-                  <div class="article-meta">
-                    <span>作者: {{ article.author?.username }}</span>
-                    <span>阅读时间: {{ article.reading_time }}分钟</span>
-                  </div>
-                </div>
-              </el-card>
-            </el-col>
-          </el-row>
+        <div class="col-md-4 text-center">
+          <i class="el-icon-star-on" style="font-size: 120px; opacity: 0.3;"></i>
         </div>
-      </el-col>
-      
-      <el-col :span="8">
-        <div class="sidebar">
-          <el-card class="stats-card">
-            <template #header>
-              <h3>平台统计</h3>
-            </template>
-            <div class="stats">
-              <div class="stat-item">
-                <el-icon><Document /></el-icon>
-                <span>文章: {{ stats.articles || 0 }}</span>
-              </div>
-              <div class="stat-item">
-                <el-icon><User /></el-icon>
-                <span>用户: {{ stats.users || 0 }}</span>
-              </div>
-              <div class="stat-item">
-                <el-icon><Folder /></el-icon>
-                <span>分类: {{ stats.categories || 0 }}</span>
-              </div>
+      </div>
+    </div>
+
+    <!-- 统计卡片 -->
+    <div class="row mb-4">
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body text-center">
+            <div class="text-primary mb-2">
+              <i class="el-icon-document" style="font-size: 2rem;"></i>
             </div>
-          </el-card>
-          
-          <el-card class="categories-card">
-            <template #header>
-              <h3>热门分类</h3>
-            </template>
-            <div class="categories">
+            <h3 class="card-title text-primary">{{ stats.totalArticles }}</h3>
+            <p class="card-text text-muted">文章总数</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body text-center">
+            <div class="text-success mb-2">
+              <i class="el-icon-user" style="font-size: 2rem;"></i>
+            </div>
+            <h3 class="card-title text-success">{{ stats.totalUsers }}</h3>
+            <p class="card-text text-muted">注册用户</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body text-center">
+            <div class="text-warning mb-2">
+              <i class="el-icon-view" style="font-size: 2rem;"></i>
+            </div>
+            <h3 class="card-title text-warning">{{ stats.totalViews }}</h3>
+            <p class="card-text text-muted">总浏览量</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body text-center">
+            <div class="text-info mb-2">
+              <i class="el-icon-chat-dot-round" style="font-size: 2rem;"></i>
+            </div>
+            <h3 class="card-title text-info">{{ stats.onlineUsers }}</h3>
+            <p class="card-text text-muted">在线用户</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 最新文章 -->
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white border-bottom">
+            <h5 class="card-title mb-0">
+              <i class="el-icon-hot me-2 text-danger"></i>最新文章
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="list-group list-group-flush">
               <div 
-                v-for="category in categories" 
-                :key="category.id"
-                class="category-item"
-                @click="viewCategory(category.id)"
+                v-for="article in recentArticles" 
+                :key="article.id"
+                class="list-group-item list-group-item-action border-0 py-3"
               >
-                <span>{{ category.name }}</span>
-                <el-tag size="small">{{ category.article_count }}</el-tag>
+                <div class="d-flex w-100 justify-content-between align-items-start">
+                  <div class="flex-grow-1">
+                    <h6 class="mb-1">
+                      <router-link :to="`/articles/${article.id}`" class="text-decoration-none">
+                        {{ article.title }}
+                      </router-link>
+                    </h6>
+                    <p class="mb-1 text-muted small">{{ article.summary }}</p>
+                    <small class="text-muted">
+                      <i class="el-icon-user me-1"></i>{{ article.author }}
+                      <i class="el-icon-time ms-3 me-1"></i>{{ formatDate(article.created_at) }}
+                      <i class="el-icon-view ms-3 me-1"></i>{{ article.views }}
+                    </small>
+                  </div>
+                  <span class="badge bg-primary ms-3">{{ article.category }}</span>
+                </div>
               </div>
             </div>
-          </el-card>
+          </div>
         </div>
-      </el-col>
-    </el-row>
+      </div>
+
+      <!-- 热门标签和公告 -->
+      <div class="col-lg-4">
+        <!-- 热门标签 -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-white border-bottom">
+            <h6 class="card-title mb-0">
+              <i class="el-icon-price-tag me-2 text-warning"></i>热门标签
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="d-flex flex-wrap gap-2">
+              <span 
+                v-for="tag in popularTags" 
+                :key="tag.name"
+                class="badge bg-light text-dark border"
+                style="cursor: pointer;"
+              >
+                {{ tag.name }} ({{ tag.count }})
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 系统公告 -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white border-bottom">
+            <h6 class="card-title mb-0">
+              <i class="el-icon-bell me-2 text-info"></i>系统公告
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-info border-0 mb-3">
+              <small>
+                <strong>系统升级通知：</strong>
+                系统将于本周末进行维护升级，届时可能会有短暂的服务中断。
+              </small>
+            </div>
+            <div class="alert alert-success border-0 mb-0">
+              <small>
+                <strong>新功能上线：</strong>
+                现在支持Markdown编辑器，让写作更加便捷！
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
-export default {
-  name: 'Home',
-  setup() {
-    const router = useRouter()
-    const featuredArticles = ref([])
-    const categories = ref([])
-    const stats = ref({})
-    
-    const viewArticle = (id) => {
-      router.push(`/articles/${id}`)
-    }
-    
-    const viewCategory = (id) => {
-      router.push(`/categories/${id}`)
-    }
-    
-    onMounted(() => {
-      // 模拟数据
-      featuredArticles.value = [
-        {
-          id: 1,
-          title: 'Django REST Framework 入门指南',
-          summary: '详细介绍 Django REST Framework 的基本概念和使用方法',
-          author: { username: 'admin' },
-          reading_time: 5,
-          featured: true
-        },
-        {
-          id: 2,
-          title: 'Vue.js 3.0 新特性解析',
-          summary: '深入解析 Vue.js 3.0 的新特性和改进',
-          author: { username: 'testuser' },
-          reading_time: 8,
-          featured: true
-        }
-      ]
-      
-      categories.value = [
-        { id: 1, name: '技术分享', article_count: 5 },
-        { id: 2, name: '学习笔记', article_count: 3 },
-        { id: 3, name: '项目经验', article_count: 2 }
-      ]
-      
-      stats.value = {
-        articles: 10,
-        users: 25,
-        categories: 5
-      }
-    })
-    
-    return {
-      featuredArticles,
-      categories,
-      stats,
-      viewArticle,
-      viewCategory
-    }
+const authStore = useAuthStore()
+
+// 统计数据
+const stats = ref({
+  totalArticles: 156,
+  totalUsers: 89,
+  totalViews: 12543,
+  onlineUsers: 23
+})
+
+// 最新文章
+const recentArticles = ref([
+  {
+    id: 1,
+    title: 'Vue 3 Composition API 深度解析',
+    summary: '详细介绍Vue 3中Composition API的使用方法和最佳实践...',
+    author: '张三',
+    category: '技术分享',
+    views: 234,
+    created_at: '2024-01-15T10:30:00Z'
+  },
+  {
+    id: 2,
+    title: 'Python数据分析入门指南',
+    summary: '从零开始学习Python数据分析，包含pandas、numpy等库的使用...',
+    author: '李四',
+    category: '学习笔记',
+    views: 189,
+    created_at: '2024-01-14T15:20:00Z'
+  },
+  {
+    id: 3,
+    title: '微服务架构设计实践',
+    summary: '分享在实际项目中微服务架构的设计经验和踩坑记录...',
+    author: '王五',
+    category: '项目经验',
+    views: 156,
+    created_at: '2024-01-13T09:15:00Z'
   }
+])
+
+// 热门标签
+const popularTags = ref([
+  { name: 'Vue.js', count: 45 },
+  { name: 'Python', count: 38 },
+  { name: 'JavaScript', count: 52 },
+  { name: 'React', count: 29 },
+  { name: 'Node.js', count: 33 },
+  { name: 'Docker', count: 21 }
+])
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('zh-CN')
 }
+
+onMounted(() => {
+  // 这里可以加载真实数据
+})
 </script>
 
 <style scoped>
-.home {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.welcome-section {
-  text-align: center;
-  padding: 40px 0;
+.hero-section {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 10px;
-  margin-bottom: 30px;
 }
 
-.welcome-section h1 {
-  font-size: 2.5em;
-  margin-bottom: 20px;
+.card {
+  transition: transform 0.2s ease-in-out;
 }
 
-.welcome-section p {
-  font-size: 1.2em;
-  margin-bottom: 30px;
-  opacity: 0.9;
-}
-
-.featured-articles {
-  margin-bottom: 30px;
-}
-
-.featured-articles h2 {
-  margin-bottom: 20px;
-  color: #303133;
-}
-
-.article-card {
-  margin-bottom: 20px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.article-card:hover {
+.card:hover {
   transform: translateY(-2px);
 }
 
-.article-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.list-group-item:hover {
+  background-color: #f8f9fa;
 }
-
-.article-header h3 {
-  margin: 0;
-  color: #303133;
-}
-
-.article-content p {
-  color: #606266;
-  margin-bottom: 10px;
-}
-
-.article-meta {
-  display: flex;
-  justify-content: space-between;
-  color: #909399;
-  font-size: 0.9em;
-}
-
-.sidebar {
-  position: sticky;
-  top: 20px;
-}
-
-.stats-card, .categories-card {
-  margin-bottom: 20px;
-}
-
-.stats {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.stat-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #606266;
-}
-
-.categories {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.category-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.category-item:hover {
-  background-color: #f5f7fa;
-}
-
-@media (max-width: 768px) {
-  .el-col {
-    width: 100% !important;
-  }
-  
-  .welcome-section h1 {
-    font-size: 2em;
-  }
-}
-</style> 
+</style>

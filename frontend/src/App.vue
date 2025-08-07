@@ -1,55 +1,82 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-header>
-        <nav-bar />
-      </el-header>
-      <el-main>
+    <!-- 顶部导航栏 -->
+    <TopNavBar />
+    
+    <!-- 主体布局 -->
+    <div class="d-flex">
+      <!-- 侧边菜单栏 -->
+      <SideMenu v-if="showSidebar" />
+      
+      <!-- 主内容区域 -->
+      <main class="flex-grow-1 p-4" :class="{ 'container-fluid': showSidebar, 'container': !showSidebar }">
         <router-view />
-      </el-main>
-      <el-footer>
-        <footer-component />
-      </el-footer>
-    </el-container>
+      </main>
+    </div>
+    
+    <!-- 底部 -->
+    <FooterComponent />
   </div>
 </template>
 
 <script>
-import NavBar from './components/NavBar.vue'
-import FooterComponent from './components/FooterComponent.vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import TopNavBar from '@/components/TopNavBar.vue'
+import SideMenu from '@/components/SideMenu.vue'
+import FooterComponent from '@/components/FooterComponent.vue'
 
 export default {
   name: 'App',
   components: {
-    NavBar,
+    TopNavBar,
+    SideMenu,
     FooterComponent
+  },
+  setup() {
+    const route = useRoute()
+    
+    // 在登录和注册页面隐藏侧边栏
+    const showSidebar = computed(() => {
+      return !['/login', '/register'].includes(route.path)
+    })
+    
+    return {
+      showSidebar
+    }
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
 
-.el-header {
-  background-color: #fff;
-  border-bottom: 1px solid #e4e7ed;
+body {
+  margin: 0;
   padding: 0;
+  background-color: #f8f9fa;
 }
 
-.el-main {
-  min-height: calc(100vh - 120px);
-  padding: 20px;
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-.el-footer {
-  background-color: #f5f7fa;
-  border-top: 1px solid #e4e7ed;
-  padding: 20px;
-  text-align: center;
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }
-</style> 
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+</style>
