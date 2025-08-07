@@ -1,0 +1,44 @@
+# Django and REST Framework
+Django==4.2.7
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+
+# Authentication and Security
+djangorestframework-simplejwt==5.3.0
+django-filter==23.3
+django-simple-captcha==0.5.17
+
+# API Documentation
+drf-yasg==1.21.7
+
+# Database
+mysqlclient==2.1.1
+PyMySQL==1.1.0
+
+# File handling and Media
+Pillow==10.0.1
+django-cleanup==8.1.0
+
+# Markdown and Rich Text
+django-mdeditor==0.1.20
+Markdown==3.5.1
+
+# Development and Debug
+django-debug-toolbar==4.2.0
+
+# Production
+gunicorn==21.2.0
+whitenoise==6.6.0
+
+# Utilities
+python-decouple==3.8
+django-extensions==3.2.3
+
+# Testing
+pytest==7.4.3
+pytest-django==4.7.0
+
+# Code Quality
+black==23.11.0
+flake8==6.1.0
+isort==5.12.0 
