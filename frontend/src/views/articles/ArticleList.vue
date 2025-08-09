@@ -52,7 +52,16 @@
     </div>
     
     <div class="article-grid">
-      <el-row :gutter="20" v-loading="articlesStore.loading">
+      <!-- 骨架屏 -->
+      <el-row :gutter="20" v-if="articlesStore.loading">
+        <el-col :span="8" v-for="n in 6" :key="n" class="article-col">
+          <el-card class="article-card" :body-style="{ padding: '20px' }">
+            <el-skeleton :rows="6" animated />
+          </el-card>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="20" v-else>
         <el-col 
           :span="8" 
           v-for="article in articlesStore.articles" 
@@ -98,7 +107,11 @@
               <el-tag 
                 v-if="article.category" 
                 size="small" 
-                :color="article.category.color"
+                :style="{
+                  backgroundColor: article.category.color || '#409eff',
+                  color: getContrastColor(article.category.color || '#409eff'),
+                  border: `1px solid ${article.category.color || '#409eff'}`
+                }"
               >
                 {{ article.category.name }}
               </el-tag>
@@ -110,7 +123,7 @@
         </el-col>
         
         <!-- 空状态 -->
-        <el-col :span="24" v-if="!articlesStore.loading && articlesStore.articles.length === 0">
+        <el-col :span="24" v-if="articlesStore.articles.length === 0">
           <el-empty description="暂无文章">
             <el-button type="primary" @click="$router.push('/articles/create')">
               发布第一篇文章
@@ -163,7 +176,9 @@ const fetchCategories = async () => {
 // 获取文章列表
 const fetchArticles = async () => {
   const params = {
-    ordering: selectedSort.value
+    ordering: selectedSort.value,
+    page: articlesStore.pagination.current,
+    page_size: articlesStore.pagination.pageSize
   }
   
   if (searchKeyword.value) {
@@ -174,29 +189,37 @@ const fetchArticles = async () => {
     params.category = selectedCategory.value
   }
   
+  console.log('请求参数:', params)
+  
   try {
     await articlesStore.fetchArticles(params)
   } catch (error) {
     console.error('获取文章失败:', error)
+    ElMessage.error('获取文章失败，请检查网络连接')
   }
 }
 
 // 搜索处理
+// 搜索防抖
+let searchTimer = null
 const handleSearch = () => {
   articlesStore.pagination.current = 1
-  fetchArticles()
+  if (searchTimer) clearTimeout(searchTimer)
+  searchTimer = setTimeout(() => {
+    fetchArticles()
+  }, 300)
 }
 
 // 分类变化处理
 const handleCategoryChange = () => {
   articlesStore.pagination.current = 1
-  fetchArticles()
+  handleSearch()
 }
 
 // 排序变化处理
 const handleSortChange = () => {
   articlesStore.pagination.current = 1
-  fetchArticles()
+  handleSearch()
 }
 
 // 分页大小变化
@@ -227,7 +250,32 @@ const formatDate = (dateString) => {
   })
 }
 
+// 根据背景色计算合适的文字颜色
+const getContrastColor = (hexColor) => {
+  if (!hexColor) return '#333333'
+  
+  // 移除#号
+  const color = hexColor.replace('#', '')
+  
+  // 如果颜色长度不对，返回默认颜色
+  if (color.length !== 6) return '#333333'
+  
+  // 转换为RGB
+  const r = parseInt(color.substr(0, 2), 16)
+  const g = parseInt(color.substr(2, 2), 16)
+  const b = parseInt(color.substr(4, 2), 16)
+  
+  // 计算亮度 (0-255)
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000
+  
+  // 如果背景较暗，使用白色文字；如果背景较亮，使用深色文字
+  return brightness > 128 ? '#333333' : '#ffffff'
+}
+
 onMounted(() => {
+  // 设置每页10篇文章
+  articlesStore.pagination.pageSize = 10
+  articlesStore.pagination.current = 1
   fetchCategories()
   fetchArticles()
 })

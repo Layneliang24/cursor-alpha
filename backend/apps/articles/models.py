@@ -44,7 +44,15 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         """保存时自动生成slug"""
         if not self.slug:
-            self.slug = slugify(self.title)
+            # 允许中文 slug，并保证在极端情况下也不为空
+            base = slugify(self.title, allow_unicode=True) or 'article'
+            slug = base
+            suffix = 1
+            from django.db.models import Q
+            while Article.objects.filter(Q(slug=slug)).exclude(pk=self.pk).exists():
+                suffix += 1
+                slug = f"{base}-{suffix}"
+            self.slug = slug
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):

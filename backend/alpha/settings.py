@@ -33,6 +33,24 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# Jazzmin admin UI configuration (simple defaults; can be customized later)
+JAZZMIN_SETTINGS = {
+    "site_title": "Alpha Admin",
+    "site_header": "Alpha 后台",
+    "site_brand": "Alpha",
+    "welcome_sign": "欢迎来到 Alpha 管理后台",
+    "copyright": "Alpha",
+    "show_ui_builder": False,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "default",
+    "dark_mode_theme": None,
+    "navbar_small_text": False,
+    "footer_small_text": True,
+    "body_small_text": False,
+}
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,6 +76,7 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.articles',
     'apps.categories',
+    'apps.links',
     'apps.api',
 ]
 
@@ -117,7 +136,7 @@ DATABASES = {
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES', time_zone='+08:00'",
         },
     }
 }
@@ -149,7 +168,8 @@ TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
-USE_TZ = True
+# Disable timezone-aware datetimes in dev to avoid MySQL tz table dependency errors in admin
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -177,7 +197,24 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:8080",
     "http://127.0.0.1:8080",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
+
+# 前端URL配置（用于密码重置邮件链接）
+FRONTEND_URL = "http://localhost:3000"
+
+# 邮件设置
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # 开发环境使用控制台输出
+# 生产环境使用SMTP
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'  # 或其他SMTP服务器
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'your-email@gmail.com'
+# EMAIL_HOST_PASSWORD = 'your-app-password'
+
+DEFAULT_FROM_EMAIL = 'Alpha团队 <noreply@alpha.com>'
 
 # REST Framework Configuration
 REST_FRAMEWORK = {
@@ -189,7 +226,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
+    'PAGE_SIZE': 10,
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
@@ -203,6 +240,15 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
         'rest_framework.parsers.FormParser',
     ),
+    # 基础限流设置，防止接口被滥用
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '60/minute',   # 未登录用户
+        'user': '240/minute',  # 登录用户
+    },
 }
 
 # JWT Settings

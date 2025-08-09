@@ -110,12 +110,61 @@
           <p>
             还没有账号？
             <router-link to="/register" class="link">立即注册</router-link>
+            <span style="margin: 0 10px;">|</span>
+            <a href="#" @click.prevent="showForgotPassword = true" class="link">忘记密码？</a>
+          </p>
+          <p style="margin-top: 8px;">
+            管理员入口：
+            <a
+              href="http://127.0.0.1:8000/admin/"
+              class="link"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="打开Django管理后台（需要管理员账号）"
+            >打开 Django 后台</a>
           </p>
         </div>
           </el-form>
         </div>
       </div>
     </div>
+
+    <!-- 忘记密码弹窗 -->
+    <el-dialog
+      v-model="showForgotPassword"
+      title="找回密码"
+      width="400px"
+      :before-close="handleForgotPasswordClose"
+    >
+      <el-form
+        ref="forgotPasswordFormRef"
+        :model="forgotPasswordForm"
+        :rules="forgotPasswordRules"
+        label-width="80px"
+      >
+        <el-form-item label="邮箱" prop="email">
+          <el-input
+            v-model="forgotPasswordForm.email"
+            placeholder="请输入注册邮箱"
+            prefix-icon="Message"
+            size="large"
+          />
+        </el-form-item>
+      </el-form>
+      
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="showForgotPassword = false">取消</el-button>
+          <el-button 
+            type="primary" 
+            :loading="forgotPasswordLoading"
+            @click="handleForgotPassword"
+          >
+            {{ forgotPasswordLoading ? '发送中...' : '发送重置邮件' }}
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -139,10 +188,19 @@ let captchaCode = ref('')
 const verifiedUser = ref(null)
 const verifying = ref(false)
 
+// 忘记密码相关
+const showForgotPassword = ref(false)
+const forgotPasswordFormRef = ref()
+const forgotPasswordLoading = ref(false)
+
 const loginForm = reactive({
   username: '',
   password: '',
   captcha: ''
+})
+
+const forgotPasswordForm = reactive({
+  email: ''
 })
 
 const loginRules = {
@@ -157,6 +215,13 @@ const loginRules = {
   captcha: [
     { required: true, message: '请输入验证码', trigger: 'blur' },
     { len: 4, message: '验证码为4位字符', trigger: 'blur' }
+  ]
+}
+
+const forgotPasswordRules = {
+  email: [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
   ]
 }
 
@@ -327,6 +392,47 @@ const handleLogin = async () => {
     refreshCaptcha()
   } finally {
     loading.value = false
+  }
+}
+
+// 处理忘记密码
+const handleForgotPassword = async () => {
+  if (!forgotPasswordFormRef.value) return
+  
+  try {
+    await forgotPasswordFormRef.value.validate()
+    
+    forgotPasswordLoading.value = true
+    
+    const result = await authAPI.requestPasswordReset(forgotPasswordForm.email)
+    
+    ElMessage.success('密码重置邮件已发送，请查收邮箱')
+    showForgotPassword.value = false
+    forgotPasswordForm.email = ''
+    
+  } catch (error) {
+    console.error('发送重置邮件失败:', error)
+    
+    let errorMessage = '发送失败，请重试'
+    if (error.response?.data?.email) {
+      errorMessage = error.response.data.email[0]
+    } else if (error.response?.data?.error) {
+      errorMessage = error.response.data.error
+    } else if (error.message) {
+      errorMessage = error.message
+    }
+    
+    ElMessage.error(errorMessage)
+  } finally {
+    forgotPasswordLoading.value = false
+  }
+}
+
+// 关闭忘记密码弹窗
+const handleForgotPasswordClose = () => {
+  forgotPasswordForm.email = ''
+  if (forgotPasswordFormRef.value) {
+    forgotPasswordFormRef.value.clearValidate()
   }
 }
 

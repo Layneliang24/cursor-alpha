@@ -36,5 +36,23 @@ export const authAPI = {
         'Content-Type': 'application/json',
       }
     }).then(response => response.data)
+  },
+
+  // 请求密码重置
+  requestPasswordReset(email) {
+    return axios.post('http://127.0.0.1:8000/api/v1/auth/password-reset/', { email }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then(response => response.data)
+  },
+
+  // 确认密码重置
+  confirmPasswordReset(data) {
+    return axios.post('http://127.0.0.1:8000/api/v1/auth/password-reset-confirm/', data, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then(response => response.data)
   }
 }

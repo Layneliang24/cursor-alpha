@@ -21,6 +21,11 @@
       </div>
     </div>
 
+    <!-- 热门文章轮播 -->
+    <div class="mb-5">
+      <ArticleCarousel />
+    </div>
+
     <!-- 统计卡片 -->
     <div class="row mb-5 g-4">
       <div class="col-md-3 col-sm-6">
@@ -29,7 +34,7 @@
             <div class="text-primary mb-3">
               <el-icon style="font-size: 2.5rem;"><Document /></el-icon>
             </div>
-            <h3 class="card-title text-primary mb-2">{{ stats.totalArticles }}</h3>
+            <h3 class="card-title text-primary mb-2">{{ stats.total_articles || 0 }}</h3>
             <p class="card-text text-muted mb-0">文章总数</p>
           </div>
         </div>
@@ -40,7 +45,7 @@
             <div class="text-success mb-3">
               <el-icon style="font-size: 2.5rem;"><User /></el-icon>
             </div>
-            <h3 class="card-title text-success mb-2">{{ stats.totalUsers }}</h3>
+            <h3 class="card-title text-success mb-2">{{ stats.total_users || 0 }}</h3>
             <p class="card-text text-muted mb-0">注册用户</p>
           </div>
         </div>
@@ -51,7 +56,7 @@
             <div class="text-warning mb-3">
               <el-icon style="font-size: 2.5rem;"><View /></el-icon>
             </div>
-            <h3 class="card-title text-warning mb-2">{{ stats.totalViews }}</h3>
+            <h3 class="card-title text-warning mb-2">{{ stats.total_views || 0 }}</h3>
             <p class="card-text text-muted mb-0">总浏览量</p>
           </div>
         </div>
@@ -60,10 +65,10 @@
         <div class="card border-0 shadow-sm h-100 stat-card">
           <div class="card-body text-center p-4">
             <div class="text-info mb-3">
-              <el-icon style="font-size: 2.5rem;"><ChatDotRound /></el-icon>
+              <el-icon style="font-size: 2.5rem;"><Folder /></el-icon>
             </div>
-            <h3 class="card-title text-info mb-2">{{ stats.onlineUsers }}</h3>
-            <p class="card-text text-muted mb-0">在线用户</p>
+            <h3 class="card-title text-info mb-2">{{ stats.active_categories || 0 }}</h3>
+            <p class="card-text text-muted mb-0">活跃分类</p>
           </div>
         </div>
       </div>
@@ -92,14 +97,14 @@
                         {{ article.title }}
                       </router-link>
                     </h6>
-                    <p class="mb-1 text-muted small">{{ article.summary }}</p>
+                    <p class="mb-1 text-muted small">{{ article.summary || (article.content && article.content.substring(0, 100) + '...') || '暂无摘要' }}</p>
                     <small class="text-muted">
-                      <el-icon class="me-1"><User /></el-icon>{{ article.author }}
+                      <el-icon class="me-1"><User /></el-icon>{{ article.author?.first_name || article.author?.username || '未知作者' }}
                       <el-icon class="ms-3 me-1"><Clock /></el-icon>{{ formatDate(article.created_at) }}
-                      <el-icon class="ms-3 me-1"><View /></el-icon>{{ article.views }}
+                      <el-icon class="ms-3 me-1"><View /></el-icon>{{ article.views || 0 }}
                     </small>
                   </div>
-                  <span class="badge bg-primary ms-3">{{ article.category }}</span>
+                  <span class="badge bg-primary ms-3">{{ article.category?.name || '未分类' }}</span>
                 </div>
               </div>
             </div>
@@ -130,28 +135,8 @@
           </div>
         </div>
 
-        <!-- 系统公告 -->
-        <div class="card border-0 shadow-sm h-auto">
-          <div class="card-header bg-white border-bottom py-3">
-            <h6 class="card-title mb-0">
-              <el-icon class="me-2 text-info"><Bell /></el-icon>系统公告
-            </h6>
-          </div>
-          <div class="card-body">
-            <div class="alert alert-info border-0 mb-3">
-              <small>
-                <strong>系统升级通知：</strong>
-                系统将于本周末进行维护升级，届时可能会有短暂的服务中断。
-              </small>
-            </div>
-            <div class="alert alert-success border-0 mb-0">
-              <small>
-                <strong>新功能上线：</strong>
-                现在支持Markdown编辑器，让写作更加便捷！
-              </small>
-            </div>
-          </div>
-        </div>
+        <!-- 友情链接 -->
+        <ExternalLinks />
       </div>
     </div>
   </div>
@@ -160,66 +145,93 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-import { Document, Edit, Star, User, View, ChatDotRound, Promotion, Clock, PriceTag, Bell } from '@element-plus/icons-vue'
+import { homeAPI } from '@/api/home'
+import ArticleCarousel from '@/components/ArticleCarousel.vue'
+import ExternalLinks from '@/components/ExternalLinks.vue'
+import { Document, Edit, Star, User, View, Folder, Promotion, Clock, PriceTag } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
 
 // 统计数据
 const stats = ref({
-  totalArticles: 156,
-  totalUsers: 89,
-  totalViews: 12543,
-  onlineUsers: 23
+  total_articles: 0,
+  total_users: 0,
+  total_views: 0,
+  active_categories: 0
 })
 
 // 最新文章
-const recentArticles = ref([
-  {
-    id: 1,
-    title: 'Vue 3 Composition API 深度解析',
-    summary: '详细介绍Vue 3中Composition API的使用方法和最佳实践...',
-    author: '张三',
-    category: '技术分享',
-    views: 234,
-    created_at: '2024-01-15T10:30:00Z'
-  },
-  {
-    id: 2,
-    title: 'Python数据分析入门指南',
-    summary: '从零开始学习Python数据分析，包含pandas、numpy等库的使用...',
-    author: '李四',
-    category: '学习笔记',
-    views: 189,
-    created_at: '2024-01-14T15:20:00Z'
-  },
-  {
-    id: 3,
-    title: '微服务架构设计实践',
-    summary: '分享在实际项目中微服务架构的设计经验和踩坑记录...',
-    author: '王五',
-    category: '项目经验',
-    views: 156,
-    created_at: '2024-01-13T09:15:00Z'
-  }
-])
+const recentArticles = ref([])
 
 // 热门标签
-const popularTags = ref([
-  { name: 'Vue.js', count: 45 },
-  { name: 'Python', count: 38 },
-  { name: 'JavaScript', count: 52 },
-  { name: 'React', count: 29 },
-  { name: 'Node.js', count: 33 },
-  { name: 'Docker', count: 21 }
-])
+const popularTags = ref([])
 
 const formatDate = (dateString) => {
   const date = new Date(dateString)
+  const now = new Date()
+  const diff = now - date
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  
+  if (days === 0) return '今天'
+  if (days === 1) return '昨天'
+  if (days < 7) return `${days}天前`
   return date.toLocaleDateString('zh-CN')
 }
 
+// 获取统计数据
+const fetchStats = async () => {
+  try {
+    const data = await homeAPI.getStats()
+    stats.value = data
+  } catch (error) {
+    console.error('获取统计数据失败:', error)
+    // 使用默认值
+    stats.value = {
+      total_articles: 0,
+      total_users: 0,
+      total_views: 0,
+      active_categories: 0
+    }
+  }
+}
+
+// 获取最新文章
+const fetchRecentArticles = async () => {
+  try {
+    const data = await homeAPI.getRecentArticles()
+    recentArticles.value = data
+  } catch (error) {
+    console.error('获取最新文章失败:', error)
+    // Fallback to articles API
+    try {
+      const { articlesAPI } = await import('@/api/articles')
+      const response = await articlesAPI.getArticles({ 
+        page_size: 6, 
+        ordering: '-created_at' 
+      })
+      recentArticles.value = response.results || []
+    } catch (fallbackError) {
+      console.error('Fallback获取最新文章也失败:', fallbackError)
+      recentArticles.value = []
+    }
+  }
+}
+
+// 获取热门标签
+const fetchPopularTags = async () => {
+  try {
+    const data = await homeAPI.getPopularTags()
+    popularTags.value = data
+  } catch (error) {
+    console.error('获取热门标签失败:', error)
+    popularTags.value = []
+  }
+}
+
 onMounted(() => {
-  // 这里可以加载真实数据
+  fetchStats()
+  fetchRecentArticles()
+  fetchPopularTags()
 })
 </script>
 

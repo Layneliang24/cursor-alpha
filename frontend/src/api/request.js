@@ -57,7 +57,8 @@ request.interceptors.response.use(
           ElMessage.error('没有权限执行此操作')
           break
         case 404:
-          ElMessage.error('请求的资源不存在')
+          console.error('404错误详情:', error.config?.url, error.response?.data)
+          ElMessage.error(`请求的资源不存在: ${error.config?.url}`)
           break
         case 500:
           ElMessage.error('服务器内部错误')

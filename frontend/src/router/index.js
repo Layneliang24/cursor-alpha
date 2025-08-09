@@ -22,16 +22,16 @@ const routes = [
     meta: { title: '用户注册', guest: true }
   },
   {
+    path: '/reset-password/:uid/:token',
+    name: 'PasswordReset',
+    component: () => import('@/views/auth/PasswordReset.vue'),
+    meta: { title: '重置密码', guest: true }
+  },
+  {
     path: '/articles',
     name: 'ArticleList',
     component: () => import('@/views/articles/ArticleList.vue'),
     meta: { title: '文章列表' }
-  },
-  {
-    path: '/articles/:id',
-    name: 'ArticleDetail',
-    component: () => import('@/views/articles/ArticleDetail.vue'),
-    meta: { title: '文章详情' }
   },
   {
     path: '/articles/create',
@@ -40,10 +40,22 @@ const routes = [
     meta: { title: '发布文章', requiresAuth: true }
   },
   {
+    path: '/articles/:id',
+    name: 'ArticleDetail',
+    component: () => import('@/views/articles/ArticleDetail.vue'),
+    meta: { title: '文章详情' }
+  },
+  {
     path: '/articles/:id/edit',
     name: 'ArticleEdit',
     component: () => import('@/views/articles/ArticleEdit.vue'),
     meta: { title: '编辑文章', requiresAuth: true }
+  },
+  {
+    path: '/categories',
+    name: 'CategoryList',
+    component: () => import('@/views/categories/CategoryList.vue'),
+    meta: { title: '分类列表' }
   },
   {
     path: '/categories/:id',
@@ -62,6 +74,12 @@ const routes = [
     name: 'UserArticles',
     component: () => import('@/views/user/UserArticles.vue'),
     meta: { title: '我的文章', requiresAuth: true }
+  },
+  {
+    path: '/admin/categories',
+    name: 'CategoryManage',
+    component: () => import('@/views/categories/CategoryManage.vue'),
+    meta: { title: '分类管理', requiresAuth: true, adminOnly: true }
   },
   {
     path: '/:pathMatch(.*)*',
@@ -100,6 +118,17 @@ router.beforeEach(async (to, from, next) => {
     ElMessage.warning('请先登录')
     next({ name: 'Login', query: { redirect: to.fullPath } })
     return
+  }
+
+  // 管理员专用路由
+  if (to.meta.adminOnly) {
+    const user = authStore.user
+    const inGroup = Array.isArray(user?.groups) && user.groups.includes('管理员')
+    if (!user || !(user.is_staff || user.is_superuser || inGroup)) {
+      ElMessage.warning('需要管理员权限')
+      next({ name: 'Home' })
+      return
+    }
   }
   
   // 检查游客专用路由（已登录用户不应访问）

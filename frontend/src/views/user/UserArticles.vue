@@ -48,7 +48,15 @@
         
         <el-table-column label="分类" width="120" align="center">
           <template #default="{ row }">
-            <el-tag v-if="row.category" size="small" :color="row.category.color">
+            <el-tag 
+              v-if="row.category" 
+              size="small" 
+              :style="{
+                backgroundColor: row.category.color || '#409eff',
+                color: getContrastColor(row.category.color || '#409eff'),
+                border: `1px solid ${row.category.color || '#409eff'}`
+              }"
+            >
               {{ row.category.name }}
             </el-tag>
             <span v-else class="text-muted">未分类</span>
@@ -136,6 +144,28 @@ const pagination = reactive({
   pageSize: 20,
   total: 0
 })
+
+// 根据背景色计算合适的文字颜色
+const getContrastColor = (hexColor) => {
+  if (!hexColor) return '#333333'
+  
+  // 移除#号
+  const color = hexColor.replace('#', '')
+  
+  // 如果颜色长度不对，返回默认颜色
+  if (color.length !== 6) return '#333333'
+  
+  // 转换为RGB
+  const r = parseInt(color.substr(0, 2), 16)
+  const g = parseInt(color.substr(2, 2), 16)
+  const b = parseInt(color.substr(4, 2), 16)
+  
+  // 计算亮度 (0-255)
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000
+  
+  // 如果背景较暗，使用白色文字；如果背景较亮，使用深色文字
+  return brightness > 128 ? '#333333' : '#ffffff'
+}
 
 // 获取用户文章
 const fetchUserArticles = async () => {

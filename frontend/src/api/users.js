@@ -12,12 +12,20 @@ export const usersAPI = {
     return request.put(`/users/${id}/`, data)
   },
 
-  // 获取用户资料
+  // 获取当前登录用户资料（推荐）
+  getMyProfile() {
+    return request.get(`/profiles/me/`)
+  },
+  // 兼容旧版：按 id 获取（可能是 profile_id 或 user_id，后端已做兼容）
   getUserProfile(id) {
     return request.get(`/profiles/${id}/`)
   },
 
-  // 更新用户资料
+  // 更新当前登录用户资料（推荐）
+  updateMyProfile(data) {
+    return request.put(`/profiles/me/`, data)
+  },
+  // 兼容旧版：按 id 更新
   updateUserProfile(id, data) {
     return request.put(`/profiles/${id}/`, data)
   },

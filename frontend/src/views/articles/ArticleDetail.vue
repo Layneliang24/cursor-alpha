@@ -60,8 +60,12 @@
               v-for="tag in article.tags" 
               :key="tag.id" 
               size="small"
-              :color="tag.color"
-              style="margin-right: 8px;"
+              :style="{
+                backgroundColor: tag.color || '#409eff',
+                color: getContrastColor(tag.color || '#409eff'),
+                border: `1px solid ${tag.color || '#409eff'}`,
+                marginRight: '8px'
+              }"
             >
               {{ tag.name }}
             </el-tag>
@@ -310,6 +314,28 @@ const formatDate = (dateString) => {
     hour: '2-digit',
     minute: '2-digit'
   })
+}
+
+// 根据背景色计算合适的文字颜色
+const getContrastColor = (hexColor) => {
+  if (!hexColor) return '#333333'
+  
+  // 移除#号
+  const color = hexColor.replace('#', '')
+  
+  // 如果颜色长度不对，返回默认颜色
+  if (color.length !== 6) return '#333333'
+  
+  // 转换为RGB
+  const r = parseInt(color.substr(0, 2), 16)
+  const g = parseInt(color.substr(2, 2), 16)
+  const b = parseInt(color.substr(4, 2), 16)
+  
+  // 计算亮度 (0-255)
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000
+  
+  // 如果背景较暗，使用白色文字；如果背景较亮，使用深色文字
+  return brightness > 128 ? '#333333' : '#ffffff'
 }
 
 onMounted(() => {

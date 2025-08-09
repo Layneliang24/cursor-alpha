@@ -9,7 +9,7 @@ export const useArticlesStore = defineStore('articles', {
     loading: false,
     pagination: {
       current: 1,
-      pageSize: 20,
+      pageSize: 10,
       total: 0
     }
   }),
@@ -25,14 +25,23 @@ export const useArticlesStore = defineStore('articles', {
     async fetchArticles(params = {}) {
       this.loading = true
       try {
-        const response = await articlesAPI.getArticles({
-          page: this.pagination.current,
-          page_size: this.pagination.pageSize,
+        // 如果params中没有page和page_size，则使用store中的值
+        const requestParams = {
+          page: params.page || this.pagination.current,
+          page_size: params.page_size || this.pagination.pageSize,
           ...params
-        })
+        }
         
-        this.articles = response.results
-        this.pagination.total = response.count
+        console.log('发送API请求参数:', requestParams)
+        const response = await articlesAPI.getArticles(requestParams)
+        
+        this.articles = response.results || response
+        this.pagination.total = response.count || 0
+        
+        // 确保分页信息正确
+        if (response.total_pages) {
+          this.pagination.totalPages = response.total_pages
+        }
         
         return response
       } catch (error) {

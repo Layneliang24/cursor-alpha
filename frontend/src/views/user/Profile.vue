@@ -363,7 +363,8 @@ const profileRules = {
 const fetchUserProfile = async () => {
   try {
     console.log('获取用户资料，用户ID:', authStore.user.id)
-    const profile = await usersAPI.getUserProfile(authStore.user.id)
+    // 优先使用后端提供的 /profiles/me/，避免 id 与 profile 主键不一致导致的 404
+    const profile = await usersAPI.getMyProfile()
     console.log('获取到的用户资料:', profile)
     
     // 填充基本信息
@@ -448,7 +449,7 @@ const updateProfile = async () => {
     // 更新用户详细资料
     console.log('更新用户详细资料...')
     try {
-      await usersAPI.updateUserProfile(authStore.user.id, {
+      await usersAPI.updateMyProfile({
         phone: profileForm.phone,
         company: profileForm.company,
         position: profileForm.position,

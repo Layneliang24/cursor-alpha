@@ -7,6 +7,18 @@
         <span class="slogan">分享技术，共同成长</span>
       </div>
       <div class="footer-right">
+        <a
+          href="http://127.0.0.1:8000/admin/"
+          class="admin-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Django 管理后台（需要管理员账号）"
+        >Django 后台</a>
+        <span class="divider">·</span>
+        <router-link to="/admin/categories" class="admin-link" title="分类管理（需管理员）">
+          分类管理
+        </router-link>
+        <span class="divider">·</span>
         <span class="copyright">&copy; 2024 All rights reserved</span>
       </div>
     </div>

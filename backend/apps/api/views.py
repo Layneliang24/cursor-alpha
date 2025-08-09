@@ -2,6 +2,10 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.db.models import Q
+from .pagination import CustomPageNumberPagination
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import os
@@ -11,11 +15,14 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from apps.articles.models import Article, Comment, Like, Bookmark
 from apps.categories.models import Category, Tag
+from apps.links.models import ExternalLink
+from .permissions import IsAdminOrReadOnly, DjangoModelPermissionsOrReadOnly, IsAuthorOrAdminOrReadOnly
 from apps.users.models import UserProfile
 from .serializers import (
     UserSerializer, UserProfileSerializer, CategorySerializer, TagSerializer,
     ArticleSerializer, ArticleCreateSerializer, ArticleUpdateSerializer,
-    CommentSerializer, UserRegistrationSerializer, UserLoginSerializer
+    CommentSerializer, UserRegistrationSerializer, UserLoginSerializer,
+    PasswordResetRequestSerializer, PasswordResetConfirmSerializer, ExternalLinkSerializer
 )
 
 User = get_user_model()
@@ -36,9 +43,22 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """分类视图集"""
-    queryset = Category.objects.filter(status='active')
+    queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [DjangoModelPermissionsOrReadOnly]
+    
+    def get_queryset(self):
+        """非管理员仅能看到激活分类，管理员可查看全部"""
+        base_qs = Category.objects.all()
+        user = self.request.user
+        if user and user.is_authenticated and (user.is_staff or user.is_superuser):
+            return base_qs
+        return base_qs.filter(status='active')
+
+    # 缓存 list 响应 60s（不要缓存 get_queryset，需返回 QuerySet）
+    @method_decorator(cache_page(60))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
     
     @action(detail=True, methods=['get'])
     def articles(self, request, pk=None):
@@ -53,14 +73,20 @@ class TagViewSet(viewsets.ModelViewSet):
     """标签视图集"""
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [DjangoModelPermissionsOrReadOnly]
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
     """文章视图集"""
-    queryset = Article.objects.filter(status='published')
+    # 提升查询性能：一次性取出作者与分类，减少N+1
+    queryset = Article.objects.select_related('author', 'category').prefetch_related('tags').filter(status='published').order_by('-created_at')
     serializer_class = ArticleSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthorOrAdminOrReadOnly]
+    pagination_class = CustomPageNumberPagination
+    filterset_fields = ['category', 'author', 'featured']
+    search_fields = ['title', 'content', 'summary']
+    ordering_fields = ['created_at', 'views', 'likes']
+    ordering = ['-created_at']
     
     def get_serializer_class(self):
         if self.action == 'create':
@@ -68,6 +94,15 @@ class ArticleViewSet(viewsets.ModelViewSet):
         elif self.action in ['update', 'partial_update']:
             return ArticleUpdateSerializer
         return ArticleSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        user = self.request.user
+        # 作者本人可以看到自己的草稿/归档
+        author_id = self.request.query_params.get('author')
+        if user.is_authenticated and author_id and str(user.id) == str(author_id):
+            return Article.objects.select_related('author', 'category').prefetch_related('tags').filter(author=user)
+        return qs
     
     def perform_create(self, serializer):
         """创建文章时设置作者"""
@@ -112,6 +147,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     """评论视图集"""
     queryset = Comment.objects.filter(is_approved=True)
     serializer_class = CommentSerializer
+    # 登录用户可写（发表评论/回复），未登录用户只读；管理员仍可执行所有操作
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
     def perform_create(self, serializer):
@@ -190,11 +226,34 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     
     def get_object(self):
         """获取对象时确保用户只能操作自己的资料"""
-        obj = super().get_object()
-        if obj.user != self.request.user:
+        from django.shortcuts import get_object_or_404
+        try:
+            obj = super().get_object()
+        except Exception:
+            # 如果根据 profile id 未找到, 尝试用 user_id 寻找
+            obj = get_object_or_404(UserProfile, user_id=self.kwargs.get(self.lookup_field))
+
+        # 权限检查：只能操作自己的资料，管理员除外
+        if (not self.request.user.is_staff and not self.request.user.is_superuser and
+                obj.user != self.request.user):
             from rest_framework.exceptions import PermissionDenied
             raise PermissionDenied("您只能操作自己的资料")
         return obj
+
+    # 新增端点 /profiles/me/
+    @action(detail=False, methods=['get', 'put', 'patch'])
+    def me(self, request):
+        """获取或更新当前登录用户的个人资料"""
+        profile, _ = UserProfile.objects.get_or_create(user=request.user)
+
+        if request.method in ['PUT', 'PATCH']:
+            serializer = self.get_serializer(profile, data=request.data, partial=(request.method == 'PATCH'))
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
+
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)
     
     def perform_create(self, serializer):
         """创建用户资料时设置用户"""
@@ -388,3 +447,119 @@ def verify_user_identity(request):
             
     except Exception as e:
         return Response({'error': f'验证失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+def password_reset_request(request):
+    """请求密码重置"""
+    serializer = PasswordResetRequestSerializer(data=request.data)
+    if serializer.is_valid():
+        try:
+            result = serializer.save()
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {'error': f'发送邮件失败: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+def password_reset_confirm(request):
+    """确认密码重置"""
+    serializer = PasswordResetConfirmSerializer(data=request.data)
+    if serializer.is_valid():
+        try:
+            result = serializer.save()
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {'error': f'重置密码失败: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def get_home_stats(request):
+    """获取首页统计数据"""
+    from django.db.models import Sum, Count
+    
+    # 获取真实统计数据
+    total_articles = Article.objects.filter(status='published').count()
+    total_users = User.objects.count()
+    total_views = Article.objects.filter(status='published').aggregate(
+        total=Sum('views')
+    )['total'] or 0
+    
+    # 获取活跃分类数量
+    active_categories = Category.objects.filter(status='active').count()
+    
+    return Response({
+        'total_articles': total_articles,
+        'total_users': total_users,
+        'total_views': total_views,
+        'active_categories': active_categories
+    })
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def get_popular_articles(request):
+    """获取热门文章（用于轮播）"""
+    # 按浏览量排序，取前5篇
+    popular_articles = Article.objects.filter(
+        status='published'
+    ).select_related('author', 'category').order_by('-views')[:5]
+    
+    serializer = ArticleSerializer(popular_articles, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def get_recent_articles(request):
+    """获取最新文章"""
+    recent_articles = Article.objects.filter(
+        status='published'
+    ).select_related('author', 'category').order_by('-created_at')[:6]
+    
+    serializer = ArticleSerializer(recent_articles, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def get_popular_tags(request):
+    """获取热门标签"""
+    from django.db.models import Count
+    
+    popular_tags = Tag.objects.annotate(
+        article_count=Count('articles', filter=Q(articles__status='published'))
+    ).filter(article_count__gt=0).order_by('-article_count')[:10]
+    
+    return Response([
+        {'name': tag.name, 'count': tag.article_count}
+        for tag in popular_tags
+    ])
+
+
+class ExternalLinkViewSet(viewsets.ModelViewSet):
+    """外部链接视图集"""
+    queryset = ExternalLink.objects.filter(is_active=True)
+    serializer_class = ExternalLinkSerializer
+    permission_classes = [DjangoModelPermissionsOrReadOnly]
+    
+    def get_queryset(self):
+        """管理员可以看到所有链接，普通用户只能看到启用的"""
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            return ExternalLink.objects.all().order_by('order', '-created_at')
+        return ExternalLink.objects.filter(is_active=True).order_by('order', '-created_at')
+    
+    def perform_create(self, serializer):
+        """创建时设置创建者"""
+        serializer.save(created_by=self.request.user)

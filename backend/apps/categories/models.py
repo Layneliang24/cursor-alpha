@@ -34,7 +34,13 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         """保存时自动生成slug"""
         if not self.slug:
-            self.slug = slugify(self.name)
+            # 允许中文 slug
+            slug_val = slugify(self.name, allow_unicode=True)
+            if not slug_val:
+                # 如果仍为空（全部非字母数字），使用随机 uuid 片段确保唯一
+                import uuid
+                slug_val = uuid.uuid4().hex[:8]
+            self.slug = slug_val
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):

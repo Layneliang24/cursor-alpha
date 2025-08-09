@@ -46,8 +46,8 @@
       <!-- 系统信息 -->
       <div class="mt-auto pt-4 border-top">
         <small class="text-muted">
-          <div>在线用户: {{ onlineUsers }}</div>
-          <div>文章总数: {{ totalArticles }}</div>
+          <div>注册用户: {{ stats.total_users || 0 }}</div>
+          <div>文章总数: {{ stats.total_articles || 0 }}</div>
         </small>
       </div>
     </div>
@@ -57,20 +57,48 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { categoriesAPI } from '@/api/categories'
+import { homeAPI } from '@/api/home'
 import { House, Document, Edit, Folder, User, DocumentCopy } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
-const categories = ref([
-  { id: 1, name: '技术分享', article_count: 15 },
-  { id: 2, name: '生活随笔', article_count: 8 },
-  { id: 3, name: '学习笔记', article_count: 12 },
-  { id: 4, name: '项目经验', article_count: 6 }
-])
-const onlineUsers = ref(23)
-const totalArticles = ref(41)
+const categories = ref([])
+const stats = ref({
+  total_articles: 0,
+  total_users: 0
+})
+
+// 获取分类数据
+const fetchCategories = async () => {
+  try {
+    const data = await categoriesAPI.getCategories()
+    console.log('分类数据:', data)
+    categories.value = data.filter(cat => cat.status === 'active')
+    console.log('过滤后的分类:', categories.value.length)
+  } catch (error) {
+    console.error('获取分类数据失败:', error)
+    categories.value = []
+  }
+}
+
+// 获取统计数据
+const fetchStats = async () => {
+  try {
+    const data = await homeAPI.getStats()
+    stats.value = data
+    console.log('侧边栏统计数据:', stats.value)
+  } catch (error) {
+    console.error('获取统计数据失败:', error)
+    stats.value = {
+      total_articles: 0,
+      total_users: 0
+    }
+  }
+}
 
 onMounted(() => {
-  // 这里可以加载真实的分类数据
+  fetchCategories()
+  fetchStats()
 })
 </script>
 

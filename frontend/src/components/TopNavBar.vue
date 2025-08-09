@@ -25,6 +25,17 @@
           <el-icon><Folder /></el-icon>
           <span>分类</span>
         </router-link>
+        <a
+          v-if="isAdminUi"
+          href="http://127.0.0.1:8000/admin/"
+          class="nav-item"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Django 后台（管理员可用）"
+        >
+          <el-icon><Setting /></el-icon>
+          <span>后台</span>
+        </a>
         <router-link to="/trending" class="nav-item">
           <el-icon><TrendCharts /></el-icon>
           <span>热门</span>
@@ -56,6 +67,9 @@
           <router-link to="/articles/create" class="action-btn" title="写文章">
             <el-icon><Edit /></el-icon>
           </router-link>
+          <router-link v-if="isAdminUi" to="/admin/categories" class="action-btn" title="分类管理">
+            <el-icon><Folder /></el-icon>
+          </router-link>
           <button class="action-btn" title="通知" @click="showNotifications">
             <el-icon><Bell /></el-icon>
             <span class="notification-badge">3</span>
@@ -80,6 +94,11 @@
               <li><hr class="dropdown-divider"></li>
               <li><router-link class="dropdown-item" to="/user/profile"><el-icon class="me-2"><User /></el-icon>个人资料</router-link></li>
               <li><router-link class="dropdown-item" to="/user/articles"><el-icon class="me-2"><Document /></el-icon>我的文章</router-link></li>
+              <li v-if="isAdminUi">
+                <router-link class="dropdown-item" to="/admin/categories">
+                  <el-icon class="me-2"><Folder /></el-icon>分类管理
+                </router-link>
+              </li>
               <li><a class="dropdown-item" href="#"><el-icon class="me-2"><Setting /></el-icon>设置</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item text-danger" href="#" @click="handleLogout"><el-icon class="me-2"><SwitchButton /></el-icon>退出登录</a></li>
@@ -109,6 +128,15 @@ const searchFocused = ref(false)
 
 const userAvatar = computed(() => {
   return authStore.user?.avatar || 'https://ui-avatars.com/api/?name=' + (authStore.user?.username || 'User') + '&background=667eea&color=fff&size=32'
+})
+
+// 是否显示管理员界面元素：is_staff / is_superuser / 属于“管理员”组
+const isAdminUi = computed(() => {
+  const user = authStore.user
+  if (!user) return false
+  if (user.is_staff || user.is_superuser) return true
+  if (Array.isArray(user.groups) && user.groups.includes('管理员')) return true
+  return false
 })
 
 const handleSearch = () => {
