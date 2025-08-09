@@ -78,7 +78,7 @@
                 </div>
               </li>
               <li><hr class="dropdown-divider"></li>
-              <li><router-link class="dropdown-item" to="/profile"><el-icon class="me-2"><User /></el-icon>个人资料</router-link></li>
+              <li><router-link class="dropdown-item" to="/user/profile"><el-icon class="me-2"><User /></el-icon>个人资料</router-link></li>
               <li><router-link class="dropdown-item" to="/user/articles"><el-icon class="me-2"><Document /></el-icon>我的文章</router-link></li>
               <li><a class="dropdown-item" href="#"><el-icon class="me-2"><Setting /></el-icon>设置</a></li>
               <li><hr class="dropdown-divider"></li>

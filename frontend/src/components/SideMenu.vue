@@ -34,7 +34,7 @@
       <div class="mb-4" v-if="authStore.isAuthenticated">
         <h6 class="sidebar-heading text-muted">个人中心</h6>
         <nav class="nav flex-column">
-          <router-link class="nav-link" to="/profile" :class="{ active: $route.path === '/profile' }">
+          <router-link class="nav-link" to="/user/profile" :class="{ active: $route.path === '/user/profile' }">
             <el-icon class="me-2"><User /></el-icon>个人资料
           </router-link>
           <router-link class="nav-link" to="/user/articles" :class="{ active: $route.path === '/user/articles' }">

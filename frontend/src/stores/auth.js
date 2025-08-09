@@ -95,8 +95,11 @@ export const useAuthStore = defineStore('auth', {
         this.isLoggedIn = true
         
         try {
-          // 验证token是否有效
-          await authAPI.getCurrentUser()
+          // 验证token并获取最新用户信息
+          const currentUser = await authAPI.getCurrentUser()
+          this.user = currentUser
+          // 更新本地存储中的用户信息
+          localStorage.setItem('user', JSON.stringify(currentUser))
         } catch (error) {
           console.log('Token验证失败，清除登录状态')
           // token无效，静默清除登录状态，不显示错误消息

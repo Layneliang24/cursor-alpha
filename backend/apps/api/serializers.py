@@ -9,10 +9,22 @@ User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     """用户序列化器"""
+    avatar = serializers.SerializerMethodField()
+    username = serializers.CharField(required=False)  # 更新时username不是必填的
+    
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'date_joined', 'last_login']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'date_joined', 'last_login', 'avatar', 'bio', 'website']
         read_only_fields = ['id', 'date_joined', 'last_login']
+    
+    def get_avatar(self, obj):
+        """获取用户头像完整URL"""
+        if hasattr(obj, 'avatar') and obj.avatar:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.avatar.url)
+            return obj.avatar.url
+        return obj.get_avatar_url()
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -22,6 +34,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = '__all__'
+        read_only_fields = ['user', 'created_at', 'updated_at']
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -65,11 +78,21 @@ class ArticleSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     comments_count = serializers.ReadOnlyField()
     reading_time = serializers.ReadOnlyField()
+    cover_image = serializers.SerializerMethodField()
     
     class Meta:
         model = Article
         fields = '__all__'
         read_only_fields = ['author', 'views', 'likes', 'comments_count', 'created_at', 'updated_at']
+    
+    def get_cover_image(self, obj):
+        """获取封面图片完整URL"""
+        if obj.cover_image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.cover_image.url)
+            return obj.cover_image.url
+        return None
 
 
 class ArticleCreateSerializer(serializers.ModelSerializer):

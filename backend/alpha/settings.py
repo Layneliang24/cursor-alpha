@@ -98,10 +98,27 @@ WSGI_APPLICATION = 'alpha.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
+# SQLite 配置（开发环境备用）
+DATABASES_SQLITE = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# MySQL 配置
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'alpha_db',
+        'USER': 'root',
+        'PASSWORD': 'meimei520',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
@@ -214,12 +231,16 @@ SIMPLE_JWT = {
 }
 
 # Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
-EMAIL_USE_TLS = False
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '2227208441@qq.com'
+EMAIL_HOST_PASSWORD = 'rzzydlmqsxeuebij'  # QQ邮箱授权码
+DEFAULT_FROM_EMAIL = '2227208441@qq.com'
+
+# Email verification settings
+EMAIL_VERIFICATION_TIMEOUT = 3600  # 1小时过期
 
 # Captcha Configuration
 CAPTCHA_LENGTH = 4
@@ -227,11 +248,34 @@ CAPTCHA_TIMEOUT = 1
 CAPTCHA_IMAGE_SIZE = (160, 50)
 CAPTCHA_FONT_SIZE = 28
 
-# Debug Toolbar
+# Debug Toolbar Configuration
 INTERNAL_IPS = [
     '127.0.0.1',
     'localhost',
 ]
+
+# Debug Toolbar Settings
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
+}
+
+# Only enable debug toolbar in development
+if DEBUG:
+    DEBUG_TOOLBAR_PANELS = [
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+        'debug_toolbar.panels.profiling.ProfilingPanel',
+    ]
 
 # Cache Configuration
 CACHES = {

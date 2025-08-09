@@ -29,6 +29,20 @@
           <div class="card-header">
             <h2>欢迎回来</h2>
             <p>登录您的账户</p>
+            
+            <!-- 用户头像预览 -->
+            <div v-if="verifiedUser" class="user-preview">
+              <div class="user-avatar">
+                <img :src="verifiedUser.avatar" :alt="verifiedUser.username" />
+              </div>
+              <div class="user-info">
+                <h3>{{ verifiedUser.first_name || verifiedUser.username }}</h3>
+                <p>@{{ verifiedUser.username }}</p>
+              </div>
+              <div class="verified-badge">
+                <el-icon><Check /></el-icon>
+              </div>
+            </div>
           </div>
       
       <el-form
@@ -44,6 +58,7 @@
             placeholder="请输入用户名或邮箱"
             prefix-icon="User"
             size="large"
+            @input="clearVerifiedUser"
           />
         </el-form-item>
         
@@ -55,6 +70,7 @@
             prefix-icon="Lock"
             size="large"
             show-password
+            @blur="verifyIdentity"
             @keyup.enter="handleLogin"
           />
         </el-form-item>
@@ -108,8 +124,9 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { ElMessage } from 'element-plus'
-import { Document, User, Star } from '@element-plus/icons-vue'
+import { Document, User, Star, Check } from '@element-plus/icons-vue'
 import AnimatedBackground from '@/components/AnimatedBackground.vue'
+import { authAPI } from '@/api/auth'
 
 const router = useRouter()
 const route = useRoute()
@@ -119,6 +136,8 @@ const loginFormRef = ref()
 const loading = ref(false)
 const captchaCanvas = ref()
 let captchaCode = ref('')
+const verifiedUser = ref(null)
+const verifying = ref(false)
 
 const loginForm = reactive({
   username: '',
@@ -211,6 +230,60 @@ const refreshCaptcha = () => {
   loginForm.captcha = ''
 }
 
+// 验证用户身份
+const verifyIdentity = async () => {
+  console.log('=== 验证身份函数被调用 ===')
+  console.log('用户名:', loginForm.username)
+  console.log('密码长度:', loginForm.password ? loginForm.password.length : 0)
+  console.log('是否正在验证:', verifying.value)
+  
+  // 只有当用户名和密码都不为空时才验证
+  if (!loginForm.username || !loginForm.password || verifying.value) {
+    console.log('跳过验证：缺少用户名或密码，或正在验证中')
+    return
+  }
+  
+  try {
+    verifying.value = true
+    console.log('开始验证用户身份...')
+    
+    const response = await authAPI.verifyUserIdentity({
+      username: loginForm.username,
+      password: loginForm.password
+    })
+    
+    console.log('验证响应:', response)
+    
+    if (response.verified) {
+      verifiedUser.value = response.user_info
+      console.log('用户身份验证成功:', response.user_info)
+      console.log('设置verifiedUser:', verifiedUser.value)
+    } else {
+      verifiedUser.value = null
+      console.log('用户身份验证失败')
+    }
+  } catch (error) {
+    console.error('身份验证出错:', error)
+    console.error('错误状态码:', error.response?.status)
+    console.error('错误详情:', error.response?.data)
+    console.error('请求URL:', error.config?.url)
+    
+    if (error.response?.status === 401) {
+      console.log('用户名或密码错误，这是正常的，不显示头像')
+    }
+    
+    verifiedUser.value = null
+  } finally {
+    verifying.value = false
+    console.log('验证完成，verifiedUser:', verifiedUser.value)
+  }
+}
+
+// 监听用户名变化，清除已验证的用户信息
+const clearVerifiedUser = () => {
+  verifiedUser.value = null
+}
+
 const handleLogin = async () => {
   if (!loginFormRef.value) return
   
@@ -291,19 +364,48 @@ onMounted(() => {
 }
 
 .welcome-text h1 {
-  font-size: 4rem;
-  font-weight: 700;
+  font-size: 4.2rem;
+  font-weight: 800;
   margin: 0 0 1rem 0;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(45deg, #fff, #f0f8ff);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 30%, #e8f0ff 70%, #ffffff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  letter-spacing: -1px;
+  position: relative;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.welcome-text h1::before {
+  content: 'α';
+  position: absolute;
+  left: -60px;
+  top: -10px;
+  font-size: 2rem;
+  opacity: 0.3;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .welcome-text > p {
-  font-size: 1.5rem;
-  margin: 0 0 3rem 0;
-  opacity: 0.9;
+  font-size: 1.2rem;
+  margin: 0.5rem 0 3rem 0;
+  opacity: 0.85;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  position: relative;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.welcome-text > p::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
 }
 
 .features {
@@ -327,11 +429,11 @@ onMounted(() => {
 }
 
 .login-right {
-  width: 500px;
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding: 2rem 3rem 2rem 2rem;
+  justify-content: center;
+  padding: 2rem;
 }
 
 .login-card {
@@ -361,6 +463,77 @@ onMounted(() => {
   margin: 0;
   color: #666;
   font-size: 0.95rem;
+}
+
+.user-preview {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(64, 158, 255, 0.1);
+  position: relative;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-avatar {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 0.8rem;
+  position: relative;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+  text-align: center;
+}
+
+.user-info h3 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.user-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+  opacity: 0.8;
+}
+
+.verified-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #67c23a, #85ce61);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  box-shadow: 0 2px 6px rgba(103, 194, 58, 0.3);
 }
 
 :deep(.el-form-item) {

@@ -14,14 +14,19 @@
       <el-skeleton :rows="10" animated />
     </div>
     
-    <el-form
-      v-else-if="articleForm.title"
-      ref="articleFormRef"
-      :model="articleForm"
-      :rules="articleRules"
-      label-width="100px"
-      class="article-form"
-    >
+    <div v-else-if="articleForm.title" class="edit-layout">
+      <div class="edit-sidebar">
+        <TableOfContents ref="tocRef" :content="articleForm.content" />
+      </div>
+      
+      <div class="edit-main">
+        <el-form
+          ref="articleFormRef"
+          :model="articleForm"
+          :rules="articleRules"
+          label-width="100px"
+          class="article-form"
+        >
       <el-form-item label="文章标题" prop="title">
         <el-input
           v-model="articleForm.title"
@@ -95,22 +100,16 @@
         </el-upload>
       </el-form-item>
       
-      <el-form-item label="文章内容" prop="content">
-        <div class="editor-container">
-          <el-input
-            v-model="articleForm.content"
-            type="textarea"
-            :rows="20"
-            placeholder="请输入文章内容，支持 Markdown 格式..."
-            class="content-editor"
-          />
-        </div>
+      <el-form-item label="文章内容" prop="content" class="content-form-item">
+        <MarkdownEditor v-model="articleForm.content" />
       </el-form-item>
       
-      <el-form-item label="文章设置">
-        <el-checkbox v-model="articleForm.featured">设为推荐文章</el-checkbox>
-      </el-form-item>
-    </el-form>
+        <el-form-item label="文章设置">
+          <el-checkbox v-model="articleForm.featured">设为推荐文章</el-checkbox>
+        </el-form-item>
+        </el-form>
+      </div>
+    </div>
     
     <div v-else class="error-container">
       <el-empty description="文章不存在或无权限编辑">
@@ -128,12 +127,15 @@ import { useRoute, useRouter } from 'vue-router'
 import { useArticlesStore } from '@/stores/articles'
 import { categoriesAPI } from '@/api/categories'
 import { ElMessage } from 'element-plus'
+import MarkdownEditor from '@/components/MarkdownEditor.vue'
+import TableOfContents from '@/components/TableOfContents.vue'
 
 const route = useRoute()
 const router = useRouter()
 const articlesStore = useArticlesStore()
 
 const articleFormRef = ref()
+const tocRef = ref()
 const loading = ref(true)
 const updating = ref(false)
 const savingDraft = ref(false)
@@ -311,9 +313,40 @@ onMounted(async () => {
 
 <style scoped>
 .article-edit-container {
-  max-width: 900px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.edit-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.edit-main {
+  min-width: 0;
+}
+
+.edit-sidebar {
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  margin-left: -40px;
+}
+
+@media (max-width: 1024px) {
+  .edit-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .edit-sidebar {
+    order: -1;
+    position: static;
+  }
 }
 
 .page-header {
@@ -346,21 +379,12 @@ onMounted(async () => {
   box-shadow: 0 2px 12px rgba(0,0,0,0.1);
 }
 
-.editor-container {
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
-  overflow: hidden;
+.content-form-item {
+  margin-bottom: 30px;
 }
 
-.content-editor {
-  border: none;
-}
-
-.content-editor :deep(.el-textarea__inner) {
-  border: none;
-  box-shadow: none;
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  line-height: 1.6;
+.content-form-item :deep(.el-form-item__content) {
+  width: 100% !important;
 }
 
 .cover-uploader {

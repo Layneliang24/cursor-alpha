@@ -1,7 +1,11 @@
 from rest_framework import viewsets, status, permissions
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import os
+import uuid
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -181,9 +185,206 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        """只返回当前用户的资料"""
-        return UserProfile.objects.filter(user=self.request.user)
+        """返回所有用户资料，但限制操作权限"""
+        return UserProfile.objects.all()
+    
+    def get_object(self):
+        """获取对象时确保用户只能操作自己的资料"""
+        obj = super().get_object()
+        if obj.user != self.request.user:
+            from rest_framework.exceptions import PermissionDenied
+            raise PermissionDenied("您只能操作自己的资料")
+        return obj
     
     def perform_create(self, serializer):
         """创建用户资料时设置用户"""
         serializer.save(user=self.request.user)
+    
+    def perform_update(self, serializer):
+        """更新用户资料时确保是当前用户"""
+        if serializer.instance.user != self.request.user:
+            from rest_framework.exceptions import PermissionDenied
+            raise PermissionDenied("您只能操作自己的资料")
+        serializer.save()
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def upload_image(request):
+    """上传图片接口"""
+    if 'image' not in request.FILES:
+        return Response({'error': '请选择要上传的图片'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    image = request.FILES['image']
+    
+    # 验证文件类型
+    allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+    if image.content_type not in allowed_types:
+        return Response({'error': '只支持 JPEG、PNG、GIF、WebP 格式的图片'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # 验证文件大小 (5MB)
+    if image.size > 5 * 1024 * 1024:
+        return Response({'error': '图片大小不能超过5MB'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        # 生成唯一文件名
+        file_extension = os.path.splitext(image.name)[1]
+        unique_filename = f"{uuid.uuid4()}{file_extension}"
+        file_path = f"uploads/images/{unique_filename}"
+        
+        # 保存文件
+        saved_path = default_storage.save(file_path, ContentFile(image.read()))
+        
+        # 返回完整URL
+        image_url = request.build_absolute_uri(f"/media/{saved_path}")
+        
+        return Response({
+            'url': image_url,
+            'filename': unique_filename,
+            'size': image.size
+        }, status=status.HTTP_201_CREATED)
+        
+    except Exception as e:
+        return Response({'error': f'上传失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def upload_avatar(request):
+    """上传用户头像接口"""
+    if 'avatar' not in request.FILES:
+        return Response({'error': '请选择要上传的头像'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    avatar = request.FILES['avatar']
+    
+    # 验证文件类型
+    allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+    if avatar.content_type not in allowed_types:
+        return Response({'error': '只支持 JPEG、PNG、GIF、WebP 格式的头像'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # 验证文件大小 (2MB)
+    if avatar.size > 2 * 1024 * 1024:
+        return Response({'error': '头像大小不能超过2MB'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        # 生成唯一文件名
+        file_extension = os.path.splitext(avatar.name)[1]
+        unique_filename = f"{uuid.uuid4()}{file_extension}"
+        file_path = f"avatars/{unique_filename}"
+        
+        # 保存文件
+        saved_path = default_storage.save(file_path, ContentFile(avatar.read()))
+        
+        # 更新用户头像
+        user = request.user
+        user.avatar = saved_path
+        user.save()
+        
+        # 返回完整URL
+        avatar_url = request.build_absolute_uri(f"/media/{saved_path}")
+        
+        return Response({
+            'url': avatar_url,
+            'filename': unique_filename,
+            'size': avatar.size
+        }, status=status.HTTP_201_CREATED)
+        
+    except Exception as e:
+        return Response({'error': f'头像上传失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def update_avatar_url(request):
+    """更新用户头像URL接口（用于外部头像链接）"""
+    avatar_url = request.data.get('avatar_url')
+    
+    if not avatar_url:
+        return Response({'error': '请提供头像URL'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        user = request.user
+        
+        # 清空之前上传的头像文件
+        if user.avatar:
+            user.avatar = None
+        
+        # 保存外部头像URL到UserProfile
+        profile, created = UserProfile.objects.get_or_create(user=user)
+        profile.avatar_url = avatar_url
+        profile.save()
+        
+        user.save()
+        
+        return Response({
+            'url': avatar_url,
+            'message': '头像URL更新成功'
+        }, status=status.HTTP_200_OK)
+        
+    except Exception as e:
+        return Response({'error': f'头像URL更新失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST'])
+@permission_classes([])  # 不需要认证
+def verify_user_identity(request):
+    """验证用户身份并返回头像信息"""
+    username = request.data.get('username')
+    password = request.data.get('password')
+    
+    print(f"收到身份验证请求: username={username}, password={'*' * len(password) if password else None}")
+    
+    if not username or not password:
+        return Response({'error': '用户名和密码不能为空'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        # 先检查用户是否存在
+        try:
+            user_by_username = User.objects.get(username=username)
+            print(f"通过用户名找到用户: {user_by_username}")
+        except User.DoesNotExist:
+            print(f"用户名 {username} 不存在")
+            user_by_username = None
+        
+        try:
+            user_by_email = User.objects.get(email=username)
+            print(f"通过邮箱找到用户: {user_by_email}")
+        except User.DoesNotExist:
+            print(f"邮箱 {username} 不存在")
+            user_by_email = None
+        
+        # 验证用户身份 - 支持用户名或邮箱登录
+        user = authenticate(username=username, password=password)
+        print(f"直接authenticate结果: {user}")
+        
+        # 如果用户名验证失败，尝试用邮箱验证
+        if not user and user_by_email:
+            print(f"尝试用邮箱用户的用户名验证: {user_by_email.username}")
+            user = authenticate(username=user_by_email.username, password=password)
+            print(f"邮箱authenticate结果: {user}")
+        
+        print(f"最终验证结果: username={username}, user={user}")
+        
+        if user:
+            # 用户身份验证成功，返回头像和基本信息
+            avatar_url = user.get_avatar_url()
+            if hasattr(user, 'avatar') and user.avatar:
+                avatar_url = request.build_absolute_uri(user.avatar.url)
+            
+            return Response({
+                'verified': True,
+                'user_info': {
+                    'id': user.id,
+                    'username': user.username,
+                    'first_name': user.first_name,
+                    'avatar': avatar_url
+                }
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({
+                'verified': False,
+                'error': '用户名或密码错误'
+            }, status=status.HTTP_401_UNAUTHORIZED)
+            
+    except Exception as e:
+        return Response({'error': f'验证失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

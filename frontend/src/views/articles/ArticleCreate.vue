@@ -91,14 +91,7 @@
       </el-form-item>
       
       <el-form-item label="文章内容" prop="content" class="content-form-item">
-        <el-input
-          v-model="articleForm.content"
-          type="textarea"
-          :rows="25"
-          placeholder="请输入文章内容，支持 Markdown 格式..."
-          class="content-editor"
-          resize="vertical"
-        />
+        <MarkdownEditor v-model="articleForm.content" />
       </el-form-item>
       
       <el-form-item label="文章设置">
@@ -114,6 +107,7 @@ import { useRouter } from 'vue-router'
 import { useArticlesStore } from '@/stores/articles'
 import { categoriesAPI } from '@/api/categories'
 import { ElMessage } from 'element-plus'
+import MarkdownEditor from '@/components/MarkdownEditor.vue'
 
 const router = useRouter()
 const articlesStore = useArticlesStore()

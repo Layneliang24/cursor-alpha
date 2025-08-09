@@ -155,21 +155,64 @@
     </el-row>
     
     <!-- 头像上传对话框 -->
-    <el-dialog v-model="showAvatarUpload" title="更换头像" width="400px">
-      <el-upload
-        class="avatar-uploader"
-        :show-file-list="false"
-        :before-upload="beforeAvatarUpload"
-        action="#"
-        :http-request="uploadAvatar"
-      >
-        <img v-if="newAvatar" :src="newAvatar" class="avatar-preview" />
-        <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-      </el-upload>
+    <el-dialog v-model="showAvatarUpload" title="更换头像" width="600px">
+      <el-tabs v-model="avatarTab" class="avatar-tabs">
+        <!-- 上传头像 -->
+        <el-tab-pane label="上传头像" name="upload">
+          <el-upload
+            class="avatar-uploader"
+            :show-file-list="false"
+            :before-upload="beforeAvatarUpload"
+            action="#"
+            :http-request="uploadAvatar"
+          >
+            <img v-if="newAvatar" :src="newAvatar" class="avatar-preview" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+            <div class="upload-tip">点击选择图片或拖拽到此处</div>
+          </el-upload>
+        </el-tab-pane>
+        
+        <!-- 动画头像 -->
+        <el-tab-pane label="动画头像" name="animated">
+          <div class="animated-avatars">
+            <div 
+              v-for="avatar in animatedAvatars" 
+              :key="avatar.id"
+              class="avatar-option"
+              :class="{ active: selectedAnimatedAvatar === avatar.url }"
+              @click="selectAnimatedAvatar(avatar.url)"
+            >
+              <img :src="avatar.url" :alt="avatar.name" class="animated-avatar" />
+              <div class="avatar-name">{{ avatar.name }}</div>
+            </div>
+          </div>
+        </el-tab-pane>
+        
+        <!-- 卡通头像 -->
+        <el-tab-pane label="卡通头像" name="cartoon">
+          <div class="cartoon-avatars">
+            <div 
+              v-for="avatar in cartoonAvatars" 
+              :key="avatar.id"
+              class="avatar-option"
+              :class="{ active: selectedAnimatedAvatar === avatar.url }"
+              @click="selectAnimatedAvatar(avatar.url)"
+            >
+              <img :src="avatar.url" :alt="avatar.name" class="cartoon-avatar" />
+              <div class="avatar-name">{{ avatar.name }}</div>
+            </div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+      
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="showAvatarUpload = false">取消</el-button>
-          <el-button type="primary" @click="saveAvatar" :disabled="!newAvatar">
+          <el-button 
+            type="primary" 
+            @click="saveAvatar" 
+            :disabled="!newAvatar && !selectedAnimatedAvatar"
+          >
             保存
           </el-button>
         </span>
@@ -190,6 +233,8 @@ const profileFormRef = ref()
 const updating = ref(false)
 const showAvatarUpload = ref(false)
 const newAvatar = ref('')
+const avatarTab = ref('upload')
+const selectedAnimatedAvatar = ref('')
 
 const userProfile = reactive({
   avatar: ''
@@ -200,6 +245,84 @@ const userStats = reactive({
   likes: 0,
   views: 0
 })
+
+// 动画头像数据
+const animatedAvatars = ref([
+  {
+    id: 1,
+    name: '科技少女',
+    url: 'https://i.pravatar.cc/150?img=1'
+  },
+  {
+    id: 2,
+    name: '程序员',
+    url: 'https://i.pravatar.cc/150?img=2'
+  },
+  {
+    id: 3,
+    name: '设计师',
+    url: 'https://i.pravatar.cc/150?img=3'
+  },
+  {
+    id: 4,
+    name: '创意达人',
+    url: 'https://i.pravatar.cc/150?img=4'
+  },
+  {
+    id: 5,
+    name: '技术专家',
+    url: 'https://i.pravatar.cc/150?img=5'
+  },
+  {
+    id: 6,
+    name: '产品经理',
+    url: 'https://i.pravatar.cc/150?img=6'
+  }
+])
+
+// 卡通头像数据
+const cartoonAvatars = ref([
+  {
+    id: 1,
+    name: '可爱猫咪',
+    url: 'https://api.dicebear.com/7.x/cats/svg?seed=Fluffy&backgroundColor=b6e3f4'
+  },
+  {
+    id: 2,
+    name: '机器人',
+    url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Aneka&backgroundColor=c0aede'
+  },
+  {
+    id: 3,
+    name: '像素风',
+    url: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Annie&backgroundColor=ffd5dc'
+  },
+  {
+    id: 4,
+    name: '抽象艺术',
+    url: 'https://api.dicebear.com/7.x/shapes/svg?seed=Molly&backgroundColor=ffdfbf'
+  },
+  {
+    id: 5,
+    name: '几何图形',
+    url: 'https://api.dicebear.com/7.x/identicon/svg?seed=Dusty&backgroundColor=d1d4f9'
+  },
+  {
+    id: 6,
+    name: '趣味头像',
+    url: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=Precious&backgroundColor=fecaca'
+  },
+  {
+    id: 7,
+    name: '手绘风格',
+    url: 'https://api.dicebear.com/7.x/lorelei/svg?seed=Coco&backgroundColor=a7f3d0'
+  },
+  {
+    id: 8,
+    name: '简约风格',
+    url: 'https://api.dicebear.com/7.x/thumbs/svg?seed=Gizmo&backgroundColor=fed7aa'
+  }
+])
 
 const profileForm = reactive({
   username: '',
@@ -239,20 +362,46 @@ const profileRules = {
 // 获取用户资料
 const fetchUserProfile = async () => {
   try {
+    console.log('获取用户资料，用户ID:', authStore.user.id)
     const profile = await usersAPI.getUserProfile(authStore.user.id)
+    console.log('获取到的用户资料:', profile)
     
     // 填充基本信息
     Object.assign(profileForm, {
       username: authStore.user.username,
       email: authStore.user.email,
       first_name: authStore.user.first_name || '',
+      bio: authStore.user.bio || '',
+      website: authStore.user.website || '',
       ...profile
     })
     
     userProfile.avatar = authStore.user.avatar || profile.avatar
   } catch (error) {
     console.error('获取用户资料失败:', error)
-    // ElMessage.error('获取用户资料失败')
+    console.log('错误状态码:', error.response?.status)
+    console.log('错误详情:', error.response?.data)
+    
+    if (error.response?.status === 404) {
+      console.log('用户资料不存在，将在更新时自动创建')
+      // 只填充基本用户信息
+      Object.assign(profileForm, {
+        username: authStore.user.username,
+        email: authStore.user.email,
+        first_name: authStore.user.first_name || '',
+        bio: authStore.user.bio || '',
+        website: authStore.user.website || '',
+        phone: '',
+        company: '',
+        position: '',
+        location: '',
+        skills: '',
+        github: '',
+        linkedin: '',
+        twitter: ''
+      })
+      userProfile.avatar = authStore.user.avatar
+    }
   }
 }
 
@@ -282,33 +431,82 @@ const updateProfile = async () => {
     
     updating.value = true
     
+    console.log('开始更新用户资料...')
+    console.log('用户ID:', authStore.user.id)
+    console.log('表单数据:', profileForm)
+    
     // 更新用户基本信息
+    console.log('更新用户基本信息...')
     await usersAPI.updateUser(authStore.user.id, {
       email: profileForm.email,
-      first_name: profileForm.first_name
+      first_name: profileForm.first_name,
+      bio: profileForm.bio,
+      website: profileForm.website
     })
+    console.log('用户基本信息更新成功')
     
     // 更新用户详细资料
-    await usersAPI.updateUserProfile(authStore.user.id, {
-      phone: profileForm.phone,
-      company: profileForm.company,
-      position: profileForm.position,
-      location: profileForm.location,
-      bio: profileForm.bio,
-      website: profileForm.website,
-      skills: profileForm.skills,
-      github: profileForm.github,
-      linkedin: profileForm.linkedin,
-      twitter: profileForm.twitter
-    })
+    console.log('更新用户详细资料...')
+    try {
+      await usersAPI.updateUserProfile(authStore.user.id, {
+        phone: profileForm.phone,
+        company: profileForm.company,
+        position: profileForm.position,
+        location: profileForm.location,
+        skills: profileForm.skills,
+        github: profileForm.github,
+        linkedin: profileForm.linkedin,
+        twitter: profileForm.twitter
+      })
+      console.log('用户详细资料更新成功')
+    } catch (profileError) {
+      console.log('更新用户资料失败，尝试创建:', profileError.response?.status)
+      if (profileError.response?.status === 404) {
+        console.log('用户资料不存在，创建新的资料...')
+        // 如果用户资料不存在，创建一个新的
+        const { usersAPI: createAPI } = await import('@/api/users')
+        await createAPI.createUserProfile({
+          user: authStore.user.id,
+          phone: profileForm.phone,
+          company: profileForm.company,
+          position: profileForm.position,
+          location: profileForm.location,
+          skills: profileForm.skills,
+          github: profileForm.github,
+          linkedin: profileForm.linkedin,
+          twitter: profileForm.twitter
+        })
+        console.log('用户资料创建成功')
+      } else {
+        throw profileError
+      }
+    }
     
     ElMessage.success('资料更新成功！')
     
     // 重新获取用户信息
     await authStore.initAuth()
   } catch (error) {
-    console.error('更新资料失败:', error)
-    ElMessage.error('更新资料失败')
+    console.error('=== 更新资料失败详细信息 ===')
+    console.error('错误对象:', error)
+    console.error('错误消息:', error.message)
+    console.error('错误状态码:', error.response?.status)
+    console.error('错误响应数据:', error.response?.data)
+    console.error('请求配置:', error.config)
+    console.error('请求URL:', error.config?.url)
+    console.error('请求方法:', error.config?.method)
+    console.error('请求数据:', error.config?.data)
+    console.error('===============================')
+    
+    // 显示具体错误信息
+    if (error.response?.data?.detail) {
+      ElMessage.error(`更新失败: ${error.response.data.detail}`)
+    } else if (error.response?.data) {
+      const errorMsg = Object.values(error.response.data).flat().join(', ')
+      ElMessage.error(`更新失败: ${errorMsg}`)
+    } else {
+      ElMessage.error(`更新资料失败: ${error.message}`)
+    }
   } finally {
     updating.value = false
   }
@@ -344,18 +542,53 @@ const uploadAvatar = async (options) => {
   reader.readAsDataURL(options.file)
 }
 
+// 选择动画头像
+const selectAnimatedAvatar = (avatarUrl) => {
+  selectedAnimatedAvatar.value = avatarUrl
+  newAvatar.value = '' // 清除上传的头像
+}
+
 // 保存头像
 const saveAvatar = async () => {
   try {
-    // 这里应该调用后端的头像上传接口
-    // await usersAPI.updateAvatar(authStore.user.id, newAvatar.value)
+    let avatarUrl = ''
     
-    userProfile.avatar = newAvatar.value
+    if (newAvatar.value) {
+      // 上传自定义头像
+      const { uploadAvatar: uploadAPI } = await import('@/api/upload')
+      const response = await uploadAPI(newAvatar.value)
+      avatarUrl = response.url
+    } else if (selectedAnimatedAvatar.value) {
+      // 使用选中的动画头像 - 调用专门的API保存URL
+      console.log('保存动画头像URL:', selectedAnimatedAvatar.value)
+      avatarUrl = selectedAnimatedAvatar.value
+      
+      // 调用专门的API更新头像URL
+      const { updateAvatarUrl } = await import('@/api/upload')
+      await updateAvatarUrl(avatarUrl)
+    } else {
+      ElMessage.warning('请选择一个头像')
+      return
+    }
+    
+    // 本地更新头像
+    userProfile.avatar = avatarUrl
+    
+    // 关闭对话框
     showAvatarUpload.value = false
     newAvatar.value = ''
+    selectedAnimatedAvatar.value = ''
+    
+    // 立即更新authStore中的用户头像
+    if (authStore.user) {
+      authStore.user.avatar = avatarUrl
+      localStorage.setItem('user', JSON.stringify(authStore.user))
+    }
+    
     ElMessage.success('头像更新成功！')
   } catch (error) {
     console.error('头像更新失败:', error)
+    console.error('错误详情:', error.response?.data || error.message)
     ElMessage.error('头像更新失败')
   }
 }
@@ -457,6 +690,76 @@ onMounted(() => {
 .avatar-uploader {
   display: flex;
   justify-content: center;
+}
+
+.avatar-tabs {
+  margin-bottom: 20px;
+}
+
+.animated-avatars,
+.cartoon-avatars {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+  padding: 10px 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.avatar-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.avatar-option:hover {
+  background-color: #f5f7fa;
+  border-color: #c6e2ff;
+}
+
+.avatar-option.active {
+  background-color: #e6f7ff;
+  border-color: #409eff;
+  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.2);
+}
+
+.animated-avatar,
+.cartoon-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
+  transition: transform 0.3s ease;
+}
+
+.avatar-option:hover .animated-avatar,
+.avatar-option:hover .cartoon-avatar {
+  transform: scale(1.1);
+}
+
+.avatar-name {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  font-weight: 500;
+}
+
+.avatar-option.active .avatar-name {
+  color: #409eff;
+  font-weight: 600;
+}
+
+.upload-tip {
+  color: #999;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 8px;
 }
 
 .avatar-uploader :deep(.el-upload) {

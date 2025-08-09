@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class User(AbstractUser):
@@ -31,9 +33,16 @@ class User(AbstractUser):
     
     def get_avatar_url(self):
         """获取头像URL"""
+        # 优先使用上传的头像文件
         if self.avatar:
             return self.avatar.url
-        return '/static/images/default-avatar.png'
+        
+        # 其次使用profile中保存的外部头像URL
+        if hasattr(self, 'profile') and self.profile.avatar_url:
+            return self.profile.avatar_url
+        
+        # 最后使用在线头像生成服务作为默认头像
+        return f'https://api.dicebear.com/7.x/initials/svg?seed={self.username}&backgroundColor=667eea&textColor=ffffff'
 
 
 class UserProfile(models.Model):
@@ -44,6 +53,7 @@ class UserProfile(models.Model):
     company = models.CharField(max_length=100, blank=True, verbose_name='公司')
     position = models.CharField(max_length=100, blank=True, verbose_name='职位')
     skills = models.TextField(blank=True, verbose_name='技能标签')
+    avatar_url = models.URLField(blank=True, verbose_name='外部头像URL')
     github = models.URLField(blank=True, verbose_name='GitHub')
     linkedin = models.URLField(blank=True, verbose_name='LinkedIn')
     twitter = models.URLField(blank=True, verbose_name='Twitter')
@@ -57,3 +67,19 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return f"{self.user.username}的资料"
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    """用户创建时自动创建用户资料"""
+    if created:
+        UserProfile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    """保存用户时同时保存用户资料"""
+    if hasattr(instance, 'profile'):
+        instance.profile.save()
+    else:
+        UserProfile.objects.create(user=instance)

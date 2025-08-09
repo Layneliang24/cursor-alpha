@@ -22,6 +22,11 @@ export const usersAPI = {
     return request.put(`/profiles/${id}/`, data)
   },
 
+  // 创建用户资料
+  createUserProfile(data) {
+    return request.post('/profiles/', data)
+  },
+
   // 获取用户文章
   getUserArticles(userId, params = {}) {
     return request.get('/articles/', { 

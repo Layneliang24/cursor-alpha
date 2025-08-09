@@ -4,151 +4,159 @@
       <el-skeleton :rows="10" animated />
     </div>
     
-    <div v-else-if="article" class="article-content">
-      <!-- 文章头部 -->
-      <div class="article-header">
-        <div class="article-meta">
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/articles' }">文章</el-breadcrumb-item>
-            <el-breadcrumb-item v-if="article.category" :to="{ path: `/categories/${article.category.id}` }">
-              {{ article.category.name }}
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>{{ article.title }}</el-breadcrumb-item>
-          </el-breadcrumb>
-        </div>
-        
-        <h1 class="article-title">{{ article.title }}</h1>
-        
-        <div class="article-info">
-          <div class="author-info">
-            <el-avatar :size="40" :src="article.author?.avatar">
-              {{ article.author?.username?.charAt(0)?.toUpperCase() }}
-            </el-avatar>
-            <div class="author-details">
-              <div class="author-name">{{ article.author?.username }}</div>
-              <div class="publish-info">
-                发布于 {{ formatDate(article.created_at) }} · 
-                阅读时间约 {{ article.reading_time }} 分钟
-              </div>
-            </div>
+    <div v-else-if="article" class="article-layout">
+      <div class="article-sidebar">
+        <TableOfContents ref="tocRef" />
+      </div>
+      
+      <div class="article-main">
+        <!-- 文章头部 -->
+        <div class="article-header">
+          <div class="article-meta">
+            <el-breadcrumb separator="/">
+              <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+              <el-breadcrumb-item :to="{ path: '/articles' }">文章</el-breadcrumb-item>
+              <el-breadcrumb-item v-if="article.category" :to="{ path: `/categories/${article.category.id}` }">
+                {{ article.category.name }}
+              </el-breadcrumb-item>
+              <el-breadcrumb-item>{{ article.title }}</el-breadcrumb-item>
+            </el-breadcrumb>
           </div>
           
-          <div class="article-stats">
-            <span class="stat-item">
-              <el-icon><View /></el-icon>
-              {{ article.views }}
-            </span>
-            <span class="stat-item">
-              <el-icon><Star /></el-icon>
-              {{ article.likes }}
-            </span>
-            <span class="stat-item">
-              <el-icon><ChatDotRound /></el-icon>
-              {{ article.comments_count }}
-            </span>
-          </div>
-        </div>
-        
-        <div class="article-tags" v-if="article.tags && article.tags.length > 0">
-          <el-tag 
-            v-for="tag in article.tags" 
-            :key="tag.id" 
-            size="small"
-            :color="tag.color"
-            style="margin-right: 8px;"
-          >
-            {{ tag.name }}
-          </el-tag>
-        </div>
-      </div>
-      
-      <!-- 文章封面 -->
-      <div class="article-cover" v-if="article.cover_image">
-        <img :src="article.cover_image" :alt="article.title" />
-      </div>
-      
-      <!-- 文章正文 -->
-      <div class="article-body">
-        <MarkdownRenderer :content="article.content" />
-      </div>
-      
-      <!-- 文章操作 -->
-      <div class="article-actions">
-        <el-button 
-          :type="isLiked ? 'danger' : 'default'"
-          @click="toggleLike"
-          :loading="likeLoading"
-        >
-          <el-icon><Star /></el-icon>
-          {{ isLiked ? '已点赞' : '点赞' }} ({{ article.likes }})
-        </el-button>
-        <el-button 
-          :type="isBookmarked ? 'warning' : 'default'"
-          @click="toggleBookmark"
-          :loading="bookmarkLoading"
-        >
-          <el-icon><Collection /></el-icon>
-          {{ isBookmarked ? '已收藏' : '收藏' }}
-        </el-button>
-        <el-button @click="shareArticle">
-          <el-icon><Share /></el-icon>
-          分享
-        </el-button>
-      </div>
-      
-      <!-- 评论区 -->
-      <div class="comments-section">
-        <h3>评论 ({{ article.comments_count }})</h3>
-        
-        <!-- 发表评论 -->
-        <div class="comment-form" v-if="authStore.isAuthenticated">
-          <el-input
-            v-model="newComment"
-            type="textarea"
-            :rows="4"
-            placeholder="写下你的评论..."
-            maxlength="500"
-            show-word-limit
-          />
-          <div class="comment-form-actions">
-            <el-button 
-              type="primary" 
-              @click="submitComment"
-              :loading="commentLoading"
-              :disabled="!newComment.trim()"
-            >
-              发表评论
-            </el-button>
-          </div>
-        </div>
-        
-        <div class="login-prompt" v-else>
-          <p>
-            <router-link to="/login">登录</router-link> 后参与评论
-          </p>
-        </div>
-        
-        <!-- 评论列表 -->
-        <div class="comments-list">
-          <div 
-            v-for="comment in comments" 
-            :key="comment.id" 
-            class="comment-item"
-          >
-            <div class="comment-header">
-              <el-avatar :size="32" :src="comment.author?.avatar">
-                {{ comment.author?.username?.charAt(0)?.toUpperCase() }}
+          <h1 class="article-title">{{ article.title }}</h1>
+          
+          <div class="article-info">
+            <div class="author-info">
+              <el-avatar :size="40" :src="article.author?.avatar">
+                {{ article.author?.username?.charAt(0)?.toUpperCase() }}
               </el-avatar>
-              <div class="comment-info">
-                <div class="comment-author">{{ comment.author?.username }}</div>
-                <div class="comment-time">{{ formatDate(comment.created_at) }}</div>
+              <div class="author-details">
+                <div class="author-name">{{ article.author?.username }}</div>
+                <div class="publish-info">
+                  发布于 {{ formatDate(article.created_at) }} · 
+                  阅读时间约 {{ article.reading_time }} 分钟
+                </div>
               </div>
             </div>
-            <div class="comment-content">{{ comment.content }}</div>
+            
+            <div class="article-stats">
+              <span class="stat-item">
+                <el-icon><View /></el-icon>
+                {{ article.views }}
+              </span>
+              <span class="stat-item">
+                <el-icon><Star /></el-icon>
+                {{ article.likes }}
+              </span>
+              <span class="stat-item">
+                <el-icon><ChatDotRound /></el-icon>
+                {{ article.comments_count }}
+              </span>
+            </div>
           </div>
           
-          <el-empty v-if="comments.length === 0" description="暂无评论" />
+          <div class="article-tags" v-if="article.tags && article.tags.length > 0">
+            <el-tag 
+              v-for="tag in article.tags" 
+              :key="tag.id" 
+              size="small"
+              :color="tag.color"
+              style="margin-right: 8px;"
+            >
+              {{ tag.name }}
+            </el-tag>
+          </div>
+        </div>
+        
+        <!-- 文章封面 -->
+        <div class="article-cover" v-if="article.cover_image">
+          <img :src="article.cover_image" :alt="article.title" />
+        </div>
+        
+        <!-- 文章正文 -->
+        <div class="article-body">
+          <div class="article-content">
+            <MarkdownRenderer :content="article.content" />
+          </div>
+        </div>
+        
+        <!-- 文章操作 -->
+        <div class="article-actions">
+          <el-button 
+            :type="isLiked ? 'danger' : 'default'"
+            @click="toggleLike"
+            :loading="likeLoading"
+          >
+            <el-icon><Star /></el-icon>
+            {{ isLiked ? '已点赞' : '点赞' }} ({{ article.likes }})
+          </el-button>
+          <el-button 
+            :type="isBookmarked ? 'warning' : 'default'"
+            @click="toggleBookmark"
+            :loading="bookmarkLoading"
+          >
+            <el-icon><Collection /></el-icon>
+            {{ isBookmarked ? '已收藏' : '收藏' }}
+          </el-button>
+          <el-button @click="shareArticle">
+            <el-icon><Share /></el-icon>
+            分享
+          </el-button>
+        </div>
+        
+        <!-- 评论区 -->
+        <div class="comments-section">
+          <h3>评论 ({{ article.comments_count }})</h3>
+          
+          <!-- 发表评论 -->
+          <div class="comment-form" v-if="authStore.isAuthenticated">
+            <el-input
+              v-model="newComment"
+              type="textarea"
+              :rows="4"
+              placeholder="写下你的评论..."
+              maxlength="500"
+              show-word-limit
+            />
+            <div class="comment-form-actions">
+              <el-button 
+                type="primary" 
+                @click="submitComment"
+                :loading="commentLoading"
+                :disabled="!newComment.trim()"
+              >
+                发表评论
+              </el-button>
+            </div>
+          </div>
+          
+          <div class="login-prompt" v-else>
+            <p>
+              <router-link to="/login">登录</router-link> 后参与评论
+            </p>
+          </div>
+          
+          <!-- 评论列表 -->
+          <div class="comments-list">
+            <div 
+              v-for="comment in comments" 
+              :key="comment.id" 
+              class="comment-item"
+            >
+              <div class="comment-header">
+                <el-avatar :size="32" :src="comment.author?.avatar">
+                  {{ comment.author?.username?.charAt(0)?.toUpperCase() }}
+                </el-avatar>
+                <div class="comment-info">
+                  <div class="comment-author">{{ comment.author?.username }}</div>
+                  <div class="comment-time">{{ formatDate(comment.created_at) }}</div>
+                </div>
+              </div>
+              <div class="comment-content">{{ comment.content }}</div>
+            </div>
+            
+            <el-empty v-if="comments.length === 0" description="暂无评论" />
+          </div>
         </div>
       </div>
     </div>
@@ -170,7 +178,9 @@ import { useArticlesStore } from '@/stores/articles'
 import { useAuthStore } from '@/stores/auth'
 import { articlesAPI } from '@/api/articles'
 import { ElMessage } from 'element-plus'
+import { View, Star, ChatDotRound, Collection, Share } from '@element-plus/icons-vue'
 import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
+import TableOfContents from '@/components/TableOfContents.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -185,6 +195,7 @@ const likeLoading = ref(false)
 const bookmarkLoading = ref(false)
 const isLiked = ref(false)
 const isBookmarked = ref(false)
+const tocRef = ref()
 
 // 获取文章详情
 const fetchArticle = async () => {
@@ -192,6 +203,13 @@ const fetchArticle = async () => {
     await articlesStore.fetchArticle(route.params.id)
     // 获取评论
     await fetchComments()
+    
+    // 等待内容渲染完成后生成目录
+    setTimeout(() => {
+      if (tocRef.value && tocRef.value.generateTOC) {
+        tocRef.value.generateTOC()
+      }
+    }, 1000)
   } catch (error) {
     console.error('获取文章失败:', error)
     ElMessage.error('文章不存在或已被删除')
@@ -301,10 +319,41 @@ onMounted(() => {
 
 <style scoped>
 .article-detail-container {
-  max-width: 1000px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
   line-height: 1.6;
+}
+
+.article-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.article-main {
+  min-width: 0;
+}
+
+.article-sidebar {
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  margin-left: -40px;
+}
+
+@media (max-width: 1024px) {
+  .article-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .article-sidebar {
+    order: -1;
+    position: static;
+  }
 }
 
 .loading-container {
@@ -387,37 +436,6 @@ onMounted(() => {
 
 .article-body {
   margin: 40px 0;
-}
-
-.content {
-  font-size: 16px;
-  line-height: 1.8;
-  color: #333;
-}
-
-.content :deep(p) {
-  margin: 20px 0;
-}
-
-.content :deep(h1),
-.content :deep(h2),
-.content :deep(h3) {
-  margin: 30px 0 15px 0;
-  font-weight: 600;
-}
-
-.content :deep(pre) {
-  background: #f5f5f5;
-  padding: 15px;
-  border-radius: 4px;
-  overflow-x: auto;
-}
-
-.content :deep(blockquote) {
-  border-left: 4px solid #409eff;
-  padding-left: 15px;
-  margin: 20px 0;
-  color: #666;
 }
 
 .article-actions {
