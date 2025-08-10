@@ -16,10 +16,11 @@ from apps.articles.models import Article, Comment, Like, Bookmark
 from apps.categories.models import Category, Tag
 from .permissions import IsAdminOrReadOnly, DjangoModelPermissionsOrReadOnly, IsAuthorOrAdminOrReadOnly
 from apps.users.models import UserProfile
+from apps.links.models import ExternalLink
 from .serializers import (
     UserSerializer, UserProfileSerializer, CategorySerializer, TagSerializer,
     ArticleSerializer, ArticleCreateSerializer, ArticleUpdateSerializer,
-    CommentSerializer, UserRegistrationSerializer, UserLoginSerializer
+    CommentSerializer, UserRegistrationSerializer, UserLoginSerializer, ExternalLinkSerializer
 )
 
 User = get_user_model()
@@ -263,6 +264,22 @@ class UserProfileViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("您只能操作自己的资料")
         serializer.save()
 
+
+class ExternalLinkViewSet(viewsets.ModelViewSet):
+    """外部链接视图集"""
+    queryset = ExternalLink.objects.all().order_by('order', '-created_at')
+    serializer_class = ExternalLinkSerializer
+    permission_classes = [IsAdminOrReadOnly]
+
+    def get_queryset(self):
+        base_qs = ExternalLink.objects.all().order_by('order', '-created_at')
+        user = self.request.user
+        if user and user.is_authenticated and (user.is_staff or user.is_superuser):
+            return base_qs
+        return base_qs.filter(is_active=True)
+
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
 
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
