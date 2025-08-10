@@ -1,3 +1,193 @@
+## 部署/运维常见问题 FAQ（含逐步排查步骤）
+
+以下是今天遇到的问题与对应的修复方法，全部提供可复制的排查命令与决策路径，便于快速定位与恢复。
+
+---
+
+### 1) CI/CD 没有触发
+
+可能原因：未产生新提交、工作流文件不在默认分支、Actions 未启用、触发分支不匹配。
+
+排查步骤：
+- 确认有新提交并已推送：
+  ```bash
+  git log --oneline -1
+  git push
+  ```
+- 在仓库主页 → Actions，看是否有新工作流运行。
+- 确认工作流文件存在且在正确分支：`.github/workflows/deploy.yml` 位于 `main` 分支。
+- 检查触发器是否匹配（示例）：
+  ```yaml
+  on:
+    push:
+      branches: ["main"]
+  ```
+- 检查必须的 Secrets 是否配置完整（仓库 → Settings → Secrets and variables → Actions）：`HOST`、`USERNAME`、`SSH_KEY`、`PORT`、`PROJECT_DIR`（以及可选 `PASS_PHRASE`）。
+
+---
+
+### 2) docker-compose 解析错误：yaml: line XX did not find expected key/expected ':'
+
+现象：工作流日志提示 `yaml: line 58/66: did not find expected ':'`。
+
+根因：`docker-compose.prod.yml` 中使用了多行内联 Python 与复杂引号/缩进，导致 YAML 解析失败。
+
+修复方案：
+- 避免多行复杂转义，改为单行 `python -c`，或使用严格缩进的 heredoc。
+- 最终采用单行版本（并补充 `django.setup()`，见问题 3）。
+
+自检步骤：
+- 在服务器上验证 compose 能解析：
+  ```bash
+  docker compose -f docker-compose.prod.yml config | sed -n '1,120p'
+  # 若能打印合并后的配置且无错误，表示 YAML 语法通过
+  ```
+
+---
+
+### 3) 后端启动异常：django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet
+
+现象：后端容器日志在执行内联 Python 创建超级用户时报错 `Apps aren't loaded yet`。
+
+根因：在 Django 完整加载应用前调用了 `get_user_model()`。
+
+修复方案：在内联 Python 中先初始化 Django：
+```python
+import django; django.setup(); from django.contrib.auth import get_user_model
+```
+
+验证步骤：
+- 重启后端并观察日志：
+  ```bash
+  docker compose -f docker-compose.prod.yml --env-file production.env up -d backend
+  docker compose -f docker-compose.prod.yml logs backend --tail=80
+  ```
+- 看到 `superuser exists` 或 `creating superuser`，以及 gunicorn 正常监听 `0.0.0.0:8000` 即为正常。
+
+---
+
+### 4) 前端弹框“网络连接失败”
+
+现象：页面可打开，但接口数据失败，出现“网络连接失败”。
+
+高概率根因：前端代码硬编码了 `http://127.0.0.1:8000`，在服务器环境下会请求到本机回环地址导致失败。
+
+修复要点：
+- 将所有接口改为相对路径，交由 Nginx 代理：`/api/v1/...`
+- 管理后台链接改为相对路径：`/admin/`
+- 静态图片拼接不再硬编码域名（或使用相对根路径）。
+
+定位与一步步排查：
+1. 用命令全局搜索本地回环地址：
+   ```bash
+   rg "127\.0\.0\.1:8000|baseURL\s*:\s*['\"]http" frontend -n
+   ```
+2. 修复如下文件（示例）：
+   - `frontend/src/api/request.js`：`baseURL` 改为 `/api/v1/`
+   - `frontend/src/api/auth.js`：所有 `axios.post('http://127.0.0.1:8000/api/v1/...')` 改为相对路径 `/api/v1/...`
+   - `frontend/src/components/ArticleCarousel.vue`：列表请求改为 `/api/v1/articles/`
+   - `frontend/src/components/TopNavBar.vue`、`FooterComponent.vue`：后台链接改为 `/admin/`
+   - `frontend/src/utils/image.js`：移除硬编码 `API_BASE_URL` 或置空，使用相对根路径拼接 `/media/...`
+3. 验证后端与 Nginx：
+   ```bash
+   # API 是否可用
+   curl -I http://<服务器IP>:8003/api/v1/
+   # 前端是否能打开
+   curl -I http://<服务器IP>:8003/
+   ```
+4. 浏览器侧进一步确认：打开开发者工具 Network，查看失败请求的 URL、状态码、响应体，确认是否仍指向 127.0.0.1。
+
+---
+
+### 5) docker compose 命令输出大量 "variable is not set. Defaulting to a blank string" 的 WARNING
+
+现象：执行 `docker compose logs/ps` 等命令时，打印多条 `The "XXX" variable is not set` WARNING。
+
+说明：这类只读/查询命令默认不会加载 `--env-file`，因此会出现 WARNING，但不影响已运行容器。
+
+如何验证容器内环境变量真实值：
+```bash
+docker compose -f docker-compose.prod.yml exec backend env | grep -E "DJANGO_ALLOWED_HOSTS|DB_HOST|DB_NAME|DB_USER"
+```
+
+若需要让运行命令同时带上 env-file（重建/重启才需要）：
+```bash
+docker compose -f docker-compose.prod.yml --env-file production.env up -d backend frontend
+```
+
+---
+
+### 6) Nginx 端口与代理规则确认（前端端口 8003）
+
+现状：对外端口为 `8003`，Nginx 负责静态页面与反向代理。
+
+快速自检：
+```bash
+docker compose -f docker-compose.prod.yml ps
+curl -I http://<服务器IP>:8003/
+curl -I http://<服务器IP>:8003/api/v1/
+```
+
+若前端页面 200、API 200，前后端与代理均正常。若 API 非 200，请检查 `frontend/nginx.prod.conf`（或挂载到 `/etc/nginx/conf.d/default.conf` 的配置）中是否包含：
+```nginx
+location /api/ {
+  proxy_pass http://backend;
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+---
+
+### 7) 手工回滚/重建的最小命令集
+
+```bash
+# 拉取最新代码
+git fetch --all && git reset --hard origin/main
+
+# 仅重启数据库（可选）
+docker compose -f docker-compose.prod.yml up -d mysql
+
+# 迁移数据库
+docker compose -f docker-compose.prod.yml run --rm backend python manage.py migrate --noinput
+
+# 构建并重启前后端
+docker compose -f docker-compose.prod.yml build backend frontend
+docker compose -f docker-compose.prod.yml up -d backend frontend
+
+# 查看运行状态与日志
+docker compose -f docker-compose.prod.yml ps
+docker compose -f docker-compose.prod.yml logs backend --tail=100
+docker compose -f docker-compose.prod.yml logs frontend --tail=100
+```
+
+---
+
+### 8) 常用快速诊断命令
+
+```bash
+# 前端容器内探测后端 API（容器内 DNS 用服务名 backend）
+docker exec -it alpha_frontend_prod sh -lc "wget -S -O- http://backend:8000/api/v1/ | head -c 400"
+
+# 服务器直接探测 Nginx 对外服务
+curl -I http://<服务器IP>:8003/
+curl -I http://<服务器IP>:8003/api/v1/
+
+# Django 迁移状态
+docker compose -f docker-compose.prod.yml exec backend python manage.py showmigrations
+
+# 验证允许的主机
+docker compose -f docker-compose.prod.yml exec backend python - <<'PY'
+import os; print(os.getenv('DJANGO_ALLOWED_HOSTS'))
+PY
+```
+
+---
+
+如遇未覆盖的问题，请记录“现象/命令/日志/时间点”，按“先确认容器健康 → Nginx 代理 → 前端请求 URL → 后端响应/权限/日志”的顺序排查，可最快定位根因。
+
 ## Alpha 部署 FAQ 与常用命令速查11
 
 以下整理了从“代码已在 GitHub 与云服务器”到“Docker 运行 + CI/CD”过程中最常见的问题、原因与解决办法，并附常用命令速查。
