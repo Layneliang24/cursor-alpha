@@ -160,6 +160,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 class AuthView(APIView):
     """认证视图"""
     permission_classes = [permissions.AllowAny]
+    authentication_classes: list = []
     
     def post(self, request):
         """用户登录"""
