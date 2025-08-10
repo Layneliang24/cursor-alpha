@@ -71,8 +71,7 @@ if u and p:
     container_name: alpha_frontend_prod
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - "8003:80"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./ssl:/etc/nginx/ssl
