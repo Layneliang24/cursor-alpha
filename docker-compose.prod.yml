@@ -50,18 +50,25 @@ services:
     networks:
       - alpha_network
     command: >
-      sh -c "
+      sh -lc '
         python manage.py wait_for_db &&
         python manage.py migrate &&
         python manage.py collectstatic --noinput &&
-        python -c \"import os; from django.contrib.auth import get_user_model; U=get_user_model(); u=os.getenv('DJANGO_SUPERUSER_USERNAME'); e=os.getenv('DJANGO_SUPERUSER_EMAIL') or ''; p=os.getenv('DJANGO_SUPERUSER_PASSWORD');
+        python - <<"PY"
+from django.contrib.auth import get_user_model
+import os
+u = os.getenv("DJANGO_SUPERUSER_USERNAME")
+e = os.getenv("DJANGO_SUPERUSER_EMAIL") or ""
+p = os.getenv("DJANGO_SUPERUSER_PASSWORD")
 if u and p:
-    import sys
+    U = get_user_model()
     exists = U.objects.filter(username=u).exists()
-    print('superuser exists' if exists else 'creating superuser')
-    (None if exists else U.objects.create_superuser(u, e, p))\" &&
+    print("superuser exists" if exists else "creating superuser")
+    if not exists:
+        U.objects.create_superuser(u, e, p)
+PY
         gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 120 alpha.wsgi:application
-      "
+      '
 
   # Vue.js前端 + Nginx
   frontend:
