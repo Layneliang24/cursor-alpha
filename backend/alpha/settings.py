@@ -33,6 +33,11 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(',')
 
+# CSRF trusted origins (comma-separated), e.g.
+# DJANGO_CSRF_TRUSTED_ORIGINS="http://8.129.16.190:8003,http://8.129.16.190,https://8.129.16.190"
+_csrf_origins_env = os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '')
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in _csrf_origins_env.split(',') if o.strip()] if _csrf_origins_env else []
+
 # Jazzmin admin UI configuration (simple defaults; can be customized later)
 JAZZMIN_SETTINGS = {
     "site_title": "Alpha Admin",
