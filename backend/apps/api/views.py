@@ -11,6 +11,7 @@ import os
 import uuid
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
+from django.db.models import Count
 from rest_framework_simplejwt.tokens import RefreshToken
 from apps.articles.models import Article, Comment, Like, Bookmark
 from apps.categories.models import Category, Tag
@@ -480,3 +481,69 @@ def verify_user_identity(request):
             
     except Exception as e:
         return Response({'error': f'验证失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# Home page aggregated endpoints
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def get_home_stats(request):
+    """返回首页统计信息"""
+    try:
+        stats = {
+            'users': User.objects.count(),
+            'articles': Article.objects.count(),
+            'categories': Category.objects.count(),
+            'tags': Tag.objects.count(),
+        }
+        return Response(stats, status=status.HTTP_200_OK)
+    except Exception as exc:
+        return Response({'error': f'获取统计信息失败: {exc}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def get_popular_articles(request):
+    """返回热门文章列表（按浏览量与点赞数排序）"""
+    try:
+        limit = int(request.query_params.get('limit', 10))
+        popular_qs = (
+            Article.objects.filter(status='published')
+            .order_by('-views', '-likes', '-created_at')[:limit]
+        )
+        serializer = ArticleSerializer(popular_qs, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as exc:
+        return Response({'error': f'获取热门文章失败: {exc}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def get_recent_articles(request):
+    """返回最近文章列表"""
+    try:
+        limit = int(request.query_params.get('limit', 10))
+        recent_qs = Article.objects.filter(status='published').order_by('-created_at')[:limit]
+        serializer = ArticleSerializer(recent_qs, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as exc:
+        return Response({'error': f'获取最近文章失败: {exc}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def get_popular_tags(request):
+    """返回热门标签（按文章数量降序）"""
+    try:
+        limit = int(request.query_params.get('limit', 20))
+        tags_qs = Tag.objects.annotate(num_articles=Count('articles')).order_by('-num_articles', 'name')[:limit]
+        data = [
+            {
+                'id': t.id,
+                'name': getattr(t, 'name', str(t)),
+                'num_articles': getattr(t, 'num_articles', 0),
+            }
+            for t in tags_qs
+        ]
+        return Response(data, status=status.HTTP_200_OK)
+    except Exception as exc:
+        return Response({'error': f'获取热门标签失败: {exc}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
