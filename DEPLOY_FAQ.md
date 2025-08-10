@@ -1,4 +1,4 @@
-## Alpha 部署 FAQ 与常用命令速查
+## Alpha 部署 FAQ 与常用命令速查11
 
 以下整理了从“代码已在 GitHub 与云服务器”到“Docker 运行 + CI/CD”过程中最常见的问题、原因与解决办法，并附常用命令速查。
 
@@ -208,5 +208,4 @@ docker tag docker.m.daocloud.io/library/mysql:8.0 mysql:8.0
 ---
 
 如需把日志改为仅输出到 stdout、引入 wait-for-db、更细的健康检查或将构建转移到 CI/CD（服务器仅拉镜像运行），可再告知，我可以进一步精简与优化。 
-
 
