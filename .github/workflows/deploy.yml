@@ -1,38 +1,38 @@
-name: Deploy to Production
-
-run: |
-    test -n "${{ secrets.HOST }}" || (echo "Missing HOST"; exit 1)
-    test -n "${{ secrets.USERNAME }}" || (echo "Missing USERNAME"; exit 1)
-    test -n "${{ secrets.SSH_KEY }}" || (echo "Missing SSH_KEY"; exit 1)
-    test -n "${{ secrets.PORT }}" || (echo "Missing PORT"; exit 1)
-    test -n "${{ secrets.PROJECT_DIR }}" || (echo "Missing PROJECT_DIR"; exit 1)
+name: Deploy
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Deploy to server
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: 8.129.16.190
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        passphrase: meimei520
-        port: ${{ secrets.PORT }}
-        script: |
-          cd ${{ secrets.PROJECT_DIR }}
-          git pull origin main
-          cp production.env.example production.env
-          # 更新环境变量（需要手动配置）
-          docker-compose -f docker-compose.prod.yml down
-          docker-compose -f docker-compose.prod.yml up --build -d
-          docker system prune -f
+      - name: Check required secrets
+        run: |
+          test -n "${{ secrets.HOST }}" || (echo "Missing HOST"; exit 1)
+          test -n "${{ secrets.USERNAME }}" || (echo "Missing USERNAME"; exit 1)
+          test -n "${{ secrets.SSH_KEY }}" || (echo "Missing SSH_KEY"; exit 1)
+          test -n "${{ secrets.PORT }}" || (echo "Missing PORT"; exit 1)
+          test -n "${{ secrets.PROJECT_DIR }}" || (echo "Missing PROJECT_DIR"; exit 1)
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASS_PHRASE }}  # 无口令私钥可删此行
+          port: ${{ secrets.PORT }}
+          script: |
+            set -e
+            cd ${{ secrets.PROJECT_DIR }}
+            git fetch --all
+            git reset --hard origin/main
+            docker compose -f docker-compose.prod.yml --env-file production.env build backend frontend
+            docker compose -f docker-compose.prod.yml --env-file production.env up -d mysql
+            docker compose -f docker-compose.prod.yml --env-file production.env run --rm backend python manage.py migrate --noinput
+            docker compose -f docker-compose.prod.yml --env-file production.env up -d backend frontend
+            docker image prune -f
