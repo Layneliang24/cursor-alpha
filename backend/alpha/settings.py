@@ -38,6 +38,20 @@ ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(',')
 _csrf_origins_env = os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '')
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in _csrf_origins_env.split(',') if o.strip()] if _csrf_origins_env else []
 
+# Auto-derive CSRF_TRUSTED_ORIGINS from ALLOWED_HOSTS when not explicitly provided
+if not CSRF_TRUSTED_ORIGINS:
+    derived_origins = []
+    for host in ALLOWED_HOSTS:
+        host = host.strip()
+        if not host or host == '*':
+            continue
+        for scheme in ('http', 'https'):
+            derived_origins.append(f"{scheme}://{host}")
+            # also include common external port 8003 (our nginx mapping) if not already specified
+            if ':' not in host:
+                derived_origins.append(f"{scheme}://{host}:8003")
+    CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(derived_origins))
+
 # Jazzmin admin UI configuration (simple defaults; can be customized later)
 JAZZMIN_SETTINGS = {
     "site_title": "Alpha Admin",
