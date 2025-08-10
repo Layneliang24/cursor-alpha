@@ -14,3 +14,4 @@ class ExternalLinkAdmin(admin.ModelAdmin):
         if not change:  # 新建时设置创建者
             obj.created_by = request.user
         super().save_model(request, obj, form, change)
+

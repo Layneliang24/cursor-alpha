@@ -1,0 +1,74 @@
+services:
+  # MySQL数据库
+  mysql:
+    image: mysql:8.0
+    container_name: alpha_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123
+      MYSQL_DATABASE: alpha_db
+      MYSQL_USER: alpha_user
+      MYSQL_PASSWORD: alphapassword123
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3307:3306"
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:
+      - alpha_network
+
+  # Django后端
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: alpha_backend
+    restart: unless-stopped
+    environment:
+      - DB_HOST=mysql
+      - DB_NAME=alpha_db
+      - DB_USER=alpha_user
+      - DB_PASSWORD=alphapassword123
+      - DJANGO_SECRET_KEY=your-secret-key-here-change-in-production
+      - DJANGO_DEBUG=False
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+    volumes:
+      - ./backend/media:/app/media
+      - ./backend/static:/app/static
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+    networks:
+      - alpha_network
+    command: >
+      sh -c "
+        python manage.py wait_for_db &&
+        python manage.py migrate &&
+        python manage.py collectstatic --noinput &&
+        python manage.py create_superuser_if_not_exists &&
+        gunicorn --bind 0.0.0.0:8000 alpha.wsgi:application
+      "
+
+  # Vue.js前端
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: alpha_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - alpha_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  alpha_network:
+    driver: bridge

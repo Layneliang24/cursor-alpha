@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from django.db.models import Q
 from .pagination import CustomPageNumberPagination
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -15,14 +14,12 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from apps.articles.models import Article, Comment, Like, Bookmark
 from apps.categories.models import Category, Tag
-from apps.links.models import ExternalLink
 from .permissions import IsAdminOrReadOnly, DjangoModelPermissionsOrReadOnly, IsAuthorOrAdminOrReadOnly
 from apps.users.models import UserProfile
 from .serializers import (
     UserSerializer, UserProfileSerializer, CategorySerializer, TagSerializer,
     ArticleSerializer, ArticleCreateSerializer, ArticleUpdateSerializer,
-    CommentSerializer, UserRegistrationSerializer, UserLoginSerializer,
-    PasswordResetRequestSerializer, PasswordResetConfirmSerializer, ExternalLinkSerializer
+    CommentSerializer, UserRegistrationSerializer, UserLoginSerializer
 )
 
 User = get_user_model()
@@ -447,119 +444,3 @@ def verify_user_identity(request):
             
     except Exception as e:
         return Response({'error': f'验证失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-@api_view(['POST'])
-@permission_classes([permissions.AllowAny])
-def password_reset_request(request):
-    """请求密码重置"""
-    serializer = PasswordResetRequestSerializer(data=request.data)
-    if serializer.is_valid():
-        try:
-            result = serializer.save()
-            return Response(result, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response(
-                {'error': f'发送邮件失败: {str(e)}'}, 
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([permissions.AllowAny])
-def password_reset_confirm(request):
-    """确认密码重置"""
-    serializer = PasswordResetConfirmSerializer(data=request.data)
-    if serializer.is_valid():
-        try:
-            result = serializer.save()
-            return Response(result, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response(
-                {'error': f'重置密码失败: {str(e)}'}, 
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
-@permission_classes([permissions.AllowAny])
-def get_home_stats(request):
-    """获取首页统计数据"""
-    from django.db.models import Sum, Count
-    
-    # 获取真实统计数据
-    total_articles = Article.objects.filter(status='published').count()
-    total_users = User.objects.count()
-    total_views = Article.objects.filter(status='published').aggregate(
-        total=Sum('views')
-    )['total'] or 0
-    
-    # 获取活跃分类数量
-    active_categories = Category.objects.filter(status='active').count()
-    
-    return Response({
-        'total_articles': total_articles,
-        'total_users': total_users,
-        'total_views': total_views,
-        'active_categories': active_categories
-    })
-
-
-@api_view(['GET'])
-@permission_classes([permissions.AllowAny])
-def get_popular_articles(request):
-    """获取热门文章（用于轮播）"""
-    # 按浏览量排序，取前5篇
-    popular_articles = Article.objects.filter(
-        status='published'
-    ).select_related('author', 'category').order_by('-views')[:5]
-    
-    serializer = ArticleSerializer(popular_articles, many=True, context={'request': request})
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-@permission_classes([permissions.AllowAny])
-def get_recent_articles(request):
-    """获取最新文章"""
-    recent_articles = Article.objects.filter(
-        status='published'
-    ).select_related('author', 'category').order_by('-created_at')[:6]
-    
-    serializer = ArticleSerializer(recent_articles, many=True, context={'request': request})
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-@permission_classes([permissions.AllowAny])
-def get_popular_tags(request):
-    """获取热门标签"""
-    from django.db.models import Count
-    
-    popular_tags = Tag.objects.annotate(
-        article_count=Count('articles', filter=Q(articles__status='published'))
-    ).filter(article_count__gt=0).order_by('-article_count')[:10]
-    
-    return Response([
-        {'name': tag.name, 'count': tag.article_count}
-        for tag in popular_tags
-    ])
-
-
-class ExternalLinkViewSet(viewsets.ModelViewSet):
-    """外部链接视图集"""
-    queryset = ExternalLink.objects.filter(is_active=True)
-    serializer_class = ExternalLinkSerializer
-    permission_classes = [DjangoModelPermissionsOrReadOnly]
-    
-    def get_queryset(self):
-        """管理员可以看到所有链接，普通用户只能看到启用的"""
-        if self.request.user.is_staff or self.request.user.is_superuser:
-            return ExternalLink.objects.all().order_by('order', '-created_at')
-        return ExternalLink.objects.filter(is_active=True).order_by('order', '-created_at')
-    
-    def perform_create(self, serializer):
-        """创建时设置创建者"""
-        serializer.save(created_by=self.request.user)
