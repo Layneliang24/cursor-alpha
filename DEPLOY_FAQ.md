@@ -89,6 +89,31 @@ import django; django.setup(); from django.contrib.auth import get_user_model
     docker compose -f docker-compose.prod.yml --env-file production.env up -d backend
     ```
 
+> **2025-08-10 13:30-14:30 登录持续 403 故障排查纪要**
+
+| 时间 | 现象 | 操作/排查 | 结果 |
+|------|------|-----------|------|
+| 13:30 | 登录接口 403，浏览器返回 `CSRF Failed: Origin checking failed` | 搜索后端日志 & 阅读响应 | 确认为 CSRF 来源校验不通过 |
+| 13:40 | 在 `settings.py` 增加 `DJANGO_CSRF_TRUSTED_ORIGINS` 环境变量支持；FAQ 更新 | 部署后仍偶发 403 | 登录接口默认启用了 `SessionAuthentication`，仍需 CSRF Token |
+| 13:55 | `AuthView` 添加 `@csrf_exempt` 装饰 | 仍有部分请求 403 | DRF 在无 token 情况下仍注入 `SessionAuthentication` 导致检查 |
+| 14:10 | 进一步为 `AuthView` 设置 `authentication_classes = []` 完全禁用 `SessionAuthentication` | 登录成功，问题解决 | API 侧登录无需 CSRF Token |
+
+**根因归纳**
+
+1. DRF 默认同时启用 `SessionAuthentication` 与 `CSRF`，即使设置 `permission_classes = AllowAny`。
+2. 前端纯 API 登录无需 CSRF token，应显式禁用 `SessionAuthentication` 或使用 JWT/Basic auth。
+
+**最终修复**
+
+```python
+@method_decorator(csrf_exempt, name='dispatch')
+class AuthView(APIView):
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []  # 关键：禁用会触发 CSRF 的 SessionAuthentication
+```
+
+**经验**：API 登录接口使用 JWT 时，确保 `authentication_classes` 不包含 `SessionAuthentication`，或者前端携带 CSRF Token。否则在跨域或不同端口情况下会频繁出现 403。
+
 定位与一步步排查：
 1. 用命令全局搜索本地回环地址：
    ```bash
