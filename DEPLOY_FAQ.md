@@ -77,6 +77,18 @@ import django; django.setup(); from django.contrib.auth import get_user_model
 - 管理后台链接改为相对路径：`/admin/`
 - 静态图片拼接不再硬编码域名（或使用相对根路径）。
 
+若登录时报 403 且响应为 `CSRF Failed: Origin checking failed`：
+- 需要在后端配置 CSRF 可信来源：
+  - 在 `backend/alpha/settings.py` 中支持 `DJANGO_CSRF_TRUSTED_ORIGINS`
+  - 在服务器 `production.env` 中设置：
+    ```
+    DJANGO_CSRF_TRUSTED_ORIGINS=http://8.129.16.190:8003,http://8.129.16.190,https://8.129.16.190
+    ```
+  - 重启后端：
+    ```bash
+    docker compose -f docker-compose.prod.yml --env-file production.env up -d backend
+    ```
+
 定位与一步步排查：
 1. 用命令全局搜索本地回环地址：
    ```bash
