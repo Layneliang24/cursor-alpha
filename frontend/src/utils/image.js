@@ -2,7 +2,7 @@
  * 图片URL处理工具
  */
 
-const API_BASE_URL = 'http://127.0.0.1:8000'
+const API_BASE_URL = ''
 
 /**
  * 获取完整的图片URL
