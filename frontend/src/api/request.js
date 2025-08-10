@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/auth'
 
 // 创建axios实例
 const request = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/v1/',
+  baseURL: '/api/v1/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

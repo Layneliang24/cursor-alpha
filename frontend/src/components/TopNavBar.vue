@@ -27,7 +27,7 @@
         </router-link>
         <a
           v-if="isAdminUi"
-          href="http://127.0.0.1:8000/admin/"
+          href="/admin/"
           class="nav-item"
           target="_blank"
           rel="noopener noreferrer"

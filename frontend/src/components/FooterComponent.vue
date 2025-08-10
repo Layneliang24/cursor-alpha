@@ -8,7 +8,7 @@
       </div>
       <div class="footer-right">
         <a
-          href="http://127.0.0.1:8000/admin/"
+          href="/admin/"
           class="admin-link"
           target="_blank"
           rel="noopener noreferrer"

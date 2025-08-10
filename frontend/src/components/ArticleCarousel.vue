@@ -169,7 +169,7 @@ const fetchPopularArticles = async () => {
     // 直接使用axios，绕过可能的封装问题
     const axios = (await import('axios')).default
     
-    const response = await axios.get('http://127.0.0.1:8000/api/v1/articles/', {
+    const response = await axios.get('/api/v1/articles/', {
       params: {
         page_size: 5,
         ordering: '-views'

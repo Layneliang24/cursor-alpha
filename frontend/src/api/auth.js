@@ -31,7 +31,7 @@ export const authAPI = {
   // 验证用户身份（用于登录页面显示头像）
   verifyUserIdentity(data) {
     // 不需要认证的请求，直接使用axios
-    return axios.post('http://127.0.0.1:8000/api/v1/auth/verify-identity/', data, {
+    return axios.post('/api/v1/auth/verify-identity/', data, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -40,7 +40,7 @@ export const authAPI = {
 
   // 请求密码重置
   requestPasswordReset(email) {
-    return axios.post('http://127.0.0.1:8000/api/v1/auth/password-reset/', { email }, {
+    return axios.post('/api/v1/auth/password-reset/', { email }, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -49,7 +49,7 @@ export const authAPI = {
 
   // 确认密码重置
   confirmPasswordReset(data) {
-    return axios.post('http://127.0.0.1:8000/api/v1/auth/password-reset-confirm/', data, {
+    return axios.post('/api/v1/auth/password-reset-confirm/', data, {
       headers: {
         'Content-Type': 'application/json',
       }
