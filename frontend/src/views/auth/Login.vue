@@ -6,7 +6,7 @@
       <div class="login-left">
         <div class="welcome-text">
           <h1>Alpha</h1>
-          <p>技术博客网站</p>
+          <p>技术博客网站 - 测试CI/CD</p>
           <div class="features">
             <div class="feature-item">
               <el-icon><Document /></el-icon>
