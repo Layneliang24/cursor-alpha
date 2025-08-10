@@ -19,7 +19,7 @@ jobs:
         host: 8.129.16.190
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
-        passphrase: ${{ secrets.PASS_PHRASE }}
+        passphrase: meimei520
         port: ${{ secrets.PORT }}
         script: |
           cd /path/to/alpha
