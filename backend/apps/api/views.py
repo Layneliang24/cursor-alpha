@@ -3,6 +3,7 @@ from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import cache_page
 from .pagination import CustomPageNumberPagination
 from django.core.files.storage import default_storage
@@ -155,6 +156,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class AuthView(APIView):
     """认证视图"""
     permission_classes = [permissions.AllowAny]
