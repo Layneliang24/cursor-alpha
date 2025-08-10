@@ -1,5 +1,12 @@
 name: Deploy to Production
 
+run: |
+    test -n "${{ secrets.HOST }}" || (echo "Missing HOST"; exit 1)
+    test -n "${{ secrets.USERNAME }}" || (echo "Missing USERNAME"; exit 1)
+    test -n "${{ secrets.SSH_KEY }}" || (echo "Missing SSH_KEY"; exit 1)
+    test -n "${{ secrets.PORT }}" || (echo "Missing PORT"; exit 1)
+    test -n "${{ secrets.PROJECT_DIR }}" || (echo "Missing PROJECT_DIR"; exit 1)
+
 on:
   push:
     branches: [ main, master ]
@@ -22,7 +29,7 @@ jobs:
         passphrase: meimei520
         port: ${{ secrets.PORT }}
         script: |
-          cd /path/to/alpha
+          cd ${{ secrets.PROJECT_DIR }}
           git pull origin main
           cp production.env.example production.env
           # 更新环境变量（需要手动配置）
