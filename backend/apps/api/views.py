@@ -20,7 +20,8 @@ from apps.links.models import ExternalLink
 from .serializers import (
     UserSerializer, UserProfileSerializer, CategorySerializer, TagSerializer,
     ArticleSerializer, ArticleCreateSerializer, ArticleUpdateSerializer,
-    CommentSerializer, UserRegistrationSerializer, UserLoginSerializer, ExternalLinkSerializer
+    CommentSerializer, UserRegistrationSerializer, UserLoginSerializer, ExternalLinkSerializer,
+    PasswordResetRequestSerializer, PasswordResetConfirmSerializer
 )
 
 User = get_user_model()
@@ -263,6 +264,24 @@ class UserProfileViewSet(viewsets.ModelViewSet):
             from rest_framework.exceptions import PermissionDenied
             raise PermissionDenied("您只能操作自己的资料")
         serializer.save()
+
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+def password_reset_request(request):
+    serializer = PasswordResetRequestSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    result = serializer.save()
+    return Response(result, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+def password_reset_confirm(request):
+    serializer = PasswordResetConfirmSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    result = serializer.save()
+    return Response(result, status=status.HTTP_200_OK)
 
 
 class ExternalLinkViewSet(viewsets.ModelViewSet):
