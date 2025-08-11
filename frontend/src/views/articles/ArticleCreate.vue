@@ -277,6 +277,46 @@ const showSuccessAnimation = (article) => {
   // 创建成功动画容器
   const successContainer = document.createElement('div')
   successContainer.className = 'success-animation-container'
+  
+  // 倒计时跳转
+  let countdown = 5
+  let countdownInterval = null
+  let shouldRedirect = true // 控制是否应该跳转
+  
+  const updateCountdown = () => {
+    const countdownElement = document.getElementById('countdown-number')
+    if (countdownElement) {
+      countdownElement.textContent = countdown
+    }
+    if (countdown <= 0 && shouldRedirect) {
+      clearInterval(countdownInterval)
+      router.push({ name: 'ArticleDetail', params: { id: article.id } })
+    }
+  }
+  
+  // 继续编辑的处理函数
+  const handleContinueEdit = () => {
+    shouldRedirect = false // 停止自动跳转
+    clearInterval(countdownInterval) // 清除倒计时
+    successContainer.remove() // 移除动画容器
+    
+    // 清空表单内容，准备发布新文章
+    articleForm.title = ''
+    articleForm.summary = ''
+    articleForm.category = ''
+    articleForm.tags = []
+    articleForm.cover_image = ''
+    articleForm.content = ''
+    articleForm.featured = false
+    
+    // 重置表单验证状态
+    if (articleFormRef.value) {
+      articleFormRef.value.clearValidate()
+    }
+    
+    ElMessage.success('表单已清空，可以开始发布新文章')
+  }
+  
   successContainer.innerHTML = `
     <div class="success-content">
       <div class="success-icon">🎉</div>
@@ -292,7 +332,7 @@ const showSuccessAnimation = (article) => {
         <button class="go-home-btn" onclick="window.location.href='/'">
           返回首页
         </button>
-        <button class="stay-here-btn" onclick="document.querySelector('.success-animation-container').remove()">
+        <button class="stay-here-btn" id="continue-edit-btn">
           继续编辑
         </button>
       </div>
@@ -316,18 +356,16 @@ const showSuccessAnimation = (article) => {
   
   document.body.appendChild(successContainer)
   
-  // 倒计时跳转
-  let countdown = 5
-  const countdownElement = document.getElementById('countdown-number')
-  const countdownInterval = setInterval(() => {
+  // 绑定继续编辑按钮事件
+  const continueEditBtn = document.getElementById('continue-edit-btn')
+  if (continueEditBtn) {
+    continueEditBtn.addEventListener('click', handleContinueEdit)
+  }
+  
+  // 开始倒计时
+  countdownInterval = setInterval(() => {
     countdown--
-    if (countdownElement) {
-      countdownElement.textContent = countdown
-    }
-    if (countdown <= 0) {
-      clearInterval(countdownInterval)
-      router.push({ name: 'ArticleDetail', params: { id: article.id } })
-    }
+    updateCountdown()
   }, 1000)
   
   // 添加CSS动画

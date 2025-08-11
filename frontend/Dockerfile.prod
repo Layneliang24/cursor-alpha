@@ -44,3 +44,5 @@ EXPOSE 80 443
 # 启动nginx
 CMD ["nginx", "-g", "daemon off;"]
 
+
+
