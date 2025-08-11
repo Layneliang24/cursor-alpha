@@ -206,6 +206,12 @@ const saveDraft = async () => {
     return
   }
   
+  // 防止重复保存
+  if (savingDraft.value) {
+    ElMessage.warning('正在保存中，请稍候...')
+    return
+  }
+  
   savingDraft.value = true
   try {
     const articleData = {
@@ -228,6 +234,12 @@ const saveDraft = async () => {
 const publishArticle = async () => {
   if (!articleFormRef.value) return
   
+  // 防止重复发布
+  if (publishing.value) {
+    ElMessage.warning('正在发布中，请稍候...')
+    return
+  }
+  
   try {
     await articleFormRef.value.validate()
     
@@ -239,8 +251,10 @@ const publishArticle = async () => {
     }
     
     const article = await articlesStore.createArticle(articleData)
-    ElMessage.success('文章发布成功！')
-    router.push({ name: 'ArticleDetail', params: { id: article.id } })
+    
+    // 显示成功动画和倒计时
+    showSuccessAnimation(article)
+    
   } catch (error) {
     console.error('发布文章失败:', error)
     if (error.response?.data) {
@@ -250,10 +264,190 @@ const publishArticle = async () => {
           ElMessage.error(`${field}: ${errors[field][0]}`)
         }
       }
+    } else {
+      ElMessage.error('发布失败，请重试')
     }
   } finally {
     publishing.value = false
   }
+}
+
+// 显示成功动画和倒计时
+const showSuccessAnimation = (article) => {
+  // 创建成功动画容器
+  const successContainer = document.createElement('div')
+  successContainer.className = 'success-animation-container'
+  successContainer.innerHTML = `
+    <div class="success-content">
+      <div class="success-icon">🎉</div>
+      <h2>发布成功！</h2>
+      <p>文章已成功发布到平台</p>
+      <div class="countdown">
+        <span id="countdown-number">5</span> 秒后自动跳转到文章页面
+      </div>
+      <div class="success-actions">
+        <button class="view-article-btn" onclick="window.location.href='/articles/${article.id}'">
+          查看文章
+        </button>
+        <button class="go-home-btn" onclick="window.location.href='/'">
+          返回首页
+        </button>
+        <button class="stay-here-btn" onclick="document.querySelector('.success-animation-container').remove()">
+          继续编辑
+        </button>
+      </div>
+    </div>
+  `
+  
+  // 添加样式
+  successContainer.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+  `
+  
+  document.body.appendChild(successContainer)
+  
+  // 倒计时跳转
+  let countdown = 5
+  const countdownElement = document.getElementById('countdown-number')
+  const countdownInterval = setInterval(() => {
+    countdown--
+    if (countdownElement) {
+      countdownElement.textContent = countdown
+    }
+    if (countdown <= 0) {
+      clearInterval(countdownInterval)
+      router.push({ name: 'ArticleDetail', params: { id: article.id } })
+    }
+  }, 1000)
+  
+  // 添加CSS动画
+  const style = document.createElement('style')
+  style.textContent = `
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .success-content {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      animation: bounce 0.6s ease;
+      max-width: 400px;
+      width: 90%;
+    }
+    
+    .success-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+      animation: bounce 1s ease infinite;
+    }
+    
+    .success-content h2 {
+      color: #67c23a;
+      margin: 0 0 10px 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .success-content p {
+      color: #666;
+      margin: 0 0 20px 0;
+      font-size: 16px;
+    }
+    
+    .countdown {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      color: #409eff;
+      font-weight: bold;
+      border: 1px solid #bae6fd;
+    }
+    
+    #countdown-number {
+      font-size: 20px;
+      color: #e6a23c;
+      font-weight: bold;
+    }
+    
+    .success-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .view-article-btn, .go-home-btn, .stay-here-btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    
+    .view-article-btn {
+      background: linear-gradient(135deg, #409eff 0%, #337ecc 100%);
+      color: white;
+    }
+    
+    .view-article-btn:hover {
+      background: linear-gradient(135deg, #337ecc 0%, #2c5aa0 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
+    }
+    
+    .go-home-btn {
+      background: linear-gradient(135deg, #67c23a 0%, #5daf34 100%);
+      color: white;
+    }
+    
+    .go-home-btn:hover {
+      background: linear-gradient(135deg, #5daf34 0%, #4c8b2a 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(103, 194, 58, 0.3);
+    }
+    
+    .stay-here-btn {
+      background: #f5f7fa;
+      color: #606266;
+      border: 1px solid #dcdfe6;
+    }
+    
+    .stay-here-btn:hover {
+      background: #e4e7ed;
+      transform: translateY(-2px);
+    }
+  `
+  document.head.appendChild(style)
 }
 
 onMounted(() => {
