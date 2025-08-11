@@ -1,311 +1,231 @@
-# Alpha 技术共享平台 🚀
+# Kibana日志分析工具
 
-基于 Django + Vue.js 的现代化AI技术文章分享平台，专注于AI Agent、大语言模型等前沿技术内容。
+## 📋 项目概述
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)
-![Vue](https://img.shields.io/badge/vue-3.x-green.svg)
-![Django](https://img.shields.io/badge/django-4.x-green.svg)
+**Kibana日志分析助手** 是一款专为金融交易系统设计的Kibana日志分析GUI工具，提供便捷的日志查询、数据分析和风控监控功能。
 
-## 🌟 项目特色
+## 🎯 核心功能
 
-- 🤖 **AI Agent 专题**：专注AI智能体技术文章分享
-- 🎨 **自定义轮播**：精美的文章轮播展示组件
-- 🔐 **细粒度权限**：基于Django权限系统的精确控制
-- 📱 **响应式设计**：完美适配PC和移动端
-- 🌈 **现代UI**：基于Element Plus的美观界面
-- 🔄 **实时更新**：动态数据加载和状态管理
+### 🔧 基础设置模块
+- Kibana连接配置（服务器地址、端口、认证信息）
+- 默认参数设置（时间范围、索引模式、查询超时）
+- 关键词配置（各功能模块的查询关键词和解析规则）
+
+### 💰 客户盈亏计算模块
+- 输入：MemberID、股票代码、时间范围、索引名称
+- 输出：今日盈亏金额、交易明细列表、盈亏趋势图表
+
+### 🛡️ 风控日志查找模块
+- 输入：资产ID、时间范围、风控类型筛选
+- 输出：风控触发记录、风控规则详情、处理状态跟踪
+
+### 💳 资金流水日志查找模块
+- 输入：MemberID、时间范围、资金类型筛选
+- 输出：资金流水明细、余额变动趋势、异常交易标记
+
+### 📊 持仓股票信息查找模块
+- 输入：MemberID、时间范围
+- 输出：持仓股票列表、持仓成本、当前市值、盈亏情况
+
+### 💪 购买力日志查找模块
+- 输入：MemberID、时间范围
+- 输出：购买力变动记录、可用资金变化、冻结资金明细
+
+### ⏰ 条件单日志查找模块
+- 输入：MemberID、时间范围、条件单状态筛选
+- 输出：条件单列表、执行状态、触发条件详情
+
+## 🎨 界面设计
+
+### 整体布局
+- **左侧**: 功能模块选择区
+- **右侧**: 参数输入和结果显示区
+- **顶部**: 导航菜单
+- **底部**: 状态栏
+
+### 界面特点
+- 简洁明了的设计风格
+- 响应式布局，支持窗口缩放
+- 直观的操作流程
+- 丰富的数据可视化
+
+## 🔧 技术架构
+
+### 前端技术栈
+- **框架**: Electron + Vue.js 3
+- **UI组件**: Element Plus
+- **图表库**: ECharts
+- **样式**: SCSS
+
+### 后端技术栈
+- **语言**: Node.js
+- **HTTP客户端**: Axios
+- **数据处理**: Lodash
+- **配置管理**: Electron Store
+
+### 核心模块
+1. **连接管理模块**: 负责Kibana连接和API调用
+2. **查询模板模块**: 管理各种查询模板和参数替换
+3. **数据解析模块**: 解析Kibana返回的日志数据
+4. **配置管理模块**: 管理应用配置和历史记录
+
+## 📦 项目结构
+
+```
+kibana-log-analyzer-tool/
+├── 产品设计文档.md          # 产品设计文档
+├── 界面原型设计.md          # 界面原型设计
+├── 技术实现方案.md          # 技术实现方案
+├── README.md               # 项目说明
+├── package.json            # 项目配置
+├── main.js                 # Electron主进程
+├── preload.js              # 预加载脚本
+└── src/                    # 源代码目录
+    ├── App.vue             # 主应用组件
+    ├── main.js             # Vue应用入口
+    ├── components/         # Vue组件
+    ├── services/           # 核心服务
+    ├── utils/              # 工具函数
+    └── assets/             # 静态资源
+```
 
 ## 🚀 快速开始
 
 ### 环境要求
-- Python 3.8+
 - Node.js 16+
-- MySQL 5.7+ (推荐) 或 SQLite
 - npm 或 yarn
 
-### 安装步骤
-
-1. **克隆项目**
+### 安装依赖
 ```bash
-git clone https://github.com/yourusername/alpha.git
-cd alpha
-```
-
-2. **后端设置**
-```bash
-cd backend
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver
-```
-
-3. **前端设置**
-```bash
-cd frontend
 npm install
+```
+
+### 开发模式
+```bash
 npm run dev
 ```
 
-### 访问地址
-- 🌐 前端应用：http://localhost:3000
-- 🔧 后端API：http://127.0.0.1:8000/api/v1/
-- 👨‍💼 管理后台：http://127.0.0.1:8000/admin/
-
-## 📁 项目架构
-
-```
-alpha/
-├── 🔧 backend/                    # Django 后端服务
-│   ├── alpha/                    # 项目配置
-│   │   ├── settings.py          # 全局配置
-│   │   └── urls.py              # 根路由
-│   ├── apps/                    # 业务应用
-│   │   ├── api/                 # REST API层
-│   │   │   ├── views.py         # ViewSets & 端点
-│   │   │   ├── serializers.py   # 数据序列化
-│   │   │   ├── permissions.py   # 权限控制
-│   │   │   └── pagination.py    # 分页配置
-│   │   ├── articles/            # 文章管理
-│   │   ├── categories/          # 分类标签
-│   │   ├── users/               # 用户系统
-│   │   └── links/               # 友情链接
-│   ├── media/                   # 媒体文件
-│   └── requirements.txt         # Python依赖
-├── 🎨 frontend/                   # Vue.js 前端应用
-│   ├── src/
-│   │   ├── api/                 # API调用封装
-│   │   ├── components/          # 可复用组件
-│   │   │   ├── ArticleCarousel.vue  # 自定义轮播
-│   │   │   ├── ExternalLinks.vue    # 友情链接
-│   │   │   └── MarkdownEditor.vue   # MD编辑器
-│   │   ├── views/               # 页面组件
-│   │   │   ├── articles/        # 文章相关页面
-│   │   │   ├── auth/            # 认证页面
-│   │   │   └── user/            # 用户中心
-│   │   ├── stores/              # Pinia状态管理
-│   │   └── router/              # Vue路由配置
-│   └── package.json             # NPM依赖
-└── 📄 README.md                  # 项目文档
-```
-
-## ✨ 核心功能
-
-### 🔐 用户系统
-- JWT认证登录/注册
-- 个人资料管理
-- 头像上传
-- 密码重置功能
-- 细粒度权限控制
-
-### 📝 文章管理
-- Markdown编辑器
-- 文章分类和标签
-- 封面图片上传
-- 文章状态管理(草稿/发布/归档)
-- 搜索和筛选功能
-- 分页和排序
-
-### 🎨 用户界面
-- 自定义文章轮播组件
-- 响应式设计
-- 骨架屏加载效果
-- 友情链接管理
-- 动态统计数据
-- 现代化卡片布局
-
-### 🔧 管理功能
-- Django Admin后台
-- 权限组管理
-- 内容审核
-- 数据统计
-- 日志记录
-
-## 🛠️ 技术栈详解
-
-### 后端技术
-| 技术 | 版本 | 用途 |
-|------|------|------|
-| Django | 4.x | Web框架 |
-| Django REST Framework | 3.x | API开发 |
-| MySQL | 8.0 | 主数据库 |
-| JWT | - | 身份认证 |
-| Pillow | - | 图像处理 |
-| django-cors-headers | - | 跨域支持 |
-
-### 前端技术
-| 技术 | 版本 | 用途 |
-|------|------|------|
-| Vue.js | 3.x | 前端框架 |
-| Element Plus | 2.x | UI组件库 |
-| Pinia | 2.x | 状态管理 |
-| Vue Router | 4.x | 路由管理 |
-| Axios | 1.x | HTTP客户端 |
-| Vite | 4.x | 构建工具 |
-
-## 📊 示例数据
-
-运行以下命令创建示例数据：
+### 构建应用
 ```bash
-cd backend
-
-# 创建权限组和权限
-python manage.py setup_permissions
-
-# 创建示例文章和用户
-python create_sample_articles_with_covers.py
-
-# 创建AI技术文章
-python create_ai_content.py
-```
-
-### 测试账号
-| 用户名 | 密码 | 角色 | 权限 |
-|--------|------|------|------|
-| admin | admin123 | 超级管理员 | 所有权限 |
-| agent_dev | password123 | 开发者 | 文章管理 |
-| layne | password123 | 普通用户 | 基础权限 |
-
-## 🎨 界面预览
-
-### 首页轮播
-- 自定义实现的文章轮播组件
-- 支持自动播放和手动导航
-- 渐变背景和平滑过渡效果
-- 响应式设计
-
-### 文章列表
-- 分页、搜索、筛选功能
-- 骨架屏加载效果
-- 多种排序方式
-- 分类和标签筛选
-
-### 权限管理
-- Django内置权限系统
-- 自定义权限类
-- 前端权限控制
-- 管理员后台
-
-## 🔧 开发指南
-
-### API文档
-- 基础URL：`/api/v1/`
-- 认证方式：`Bearer <JWT_TOKEN>`
-- 数据格式：JSON
-
-### 主要API端点
-```
-# 认证相关
-POST /api/v1/auth/login/          # 用户登录
-POST /api/v1/auth/register/       # 用户注册
-POST /api/v1/auth/password-reset/ # 密码重置
-
-# 文章相关
-GET  /api/v1/articles/            # 文章列表
-POST /api/v1/articles/            # 创建文章
-GET  /api/v1/articles/{id}/       # 文章详情
-PUT  /api/v1/articles/{id}/       # 更新文章
-
-# 首页数据
-GET  /api/v1/home/stats/          # 统计数据
-GET  /api/v1/home/popular-articles/ # 热门文章
-
-# 友情链接
-GET  /api/v1/external-links/      # 友情链接列表
-POST /api/v1/external-links/      # 创建友情链接
-```
-
-### 权限系统
-```python
-# 自定义权限类示例
-class IsAuthorOrAdminOrReadOnly(BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.method in SAFE_METHODS:
-            return True
-        return obj.author == request.user or request.user.is_staff
-```
-
-## 🚀 部署指南
-
-### Docker部署 (推荐)
-```bash
-# 构建镜像
-docker-compose build
-
-# 启动服务
-docker-compose up -d
-
-# 初始化数据库
-docker-compose exec backend python manage.py migrate
-docker-compose exec backend python manage.py createsuperuser
-```
-
-### 传统部署
-```bash
-# 后端部署
-cd backend
-pip install -r requirements.txt
-python manage.py collectstatic
-python manage.py migrate
-gunicorn alpha.wsgi:application
-
-# 前端部署
-cd frontend
 npm run build
-# 将dist目录部署到Nginx
 ```
 
-## 🤝 贡献指南
+### 打包发布
+```bash
+npm run dist
+```
 
-我们欢迎所有形式的贡献！
+## 📊 数据流程
 
-1. **Fork** 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开 **Pull Request**
+### 查询流程
+1. **用户输入参数** → 2. **参数验证** → 3. **查询模板渲染** → 4. **Kibana API调用** → 5. **数据解析** → 6. **结果展示**
 
-### 开发规范
-- 遵循PEP 8 (Python)
-- 使用ESLint (JavaScript)
-- 编写单元测试
-- 更新相关文档
+### 错误处理
+- 网络连接异常
+- 认证失败
+- 查询超时
+- 数据格式错误
+- 权限不足
 
-## 📝 更新日志
+## 🎯 用户体验设计
 
-### v2.0.0 (2025-01-09) 🎉
-- ✨ 新增自定义文章轮播组件
-- 🔐 完善权限管理系统
-- 🔗 添加友情链接功能
-- 📧 实现密码重置功能
-- 🎨 优化UI界面和用户体验
-- 📱 改进响应式设计
-- 🐛 修复多项已知问题
+### 交互设计原则
+1. **简洁明了**: 界面简洁，操作直观
+2. **快速响应**: 查询结果快速返回
+3. **错误友好**: 清晰的错误提示和解决建议
+4. **数据可视化**: 图表展示，便于分析
 
-### v1.0.0 (2024-12-01)
-- ✅ 完成基础功能开发
-- ✅ 用户认证系统
-- ✅ 文章CRUD操作
-- ✅ 响应式界面设计
-- ✅ Markdown文章渲染
+### 快捷键支持
+- `Ctrl + Enter`: 执行查询
+- `Ctrl + S`: 保存配置
+- `Ctrl + E`: 导出结果
+- `F5`: 刷新数据
+
+### 历史记录功能
+- 保存最近10次查询
+- 支持查询条件复用
+- 查询结果缓存
+
+## 🔒 安全设计
+
+### 数据安全
+- 敏感信息加密存储
+- 连接信息本地保存
+- 查询日志审计
+
+### 权限控制
+- 用户角色管理
+- 功能模块权限
+- 数据访问控制
+
+## 📈 性能优化
+
+### 查询优化
+- 查询结果分页
+- 数据缓存机制
+- 异步查询处理
+
+### 界面优化
+- 虚拟滚动
+- 懒加载
+- 防抖处理
+
+## 🚀 部署方案
+
+### 打包发布
+- Electron Builder打包
+- 自动更新机制
+- 安装程序制作
+
+### 配置管理
+- 配置文件热更新
+- 多环境配置支持
+- 配置导入导出
+
+## 📋 开发计划
+
+### Phase 1 (2周)
+- [ ] 基础框架搭建
+- [ ] Kibana连接模块
+- [ ] 基础设置界面
+
+### Phase 2 (3周)
+- [ ] 盈亏计算模块
+- [ ] 风控日志模块
+- [ ] 资金流水模块
+
+### Phase 3 (2周)
+- [ ] 持仓信息模块
+- [ ] 购买力模块
+- [ ] 条件单模块
+
+### Phase 4 (1周)
+- [ ] 数据可视化
+- [ ] 导出功能
+- [ ] 性能优化
+
+## 📞 技术支持
+
+### 文档支持
+- 用户使用手册
+- API文档
+- 故障排除指南
+
+### 维护计划
+- 定期功能更新
+- Bug修复
+- 性能优化
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+MIT License
 
-## 📞 联系方式
+## 🤝 贡献指南
 
-- 🌐 项目地址：[GitHub Repository](https://github.com/yourusername/alpha)
-- 🐛 问题反馈：[GitHub Issues](https://github.com/yourusername/alpha/issues)
-- 📧 邮箱联系：your.email@example.com
+欢迎提交Issue和Pull Request来改进这个项目。
 
 ---
 
-<div align="center">
-
-**⭐ 如果这个项目对您有帮助，请给我们一个Star！⭐**
-
-Made with ❤️ by Alpha Team
-
-</div>
+**版本**: v1.0  
+**创建日期**: 2024-01-15  
+**最后更新**: 2024-01-15
