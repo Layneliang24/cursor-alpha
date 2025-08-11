@@ -40,6 +40,14 @@ class Category(models.Model):
                 # 如果仍为空（全部非字母数字），使用随机 uuid 片段确保唯一
                 import uuid
                 slug_val = uuid.uuid4().hex[:8]
+            
+            # 检查slug是否已存在，如果存在则添加数字后缀
+            original_slug = slug_val
+            counter = 1
+            while Category.objects.filter(slug=slug_val).exclude(pk=self.pk).exists():
+                slug_val = f"{original_slug}-{counter}"
+                counter += 1
+            
             self.slug = slug_val
         super().save(*args, **kwargs)
     

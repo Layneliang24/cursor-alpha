@@ -30,8 +30,8 @@
     </el-table>
 
     <el-dialog v-model="dialogVisible" :title="isEdit ? '编辑分类' : '新建分类'" width="520px">
-      <el-form :model="form" label-width="90px">
-        <el-form-item label="名称">
+      <el-form ref="formRef" :model="form" :rules="formRules" label-width="90px">
+        <el-form-item label="名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入分类名称" />
         </el-form-item>
         <el-form-item label="描述">
@@ -78,6 +78,8 @@ const saving = ref(false)
 const categories = ref([])
 const dialogVisible = ref(false)
 const isEdit = ref(false)
+const formRef = ref()
+
 const form = reactive({
   id: null,
   name: '',
@@ -88,6 +90,13 @@ const form = reactive({
   icon: '',
   color: '#409EFF'
 })
+
+const formRules = {
+  name: [
+    { required: true, message: '请输入分类名称', trigger: 'blur' },
+    { min: 1, max: 100, message: '分类名称长度在 1 到 100 个字符', trigger: 'blur' }
+  ]
+}
 
 const parentOptions = computed(() => categories.value.filter(c => !isEdit.value || c.id !== form.id))
 
@@ -117,23 +126,48 @@ const openEdit = (row) => {
 }
 
 const handleSave = async () => {
-  if (!form.name.trim()) {
-    ElMessage.warning('请填写名称')
-    return
-  }
-  saving.value = true
+  if (!formRef.value) return
+  
   try {
+    await formRef.value.validate()
+    saving.value = true
+    
     if (isEdit.value && form.id) {
       await categoriesAPI.updateCategory(form.id, { ...form })
       ElMessage.success('更新成功')
     } else {
-      await categoriesAPI.createCategory({ ...form })
+      // 创建时排除id字段
+      const { id, ...createData } = form
+      await categoriesAPI.createCategory(createData)
       ElMessage.success('创建成功')
     }
     dialogVisible.value = false
     await fetchCategories()
   } catch (e) {
-    console.error(e)
+    if (e.message) {
+      // 表单验证错误，不需要显示
+      return
+    }
+    console.error('保存分类失败:', e)
+    // 显示具体的错误信息
+    if (e.response?.data) {
+      const errors = e.response.data
+      if (typeof errors === 'object') {
+        for (const field in errors) {
+          if (Array.isArray(errors[field])) {
+            ElMessage.error(`${field}: ${errors[field][0]}`)
+          } else if (typeof errors[field] === 'string') {
+            ElMessage.error(errors[field])
+          }
+        }
+      } else if (typeof errors === 'string') {
+        ElMessage.error(errors)
+      }
+    } else if (e.message) {
+      ElMessage.error(e.message)
+    } else {
+      ElMessage.error('保存失败，请检查输入参数')
+    }
   } finally {
     saving.value = false
   }
