@@ -17,14 +17,59 @@
           <el-icon><House /></el-icon>
           <span>首页</span>
         </router-link>
-        <router-link to="/articles" class="nav-item">
-          <el-icon><Document /></el-icon>
-          <span>文章</span>
-        </router-link>
-        <router-link to="/categories" class="nav-item">
-          <el-icon><Folder /></el-icon>
-          <span>分类</span>
-        </router-link>
+        <!-- 博客模块 -->
+        <div class="nav-dropdown" :class="{ active: blogDropdownOpen }" @mouseenter="blogDropdownOpen = true" @mouseleave="blogDropdownOpen = false">
+          <div class="nav-item dropdown-trigger" @click="toggleBlogDropdown">
+            <el-icon><Document /></el-icon>
+            <span>博客</span>
+            <el-icon class="dropdown-arrow" :class="{ rotated: blogDropdownOpen }"><ArrowDown /></el-icon>
+          </div>
+          <div class="dropdown-menu" :class="{ show: blogDropdownOpen }">
+            <router-link to="/articles" class="dropdown-item" @click="closeBlogDropdown">
+              <el-icon><Document /></el-icon>
+              <span>文章列表</span>
+            </router-link>
+            <router-link to="/categories" class="dropdown-item" @click="closeBlogDropdown">
+              <el-icon><Folder /></el-icon>
+              <span>分类管理</span>
+            </router-link>
+            <router-link to="/user/articles" class="dropdown-item" @click="closeBlogDropdown" v-if="authStore.isAuthenticated">
+              <el-icon><Edit /></el-icon>
+              <span>我的文章</span>
+            </router-link>
+          </div>
+        </div>
+
+        <!-- 英语学习模块 -->
+        <div class="nav-dropdown" :class="{ active: englishDropdownOpen }" @mouseenter="englishDropdownOpen = true" @mouseleave="englishDropdownOpen = false">
+          <div class="nav-item dropdown-trigger" @click="toggleEnglishDropdown">
+            <el-icon><Reading /></el-icon>
+            <span>英语学习</span>
+            <el-icon class="dropdown-arrow" :class="{ rotated: englishDropdownOpen }"><ArrowDown /></el-icon>
+          </div>
+          <div class="dropdown-menu" :class="{ show: englishDropdownOpen }">
+            <router-link to="/english/dashboard" class="dropdown-item" @click="closeEnglishDropdown">
+              <el-icon><DataBoard /></el-icon>
+              <span>学习仪表板</span>
+            </router-link>
+            <router-link to="/english/practice" class="dropdown-item" @click="closeEnglishDropdown">
+              <el-icon><Trophy /></el-icon>
+              <span>智能练习</span>
+            </router-link>
+            <router-link to="/english/words" class="dropdown-item" @click="closeEnglishDropdown">
+              <el-icon><Notebook /></el-icon>
+              <span>单词学习</span>
+            </router-link>
+            <router-link to="/english/news" class="dropdown-item" @click="closeEnglishDropdown">
+              <el-icon><Notification /></el-icon>
+              <span>英语新闻</span>
+            </router-link>
+            <router-link to="/english/expressions" class="dropdown-item" @click="closeEnglishDropdown">
+              <el-icon><ChatDotRound /></el-icon>
+              <span>地道表达</span>
+            </router-link>
+          </div>
+        </div>
         <a
           v-if="isAdminUi"
           href="/admin/"
@@ -116,15 +161,17 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { Star, Search, Edit, Bell, ArrowDown, User, Document, Setting, SwitchButton, Right, House, Folder, TrendCharts } from '@element-plus/icons-vue'
+import { Star, Search, Edit, Bell, ArrowDown, User, Document, Setting, SwitchButton, Right, House, Folder, TrendCharts, DataBoard, Reading, Trophy, Notebook, Notification, ChatDotRound } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const searchQuery = ref('')
 const searchFocused = ref(false)
+const blogDropdownOpen = ref(false)
+const englishDropdownOpen = ref(false)
 
 const userAvatar = computed(() => {
   return authStore.user?.avatar || 'https://ui-avatars.com/api/?name=' + (authStore.user?.username || 'User') + '&background=667eea&color=fff&size=32'
@@ -150,10 +197,57 @@ const handleLogout = async () => {
   router.push('/login')
 }
 
+// 下拉菜单控制方法
+const toggleBlogDropdown = () => {
+  blogDropdownOpen.value = !blogDropdownOpen.value
+  if (blogDropdownOpen.value) {
+    englishDropdownOpen.value = false
+  }
+}
+
+const toggleEnglishDropdown = () => {
+  englishDropdownOpen.value = !englishDropdownOpen.value
+  if (englishDropdownOpen.value) {
+    blogDropdownOpen.value = false
+  }
+}
+
+const closeBlogDropdown = () => {
+  blogDropdownOpen.value = false
+}
+
+const closeEnglishDropdown = () => {
+  englishDropdownOpen.value = false
+}
+
+// 点击外部关闭下拉菜单
+const closeAllDropdowns = () => {
+  blogDropdownOpen.value = false
+  englishDropdownOpen.value = false
+}
+
 const showNotifications = () => {
   // 显示通知列表
   console.log('显示通知')
 }
+
+// 全局点击事件处理
+const handleGlobalClick = (event) => {
+  const target = event.target
+  // 如果点击的不是下拉菜单相关元素，则关闭所有下拉菜单
+  if (!target.closest('.nav-dropdown')) {
+    closeAllDropdowns()
+  }
+}
+
+// 组件挂载和卸载时的事件监听
+onMounted(() => {
+  document.addEventListener('click', handleGlobalClick)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleGlobalClick)
+})
 </script>
 
 <style scoped>
@@ -471,7 +565,112 @@ const showNotifications = () => {
   }
   
   .nav-actions {
-    gap: 0.5rem;
+  gap: 0.5rem;
+}
+
+/* 下拉菜单样式 */
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-trigger {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropdown-arrow {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.rotated,
+.nav-dropdown:hover .dropdown-arrow,
+.nav-dropdown.active .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e4e7ed;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  padding: 8px 0;
+}
+
+.dropdown-menu.show,
+.nav-dropdown:hover .dropdown-menu,
+.nav-dropdown.active .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  color: #606266;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f7fa;
+  color: #409EFF;
+  text-decoration: none;
+}
+
+.dropdown-item.router-link-active {
+  background-color: #ecf5ff;
+  color: #409EFF;
+  font-weight: 500;
+}
+
+.dropdown-item .el-icon {
+  font-size: 16px;
+}
+
+/* 移动端下拉菜单适配 */
+@media (max-width: 768px) {
+  .nav-dropdown {
+    position: static;
   }
+  
+  .dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin-left: 20px;
+  }
+  
+  .dropdown-trigger {
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .dropdown-item {
+    padding: 8px 0;
+    font-size: 13px;
+  }
+}
 }
 </style>

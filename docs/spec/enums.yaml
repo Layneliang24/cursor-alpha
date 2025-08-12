@@ -1,0 +1,31 @@
+version: 1
+enums:
+  Difficulty: [beginner, intermediate, advanced]
+  ProgressStatus: [not_learned, learning, mastered, need_review]
+errors:
+  - code: E000
+    http: 400
+    message: Bad request
+  - code: E401
+    http: 401
+    message: Unauthorized
+  - code: E403
+    http: 403
+    message: Forbidden
+  - code: E404
+    http: 404
+    message: Not Found
+  - code: E500
+    http: 500
+    message: Internal Server Error
+response:
+  wrapper:
+    type: object
+    fields:
+      success: boolean
+      message: string
+      data: any
+      pagination:
+        page: integer
+        page_size: integer
+        total: integer

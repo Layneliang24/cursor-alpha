@@ -1,0 +1,52 @@
+{
+  "name": "english",
+  "state": {
+    "currentWord": { "type": "Word | null", "default": null },
+    "wordList": { "type": "Word[]", "default": [] },
+    "progress": {
+      "type": "Record<number, { status: 'not_learned' | 'learning' | 'mastered' | 'need_review'; mastery_level: number }>",
+      "default": {}
+    },
+    "dailyGoals": {
+      "type": "{ newWords: number; reviewWords: number }",
+      "default": { "newWords": 20, "reviewWords": 50 }
+    },
+    "loading": { "type": "boolean", "default": false },
+    "error": { "type": "string | null", "default": null }
+  },
+  "getters": {
+    "learnedCount": "number",
+    "reviewCount": "number"
+  },
+  "actions": {
+    "fetchWords": {
+      "params": { "page": "number?", "page_size": "number?" },
+      "returns": "Promise<Word[]>"
+    },
+    "getWordDetail": {
+      "params": { "id": "number" },
+      "returns": "Promise<Word>"
+    },
+    "updateProgress": {
+      "params": { "word_id": "number", "status": "string", "mastery_level": "number?" },
+      "returns": "Promise<boolean>"
+    },
+    "setDailyGoals": {
+      "params": { "newWords": "number", "reviewWords": "number" },
+      "returns": "void"
+    }
+  },
+  "types": {
+    "Word": {
+      "id": "number",
+      "word": "string",
+      "phonetic": "string",
+      "part_of_speech": "string",
+      "definition": "string",
+      "example": "string",
+      "difficulty_level": "'beginner' | 'intermediate' | 'advanced'",
+      "category": "string",
+      "frequency_rank": "number"
+    }
+  }
+}

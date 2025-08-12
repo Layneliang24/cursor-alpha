@@ -17,6 +17,11 @@
       <span>文章</span>
     </el-menu-item>
     
+    <el-menu-item index="/english/words">
+      <el-icon><Document /></el-icon>
+      <span>英语学习</span>
+    </el-menu-item>
+    
     <template v-if="!authStore.isAuthenticated">
       <el-menu-item index="/login">
         <el-icon><User /></el-icon>

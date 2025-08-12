@@ -6342,3 +6342,1268 @@ INFO 2025-08-09 18:07:43,207 basehttp 6852 21136 "GET /api/v1/external-links/ HT
 INFO 2025-08-09 18:07:43,219 basehttp 6852 33360 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
 INFO 2025-08-09 18:07:43,251 basehttp 6852 36208 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
 INFO 2025-08-10 10:11:19,770 autoreload 58900 30124 Watching for file changes with StatReloader
+INFO 2025-08-12 20:13:16,690 autoreload 53500 2444 Watching for file changes with StatReloader
+WARNING 2025-08-12 20:17:12,685 log 53500 36504 Not Found: /api/swagger/
+WARNING 2025-08-12 20:17:12,686 basehttp 53500 36504 "GET /api/swagger/ HTTP/1.1" 404 11339
+WARNING 2025-08-12 20:17:37,177 log 53500 36504 Unauthorized: /api/v1/english/words/
+WARNING 2025-08-12 20:17:37,178 basehttp 53500 36504 "GET /api/v1/english/words/ HTTP/1.1" 401 43
+WARNING 2025-08-12 20:17:53,406 log 53500 36504 Not Found: /api/v1/login
+WARNING 2025-08-12 20:17:53,407 basehttp 53500 36504 "GET /api/v1/login HTTP/1.1" 404 29941
+INFO 2025-08-12 20:18:32,461 basehttp 53500 36504 "GET /api/v1/ HTTP/1.1" 200 367
+WARNING 2025-08-12 20:18:50,879 log 53500 36504 Unauthorized: /api/v1/users/
+WARNING 2025-08-12 20:18:50,880 basehttp 53500 36504 "GET /api/v1/users/ HTTP/1.1" 401 43
+INFO 2025-08-12 20:19:03,544 basehttp 53500 58508 "GET / HTTP/1.1" 200 11006
+INFO 2025-08-12 20:19:03,567 basehttp 53500 49616 "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 304 0
+INFO 2025-08-12 20:19:03,568 basehttp 53500 58508 "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 304 0
+INFO 2025-08-12 20:19:03,576 basehttp 53500 58508 "GET /static/debug_toolbar/css/print.css HTTP/1.1" 304 0
+INFO 2025-08-12 20:19:03,670 basehttp 53500 58508 "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 304 0
+WARNING 2025-08-12 20:19:03,771 log 53500 58508 Not Found: /favicon.ico
+WARNING 2025-08-12 20:19:03,773 basehttp 53500 58508 "GET /favicon.ico HTTP/1.1" 404 11335
+INFO 2025-08-12 20:19:05,896 basehttp 53500 58508 "GET /api/ HTTP/1.1" 200 157
+INFO 2025-08-12 20:19:20,161 basehttp 53500 58508 "GET /api/test/ HTTP/1.1" 200 71
+INFO 2025-08-12 20:19:23,393 basehttp 53500 58508 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-12 20:19:23,746 basehttp 53500 58508 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 12433
+INFO 2025-08-12 20:19:23,767 basehttp 53500 49616 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-12 20:19:23,771 basehttp 53500 58508 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-12 20:19:23,771 basehttp 53500 41484 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-12 20:19:23,773 basehttp 53500 43472 "GET /static/admin/css/login.css HTTP/1.1" 304 0
+INFO 2025-08-12 20:19:23,773 basehttp 53500 44200 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-12 20:19:23,775 basehttp 53500 52696 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-12 20:19:23,775 basehttp 53500 49616 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+WARNING 2025-08-12 20:19:26,139 log 53500 49616 Not Found: /api/swagger/
+WARNING 2025-08-12 20:19:26,140 basehttp 53500 49616 "GET /api/swagger/ HTTP/1.1" 404 11338
+INFO 2025-08-12 20:19:50,352 basehttp 53500 49616 "GET / HTTP/1.1" 200 11006
+INFO 2025-08-12 20:20:22,308 autoreload 53500 2444 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 20:20:23,391 autoreload 19660 25220 Watching for file changes with StatReloader
+INFO 2025-08-12 20:20:38,155 autoreload 56892 48296 Watching for file changes with StatReloader
+INFO 2025-08-12 20:20:50,182 autoreload 56892 48296 S:\WorkShop\cursor\alpha\backend\apps\english\pagination.py changed, reloading.
+INFO 2025-08-12 20:20:50,250 autoreload 19660 25220 S:\WorkShop\cursor\alpha\backend\apps\english\pagination.py changed, reloading.
+INFO 2025-08-12 20:20:51,042 autoreload 54308 34296 Watching for file changes with StatReloader
+INFO 2025-08-12 20:20:51,085 autoreload 24876 12628 Watching for file changes with StatReloader
+WARNING 2025-08-12 20:23:56,442 log 24876 43716 Not Found: /api/auth/login/
+WARNING 2025-08-12 20:23:56,443 basehttp 24876 43716 "GET /api/auth/login/ HTTP/1.1" 404 11347
+INFO 2025-08-12 20:26:22,554 autoreload 54308 34296 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 20:26:23,158 autoreload 24876 12628 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 20:26:23,481 autoreload 51876 50832 Watching for file changes with StatReloader
+INFO 2025-08-12 20:26:24,201 autoreload 1720 42016 Watching for file changes with StatReloader
+INFO 2025-08-12 20:26:40,586 autoreload 1720 42016 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 20:26:40,636 autoreload 51876 50832 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 20:26:41,479 autoreload 49048 33092 Watching for file changes with StatReloader
+INFO 2025-08-12 20:26:41,480 autoreload 33392 38772 Watching for file changes with StatReloader
+WARNING 2025-08-12 20:27:39,105 log 49048 30300 Not Found: /api/auth/login/
+WARNING 2025-08-12 20:27:39,106 basehttp 49048 30300 "POST /api/auth/login/ HTTP/1.1" 404 11349
+WARNING 2025-08-12 20:30:59,479 log 49048 30300 Unsupported Media Type: /api/v1/auth/login/
+WARNING 2025-08-12 20:30:59,480 basehttp 49048 30300 "POST /api/v1/auth/login/ HTTP/1.1" 415 66
+WARNING 2025-08-12 20:33:58,595 log 49048 30300 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 20:33:58,597 basehttp 49048 30300 "POST /api/v1/auth/login/ HTTP/1.1" 400 41
+WARNING 2025-08-12 20:36:52,199 log 49048 30300 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 20:36:52,199 basehttp 49048 30300 "POST /api/v1/auth/login/ HTTP/1.1" 400 41
+WARNING 2025-08-12 20:36:55,450 log 49048 30300 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 20:36:55,451 basehttp 49048 30300 "POST /api/v1/auth/login/ HTTP/1.1" 400 41
+WARNING 2025-08-12 20:37:33,549 log 49048 47852 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 20:37:33,549 basehttp 49048 47852 "POST /api/v1/auth/login/ HTTP/1.1" 400 81
+WARNING 2025-08-12 20:38:06,945 log 49048 43132 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 20:38:06,946 basehttp 49048 43132 "POST /api/v1/auth/login/ HTTP/1.1" 400 107
+WARNING 2025-08-12 20:40:12,548 log 49048 5940 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 20:40:12,549 basehttp 49048 5940 "POST /api/v1/auth/login/ HTTP/1.1" 400 107
+WARNING 2025-08-12 20:40:24,002 log 49048 5956 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 20:40:24,009 basehttp 49048 5956 "POST /api/v1/auth/login/ HTTP/1.1" 400 81
+WARNING 2025-08-12 20:40:47,663 log 49048 58696 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 20:40:47,664 basehttp 49048 58696 "POST /api/v1/auth/login/ HTTP/1.1" 400 107
+WARNING 2025-08-12 20:41:56,949 log 49048 20640 Bad Request: /api/v1/auth/token/
+WARNING 2025-08-12 20:41:56,951 basehttp 49048 20640 "POST /api/v1/auth/token/ HTTP/1.1" 400 107
+WARNING 2025-08-12 20:42:27,346 log 49048 52500 Bad Request: /api/v1/auth/token/
+WARNING 2025-08-12 20:42:27,346 basehttp 49048 52500 "POST /api/v1/auth/token/ HTTP/1.1" 400 81
+WARNING 2025-08-12 20:43:09,366 log 49048 12244 Bad Request: /api/v1/auth/token/
+WARNING 2025-08-12 20:43:09,366 basehttp 49048 12244 "POST /api/v1/auth/token/ HTTP/1.1" 400 81
+WARNING 2025-08-12 20:43:36,388 log 49048 10068 Bad Request: /api/v1/auth/token/
+WARNING 2025-08-12 20:43:36,389 basehttp 49048 10068 "POST /api/v1/auth/token/ HTTP/1.1" 400 41
+WARNING 2025-08-12 20:43:36,485 log 49048 10068 Unauthorized: /api/v1/english/words/
+WARNING 2025-08-12 20:43:36,485 basehttp 49048 10068 "GET /api/v1/english/words/?page=1&page_size=20 HTTP/1.1" 401 95
+INFO 2025-08-12 20:43:41,733 basehttp 49048 10068 - Broken pipe from ('127.0.0.1', 62724)
+WARNING 2025-08-12 20:44:11,950 log 49048 30300 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 20:44:11,951 basehttp 49048 30300 "POST /api/v1/auth/login/ HTTP/1.1" 400 41
+WARNING 2025-08-12 20:45:16,291 log 49048 26216 Bad Request: /api/v1/auth/token/
+WARNING 2025-08-12 20:45:16,292 basehttp 49048 26216 "POST /api/v1/auth/token/ HTTP/1.1" 400 107
+WARNING 2025-08-12 20:45:37,467 log 49048 37276 Bad Request: /api/v1/auth/token/
+WARNING 2025-08-12 20:45:37,467 basehttp 49048 37276 "POST /api/v1/auth/token/ HTTP/1.1" 400 107
+WARNING 2025-08-12 20:46:55,640 log 49048 30300 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 20:46:55,640 basehttp 49048 30300 "POST /api/v1/auth/login/ HTTP/1.1" 400 36
+WARNING 2025-08-12 20:47:27,086 log 49048 30300 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 20:47:27,088 basehttp 49048 30300 "POST /api/v1/auth/login/ HTTP/1.1" 400 36
+INFO 2025-08-12 20:47:41,477 basehttp 49048 30300 "POST /api/v1/auth/login/ HTTP/1.1" 200 882
+WARNING 2025-08-12 20:50:31,847 log 49048 30300 Bad Request: /api/v1/english/words/
+WARNING 2025-08-12 20:50:31,850 basehttp 49048 30300 "POST /api/v1/english/words/?difficulty_level=beginner&page=1&page_size=20 HTTP/1.1" 400 37
+INFO 2025-08-12 20:51:20,002 basehttp 49048 30300 "POST /api/v1/english/words/ HTTP/1.1" 201 400
+INFO 2025-08-12 20:52:11,773 basehttp 49048 30300 "POST /api/v1/english/progress/ HTTP/1.1" 200 281
+ERROR 2025-08-12 20:52:18,432 log 49048 30300 Internal Server Error: /api/v1/english/progress/
+Traceback (most recent call last):
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "S:\Python3.10\lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\cursors.py", line 206, in execute
+    res = self._query(query)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\cursors.py", line 319, in _query
+    db.query(q)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\connections.py", line 254, in query
+    _mysql.connection.query(self, query)
+MySQLdb.IntegrityError: (1062, "Duplicate entry '9-1' for key 'user_word_progress.user_word_progress_user_id_word_id_e341b541_uniq'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "S:\Python3.10\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "S:\Python3.10\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "S:\Python3.10\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "S:\Python3.10\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "S:\Python3.10\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "S:\Python3.10\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "S:\Python3.10\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "S:\Python3.10\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "S:\WorkShop\cursor\alpha\backend\apps\english\views.py", line 100, in create
+    self.perform_create(serializer)
+  File "S:\WorkShop\cursor\alpha\backend\apps\english\views.py", line 95, in perform_create
+    serializer.save(user=self.request.user, last_review_date=timezone.now())
+  File "S:\Python3.10\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "S:\Python3.10\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "S:\Python3.10\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "S:\Python3.10\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "S:\Python3.10\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "S:\Python3.10\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "S:\Python3.10\lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+  File "S:\Python3.10\lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+  File "S:\Python3.10\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "S:\Python3.10\lib\site-packages\django\db\models\query.py", line 1805, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "S:\Python3.10\lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\panels\sql\tracking.py", line 252, in execute
+    return self._record(super().execute, sql, params)
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\panels\sql\tracking.py", line 177, in _record
+    return method(sql, params)
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "S:\Python3.10\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "S:\Python3.10\lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\cursors.py", line 206, in execute
+    res = self._query(query)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\cursors.py", line 319, in _query
+    db.query(q)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\connections.py", line 254, in query
+    _mysql.connection.query(self, query)
+django.db.utils.IntegrityError: (1062, "Duplicate entry '9-1' for key 'user_word_progress.user_word_progress_user_id_word_id_e341b541_uniq'")
+ERROR 2025-08-12 20:52:18,499 basehttp 49048 30300 "POST /api/v1/english/progress/ HTTP/1.1" 500 259046
+ERROR 2025-08-12 20:52:26,272 log 49048 30300 Internal Server Error: /api/v1/english/progress/
+Traceback (most recent call last):
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "S:\Python3.10\lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\cursors.py", line 206, in execute
+    res = self._query(query)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\cursors.py", line 319, in _query
+    db.query(q)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\connections.py", line 254, in query
+    _mysql.connection.query(self, query)
+MySQLdb.IntegrityError: (1062, "Duplicate entry '9-1' for key 'user_word_progress.user_word_progress_user_id_word_id_e341b541_uniq'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "S:\Python3.10\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "S:\Python3.10\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "S:\Python3.10\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "S:\Python3.10\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "S:\Python3.10\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "S:\Python3.10\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "S:\Python3.10\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "S:\Python3.10\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "S:\WorkShop\cursor\alpha\backend\apps\english\views.py", line 100, in create
+    self.perform_create(serializer)
+  File "S:\WorkShop\cursor\alpha\backend\apps\english\views.py", line 95, in perform_create
+    serializer.save(user=self.request.user, last_review_date=timezone.now())
+  File "S:\Python3.10\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "S:\Python3.10\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "S:\Python3.10\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "S:\Python3.10\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "S:\Python3.10\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "S:\Python3.10\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "S:\Python3.10\lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+  File "S:\Python3.10\lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+  File "S:\Python3.10\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "S:\Python3.10\lib\site-packages\django\db\models\query.py", line 1805, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "S:\Python3.10\lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\panels\sql\tracking.py", line 252, in execute
+    return self._record(super().execute, sql, params)
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\panels\sql\tracking.py", line 177, in _record
+    return method(sql, params)
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "S:\Python3.10\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "S:\Python3.10\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "S:\Python3.10\lib\site-packages\django\db\backends\mysql\base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\cursors.py", line 206, in execute
+    res = self._query(query)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\cursors.py", line 319, in _query
+    db.query(q)
+  File "S:\Python3.10\lib\site-packages\MySQLdb\connections.py", line 254, in query
+    _mysql.connection.query(self, query)
+django.db.utils.IntegrityError: (1062, "Duplicate entry '9-1' for key 'user_word_progress.user_word_progress_user_id_word_id_e341b541_uniq'")
+ERROR 2025-08-12 20:52:26,366 basehttp 49048 30300 "POST /api/v1/english/progress/ HTTP/1.1" 500 259045
+INFO 2025-08-12 20:56:50,930 basehttp 49048 36488 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:56:51,314 basehttp 49048 58864 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 20:56:51,441 basehttp 49048 56800 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 20:56:51,454 basehttp 49048 5792 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 20:56:51,502 basehttp 49048 960 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 20:56:51,519 basehttp 49048 47124 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 20:56:51,528 basehttp 49048 53280 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:56:53,358 basehttp 49048 31936 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 200 164
+WARNING 2025-08-12 20:57:06,228 log 49048 23576 Not Found: /api/v1/login
+WARNING 2025-08-12 20:57:06,229 basehttp 49048 23576 "GET /api/v1/login HTTP/1.1" 404 29942
+INFO 2025-08-12 20:57:14,193 basehttp 49048 51972 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:57:54,115 basehttp 49048 23020 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:57:54,130 basehttp 49048 37260 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 20:57:54,837 basehttp 49048 2596 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:57:55,842 basehttp 49048 25856 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 200 164
+INFO 2025-08-12 20:57:57,280 basehttp 49048 51132 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 200 164
+INFO 2025-08-12 20:58:00,364 basehttp 49048 50276 "POST /api/v1/auth/login/ HTTP/1.1" 200 882
+INFO 2025-08-12 20:58:00,830 basehttp 49048 25308 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:58:00,870 basehttp 49048 36420 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 20:58:00,880 basehttp 49048 42496 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 20:58:00,912 basehttp 49048 35016 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 20:58:00,969 basehttp 49048 32784 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 20:58:00,974 basehttp 49048 7448 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 20:58:01,038 basehttp 49048 48708 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:58:07,610 basehttp 49048 35656 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 20:58:07,622 basehttp 49048 51152 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:58:07,699 basehttp 49048 31952 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 20:58:07,739 basehttp 49048 28284 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 20:58:07,760 basehttp 49048 4804 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 20:58:07,767 basehttp 49048 58016 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 20:58:07,817 basehttp 49048 35572 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:58:08,837 basehttp 49048 22084 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 20:58:10,272 basehttp 49048 40652 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 20:58:10,280 basehttp 49048 29868 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:58:12,623 basehttp 49048 17756 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 20:58:12,634 basehttp 49048 12112 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 20:58:12,634 basehttp 49048 29916 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:58:12,640 basehttp 49048 43416 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 20:58:12,686 basehttp 49048 26144 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 20:58:13,063 basehttp 49048 21972 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 20:58:37,310 autoreload 53544 49808 Watching for file changes with StatReloader
+INFO 2025-08-12 20:58:49,381 basehttp 53544 20324 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:58:49,382 basehttp 53544 49352 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 20:58:52,291 basehttp 53544 16012 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 20:58:52,316 basehttp 53544 31392 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:58:52,389 basehttp 53544 4724 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 20:58:52,490 basehttp 53544 22784 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 20:58:52,503 basehttp 53544 24884 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 20:58:53,022 basehttp 53544 18492 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 20:58:54,879 basehttp 53544 45676 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:58:54,884 basehttp 53544 40996 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 20:58:56,807 basehttp 53544 53464 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:58:56,807 basehttp 53544 17140 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 20:58:56,815 basehttp 53544 20244 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 20:58:56,883 basehttp 53544 34596 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 20:58:56,887 basehttp 53544 35576 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 20:59:32,795 basehttp 53544 36540 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:59:32,808 basehttp 53544 44888 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 20:59:32,996 basehttp 53544 35872 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 20:59:33,076 basehttp 53544 20832 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 20:59:33,130 basehttp 53544 40644 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 20:59:33,146 basehttp 53544 7428 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 20:59:33,252 basehttp 53544 31644 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:59:33,309 basehttp 53544 50004 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 20:59:34,501 basehttp 53544 48656 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 20:59:34,518 basehttp 53544 48808 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:59:34,708 basehttp 53544 39948 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 20:59:34,734 basehttp 53544 37544 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 20:59:34,734 basehttp 53544 17708 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 20:59:34,751 basehttp 53544 20316 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 20:59:34,843 basehttp 53544 52228 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:59:35,818 basehttp 53544 15984 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 20:59:36,935 basehttp 53544 25968 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 20:59:38,454 basehttp 53544 37380 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 20:59:38,460 basehttp 53544 37756 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 20:59:38,492 basehttp 53544 53608 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:59:38,514 basehttp 53544 48056 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 20:59:38,523 basehttp 53544 54960 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 20:59:38,916 basehttp 53544 33936 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 20:59:40,293 basehttp 53544 26920 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 20:59:40,293 basehttp 53544 3788 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:59:43,732 basehttp 53544 36896 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 20:59:43,745 basehttp 53544 42376 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:59:45,246 basehttp 53544 43600 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:59:45,258 basehttp 53544 53192 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 20:59:45,622 basehttp 53544 46984 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 20:59:45,682 basehttp 53544 22344 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 20:59:45,695 basehttp 53544 42100 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 20:59:46,382 basehttp 53544 58984 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 20:59:46,420 basehttp 53544 44108 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 20:59:46,506 basehttp 53544 57760 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 20:59:46,533 basehttp 53544 30768 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 20:59:46,545 basehttp 53544 21720 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 20:59:46,633 basehttp 53544 39968 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 20:59:46,719 basehttp 53544 40476 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:00:14,017 basehttp 53544 21580 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:00:14,063 basehttp 53544 18212 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 21:00:14,136 basehttp 53544 25940 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:00:14,165 basehttp 53544 27724 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 21:00:14,214 basehttp 53544 52644 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 21:00:14,221 basehttp 53544 7784 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 21:00:14,271 basehttp 53544 16620 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:00:15,092 basehttp 53544 6812 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:00:15,107 basehttp 53544 7940 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 21:00:15,113 basehttp 53544 20660 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:00:15,162 basehttp 53544 18820 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 21:00:15,203 basehttp 53544 23788 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 21:00:15,208 basehttp 53544 21576 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 21:00:15,257 basehttp 53544 28204 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:00:15,584 basehttp 53544 32300 "GET /api/v1/english/words/?page=1&page_size=10&search=&difficulty=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:00:20,716 basehttp 53544 35824 "GET /api/v1/english/words/?page=1&page_size=10&search=&difficulty=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:00:21,339 basehttp 53544 37372 "GET /api/v1/english/words/?page=1&page_size=10&search=&difficulty=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:00:23,183 basehttp 53544 37992 "GET /api/v1/english/words/1/ HTTP/1.1" 200 459
+INFO 2025-08-12 21:00:28,120 basehttp 53544 32072 "GET /api/v1/english/words/?page=1&page_size=10&search=&difficulty=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:00:31,205 basehttp 53544 39520 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 21:00:31,216 basehttp 53544 35216 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 21:00:31,253 basehttp 53544 44212 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:00:31,260 basehttp 53544 9700 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 21:00:31,269 basehttp 53544 14452 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 21:00:31,480 basehttp 53544 57352 "GET /api/v1/english/words/?page=1&page_size=10&search=&difficulty=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:01:51,662 basehttp 53544 18708 "GET /api/v1/english/words/?page=1&page_size=10&search=&difficulty=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:01:59,761 basehttp 53544 2104 "GET /api/v1/english/words/?page=1&page_size=10&search=&difficulty=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:02:34,798 basehttp 53544 51412 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:02:34,822 basehttp 53544 46228 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:02:34,832 basehttp 53544 23784 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 21:02:34,862 basehttp 53544 46752 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:02:42,056 basehttp 53544 17652 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:02:42,068 basehttp 53544 5012 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:02:45,417 basehttp 53544 35300 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:02:46,991 basehttp 53544 34172 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:02:48,289 basehttp 53544 39272 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:02:55,707 basehttp 53544 24804 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:02:58,749 basehttp 53544 36184 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:02:58,750 basehttp 53544 28216 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:02:58,804 basehttp 53544 53080 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:03:00,732 autoreload 53544 49808 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:03:01,158 autoreload 33392 38772 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:03:02,342 autoreload 58516 34412 Watching for file changes with StatReloader
+INFO 2025-08-12 21:03:02,543 autoreload 55660 37824 Watching for file changes with StatReloader
+INFO 2025-08-12 21:03:09,208 basehttp 58516 15676 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:03:09,315 basehttp 58516 42132 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:03:17,141 basehttp 58516 35956 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:03:17,207 basehttp 58516 36288 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:03:26,518 basehttp 58516 33876 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:03:26,600 basehttp 58516 26820 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:03:27,008 autoreload 55660 37824 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:03:27,564 autoreload 58516 34412 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:03:27,740 autoreload 57064 16076 Watching for file changes with StatReloader
+INFO 2025-08-12 21:03:28,373 autoreload 23276 30336 Watching for file changes with StatReloader
+INFO 2025-08-12 21:03:44,770 basehttp 23276 33856 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:03:44,774 basehttp 23276 27196 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:03:44,775 basehttp 23276 6856 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:03:44,781 basehttp 23276 49300 "GET /api/v1/categories/ HTTP/1.1" 200 580
+WARNING 2025-08-12 21:03:46,421 log 23276 35412 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 21:03:46,423 basehttp 23276 35412 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 25
+WARNING 2025-08-12 21:03:51,873 log 23276 46692 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 21:03:51,874 basehttp 23276 46692 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 25
+INFO 2025-08-12 21:04:01,721 basehttp 23276 39372 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:04:01,738 basehttp 23276 30132 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 21:04:01,751 basehttp 23276 28544 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 21:04:01,971 basehttp 23276 20688 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 21:04:01,989 basehttp 23276 39228 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 21:04:02,571 basehttp 23276 51024 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:04:02,591 basehttp 23276 33860 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:04:02,768 basehttp 23276 40240 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 21:04:02,791 basehttp 23276 10356 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 21:04:02,808 basehttp 23276 8832 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 21:04:02,819 basehttp 23276 35884 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 21:04:02,901 basehttp 23276 1992 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:04:03,801 basehttp 23276 34948 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:04:05,797 basehttp 23276 59840 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:04:07,002 basehttp 23276 57292 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+WARNING 2025-08-12 21:04:07,946 log 23276 25560 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 21:04:07,947 basehttp 23276 25560 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 25
+INFO 2025-08-12 21:05:05,918 basehttp 23276 30424 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:05:05,933 basehttp 23276 37352 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 21:05:05,933 basehttp 23276 11460 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:05:05,958 basehttp 23276 43532 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:05:07,409 basehttp 23276 55256 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:05:07,410 basehttp 23276 42520 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:05:07,432 basehttp 23276 56840 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:05:13,267 basehttp 23276 14276 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:05:14,695 basehttp 23276 55252 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 21:05:14,713 basehttp 23276 37460 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 21:05:14,721 basehttp 23276 32468 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:05:14,760 basehttp 23276 27236 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 21:05:14,769 basehttp 23276 39736 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 21:05:17,603 basehttp 23276 44864 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 21:05:19,094 basehttp 23276 45668 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:05:20,424 basehttp 23276 55968 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+WARNING 2025-08-12 21:05:22,052 log 23276 55240 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 21:05:22,053 basehttp 23276 55240 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 25
+INFO 2025-08-12 21:05:38,961 basehttp 23276 22728 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:05:38,962 basehttp 23276 40656 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:05:38,999 basehttp 23276 53228 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:05:45,678 basehttp 23276 46596 "POST /api/v1/english/news/crawl/ HTTP/1.1" 202 55
+INFO 2025-08-12 21:05:49,321 basehttp 23276 52028 "GET /api/v1/english/news/2/ HTTP/1.1" 200 426
+INFO 2025-08-12 21:05:51,572 basehttp 23276 34168 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:05:52,689 basehttp 23276 6464 "POST /api/v1/english/news/crawl/ HTTP/1.1" 202 55
+INFO 2025-08-12 21:05:53,824 basehttp 23276 43144 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:05:54,731 basehttp 23276 1724 "POST /api/v1/english/news/crawl/ HTTP/1.1" 202 55
+INFO 2025-08-12 21:05:58,454 basehttp 23276 38248 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:06:01,087 basehttp 23276 46456 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:06:01,656 basehttp 23276 25452 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:06:54,127 basehttp 23276 54776 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:06:54,552 basehttp 23276 55592 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:06:55,326 basehttp 23276 49160 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:06:57,665 basehttp 23276 35800 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 21:06:57,689 basehttp 23276 8924 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 21:06:57,702 basehttp 23276 43444 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 21:06:57,717 basehttp 23276 6100 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:06:57,789 basehttp 23276 6328 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 21:06:58,376 basehttp 23276 3860 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 21:06:58,452 basehttp 23276 4376 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 21:07:00,054 basehttp 23276 21824 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+WARNING 2025-08-12 21:07:02,908 log 23276 60332 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 21:07:02,910 basehttp 23276 60332 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 25
+INFO 2025-08-12 21:07:04,924 basehttp 23276 53412 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:07:05,696 basehttp 23276 12820 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:07:11,167 basehttp 23276 23564 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:07:11,176 basehttp 23276 19596 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:07:11,245 basehttp 23276 54072 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:07:14,963 basehttp 23276 21476 "GET /api/v1/english/news/1/ HTTP/1.1" 200 428
+INFO 2025-08-12 21:07:18,308 basehttp 23276 32520 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:07:19,385 basehttp 23276 30904 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:07:38,602 basehttp 23276 52432 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:07:38,602 basehttp 23276 25652 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:07:38,611 basehttp 23276 54040 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:07:39,173 basehttp 23276 31584 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:07:39,184 basehttp 23276 46876 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:07:39,185 basehttp 23276 50268 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:07:41,314 basehttp 23276 3432 "POST /api/v1/english/news/crawl/ HTTP/1.1" 202 55
+INFO 2025-08-12 21:07:42,117 basehttp 23276 21396 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:07:42,943 basehttp 23276 42264 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-12 21:07:43,659 basehttp 23276 29188 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:07:45,901 basehttp 23276 41356 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:07:45,949 basehttp 23276 17192 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 21:07:45,959 basehttp 23276 17276 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 21:07:45,978 basehttp 23276 36620 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 21:07:46,023 basehttp 23276 52448 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 21:07:46,239 basehttp 23276 9652 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 21:07:46,758 basehttp 23276 5696 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 21:07:47,003 basehttp 23276 56008 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:07:47,456 basehttp 23276 33756 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-12 21:07:47,919 basehttp 23276 48872 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:08:03,219 basehttp 23276 43260 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:08:04,902 basehttp 23276 7348 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1319
+INFO 2025-08-12 21:08:08,330 basehttp 23276 57596 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:08:09,886 basehttp 23276 51984 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:08:12,311 basehttp 23276 54488 "GET /api/v1/english/news/1/ HTTP/1.1" 200 428
+INFO 2025-08-12 21:08:14,247 basehttp 23276 46396 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:08:16,014 basehttp 23276 42128 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 21:08:16,083 basehttp 23276 36096 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 21:08:18,082 basehttp 23276 32024 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 21:08:18,189 basehttp 23276 47136 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:08:18,209 basehttp 23276 6580 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 21:08:18,318 basehttp 23276 13228 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 21:08:18,448 basehttp 23276 48060 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 21:08:18,485 basehttp 23276 22164 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 21:08:51,068 autoreload 23276 30336 S:\WorkShop\cursor\alpha\backend\alpha\__init__.py changed, reloading.
+INFO 2025-08-12 21:08:51,699 autoreload 57064 16076 S:\WorkShop\cursor\alpha\backend\alpha\__init__.py changed, reloading.
+INFO 2025-08-12 21:08:52,450 autoreload 27064 42812 Watching for file changes with StatReloader
+INFO 2025-08-12 21:08:52,728 autoreload 53928 51804 Watching for file changes with StatReloader
+INFO 2025-08-12 21:09:07,509 autoreload 27064 42812 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:09:07,512 autoreload 53928 51804 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:09:08,612 autoreload 12400 45792 Watching for file changes with StatReloader
+INFO 2025-08-12 21:09:08,671 autoreload 35888 20708 Watching for file changes with StatReloader
+INFO 2025-08-12 21:09:27,125 autoreload 35888 20708 S:\WorkShop\cursor\alpha\backend\alpha\__init__.py changed, reloading.
+INFO 2025-08-12 21:09:27,140 autoreload 12400 45792 S:\WorkShop\cursor\alpha\backend\apps\english\tasks.py changed, reloading.
+INFO 2025-08-12 21:09:27,977 autoreload 56420 59244 Watching for file changes with StatReloader
+INFO 2025-08-12 21:09:27,982 autoreload 25528 25612 Watching for file changes with StatReloader
+INFO 2025-08-12 21:10:28,884 autoreload 25528 25612 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:10:29,377 autoreload 56420 59244 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:10:30,084 autoreload 47192 30216 Watching for file changes with StatReloader
+INFO 2025-08-12 21:10:30,512 autoreload 54552 24608 Watching for file changes with StatReloader
+INFO 2025-08-12 21:10:43,160 autoreload 47192 30216 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:10:43,436 autoreload 54552 24608 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:10:43,971 autoreload 36684 12640 Watching for file changes with StatReloader
+INFO 2025-08-12 21:10:44,295 autoreload 5692 4140 Watching for file changes with StatReloader
+INFO 2025-08-12 21:11:43,521 basehttp 5692 39968 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 21:11:43,522 basehttp 5692 40476 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 21:11:43,523 basehttp 5692 21720 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 21:11:43,524 basehttp 5692 59648 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 867
+INFO 2025-08-12 21:11:45,553 basehttp 5692 9956 "POST /api/v1/english/news/crawl/ HTTP/1.1" 202 67
+INFO 2025-08-12 21:15:52,189 autoreload 36684 12640 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-12 21:15:52,919 autoreload 5692 4140 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-12 21:15:53,410 autoreload 56620 7316 Watching for file changes with StatReloader
+INFO 2025-08-12 21:15:54,014 autoreload 51672 50800 Watching for file changes with StatReloader
+INFO 2025-08-12 21:16:34,306 autoreload 56620 7316 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-12 21:16:34,843 autoreload 51672 50800 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-12 21:16:35,219 autoreload 34692 35488 Watching for file changes with StatReloader
+INFO 2025-08-12 21:16:35,640 autoreload 24064 50468 Watching for file changes with StatReloader
+INFO 2025-08-12 21:17:41,308 autoreload 34692 35488 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:17:41,689 autoreload 24064 50468 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:17:42,199 autoreload 38100 36956 Watching for file changes with StatReloader
+INFO 2025-08-12 21:17:42,781 autoreload 1716 24068 Watching for file changes with StatReloader
+INFO 2025-08-12 21:18:03,179 autoreload 38100 36956 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:18:03,423 autoreload 1716 24068 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:18:03,994 autoreload 54916 54776 Watching for file changes with StatReloader
+INFO 2025-08-12 21:18:04,193 autoreload 33988 35800 Watching for file changes with StatReloader
+INFO 2025-08-12 21:20:48,139 autoreload 33988 35800 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:20:48,864 autoreload 54916 54776 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:20:49,423 autoreload 2128 3916 Watching for file changes with StatReloader
+INFO 2025-08-12 21:20:50,005 autoreload 20808 38412 Watching for file changes with StatReloader
+INFO 2025-08-12 21:20:53,411 autoreload 2128 3916 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-12 21:20:53,503 autoreload 20808 38412 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-12 21:20:54,190 autoreload 32784 3620 Watching for file changes with StatReloader
+INFO 2025-08-12 21:20:54,212 autoreload 31952 57628 Watching for file changes with StatReloader
+ERROR 2025-08-12 21:21:36,437 log 50348 55712 Internal Server Error: /api/health/
+Traceback (most recent call last):
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 880, in _resolve_lookup
+    current = current[bit]
+TypeError: 'SQLPanel' object is not subscriptable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "S:\Python3.10\lib\site-packages\django\urls\base.py", line 71, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+KeyError: 'djdt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "S:\Python3.10\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\middleware.py", line 74, in __call__
+    rendered = toolbar.render_toolbar()
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\toolbar.py", line 82, in render_toolbar
+    return render_to_string("debug_toolbar/base.html", context)
+  File "S:\Python3.10\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "S:\Python3.10\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "S:\Python3.10\lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+  File "S:\Python3.10\lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1064, in render
+    output = self.filter_expression.resolve(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 715, in resolve
+    obj = self.var.resolve(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 847, in resolve
+    value = self._resolve_lookup(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 890, in _resolve_lookup
+    current = getattr(current, bit)
+  File "S:\Python3.10\lib\site-packages\debug_toolbar\panels\__init__.py", line 103, in content
+    return render_to_string(self.template, self.get_stats())
+  File "S:\Python3.10\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "S:\Python3.10\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "S:\Python3.10\lib\site-packages\django\test\utils.py", line 112, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "S:\Python3.10\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "S:\Python3.10\lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "S:\Python3.10\lib\site-packages\django\urls\base.py", line 82, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace
+INFO 2025-08-12 21:22:00,374 autoreload 32784 3620 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:22:00,453 autoreload 31952 57628 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:22:01,626 autoreload 7936 28272 Watching for file changes with StatReloader
+INFO 2025-08-12 21:22:01,660 autoreload 29552 36068 Watching for file changes with StatReloader
+INFO 2025-08-12 21:22:23,448 autoreload 29552 36068 S:\WorkShop\cursor\alpha\backend\apps\jobs\urls.py changed, reloading.
+INFO 2025-08-12 21:22:23,474 autoreload 7936 28272 S:\WorkShop\cursor\alpha\backend\apps\jobs\__init__.py changed, reloading.
+INFO 2025-08-12 21:22:24,260 autoreload 49088 2680 Watching for file changes with StatReloader
+INFO 2025-08-12 21:22:24,271 autoreload 50548 58556 Watching for file changes with StatReloader
+INFO 2025-08-12 21:24:31,511 autoreload 50548 58556 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:24:31,584 autoreload 49088 2680 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:24:32,898 autoreload 52920 21792 Watching for file changes with StatReloader
+INFO 2025-08-12 21:24:32,942 autoreload 30344 15384 Watching for file changes with StatReloader
+INFO 2025-08-12 21:24:39,753 autoreload 30344 15384 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-12 21:24:40,607 autoreload 52920 21792 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-12 21:24:41,098 autoreload 55700 47100 Watching for file changes with StatReloader
+INFO 2025-08-12 21:24:41,773 autoreload 32428 54428 Watching for file changes with StatReloader
+INFO 2025-08-12 21:25:26,083 autoreload 32428 54428 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:25:26,201 autoreload 55700 47100 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:25:27,545 autoreload 55524 36416 Watching for file changes with StatReloader
+INFO 2025-08-12 21:25:27,559 autoreload 32468 27236 Watching for file changes with StatReloader
+INFO 2025-08-12 21:25:34,857 autoreload 32468 27236 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-12 21:25:35,682 autoreload 55524 36416 S:\WorkShop\cursor\alpha\backend\alpha\urls.py changed, reloading.
+INFO 2025-08-12 21:25:36,579 autoreload 47308 8852 Watching for file changes with StatReloader
+INFO 2025-08-12 21:25:36,971 autoreload 4044 26644 Watching for file changes with StatReloader
+INFO 2025-08-12 21:26:22,745 autoreload 47308 8852 S:\WorkShop\cursor\alpha\backend\apps\ai\__init__.py changed, reloading.
+INFO 2025-08-12 21:26:23,616 autoreload 4044 26644 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-12 21:26:23,886 autoreload 32280 21008 Watching for file changes with StatReloader
+INFO 2025-08-12 21:26:24,524 autoreload 56472 25852 Watching for file changes with StatReloader
+INFO 2025-08-12 21:52:35,159 autoreload 56472 25852 S:\WorkShop\cursor\alpha\backend\apps\english\models.py changed, reloading.
+INFO 2025-08-12 21:52:35,398 autoreload 32280 21008 S:\WorkShop\cursor\alpha\backend\apps\english\models.py changed, reloading.
+INFO 2025-08-12 21:52:36,649 autoreload 29392 30404 Watching for file changes with StatReloader
+INFO 2025-08-12 21:52:36,819 autoreload 22196 57836 Watching for file changes with StatReloader
+INFO 2025-08-12 21:52:51,317 autoreload 29392 30404 S:\WorkShop\cursor\alpha\backend\apps\english\models.py changed, reloading.
+INFO 2025-08-12 21:52:51,992 autoreload 22196 57836 S:\WorkShop\cursor\alpha\backend\apps\english\models.py changed, reloading.
+INFO 2025-08-12 21:52:52,810 autoreload 55348 54500 Watching for file changes with StatReloader
+INFO 2025-08-12 21:52:53,252 autoreload 25152 54248 Watching for file changes with StatReloader
+INFO 2025-08-12 21:53:04,684 autoreload 55348 54500 S:\WorkShop\cursor\alpha\backend\apps\english\models.py changed, reloading.
+INFO 2025-08-12 21:53:04,960 autoreload 25152 54248 S:\WorkShop\cursor\alpha\backend\apps\english\models.py changed, reloading.
+INFO 2025-08-12 21:53:06,041 autoreload 41552 20036 Watching for file changes with StatReloader
+INFO 2025-08-12 21:53:06,216 autoreload 8216 44212 Watching for file changes with StatReloader
+INFO 2025-08-12 21:53:22,175 autoreload 8216 44212 S:\WorkShop\cursor\alpha\backend\apps\english\models.py changed, reloading.
+INFO 2025-08-12 21:53:22,425 autoreload 41552 20036 S:\WorkShop\cursor\alpha\backend\apps\english\models.py changed, reloading.
+INFO 2025-08-12 21:53:23,034 autoreload 48504 3432 Watching for file changes with StatReloader
+INFO 2025-08-12 21:53:23,273 autoreload 51616 57276 Watching for file changes with StatReloader
+INFO 2025-08-12 21:53:47,772 autoreload 48504 3432 S:\WorkShop\cursor\alpha\backend\apps\english\models.py changed, reloading.
+INFO 2025-08-12 21:53:48,222 autoreload 51616 57276 S:\WorkShop\cursor\alpha\backend\apps\english\models.py changed, reloading.
+INFO 2025-08-12 21:53:48,685 autoreload 42860 24800 Watching for file changes with StatReloader
+INFO 2025-08-12 21:53:49,109 autoreload 43152 37428 Watching for file changes with StatReloader
+INFO 2025-08-12 21:55:47,454 autoreload 42860 24800 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:55:47,605 autoreload 43152 37428 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:55:48,857 autoreload 26732 31852 Watching for file changes with StatReloader
+INFO 2025-08-12 21:55:49,034 autoreload 15384 51864 Watching for file changes with StatReloader
+INFO 2025-08-12 21:55:56,281 autoreload 15384 51864 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:55:56,693 autoreload 26732 31852 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:55:57,624 autoreload 46544 25556 Watching for file changes with StatReloader
+INFO 2025-08-12 21:55:57,989 autoreload 22688 16964 Watching for file changes with StatReloader
+INFO 2025-08-12 21:56:06,975 autoreload 46544 25556 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:56:07,464 autoreload 22688 16964 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:56:08,807 autoreload 56616 22836 Watching for file changes with StatReloader
+INFO 2025-08-12 21:56:08,990 autoreload 29100 22028 Watching for file changes with StatReloader
+INFO 2025-08-12 21:56:17,977 autoreload 56616 22836 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:56:18,411 autoreload 29100 22028 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:56:19,567 autoreload 26856 23204 Watching for file changes with StatReloader
+INFO 2025-08-12 21:56:19,861 autoreload 58028 12032 Watching for file changes with StatReloader
+INFO 2025-08-12 21:56:27,653 autoreload 58028 12032 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:56:28,379 autoreload 26856 23204 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:56:29,258 autoreload 42512 54240 Watching for file changes with StatReloader
+INFO 2025-08-12 21:56:29,656 autoreload 21400 42040 Watching for file changes with StatReloader
+INFO 2025-08-12 21:57:10,575 autoreload 42512 54240 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:57:11,313 autoreload 21400 42040 S:\WorkShop\cursor\alpha\backend\apps\english\serializers.py changed, reloading.
+INFO 2025-08-12 21:57:11,888 autoreload 57684 28540 Watching for file changes with StatReloader
+INFO 2025-08-12 21:57:12,542 autoreload 24724 47748 Watching for file changes with StatReloader
+INFO 2025-08-12 21:57:43,708 autoreload 24724 47748 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:57:43,869 autoreload 57684 28540 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:57:45,161 autoreload 25560 54228 Watching for file changes with StatReloader
+INFO 2025-08-12 21:57:45,343 autoreload 34300 52244 Watching for file changes with StatReloader
+INFO 2025-08-12 21:58:30,654 autoreload 25560 54228 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:58:30,860 autoreload 34300 52244 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:58:32,355 autoreload 22852 20716 Watching for file changes with StatReloader
+INFO 2025-08-12 21:58:32,555 autoreload 37780 59024 Watching for file changes with StatReloader
+INFO 2025-08-12 21:58:57,883 autoreload 37780 59024 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:58:58,811 autoreload 22852 20716 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 21:58:59,403 autoreload 57016 49420 Watching for file changes with StatReloader
+INFO 2025-08-12 21:59:00,312 autoreload 4256 59764 Watching for file changes with StatReloader
+INFO 2025-08-12 21:59:17,600 autoreload 57016 49420 S:\WorkShop\cursor\alpha\backend\apps\english\urls.py changed, reloading.
+INFO 2025-08-12 21:59:17,873 autoreload 4256 59764 S:\WorkShop\cursor\alpha\backend\apps\english\urls.py changed, reloading.
+INFO 2025-08-12 21:59:19,316 autoreload 26032 55108 Watching for file changes with StatReloader
+INFO 2025-08-12 21:59:19,528 autoreload 46792 43256 Watching for file changes with StatReloader
+INFO 2025-08-12 22:02:58,624 autoreload 26032 55108 S:\WorkShop\cursor\alpha\backend\apps\english\models.py changed, reloading.
+INFO 2025-08-12 22:02:58,704 autoreload 46792 43256 S:\WorkShop\cursor\alpha\backend\apps\english\views.py changed, reloading.
+INFO 2025-08-12 22:02:59,549 autoreload 45684 2956 Watching for file changes with StatReloader
+INFO 2025-08-12 22:02:59,563 autoreload 31196 35764 Watching for file changes with StatReloader
+WARNING 2025-08-12 22:03:20,611 log 31196 42584 Unauthorized: /api/v1/home/stats/
+WARNING 2025-08-12 22:03:20,613 log 31196 16252 Unauthorized: /api/v1/categories/
+WARNING 2025-08-12 22:03:20,614 basehttp 31196 16252 "GET /api/v1/categories/ HTTP/1.1" 401 258
+WARNING 2025-08-12 22:03:20,616 log 31196 24936 Unauthorized: /api/v1/english/news/
+WARNING 2025-08-12 22:03:20,617 basehttp 31196 42584 "GET /api/v1/home/stats/ HTTP/1.1" 401 258
+WARNING 2025-08-12 22:03:20,619 log 31196 21948 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-12 22:03:20,620 basehttp 31196 24936 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 401 258
+WARNING 2025-08-12 22:03:20,621 basehttp 31196 21948 "GET /api/v1/users/me/ HTTP/1.1" 401 258
+INFO 2025-08-12 22:03:21,196 basehttp 31196 44712 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:03:21,206 basehttp 31196 39000 "GET /api/v1/categories/ HTTP/1.1" 200 580
+WARNING 2025-08-12 22:03:22,476 log 31196 39092 Forbidden: /api/v1/auth/verify-identity/
+WARNING 2025-08-12 22:03:22,477 basehttp 31196 39092 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 403 243
+INFO 2025-08-12 22:03:30,099 basehttp 31196 21452 "POST /api/v1/auth/login/ HTTP/1.1" 200 882
+INFO 2025-08-12 22:03:30,583 basehttp 31196 34148 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:03:30,655 basehttp 31196 38732 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:03:30,671 basehttp 31196 55116 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:03:30,671 basehttp 31196 27120 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:03:30,750 basehttp 31196 20748 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:03:30,776 basehttp 31196 30388 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:03:30,837 basehttp 31196 32464 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:03:32,034 basehttp 31196 29432 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:03:36,690 basehttp 31196 54776 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:03:37,416 basehttp 31196 32508 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:03:39,736 basehttp 31196 21136 "GET /api/v1/english/words/1/ HTTP/1.1" 200 532
+INFO 2025-08-12 22:03:43,541 basehttp 31196 23196 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:03:45,049 basehttp 31196 25160 "GET /api/v1/english/words/4/ HTTP/1.1" 200 727
+INFO 2025-08-12 22:03:46,290 basehttp 31196 7904 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+WARNING 2025-08-12 22:03:47,547 log 31196 39800 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:03:47,548 basehttp 31196 39800 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:04:19,530 basehttp 31196 47152 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:04:19,537 basehttp 31196 46668 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:04:19,582 basehttp 31196 12104 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:04:19,592 basehttp 31196 36800 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:04:19,600 basehttp 31196 34632 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:04:20,416 basehttp 31196 5816 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:04:21,955 basehttp 31196 53316 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:04:22,490 basehttp 31196 43436 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:04:22,542 basehttp 31196 40620 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:04:22,579 basehttp 31196 23400 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:04:22,585 basehttp 31196 11732 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:04:22,598 basehttp 31196 13736 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:04:42,649 basehttp 31196 46412 "GET / HTTP/1.1" 200 11006
+INFO 2025-08-12 22:04:42,684 basehttp 31196 46412 "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621
+INFO 2025-08-12 22:04:42,697 basehttp 31196 41772 "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404
+INFO 2025-08-12 22:04:42,705 basehttp 31196 46412 "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+INFO 2025-08-12 22:04:42,756 basehttp 31196 46412 "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527
+WARNING 2025-08-12 22:04:42,817 log 31196 46412 Not Found: /favicon.ico
+WARNING 2025-08-12 22:04:42,817 basehttp 31196 46412 "GET /favicon.ico HTTP/1.1" 404 12307
+INFO 2025-08-12 22:04:49,396 basehttp 31196 46412 "GET /api/ HTTP/1.1" 200 157
+INFO 2025-08-12 22:04:57,347 basehttp 31196 46412 "GET /api/swagger/ HTTP/1.1" 200 10628
+INFO 2025-08-12 22:04:57,365 basehttp 31196 46412 "GET /static/drf-yasg/style.css HTTP/1.1" 200 1047
+INFO 2025-08-12 22:04:57,371 basehttp 31196 41772 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui.css HTTP/1.1" 200 145206
+INFO 2025-08-12 22:04:57,392 basehttp 31196 41772 "GET /static/drf-yasg/insQ.min.js HTTP/1.1" 200 2093
+INFO 2025-08-12 22:04:57,397 basehttp 31196 40340 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-bundle.js HTTP/1.1" 200 1046583
+INFO 2025-08-12 22:04:57,429 basehttp 31196 40340 "GET /static/drf-yasg/swagger-ui-init.js HTTP/1.1" 200 14964
+INFO 2025-08-12 22:04:57,436 basehttp 31196 41772 "GET /static/drf-yasg/immutable.min.js HTTP/1.1" 200 56904
+INFO 2025-08-12 22:04:57,447 basehttp 31196 46412 "GET /static/drf-yasg/swagger-ui-dist/swagger-ui-standalone-preset.js HTTP/1.1" 200 322863
+INFO 2025-08-12 22:04:57,642 basehttp 31196 41772 "GET /static/drf-yasg/swagger-ui-dist/favicon-32x32.png HTTP/1.1" 200 628
+INFO 2025-08-12 22:04:57,703 basehttp 31196 46412 "GET /api/swagger/?format=openapi HTTP/1.1" 200 69073
+INFO 2025-08-12 22:05:27,147 basehttp 31196 46412 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+WARNING 2025-08-12 22:06:05,128 log 31196 46412 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 22:06:05,128 basehttp 31196 46412 "POST /api/v1/auth/login/ HTTP/1.1" 400 81
+WARNING 2025-08-12 22:06:25,704 log 31196 46412 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 22:06:25,705 basehttp 31196 46412 "POST /api/v1/auth/login/ HTTP/1.1" 400 81
+WARNING 2025-08-12 22:06:27,688 log 31196 46412 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-12 22:06:27,689 basehttp 31196 46412 "POST /api/v1/auth/login/ HTTP/1.1" 400 81
+INFO 2025-08-12 22:06:54,786 basehttp 31196 3704 "GET /api/v1/articles/63/ HTTP/1.1" 200 1195
+INFO 2025-08-12 22:06:54,898 basehttp 31196 23020 "GET /api/v1/articles/63/comments/ HTTP/1.1" 200 2
+INFO 2025-08-12 22:06:58,848 basehttp 31196 43356 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:06:58,857 basehttp 31196 26640 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:06:59,330 basehttp 31196 17184 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:06:59,400 basehttp 31196 35012 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:06:59,407 basehttp 31196 51652 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:06:59,420 basehttp 31196 23980 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:06:59,430 basehttp 31196 37892 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:07:00,055 basehttp 31196 10008 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:15:43,361 basehttp 31196 1928 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:15:43,464 basehttp 31196 30636 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:15:43,487 basehttp 31196 43212 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:15:43,598 basehttp 31196 53780 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:15:43,651 basehttp 31196 6864 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:15:43,687 basehttp 31196 28144 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:15:43,794 basehttp 31196 36504 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:15:43,848 basehttp 31196 28724 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:15:43,868 basehttp 31196 41304 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:15:43,984 basehttp 31196 16804 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:15:44,030 basehttp 31196 14800 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:15:44,184 basehttp 31196 45280 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:15:44,203 basehttp 31196 36652 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:18:50,017 basehttp 31196 49020 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:18:50,024 basehttp 31196 58248 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:18:50,040 basehttp 31196 58976 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:18:50,215 basehttp 31196 55540 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:18:50,224 basehttp 31196 38672 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:18:50,242 basehttp 31196 44444 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:18:50,433 basehttp 31196 59708 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:18:50,440 basehttp 31196 54576 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:18:50,446 basehttp 31196 36392 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:18:50,551 basehttp 31196 57940 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:18:50,565 basehttp 31196 52188 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:18:50,673 basehttp 31196 14280 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:18:50,678 basehttp 31196 38804 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:21:42,682 basehttp 31196 27352 "POST /api/v1/auth/login/ HTTP/1.1" 200 894
+INFO 2025-08-12 22:22:13,497 basehttp 31196 39888 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:22:13,532 basehttp 31196 12860 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:22:13,533 basehttp 31196 53900 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:22:13,581 basehttp 31196 37344 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:22:17,386 basehttp 31196 25680 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:22:20,435 basehttp 31196 43576 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:22:20,647 basehttp 31196 37608 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:22:23,761 basehttp 31196 42240 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:22:29,388 basehttp 31196 45160 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:22:29,993 basehttp 31196 58752 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:22:30,285 basehttp 31196 2404 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:22:30,349 basehttp 31196 51284 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:22:30,804 basehttp 31196 48760 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:22:31,298 basehttp 31196 35472 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:22:31,329 basehttp 31196 59480 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:22:31,939 basehttp 31196 58460 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+INFO 2025-08-12 22:22:32,166 basehttp 31196 7544 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:22:35,752 basehttp 31196 5696 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 22:22:37,100 basehttp 31196 27900 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:22:40,371 basehttp 31196 19736 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:22:40,371 basehttp 31196 58544 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:22:40,852 basehttp 31196 4820 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:22:40,928 basehttp 31196 56856 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:22:40,979 basehttp 31196 50084 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:22:41,086 basehttp 31196 28864 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:22:42,328 basehttp 31196 27700 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:22:43,956 basehttp 31196 45656 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+INFO 2025-08-12 22:22:45,114 basehttp 31196 22104 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:22:46,857 basehttp 31196 49500 "POST /api/v1/english/news/crawl/ HTTP/1.1" 202 67
+INFO 2025-08-12 22:22:48,423 basehttp 31196 27208 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:22:49,866 basehttp 31196 24292 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:22:49,875 basehttp 31196 44088 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:22:49,936 basehttp 31196 35132 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:22:50,476 basehttp 31196 20648 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:22:50,492 basehttp 31196 48316 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:22:50,674 basehttp 31196 42324 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:22:50,699 basehttp 31196 59864 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:22:50,732 basehttp 31196 48764 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:22:50,816 basehttp 31196 48388 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:22:50,857 basehttp 31196 22628 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:22:50,864 basehttp 31196 43748 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:22:50,990 basehttp 31196 58844 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:22:50,996 basehttp 31196 49712 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:22:51,114 basehttp 31196 22260 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:22:51,119 basehttp 31196 42516 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+WARNING 2025-08-12 22:22:51,787 log 31196 23584 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:22:51,789 basehttp 31196 23584 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:22:51,859 basehttp 31196 24824 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:22:51,867 basehttp 31196 22156 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:22:51,874 basehttp 31196 31708 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:22:51,881 basehttp 31196 32920 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:01,414 basehttp 31196 18916 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+WARNING 2025-08-12 22:23:03,362 log 31196 53880 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-12 22:23:03,362 basehttp 31196 59276 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:23:03,364 basehttp 31196 53880 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:23:03,371 basehttp 31196 39120 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:03,378 basehttp 31196 42504 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:03,384 basehttp 31196 30616 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:23:04,257 basehttp 31196 30340 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:23:05,829 basehttp 31196 47620 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+WARNING 2025-08-12 22:23:05,893 log 31196 11476 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-12 22:23:05,894 basehttp 31196 19724 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:23:05,895 basehttp 31196 11476 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:23:05,906 basehttp 31196 1520 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:05,915 basehttp 31196 12532 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:09,738 basehttp 31196 48232 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:23:09,753 basehttp 31196 38516 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:23:09,757 log 31196 29828 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-12 22:23:09,763 basehttp 31196 30196 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+WARNING 2025-08-12 22:23:09,763 basehttp 31196 29828 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:23:09,770 basehttp 31196 47504 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:39,245 basehttp 31196 32112 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:23:39,254 basehttp 31196 31800 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:23:39,269 basehttp 31196 32120 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+WARNING 2025-08-12 22:23:39,363 log 31196 53132 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:23:39,367 basehttp 31196 53132 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:23:39,393 basehttp 31196 29908 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:39,412 basehttp 31196 59204 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:23:39,454 basehttp 31196 26536 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:39,477 basehttp 31196 37196 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:40,254 basehttp 31196 4908 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:23:42,417 basehttp 31196 31660 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:23:42,452 log 31196 48376 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-12 22:23:42,453 basehttp 31196 49400 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+WARNING 2025-08-12 22:23:42,453 basehttp 31196 48376 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:23:42,462 basehttp 31196 21996 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:42,471 basehttp 31196 30692 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:23:47,055 basehttp 31196 40200 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:23:49,048 basehttp 31196 44220 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:23:49,055 log 31196 12884 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-12 22:23:49,062 basehttp 31196 46344 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+WARNING 2025-08-12 22:23:49,062 basehttp 31196 12884 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:23:49,068 basehttp 31196 46456 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:49,075 basehttp 31196 54884 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:23:54,838 log 31196 49244 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:23:54,839 basehttp 31196 49244 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:23:54,854 basehttp 31196 20788 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:54,861 basehttp 31196 30280 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:23:54,873 basehttp 31196 52032 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:54,879 basehttp 31196 57172 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:23:57,456 basehttp 31196 38248 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:23:59,727 basehttp 31196 20000 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:23:59,742 log 31196 25776 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-12 22:23:59,743 basehttp 31196 24864 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:23:59,745 basehttp 31196 25776 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:23:59,760 basehttp 31196 6516 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:23:59,775 basehttp 31196 1992 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:24:04,872 basehttp 31196 20016 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 22:24:06,999 basehttp 31196 48420 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:24:08,331 basehttp 31196 35176 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:24:09,297 basehttp 31196 26816 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:24:09,344 basehttp 31196 33424 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:24:09,354 basehttp 31196 9088 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:24:09,430 basehttp 31196 52400 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:24:09,432 basehttp 31196 28048 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:24:10,410 basehttp 31196 50104 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:24:11,245 basehttp 31196 23284 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 22:24:12,288 basehttp 31196 9208 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:24:13,003 basehttp 31196 46736 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+INFO 2025-08-12 22:24:14,067 basehttp 31196 32044 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:24:19,105 basehttp 31196 16048 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:24:20,256 basehttp 31196 20064 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:24:20,270 log 31196 19956 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-12 22:24:20,275 basehttp 31196 45900 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+WARNING 2025-08-12 22:24:20,275 basehttp 31196 19956 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:24:20,285 basehttp 31196 23652 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:24:20,285 basehttp 31196 22640 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:24:23,000 basehttp 31196 43148 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:24:25,456 basehttp 31196 46472 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:24:25,469 basehttp 31196 36508 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+WARNING 2025-08-12 22:24:25,477 log 31196 34736 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:24:25,478 basehttp 31196 34736 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:24:25,485 basehttp 31196 3064 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:24:25,493 basehttp 31196 26760 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-12 22:24:44,317 basehttp 31196 21400 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:24:45,815 basehttp 31196 51060 "POST /api/v1/english/news/crawl/ HTTP/1.1" 202 67
+INFO 2025-08-12 22:24:47,107 basehttp 31196 51492 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:24:47,818 basehttp 31196 42540 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:24:49,343 basehttp 31196 42052 "GET /api/v1/english/news/3/ HTTP/1.1" 200 1078
+INFO 2025-08-12 22:25:01,232 basehttp 31196 28128 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:25:04,360 basehttp 31196 58316 "GET /api/v1/english/news/1/ HTTP/1.1" 200 502
+INFO 2025-08-12 22:25:06,091 basehttp 31196 35724 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:25:07,709 basehttp 31196 56728 "GET /api/v1/english/news/2/ HTTP/1.1" 200 500
+INFO 2025-08-12 22:25:09,333 basehttp 31196 60360 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:25:35,808 basehttp 31196 45760 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:25:37,211 basehttp 31196 60220 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:25:38,229 basehttp 31196 53384 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:25:38,230 basehttp 31196 29924 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:25:38,244 basehttp 31196 36240 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:25:38,347 basehttp 31196 11316 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:25:38,358 basehttp 31196 54156 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:25:54,082 basehttp 31196 6508 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+INFO 2025-08-12 22:25:54,792 basehttp 31196 57456 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+WARNING 2025-08-12 22:25:57,275 log 31196 3416 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:25:57,281 basehttp 31196 3416 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:25:57,320 basehttp 31196 46692 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:25:57,321 basehttp 31196 38340 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-12 22:25:57,331 basehttp 31196 17120 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:25:57,332 basehttp 31196 17236 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+WARNING 2025-08-12 22:25:59,761 log 31196 43624 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:25:59,762 basehttp 31196 43624 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:25:59,775 basehttp 31196 38360 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:25:59,775 basehttp 31196 56620 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:25:59,782 basehttp 31196 35108 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-12 22:25:59,788 basehttp 31196 38392 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:26:04,610 basehttp 31196 3564 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:26:12,235 basehttp 31196 33972 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:26:13,125 basehttp 31196 29688 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:26:14,096 basehttp 31196 47088 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:26:14,721 basehttp 31196 39192 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:26:24,263 basehttp 31196 14132 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:26:24,272 basehttp 31196 30520 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+WARNING 2025-08-12 22:26:24,279 log 31196 11696 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:26:24,280 basehttp 31196 11696 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:26:24,286 basehttp 31196 17384 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:26:24,292 basehttp 31196 8620 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-12 22:27:03,769 basehttp 31196 24128 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:27:03,774 basehttp 31196 46036 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:27:03,781 basehttp 31196 43464 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:27:03,813 basehttp 31196 35692 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-12 22:27:07,844 basehttp 31196 22040 "GET /api/v1/english/practice/generate_questions/?type=word_spelling&count=10 HTTP/1.1" 200 987
+INFO 2025-08-12 22:27:22,370 basehttp 31196 25220 "POST /api/v1/english/practice/submit_practice/ HTTP/1.1" 200 437
+INFO 2025-08-12 22:27:22,443 basehttp 31196 48616 "GET /api/v1/english/practice/?page=1&page_size=10 HTTP/1.1" 200 472
+INFO 2025-08-12 22:27:33,675 basehttp 31196 57976 "POST /api/v1/english/practice/submit_practice/ HTTP/1.1" 200 418
+INFO 2025-08-12 22:27:33,761 basehttp 31196 42652 "GET /api/v1/english/practice/?page=1&page_size=10 HTTP/1.1" 200 836
+INFO 2025-08-12 22:27:42,992 basehttp 31196 21904 "POST /api/v1/english/practice/submit_practice/ HTTP/1.1" 200 428
+INFO 2025-08-12 22:27:43,099 basehttp 31196 46056 "GET /api/v1/english/practice/?page=1&page_size=10 HTTP/1.1" 200 1210
+INFO 2025-08-12 22:27:52,094 basehttp 31196 57884 "POST /api/v1/english/practice/submit_practice/ HTTP/1.1" 200 480
+INFO 2025-08-12 22:27:52,178 basehttp 31196 33508 "GET /api/v1/english/practice/?page=1&page_size=10 HTTP/1.1" 200 1636
+INFO 2025-08-12 22:28:06,905 basehttp 31196 27508 "POST /api/v1/english/practice/submit_practice/ HTTP/1.1" 200 463
+INFO 2025-08-12 22:28:06,969 basehttp 31196 16416 "GET /api/v1/english/practice/?page=1&page_size=10 HTTP/1.1" 200 2045
+INFO 2025-08-12 22:28:17,970 basehttp 31196 17588 "POST /api/v1/english/practice/submit_practice/ HTTP/1.1" 200 469
+INFO 2025-08-12 22:28:18,089 basehttp 31196 18760 "GET /api/v1/english/practice/?page=1&page_size=10 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:28:23,625 basehttp 31196 17592 "GET /api/v1/english/practice/generate_questions/?type=word_meaning&count=10 HTTP/1.1" 200 1023
+INFO 2025-08-12 22:28:48,249 basehttp 31196 48192 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:28:48,276 basehttp 31196 45828 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:28:48,288 basehttp 31196 59856 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:28:48,307 basehttp 31196 40644 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:29:08,556 basehttp 31196 34248 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 22:29:09,656 basehttp 31196 52232 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:29:10,698 basehttp 31196 50048 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:29:10,703 basehttp 31196 38772 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:29:10,722 basehttp 31196 20424 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:29:10,726 basehttp 31196 34728 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:29:10,734 basehttp 31196 45620 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:29:13,435 basehttp 31196 2700 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:29:16,995 basehttp 31196 372 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:30:29,685 basehttp 31196 53428 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:30:30,610 basehttp 31196 52816 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+WARNING 2025-08-12 22:30:31,379 log 31196 21788 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:30:31,384 basehttp 31196 21788 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:30:31,401 basehttp 31196 26604 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:30:31,407 basehttp 31196 40392 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:30:31,418 basehttp 31196 34164 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:30:31,425 basehttp 31196 58088 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:37:28,181 autoreload 60124 58292 Watching for file changes with StatReloader
+INFO 2025-08-12 22:39:26,923 basehttp 45684 14844 "GET / HTTP/1.1" 200 11007
+INFO 2025-08-12 22:39:29,527 basehttp 45684 14844 "GET /api/swagger/ HTTP/1.1" 200 10629
+INFO 2025-08-12 22:39:29,925 basehttp 45684 14844 "GET /api/swagger/?format=openapi HTTP/1.1" 200 69073
+INFO 2025-08-12 22:39:38,028 basehttp 45684 14844 "GET /api/swagger/?format=openapi HTTP/1.1" 200 69073
+INFO 2025-08-12 22:39:46,991 basehttp 45684 14844 "GET /api/swagger/?format=openapi HTTP/1.1" 200 69073
+WARNING 2025-08-12 22:41:59,318 log 45684 2472 Not Found: /api/v1/health/
+WARNING 2025-08-12 22:41:59,320 basehttp 45684 2472 "GET /api/v1/health/ HTTP/1.1" 404 40746
+INFO 2025-08-12 22:42:18,133 autoreload 47232 25724 Watching for file changes with StatReloader
+INFO 2025-08-12 22:43:53,400 autoreload 44004 40744 Watching for file changes with StatReloader
+INFO 2025-08-12 22:49:23,741 basehttp 44004 23008 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:49:23,745 basehttp 44004 27288 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:49:23,753 basehttp 44004 41776 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:49:24,048 basehttp 44004 57744 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:49:24,129 basehttp 44004 42904 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:49:24,419 basehttp 44004 18996 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:49:24,527 basehttp 44004 40680 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:49:24,630 basehttp 44004 37384 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:49:30,486 basehttp 44004 35092 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:49:31,904 basehttp 44004 58544 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 22:49:35,553 basehttp 44004 34284 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+WARNING 2025-08-12 22:49:36,145 log 44004 14784 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-12 22:49:36,153 basehttp 44004 40272 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:49:36,178 basehttp 44004 14784 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:49:36,179 basehttp 44004 8124 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:49:36,235 basehttp 44004 34856 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:49:38,453 basehttp 44004 28156 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:49:39,944 basehttp 44004 53544 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:49:41,231 basehttp 44004 25176 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+INFO 2025-08-12 22:49:50,767 basehttp 44004 54068 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+INFO 2025-08-12 22:49:52,484 basehttp 44004 35312 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+INFO 2025-08-12 22:49:54,703 basehttp 44004 26820 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:49:58,665 basehttp 44004 47508 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:49:58,725 log 44004 47708 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:49:58,728 basehttp 44004 47708 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:49:58,742 basehttp 44004 53092 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:49:58,744 basehttp 44004 58776 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:49:58,756 basehttp 44004 10220 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:49:59,229 basehttp 44004 56468 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:50:00,237 basehttp 44004 4284 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:50:01,666 basehttp 44004 50500 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+INFO 2025-08-12 22:50:02,313 basehttp 44004 60000 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:50:05,410 basehttp 44004 36716 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+WARNING 2025-08-12 22:50:05,425 log 44004 51292 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-12 22:50:05,433 basehttp 44004 48784 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:50:05,434 basehttp 44004 51292 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:50:05,450 basehttp 44004 59008 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:50:05,463 basehttp 44004 4320 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:51:03,972 basehttp 44004 23728 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:51:04,058 basehttp 44004 9740 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:51:04,082 basehttp 44004 32096 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:51:04,206 basehttp 44004 46220 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:51:04,206 basehttp 44004 22020 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+WARNING 2025-08-12 22:51:04,215 log 44004 34268 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:51:04,216 basehttp 44004 34268 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:51:04,267 basehttp 44004 12380 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:51:04,296 basehttp 44004 51532 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:51:17,132 basehttp 44004 13892 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:51:17,139 basehttp 44004 55496 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:51:17,190 basehttp 44004 7784 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:51:17,246 basehttp 44004 21700 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:51:17,257 basehttp 44004 56864 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:51:18,963 basehttp 44004 58676 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 22:51:19,889 basehttp 44004 29156 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:51:21,480 basehttp 44004 53728 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:51:22,233 basehttp 44004 58328 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:51:23,353 basehttp 44004 41064 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+INFO 2025-08-12 22:51:33,170 basehttp 44004 59488 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:51:34,277 basehttp 44004 46456 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:51:35,399 basehttp 44004 29484 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+INFO 2025-08-12 22:51:36,601 basehttp 44004 46344 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:51:47,163 basehttp 44004 48400 "GET /api/v1/articles/?author=9&page=1&page_size=20 HTTP/1.1" 200 100
+INFO 2025-08-12 22:51:49,592 basehttp 44004 26020 "GET /api/v1/profiles/me/ HTTP/1.1" 200 647
+INFO 2025-08-12 22:51:49,602 basehttp 44004 49564 "GET /api/v1/articles/?author=9 HTTP/1.1" 200 100
+INFO 2025-08-12 22:51:51,413 basehttp 44004 31716 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:51:52,194 basehttp 44004 39208 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+WARNING 2025-08-12 22:51:54,982 log 44004 48420 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-12 22:51:54,991 basehttp 44004 35760 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:51:54,993 basehttp 44004 38648 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+WARNING 2025-08-12 22:51:54,994 basehttp 44004 48420 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:51:55,013 basehttp 44004 34476 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:51:55,025 basehttp 44004 6516 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:53:20,960 basehttp 44004 14744 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+INFO 2025-08-12 22:53:20,989 basehttp 44004 28540 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:53:21,063 basehttp 44004 57780 "GET /api/v1/categories/ HTTP/1.1" 200 580
+WARNING 2025-08-12 22:53:21,355 log 44004 47244 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-12 22:53:21,364 basehttp 44004 58452 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:53:21,364 basehttp 44004 46400 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+WARNING 2025-08-12 22:53:21,366 basehttp 44004 47244 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:53:21,393 basehttp 44004 40240 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:53:21,410 basehttp 44004 45232 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:53:24,001 basehttp 44004 34360 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:53:27,369 basehttp 44004 36028 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:53:33,777 basehttp 44004 584 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:53:35,396 basehttp 44004 53244 "GET /api/v1/articles/?author=9&page=1&page_size=20 HTTP/1.1" 200 100
+INFO 2025-08-12 22:53:39,954 basehttp 44004 56436 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+WARNING 2025-08-12 22:53:44,035 log 44004 29368 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:53:44,045 basehttp 44004 29368 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:53:44,074 basehttp 44004 41824 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:53:44,074 basehttp 44004 34420 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:53:44,084 basehttp 44004 54548 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:53:44,098 basehttp 44004 27000 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:53:46,712 basehttp 44004 42592 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:53:46,725 basehttp 44004 33512 "GET /api/v1/users/me/ HTTP/1.1" 200 355
+WARNING 2025-08-12 22:53:51,054 log 44004 17656 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:53:51,059 basehttp 44004 17656 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:53:51,078 basehttp 44004 54052 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:53:51,095 basehttp 44004 58516 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:53:51,098 basehttp 44004 29360 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:53:51,108 basehttp 44004 29492 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:53:52,333 basehttp 44004 23820 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:54:13,502 basehttp 44004 27224 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:54:18,925 basehttp 44004 52924 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:54:20,332 basehttp 44004 44100 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:54:24,188 basehttp 44004 33508 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+WARNING 2025-08-12 22:54:24,207 log 44004 55188 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:54:24,209 basehttp 44004 55188 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:54:24,237 basehttp 44004 24732 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:54:24,247 basehttp 44004 37836 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:54:24,257 basehttp 44004 32156 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:54:25,742 basehttp 44004 28896 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:54:27,514 basehttp 44004 47848 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 2055
+INFO 2025-08-12 22:54:29,334 basehttp 44004 58356 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 1032
+INFO 2025-08-12 22:54:30,869 basehttp 44004 49956 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:54:31,583 basehttp 44004 46160 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+WARNING 2025-08-12 22:54:33,322 log 44004 34676 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:54:33,325 basehttp 44004 34676 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:54:33,338 basehttp 44004 53016 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-12 22:54:33,344 basehttp 44004 56912 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-12 22:54:33,357 basehttp 44004 17516 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-12 22:54:33,357 basehttp 44004 53516 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:54:36,797 basehttp 44004 34720 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:54:36,807 basehttp 44004 55260 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-12 22:54:37,695 basehttp 44004 31256 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 22:54:39,686 basehttp 44004 43348 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 22:54:40,249 basehttp 44004 56328 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:54:42,416 basehttp 44004 48116 "GET /api/v1/profiles/me/ HTTP/1.1" 200 647
+INFO 2025-08-12 22:54:42,423 basehttp 44004 28300 "GET /api/v1/articles/?author=9 HTTP/1.1" 200 100
+INFO 2025-08-12 22:54:51,932 basehttp 44004 56652 "POST /api/v1/update-avatar-url/ HTTP/1.1" 200 75
+INFO 2025-08-12 22:54:53,979 basehttp 44004 32036 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:54:54,006 basehttp 44004 50432 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:54:54,006 basehttp 44004 9904 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:54:54,025 basehttp 44004 57580 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:54:54,031 basehttp 44004 38324 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:54:56,025 basehttp 44004 41344 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+INFO 2025-08-12 22:54:58,817 basehttp 44004 47484 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 2460
+INFO 2025-08-12 22:55:00,944 basehttp 44004 58068 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+INFO 2025-08-12 22:55:07,659 basehttp 44004 2180 "GET /api/v1/english/words/2/ HTTP/1.1" 200 563
+INFO 2025-08-12 22:55:11,386 basehttp 44004 28420 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 3525
+WARNING 2025-08-12 22:55:12,457 log 44004 3380 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-12 22:55:12,458 basehttp 44004 3380 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-12 22:55:16,719 basehttp 44004 11328 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-12 22:55:16,806 basehttp 44004 26632 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-12 22:55:16,817 basehttp 44004 36836 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-12 22:55:16,832 basehttp 44004 39732 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-12 22:55:16,832 basehttp 44004 20880 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-12 22:55:19,113 basehttp 44004 20532 "GET /api/v1/tags/ HTTP/1.1" 200 1480
+INFO 2025-08-12 22:55:19,719 basehttp 44004 32544 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251

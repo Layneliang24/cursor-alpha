@@ -3,27 +3,58 @@
     <div class="p-3">
       <h6 class="text-muted mb-3">导航菜单</h6>
       
-      <!-- 主要功能 -->
+      <!-- 主页 -->
       <div class="mb-4">
-        <h6 class="sidebar-heading text-muted">主要功能</h6>
         <nav class="nav flex-column">
           <router-link class="nav-link" to="/" :class="{ active: $route.path === '/' }">
             <el-icon class="me-2"><House /></el-icon>首页
           </router-link>
+        </nav>
+      </div>
+
+      <!-- 博客模块 -->
+      <div class="mb-4">
+        <h6 class="sidebar-heading text-muted">📝 博客管理</h6>
+        <nav class="nav flex-column">
           <router-link class="nav-link" to="/articles" :class="{ active: $route.path === '/articles' }">
             <el-icon class="me-2"><Document /></el-icon>文章列表
           </router-link>
           <router-link class="nav-link" to="/articles/create" :class="{ active: $route.path === '/articles/create' }" v-if="authStore.isAuthenticated">
             <el-icon class="me-2"><Edit /></el-icon>写文章
           </router-link>
+          <router-link class="nav-link" to="/categories" :class="{ active: $route.path === '/categories' }">
+            <el-icon class="me-2"><Folder /></el-icon>分类管理
+          </router-link>
         </nav>
       </div>
 
-      <!-- 分类 -->
+      <!-- 英语学习模块 -->
       <div class="mb-4">
-        <h6 class="sidebar-heading text-muted">文章分类</h6>
+        <h6 class="sidebar-heading text-muted">📚 英语学习</h6>
         <nav class="nav flex-column">
-          <router-link class="nav-link" :to="`/articles?category=${category.id}`" v-for="category in categories" :key="category.id">
+          <router-link class="nav-link" to="/english/dashboard" :class="{ active: $route.path === '/english/dashboard' }">
+            <el-icon class="me-2"><DataBoard /></el-icon>学习仪表板
+          </router-link>
+          <router-link class="nav-link" to="/english/practice" :class="{ active: $route.path === '/english/practice' }">
+            <el-icon class="me-2"><Trophy /></el-icon>智能练习
+          </router-link>
+          <router-link class="nav-link" to="/english/words" :class="{ active: $route.path.startsWith('/english/words') }">
+            <el-icon class="me-2"><Notebook /></el-icon>单词学习
+          </router-link>
+          <router-link class="nav-link" to="/english/expressions" :class="{ active: $route.path.startsWith('/english/expressions') }">
+            <el-icon class="me-2"><ChatDotRound /></el-icon>地道表达
+          </router-link>
+          <router-link class="nav-link" to="/english/news" :class="{ active: $route.path.startsWith('/english/news') }">
+            <el-icon class="me-2"><Notification /></el-icon>英语新闻
+          </router-link>
+        </nav>
+      </div>
+
+      <!-- 文章分类 -->
+      <div class="mb-4" v-if="categories.length > 0">
+        <h6 class="sidebar-heading text-muted">📂 文章分类</h6>
+        <nav class="nav flex-column">
+          <router-link class="nav-link sub-item" :to="`/articles?category=${category.id}`" v-for="category in categories" :key="category.id">
             <el-icon class="me-2"><Folder /></el-icon>{{ category.name }}
             <span class="badge bg-secondary ms-auto">{{ category.article_count }}</span>
           </router-link>
@@ -32,7 +63,7 @@
 
       <!-- 用户功能 -->
       <div class="mb-4" v-if="authStore.isAuthenticated">
-        <h6 class="sidebar-heading text-muted">个人中心</h6>
+        <h6 class="sidebar-heading text-muted">👤 个人中心</h6>
         <nav class="nav flex-column">
           <router-link class="nav-link" to="/user/profile" :class="{ active: $route.path === '/user/profile' }">
             <el-icon class="me-2"><User /></el-icon>个人资料
@@ -59,7 +90,7 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { categoriesAPI } from '@/api/categories'
 import { homeAPI } from '@/api/home'
-import { House, Document, Edit, Folder, User, DocumentCopy } from '@element-plus/icons-vue'
+import { House, Document, Edit, Folder, User, DocumentCopy, DataBoard, Trophy, Notebook, ChatDotRound, Notification } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
 const categories = ref([])
@@ -141,5 +172,22 @@ onMounted(() => {
 
 .badge {
   font-size: 0.7rem;
+}
+
+.sub-item {
+  font-size: 0.85rem;
+  padding-left: 1rem;
+  color: #8c959f !important;
+}
+
+.sub-item:hover {
+  color: #0d6efd !important;
+  background-color: #f8f9fa;
+}
+
+.sidebar-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 </style>
