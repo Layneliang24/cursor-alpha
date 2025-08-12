@@ -1,0 +1,62 @@
+{
+  "openapi": "3.0.3",
+  "info": { "title": "Alpha Platform API", "version": "0.2.0" },
+  "servers": [ { "url": "/api/v1" } ],
+  "paths": {
+    "/auth/login/": {
+      "post": {
+        "summary": "Login",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"type": "object","required": ["email", "password"],"properties": {"email": {"type": "string", "format": "email" },"password": {"type": "string", "minLength": 6 }}}}}},
+        "responses": {"200": {"description": "OK"}}
+      }
+    },
+    "/english/words/": {
+      "get": {
+        "summary": "List words",
+        "parameters": [
+          { "in": "query", "name": "page", "schema": { "type": "integer", "minimum": 1, "default": 1 } },
+          { "in": "query", "name": "page_size", "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 20 } },
+          { "in": "query", "name": "difficulty_level", "schema": { "type": "string", "enum": ["beginner", "intermediate", "advanced"] } },
+          { "in": "query", "name": "category", "schema": { "type": "string" } },
+          { "in": "query", "name": "tag", "schema": { "type": "string" } },
+          { "in": "query", "name": "q", "schema": { "type": "string", "description": "search in word/definition" } }
+        ],
+        "responses": {"200": {"description": "OK"}}
+      },
+      "post": {
+        "summary": "Create word",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"type": "object","properties": {"word": {"type": "string"},"phonetic": {"type": "string"},"part_of_speech": {"type": "string"},"definition": {"type": "string"},"example": {"type": "string"},"difficulty_level": {"type": "string", "enum": ["beginner","intermediate","advanced"]},"category_hint": {"type": "string"},"frequency_rank": {"type": "integer"},"source_url": {"type": "string"},"source_api": {"type": "string"},"license": {"type": "string"},"quality_score": {"type": "number"}},"required": ["word"]}}}},
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/english/words/{id}/": {
+      "get": { "summary": "Get word detail", "parameters": [ { "in": "path", "name": "id", "required": true, "schema": { "type": "integer" } } ], "responses": { "200": { "description": "OK" } } },
+      "put": { "summary": "Update word", "parameters": [ { "in": "path", "name": "id", "required": true, "schema": { "type": "integer" } } ], "requestBody": {"required": true, "content": {"application/json": {"schema": {"type": "object"}}}}, "responses": { "200": { "description": "OK" } } },
+      "delete": { "summary": "Delete word", "parameters": [ { "in": "path", "name": "id", "required": true, "schema": { "type": "integer" } } ], "responses": { "204": { "description": "No Content" } } }
+    },
+    "/english/progress/": {
+      "get": { "summary": "Get learning progress", "responses": { "200": { "description": "OK" } } },
+      "post": { "summary": "Update learning progress", "requestBody": {"required": true, "content": {"application/json": {"schema": {"type": "object", "required": ["word_id", "status"], "properties": {"word_id": {"type": "integer"}, "status": {"type": "string", "enum": ["not_learned", "learning", "mastered", "need_review"]}, "mastery_level": {"type": "number", "minimum": 0, "maximum": 1 }}}}}}, "responses": { "200": { "description": "OK" } } }
+    },
+    "/english/expressions/": { "get": { "summary": "List expressions", "responses": { "200": { "description": "OK" } } } },
+    "/english/news/": {
+      "get": {
+        "summary": "List news",
+        "parameters": [
+          { "in": "query", "name": "page", "schema": { "type": "integer", "minimum": 1, "default": 1 } },
+          { "in": "query", "name": "page_size", "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 20 } },
+          { "in": "query", "name": "category", "schema": { "type": "string" } },
+          { "in": "query", "name": "difficulty_level", "schema": { "type": "string", "enum": ["beginner", "intermediate", "advanced"] } },
+          { "in": "query", "name": "date_from", "schema": { "type": "string", "format": "date" } },
+          { "in": "query", "name": "date_to", "schema": { "type": "string", "format": "date" } },
+          { "in": "query", "name": "q", "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/english/news/{id}/": { "get": { "summary": "Get news detail", "parameters": [ { "in": "path", "name": "id", "required": true, "schema": { "type": "integer" } } ], "responses": { "200": { "description": "OK" } } } },
+    "/english/news/crawl/": { "post": { "summary": "Trigger news crawling", "responses": { "202": { "description": "Accepted" } } } }
+  },
+  "components": { "securitySchemes": { "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" } } },
+  "security": [ { "bearerAuth": [] } ]
+}

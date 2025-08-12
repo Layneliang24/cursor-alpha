@@ -1,0 +1,51 @@
+{
+  "words": [
+    {
+      "id": 1,
+      "word": "beautiful",
+      "phonetic": "/ˈbjuːtɪfʊl/",
+      "part_of_speech": "adj",
+      "definition": "pleasing the senses or mind aesthetically",
+      "example": "What a beautiful day!",
+      "difficulty_level": "beginner",
+      "category_hint": "adjectives",
+      "frequency_rank": 1234,
+      "source_url": null,
+      "source_api": "manual",
+      "license": "CC BY-SA",
+      "quality_score": 0.9
+    },
+    {
+      "id": 2,
+      "word": "pronunciation",
+      "phonetic": "/prəˌnʌnsiˈeɪʃən/",
+      "part_of_speech": "n",
+      "definition": "the way in which a word is pronounced",
+      "example": "Her pronunciation of French words is excellent.",
+      "difficulty_level": "intermediate",
+      "category_hint": "nouns",
+      "frequency_rank": 4321,
+      "source_url": null,
+      "source_api": "manual",
+      "license": "CC BY-SA",
+      "quality_score": 0.8
+    }
+  ],
+  "categories": [ { "id": 1, "name": "adjectives" }, { "id": 2, "name": "nouns" } ],
+  "word_category_links": [ { "word_id": 1, "category_id": 1 }, { "word_id": 2, "category_id": 2 } ],
+  "tags": [ { "id": 1, "name": "basic" }, { "id": 2, "name": "phonetics" } ],
+  "word_tag_links": [ { "word_id": 1, "tag_id": 1 }, { "word_id": 2, "tag_id": 2 } ],
+  "examples": [
+    { "word_id": 1, "sentence": "She has a beautiful voice.", "translation": "她有动听的声音。", "quality_score": 0.8 },
+    { "word_id": 2, "sentence": "Correct pronunciation is important.", "translation": "正确的发音很重要。", "quality_score": 0.9 }
+  ],
+  "relations": [ { "word_id": 1, "related_word_id": 2, "relation_type": "collocation", "note": "beautiful pronunciation (rare)" } ],
+  "progress": [
+    { "user_id": 1, "word_id": 1, "status": "learning", "review_count": 1, "mastery_level": 0.4 },
+    { "user_id": 1, "word_id": 2, "status": "not_learned", "review_count": 0, "mastery_level": 0.0 }
+  ],
+  "news": [
+    { "id": 1001, "title": "AI boosts language learning", "summary": "New AI tools help learners.", "content": "...", "category": "tech", "difficulty_level": "intermediate", "publish_date": "2024-01-15", "word_count": 420, "source": "BBC", "source_url": "https://example.com/bbc/ai-lang", "license": "fair-use", "quality_score": 0.8 },
+    { "id": 1002, "title": "Pronunciation tips", "summary": "Improve your pronunciation.", "content": "...", "category": "education", "difficulty_level": "beginner", "publish_date": "2024-02-10", "word_count": 300, "source": "VOA", "source_url": "https://example.com/voa/pronunciation", "license": "fair-use", "quality_score": 0.7 }
+  ]
+}

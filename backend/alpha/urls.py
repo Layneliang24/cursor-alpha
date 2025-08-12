@@ -23,6 +23,9 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework.permissions import AllowAny
 
 
 @api_view(['GET'])
@@ -137,14 +140,71 @@ def home_view(request):
     from django.http import HttpResponse
     return HttpResponse(html_content, content_type='text/html; charset=utf-8')
 
+@api_view(['GET'])
+def health_view(request):
+    """健康检查：返回应用、数据库（可选Redis）状态"""
+    ok = True
+    details = {}
+    # App
+    details['app'] = {'ok': True}
+    # DB check
+    try:
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT 1')
+            cursor.fetchone()
+        details['db'] = {'ok': True}
+    except Exception as e:
+        details['db'] = {'ok': False, 'error': str(e)}
+        ok = False
+    # Redis (optional - use CELERY broker)
+    try:
+        from django.conf import settings as dj_settings
+        broker = dj_settings.CELERY_BROKER_URL
+        if broker and broker.startswith('redis://'):
+            import redis as _redis
+            r = _redis.Redis.from_url(broker)
+            r.ping()
+            details['redis'] = {'ok': True}
+        else:
+            details['redis'] = {'ok': False, 'skipped': True}
+    except Exception as e:
+        details['redis'] = {'ok': False, 'error': str(e)}
+        # 不影响总体健康，视为可选
+
+    return Response({'ok': ok, 'details': details})
+
+# Swagger / Redoc
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Alpha API",
+        default_version='v1',
+        description="Alpha 技术共享平台 API 文档",
+    ),
+    public=True,
+    permission_classes=[AllowAny],
+)
 
 urlpatterns = [
     path('', home_view),  # 首页
     path('api/', api_root),  # API根路径
     path('api/test/', test_api),  # 测试API
+    path('api/health/', health_view),  # 健康检查
+    # 文档
+    re_path(r'^api/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/v1/', include('apps.api.urls')),  # API v1
+    path('api/v1/', include('apps.jobs.urls')),  # Jobs
+    path('api/v1/', include('apps.todos.urls')),  # Todos
+    path('api/v1/', include('apps.ai.urls')),  # AI
+    path('api/v1/', include('apps.search.urls')),  # Search
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# --- english module urls ---
+from django.urls import include
+urlpatterns.insert(-2, path('api/v1/', include('apps.english.urls')))
 
 if settings.DEBUG:  # 添加媒体文件url,生产环境下使用
     import debug_toolbar

@@ -10,6 +10,54 @@ const routes = [
     meta: { title: 'Alpha 技术共享平台' }
   },
   {
+    path: '/english',
+    name: 'English',
+    redirect: '/english/words',
+    meta: { title: '英语学习' }
+  },
+  {
+    path: '/english/words',
+    name: 'EnglishWords',
+    component: () => import('@/views/english/Words.vue'),
+    meta: { title: '单词学习', requiresAuth: true }
+  },
+  {
+    path: '/english/words/:id',
+    name: 'EnglishWordDetail',
+    component: () => import('@/views/english/WordDetail.vue'),
+    meta: { title: '单词详情', requiresAuth: true }
+  },
+  {
+    path: '/english/expressions',
+    name: 'EnglishExpressions',
+    component: () => import('@/views/english/Expressions.vue'),
+    meta: { title: '地道表达', requiresAuth: true }
+  },
+  {
+    path: '/english/news',
+    name: 'EnglishNews',
+    component: () => import('@/views/english/NewsList.vue'),
+    meta: { title: '英语新闻', requiresAuth: true }
+  },
+  {
+    path: '/english/news/:id',
+    name: 'EnglishNewsDetail',
+    component: () => import('@/views/english/NewsDetail.vue'),
+    meta: { title: '新闻详情', requiresAuth: true }
+  },
+  {
+    path: '/english/dashboard',
+    name: 'EnglishDashboard',
+    component: () => import('@/views/english/Dashboard.vue'),
+    meta: { title: '英语学习仪表板', requiresAuth: true }
+  },
+  {
+    path: '/english/practice',
+    name: 'EnglishPractice',
+    component: () => import('@/views/english/Practice.vue'),
+    meta: { title: '英语练习', requiresAuth: true }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/auth/Login.vue'),

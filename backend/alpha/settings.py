@@ -97,6 +97,11 @@ INSTALLED_APPS = [
     'apps.categories',
     'apps.links',
     'apps.api',
+    'apps.english',
+    'apps.jobs',
+    'apps.todos',
+    'apps.ai',
+    'apps.search',
 ]
 
 MIDDLEWARE = [
@@ -268,6 +273,7 @@ REST_FRAMEWORK = {
         'anon': '60/minute',   # 未登录用户
         'user': '240/minute',  # 登录用户
     },
+    'EXCEPTION_HANDLER': 'apps.api.exceptions.custom_exception_handler',
 }
 
 # JWT Settings
@@ -320,8 +326,13 @@ INTERNAL_IPS = [
 ]
 
 # Debug Toolbar Settings
+def _show_toolbar(request):
+    import os
+    # 仅在开发且非pytest测试时展示
+    return DEBUG and not os.environ.get('PYTEST_CURRENT_TEST')
+
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
+    'SHOW_TOOLBAR_CALLBACK': _show_toolbar,
 }
 
 # Only enable debug toolbar in development
@@ -398,3 +409,23 @@ AUTH_USER_MODEL = 'users.User'
 
 # MDEditor Configuration
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+# --- appended by setup: register english app ---
+try:
+    from .settings import *  # noqa
+except Exception:
+    pass
+
+# Celery Configuration
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://127.0.0.1:6379/1')
+CELERY_TASK_ALWAYS_EAGER = os.environ.get('CELERY_TASK_ALWAYS_EAGER', 'False').lower() == 'true'
+CELERY_TIMEZONE = TIME_ZONE
+
+# Fallback update when direct import above not applicable
+try:
+    if 'apps.english' not in INSTALLED_APPS:
+        INSTALLED_APPS.append('apps.english')
+except Exception:
+    # If settings are static above, ignore
+    pass
