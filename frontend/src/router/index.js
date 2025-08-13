@@ -51,12 +51,24 @@ const routes = [
     component: () => import('@/views/english/Dashboard.vue'),
     meta: { title: '英语学习仪表板', requiresAuth: true }
   },
-  {
-    path: '/english/practice',
-    name: 'EnglishPractice',
-    component: () => import('@/views/english/Practice.vue'),
-    meta: { title: '英语练习', requiresAuth: true }
-  },
+          {
+            path: '/english/practice',
+            name: 'EnglishPractice',
+            component: () => import('@/views/english/Practice.vue'),
+            meta: { title: '英语练习', requiresAuth: true }
+        },
+        {
+            path: '/english/pronunciation',
+            name: 'EnglishPronunciation',
+            component: () => import('@/views/english/Pronunciation.vue'),
+            meta: { title: '发音练习', requiresAuth: true }
+        },
+        {
+            path: '/english/api-integration',
+            name: 'EnglishAPIIntegration',
+            component: () => import('@/views/english/APIIntegration.vue'),
+            meta: { title: 'API集成管理', requiresAuth: true }
+        },
   {
     path: '/login',
     name: 'Login',

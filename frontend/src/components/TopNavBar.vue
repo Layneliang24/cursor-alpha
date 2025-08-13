@@ -56,6 +56,10 @@
               <el-icon><Trophy /></el-icon>
               <span>智能练习</span>
             </router-link>
+            <router-link to="/english/pronunciation" class="dropdown-item" @click="closeEnglishDropdown">
+              <el-icon><Microphone /></el-icon>
+              <span>发音练习</span>
+            </router-link>
             <router-link to="/english/words" class="dropdown-item" @click="closeEnglishDropdown">
               <el-icon><Notebook /></el-icon>
               <span>单词学习</span>
@@ -67,6 +71,10 @@
             <router-link to="/english/expressions" class="dropdown-item" @click="closeEnglishDropdown">
               <el-icon><ChatDotRound /></el-icon>
               <span>地道表达</span>
+            </router-link>
+            <router-link to="/english/api-integration" class="dropdown-item" @click="closeEnglishDropdown">
+              <el-icon><Connection /></el-icon>
+              <span>API集成</span>
             </router-link>
           </div>
         </div>
@@ -164,7 +172,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { Star, Search, Edit, Bell, ArrowDown, User, Document, Setting, SwitchButton, Right, House, Folder, TrendCharts, DataBoard, Reading, Trophy, Notebook, Notification, ChatDotRound } from '@element-plus/icons-vue'
+import { Star, Search, Edit, Bell, ArrowDown, User, Document, Setting, SwitchButton, Right, House, Folder, TrendCharts, DataBoard, Reading, Trophy, Notebook, Notification, ChatDotRound, Microphone, Connection } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const authStore = useAuthStore()

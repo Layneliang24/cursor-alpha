@@ -211,6 +211,10 @@ class News(TimeStampedModel, SoftDeleteModel):
     key_vocabulary = models.TextField(blank=True, verbose_name='关键词汇')
     comprehension_questions = models.JSONField(default=list, blank=True, verbose_name='理解题目')
 
+    # 图片字段
+    image_url = models.URLField(blank=True, verbose_name='图片URL')
+    image_alt = models.CharField(max_length=200, blank=True, verbose_name='图片描述')
+    
     # provenance
     source_url = models.CharField(max_length=500, null=True, blank=True, verbose_name='来源URL')
     license = models.CharField(max_length=100, null=True, blank=True, verbose_name='许可证')
