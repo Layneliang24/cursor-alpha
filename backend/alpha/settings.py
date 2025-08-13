@@ -419,6 +419,27 @@ except Exception:
 # Celery Configuration
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://127.0.0.1:6379/1')
+
+# 外部API配置
+# 牛津词典API
+OXFORD_API_ID = os.environ.get('OXFORD_API_ID', '')
+OXFORD_API_KEY = os.environ.get('OXFORD_API_KEY', '')
+
+# 有道翻译API
+YOUDAO_APP_KEY = os.environ.get('YOUDAO_APP_KEY', '')
+YOUDAO_APP_SECRET = os.environ.get('YOUDAO_APP_SECRET', '')
+
+# Google Cloud API
+GOOGLE_CLOUD_API_KEY = os.environ.get('GOOGLE_CLOUD_API_KEY', '')
+
+# Azure Speech Service
+AZURE_SPEECH_API_KEY = os.environ.get('AZURE_SPEECH_API_KEY', '')
+AZURE_SPEECH_REGION = os.environ.get('AZURE_SPEECH_REGION', 'eastus')
+
+# 科大讯飞API
+XFYUN_APP_ID = os.environ.get('XFYUN_APP_ID', '')
+XFYUN_API_KEY = os.environ.get('XFYUN_API_KEY', '')
+XFYUN_API_SECRET = os.environ.get('XFYUN_API_SECRET', '')
 CELERY_TASK_ALWAYS_EAGER = os.environ.get('CELERY_TASK_ALWAYS_EAGER', 'False').lower() == 'true'
 CELERY_TIMEZONE = TIME_ZONE
 

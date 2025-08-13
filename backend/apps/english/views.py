@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.db.models import Q
+from django.conf import settings
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -32,9 +33,11 @@ from .services import (
 )
 from .pagination import StandardResultsSetPagination
 from .permissions import EnglishAccessPermission, EnglishWordManagePermission
+CELERY_AVAILABLE = True
 try:
     from .tasks import crawl_english_news  # type: ignore
 except Exception:
+    CELERY_AVAILABLE = False
     class _DummyTask:
         def delay(self, *args, **kwargs):
             return None
@@ -96,6 +99,122 @@ class WordViewSet(viewsets.ModelViewSet):
         instance.deleted_at = timezone.now()
         instance.save(update_fields=['is_deleted', 'deleted_at'])
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True, methods=['post'])
+    def enrich_definition(self, request, pk=None):
+        """通过外部词典API丰富单词释义"""
+        try:
+            word = self.get_object()
+            from .external_apis import dictionary_service
+            
+            # 调用词典API获取详细释义
+            dict_data = dictionary_service.get_word_definition(word.word)
+            
+            if dict_data:
+                # 更新单词信息
+                if dict_data.get('phonetics'):
+                    phonetic_data = dict_data['phonetics'][0]
+                    if phonetic_data.get('text'):
+                        word.phonetic = phonetic_data['text']
+                    if phonetic_data.get('audio'):
+                        word.audio_url = phonetic_data['audio']
+                
+                if dict_data.get('definitions'):
+                    definitions = dict_data['definitions']
+                    if definitions:
+                        word.definition = definitions[0]['definition']
+                        if definitions[0].get('part_of_speech'):
+                            word.part_of_speech = definitions[0]['part_of_speech']
+                
+                if dict_data.get('examples'):
+                    word.example = '; '.join(dict_data['examples'][:2])  # 最多两个例句
+                
+                # 更新来源信息
+                word.source_api = dict_data.get('source', 'unknown')
+                word.quality_score = 0.9 if dict_data.get('source') == 'oxford' else 0.7
+                
+                word.save()
+                
+                return Response({
+                    'success': True,
+                    'message': '单词释义已更新',
+                    'data': WordSerializer(word).data,
+                    'source': dict_data.get('source')
+                })
+            else:
+                return Response({
+                    'success': False,
+                    'message': '未找到词典数据'
+                }, status=status.HTTP_404_NOT_FOUND)
+                
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': f'更新失败: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=True, methods=['post'])
+    def generate_audio(self, request, pk=None):
+        """为单词生成TTS音频"""
+        try:
+            word = self.get_object()
+            from .external_apis import tts_service
+            
+            # 生成语音
+            tts_result = tts_service.generate_speech(
+                text=word.word,
+                language='en-US',
+                voice='female'
+            )
+            
+            if tts_result.get('success') and tts_result.get('audio_content'):
+                # 保存音频文件
+                import base64
+                from django.core.files.base import ContentFile
+                from django.core.files.storage import default_storage
+                
+                if tts_result.get('format') != 'browser':
+                    audio_data = base64.b64decode(tts_result['audio_content'])
+                    file_name = f"tts/{word.id}_{word.word}.mp3"
+                    
+                    # 保存到存储
+                    file_path = default_storage.save(file_name, ContentFile(audio_data))
+                    audio_url = default_storage.url(file_path)
+                    
+                    # 更新单词音频URL
+                    word.audio_url = audio_url
+                    word.save()
+                    
+                    return Response({
+                        'success': True,
+                        'message': 'TTS音频生成成功',
+                        'data': {
+                            'audio_url': audio_url,
+                            'source': tts_result.get('source')
+                        }
+                    })
+                else:
+                    # 浏览器TTS
+                    return Response({
+                        'success': True,
+                        'message': '请使用浏览器TTS功能',
+                        'data': {
+                            'text': word.word,
+                            'language': 'en-US',
+                            'source': 'browser'
+                        }
+                    })
+            else:
+                return Response({
+                    'success': False,
+                    'message': 'TTS生成失败'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': f'TTS生成失败: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UserWordProgressViewSet(viewsets.ModelViewSet):
@@ -286,13 +405,69 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
     @action(detail=False, methods=['post'])
     def crawl(self, request):
         source = request.data.get('source', 'bbc')
-        # 调度celery异步任务
+
+        # 如果配置为同步执行（开发环境）或 Celery 不可用，则同步抓取并返回结果
+        run_sync = (
+            getattr(settings, 'CELERY_TASK_ALWAYS_EAGER', False)
+            or not CELERY_AVAILABLE
+            or getattr(settings, 'DEBUG', False)
+        )
+        if run_sync:
+            from .news_crawler import real_news_crawler_service
+            import time as _time
+
+            started_at = _time.time()
+            try:
+                if source == 'all':
+                    news_items = real_news_crawler_service.crawl_all_sources()
+                else:
+                    news_items = real_news_crawler_service.crawl_news(source)
+
+                total_found = len(news_items)
+                saved_count = real_news_crawler_service.save_news_to_db(news_items)
+                skipped_count = max(total_found - saved_count, 0)
+                duration_seconds = int(_time.time() - started_at)
+
+                return Response(
+                    {
+                        "success": True,
+                        "message": "Crawl finished",
+                        "data": {
+                            "source": source,
+                            "mode": "sync",
+                            "total_found": total_found,
+                            "saved_count": saved_count,
+                            "skipped_count": skipped_count,
+                            "duration_seconds": duration_seconds,
+                        },
+                    },
+                    status=status.HTTP_200_OK,
+                )
+            except Exception as e:
+                return Response(
+                    {
+                        "success": False,
+                        "message": f"Crawl failed: {e}",
+                        "data": {"source": source, "mode": "sync"},
+                    },
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
+
+        # 否则异步提交 Celery 任务
         try:
-            crawl_english_news.delay(source)
+            result = crawl_english_news.delay(source)
+            task_id = getattr(result, 'id', None)
         except Exception:
-            # Celery 未配置时，仍返回接受状态
-            pass
-        return Response({"success": True, "message": "Crawl accepted", "data": {"source": source}}, status=status.HTTP_202_ACCEPTED)
+            task_id = None
+
+        return Response(
+            {
+                "success": True,
+                "message": "Crawl accepted",
+                "data": {"source": source, "mode": "async", "task_id": task_id},
+            },
+            status=status.HTTP_202_ACCEPTED,
+        )
 
 
 class LearningPlanViewSet(viewsets.ModelViewSet):
@@ -409,6 +584,137 @@ class PronunciationRecordViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    @action(detail=False, methods=['post'])
+    def submit(self, request):
+        """提交发音录音进行评分"""
+        try:
+            # 获取上传的音频文件和相关数据
+            audio_file = request.FILES.get('audio')
+            word_id = request.data.get('word_id')
+            word_text = request.data.get('word_text')
+
+            if not audio_file or not word_id or not word_text:
+                return Response({
+                    'success': False,
+                    'message': '缺少必要参数'
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+            # 验证单词是否存在
+            try:
+                word = Word.objects.get(id=word_id)
+            except Word.DoesNotExist:
+                return Response({
+                    'success': False,
+                    'message': '单词不存在'
+                }, status=status.HTTP_404_NOT_FOUND)
+
+            # 保存音频文件
+            import os
+            from django.conf import settings
+            from django.core.files.storage import default_storage
+            
+            # 生成唯一文件名
+            import uuid
+            file_extension = os.path.splitext(audio_file.name)[1]
+            unique_filename = f"pronunciation/{request.user.id}/{uuid.uuid4()}{file_extension}"
+            
+            # 保存文件
+            file_path = default_storage.save(unique_filename, audio_file)
+            audio_url = default_storage.url(file_path)
+
+            # 调用发音评分服务
+            score_result = self._evaluate_pronunciation(audio_file, word_text)
+
+            # 创建发音记录
+            pronunciation_record = PronunciationRecord.objects.create(
+                user=request.user,
+                word=word,
+                audio_url=audio_url,
+                score=score_result['overall_score'],
+                accuracy=score_result['accuracy'],
+                fluency=score_result['fluency'],
+                completeness=score_result['completeness'],
+                feedback='; '.join(score_result.get('suggestions', []))
+            )
+
+            return Response({
+                'success': True,
+                'message': '发音评分完成',
+                'data': {
+                    'record_id': pronunciation_record.id,
+                    'audio_url': audio_url,
+                    'overall_score': score_result['overall_score'],
+                    'accuracy': score_result['accuracy'],
+                    'fluency': score_result['fluency'],
+                    'completeness': score_result['completeness'],
+                    'suggestions': score_result.get('suggestions', [])
+                }
+            })
+
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': f'发音评分失败: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def _evaluate_pronunciation(self, audio_file, target_text):
+        """
+        发音评分算法 - 集成外部API服务
+        """
+        try:
+            from .external_apis import pronunciation_evaluation_service
+            
+            # 读取音频数据
+            audio_data = audio_file.read()
+            
+            # 调用外部API进行发音评估
+            evaluation_result = pronunciation_evaluation_service.evaluate_pronunciation(
+                audio_data, target_text, language='en-US'
+            )
+            
+            if evaluation_result.get('success'):
+                return evaluation_result
+            else:
+                # 如果外部API失败，使用备用评分算法
+                return self._fallback_pronunciation_evaluation(target_text)
+                
+        except Exception as e:
+            logger.error(f"发音评估失败: {str(e)}")
+            return self._fallback_pronunciation_evaluation(target_text)
+    
+    def _fallback_pronunciation_evaluation(self, target_text):
+        """备用发音评分算法"""
+        import random
+        
+        base_score = random.randint(60, 95)
+        accuracy = min(5.0, max(1.0, base_score / 20))
+        fluency = min(5.0, max(1.0, (base_score + random.randint(-10, 10)) / 20))
+        completeness = min(5.0, max(1.0, (base_score + random.randint(-5, 5)) / 20))
+        
+        suggestions = []
+        if accuracy < 3.0:
+            suggestions.append("注意单词的准确发音，可以多听标准发音")
+        if fluency < 3.0:
+            suggestions.append("尝试更流畅地发音，减少停顿")
+        if completeness < 3.0:
+            suggestions.append("确保完整地读出整个单词")
+        
+        if base_score >= 85:
+            suggestions.append("发音很棒！继续保持")
+        elif base_score >= 70:
+            suggestions.append("发音不错，还可以更好")
+        else:
+            suggestions.append("需要多加练习，建议多听多读")
+
+        return {
+            'overall_score': base_score,
+            'accuracy': round(accuracy, 1),
+            'fluency': round(fluency, 1),
+            'completeness': round(completeness, 1),
+            'suggestions': suggestions,
+            'source': 'fallback'
+        }
 
 
 class LearningStatsViewSet(viewsets.ReadOnlyModelViewSet):

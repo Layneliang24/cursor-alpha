@@ -38,6 +38,9 @@
           <router-link class="nav-link" to="/english/practice" :class="{ active: $route.path === '/english/practice' }">
             <el-icon class="me-2"><Trophy /></el-icon>智能练习
           </router-link>
+          <router-link class="nav-link" to="/english/pronunciation" :class="{ active: $route.path === '/english/pronunciation' }">
+            <el-icon class="me-2"><Microphone /></el-icon>发音练习
+          </router-link>
           <router-link class="nav-link" to="/english/words" :class="{ active: $route.path.startsWith('/english/words') }">
             <el-icon class="me-2"><Notebook /></el-icon>单词学习
           </router-link>
@@ -46,6 +49,9 @@
           </router-link>
           <router-link class="nav-link" to="/english/news" :class="{ active: $route.path.startsWith('/english/news') }">
             <el-icon class="me-2"><Notification /></el-icon>英语新闻
+          </router-link>
+          <router-link class="nav-link" to="/english/api-integration" :class="{ active: $route.path === '/english/api-integration' }">
+            <el-icon class="me-2"><Connection /></el-icon>API集成
           </router-link>
         </nav>
       </div>
@@ -90,7 +96,7 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { categoriesAPI } from '@/api/categories'
 import { homeAPI } from '@/api/home'
-import { House, Document, Edit, Folder, User, DocumentCopy, DataBoard, Trophy, Notebook, ChatDotRound, Notification } from '@element-plus/icons-vue'
+import { House, Document, Edit, Folder, User, DocumentCopy, DataBoard, Trophy, Notebook, ChatDotRound, Notification, Microphone, Connection } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
 const categories = ref([])

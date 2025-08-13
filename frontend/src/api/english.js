@@ -107,13 +107,43 @@ export const englishAPI = {
     return request.post('/english/pronunciation/', data)
   },
 
-  // Learning Statistics
-  getLearningStats(params = {}) {
-    return request.get('/english/stats/', { params })
-  },
-  updateTodayStats() {
-    return request.post('/english/stats/update_today/')
-  }
+      // Learning Statistics
+    getLearningStats(params = {}) {
+        return request.get('/english/stats/', { params })
+    },
+    updateTodayStats() {
+        return request.post('/english/stats/update_today/')
+    },
+
+    // Pronunciation Practice
+    submitPronunciation(formData) {
+        return request.post('/english/pronunciation/submit/', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+    },
+    generateTTS(text, language = 'en-US') {
+        return request.post('/english/tts/generate/', {
+            text,
+            language
+        })
+    },
+
+    // External API Integration
+    enrichWordDefinition(wordId) {
+        return request.post(`/english/words/${wordId}/enrich_definition/`)
+    },
+    generateWordAudio(wordId) {
+        return request.post(`/english/words/${wordId}/generate_audio/`)
+    },
+    
+    // Dictionary API
+    searchDictionary(word, source = 'auto') {
+        return request.get('/english/dictionary/search/', {
+            params: { word, source }
+        })
+    }
 }
 
 
