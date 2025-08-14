@@ -205,6 +205,7 @@ docker-compose logs -f frontend
 - **Fundus集成**: `docs/FUNDUS_INTEGRATION.md`
 - **新闻爬虫总结**: `docs/新闻爬虫功能完成总结.md`
 - **爬虫架构设计**: `docs/新闻爬虫架构设计文档.md`
+- **Qwerty Learn集成**: `docs/QWERTY_LEARN_INTEGRATION_PLAN.md`
 
 ---
 
