@@ -858,6 +858,14 @@ However, the report also identifies several challenges that need to be addressed
 # 全局服务实例
 real_news_crawler_service = EnhancedNewsCrawlerService()
 
+# 导入Fundus爬虫服务
+try:
+    from .fundus_crawler import fundus_crawler_service
+    FUNDUS_AVAILABLE = True
+except ImportError:
+    FUNDUS_AVAILABLE = False
+    fundus_crawler_service = None
+
 # 添加本地测试爬虫类
 class LocalTestCrawler(EnhancedNewsCrawler):
     """本地测试爬虫 - 混合模式：真实抓取 + 高质量生成"""
