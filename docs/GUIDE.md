@@ -13,10 +13,13 @@
 
 ### 快速启动
 ```bash
-# 方式1：一键启动所有服务
-./start-all.bat
+# 方式1：一键启动所有服务（推荐）
+./start-simple.bat
 
-# 方式2：分别启动
+# 方式2：PowerShell启动
+./start-all.ps1
+
+# 方式3：分别启动
 ./start-backend.bat  # 启动后端
 ./start-frontend.bat # 启动前端
 ```
@@ -85,6 +88,32 @@
    # 支持的新闻源
    # 传统爬虫: bbc, cnn, reuters, techcrunch, local_test, xinhua
    # Fundus爬虫: bbc, cnn, reuters, techcrunch, the_guardian, the_new_york_times, wired, ars_technica, hacker_news, stack_overflow
+   
+   # 图片功能
+# - 自动下载新闻图片到 media/news_images/ 目录
+# - 支持多种图片格式（jpg, png, gif等）
+# - 使用唯一文件名避免重复
+# - 图片可通过 /media/news_images/ 路径访问
+# - 新闻内容和图片严格对应，确保完整性
+
+# 新闻管理功能
+# - 支持单条新闻删除（同时删除对应图片）
+# - 支持批量删除新闻
+# - 按来源筛选（BBC、TechCrunch、The Guardian等）
+# - 按难度筛选（初级、中级、高级）
+# - 显示难度标签和统计信息
+
+# 测试功能
+# - 单元测试：tests/unit/test_news_functionality.py
+# - 集成测试：tests/integration/test_news_integration.py
+# - 调试脚本：quick_debug.py, simple_test.py, test_service.py
+# - 测试覆盖：API端点、数据库操作、图片文件、抓取功能
+
+# 图片显示修复
+# - 修复了后端URL配置中的媒体文件重复配置问题
+# - 修复了Vite代理配置，正确处理/api/media/路径重写
+# - 图片现在可以通过前端代理正确访问：/api/media/news_images/xxx.jpg
+# - 前端图片URL构建逻辑：getImageUrl()函数处理本地和外部图片
    ```
 
 4. **API测试**
@@ -139,6 +168,21 @@ python manage.py create_test_learning_data
 
 ## 🔧 故障排除
 
+### 启动脚本问题
+1. **start-all.bat 无法启动**
+   - **问题**: 字符编码问题导致中文显示乱码
+   - **解决方案**: 使用 `start-simple.bat`（推荐）或 `start-all.ps1`
+   - **原因**: Windows批处理文件在PowerShell环境中的编码问题
+
+2. **PowerShell执行策略限制**
+   ```powershell
+   # 查看执行策略
+   Get-ExecutionPolicy
+   
+   # 临时允许脚本执行
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
+
 ### 常见问题
 1. **端口冲突**
    - 检查 8000, 5173, 3306, 6379 端口占用
@@ -156,6 +200,28 @@ python manage.py create_test_learning_data
    rm -rf node_modules package-lock.json
    npm install
    ```
+
+4. **Python依赖问题**
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   python manage.py migrate
+   ```
+
+5. **新闻爬虫网络问题**
+   - **问题**: 网络代理或防火墙导致无法访问外部新闻源
+   - **解决方案**: 
+     - 检查网络代理设置
+     - 使用本地测试源：`python manage.py crawl_news --source local_test --crawler traditional`
+     - 传统爬虫支持生成高质量新闻，可作为备选方案
+   - **测试命令**:
+     ```bash
+     # 测试传统爬虫（推荐）
+     python manage.py crawl_news --source local_test --crawler traditional --dry-run
+     
+     # 测试Fundus爬虫（需要网络访问）
+     python manage.py crawl_news --source bbc --crawler fundus --dry-run
+     ```
 
 ### 日志查看
 ```bash

@@ -105,12 +105,19 @@ const stats = ref({
   total_users: 0
 })
 
-// 获取分类数据
+// 获取分类数据（兼容多种返回结构）
 const fetchCategories = async () => {
   try {
-    const data = await categoriesAPI.getCategories()
-    console.log('分类数据:', data)
-    categories.value = data.filter(cat => cat.status === 'active')
+    const res = await categoriesAPI.getCategories()
+    console.log('分类数据:', res)
+    const list = Array.isArray(res)
+      ? res
+      : (Array.isArray(res?.results)
+        ? res.results
+        : (Array.isArray(res?.data)
+          ? res.data
+          : []))
+    categories.value = list.filter(cat => (cat?.status ?? 'active') === 'active')
     console.log('过滤后的分类:', categories.value.length)
   } catch (error) {
     console.error('获取分类数据失败:', error)

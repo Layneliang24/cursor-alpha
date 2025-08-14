@@ -4,7 +4,7 @@ from django.conf import settings
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from rest_framework.permissions import IsAuthenticated, SAFE_METHODS, AllowAny
 
 from .models import (
     Word, UserWordProgress, Expression, News,
@@ -405,6 +405,8 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
     @action(detail=False, methods=['post'])
     def crawl(self, request):
         source = request.data.get('source', 'bbc')
+        crawler_type = request.data.get('crawler', 'fundus')  # 默认使用Fundus爬虫
+        max_articles = int(request.data.get('max_articles', 10))
 
         # 如果配置为同步执行（开发环境）或 Celery 不可用，则同步抓取并返回结果
         run_sync = (
@@ -413,18 +415,42 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
             or getattr(settings, 'DEBUG', False)
         )
         if run_sync:
-            from .news_crawler import real_news_crawler_service
             import time as _time
+            from django.core.management import call_command
+            from io import StringIO
 
             started_at = _time.time()
             try:
-                if source == 'all':
-                    news_items = real_news_crawler_service.crawl_all_sources()
-                else:
-                    news_items = real_news_crawler_service.crawl_news(source)
-
-                total_found = len(news_items)
-                saved_count = real_news_crawler_service.save_news_to_db(news_items)
+                # 使用Django管理命令来抓取新闻
+                out = StringIO()
+                call_command(
+                    'crawl_news', 
+                    source=source, 
+                    crawler=crawler_type,
+                    max_articles=max_articles,
+                    verbosity=0,
+                    stdout=out
+                )
+                
+                # 解析输出获取统计信息
+                output = out.getvalue()
+                total_found = 0
+                saved_count = 0
+                skipped_count = 0
+                
+                # 简单的输出解析（可以根据需要改进）
+                if '抓取完成！共找到' in output:
+                    import re
+                    match = re.search(r'共找到 (\d+) 条新闻', output)
+                    if match:
+                        total_found = int(match.group(1))
+                
+                if '新增' in output and '条新闻' in output:
+                    import re
+                    match = re.search(r'新增 (\d+) 条新闻', output)
+                    if match:
+                        saved_count = int(match.group(1))
+                
                 skipped_count = max(total_found - saved_count, 0)
                 duration_seconds = int(_time.time() - started_at)
 
@@ -434,6 +460,7 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
                         "message": "Crawl finished",
                         "data": {
                             "source": source,
+                            "crawler": crawler_type,
                             "mode": "sync",
                             "total_found": total_found,
                             "saved_count": saved_count,
@@ -448,14 +475,14 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
                     {
                         "success": False,
                         "message": f"Crawl failed: {e}",
-                        "data": {"source": source, "mode": "sync"},
+                        "data": {"source": source, "crawler": crawler_type, "mode": "sync"},
                     },
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
 
         # 否则异步提交 Celery 任务
         try:
-            result = crawl_english_news.delay(source)
+            result = crawl_english_news.delay(source, crawler_type, max_articles)
             task_id = getattr(result, 'id', None)
         except Exception:
             task_id = None
@@ -464,10 +491,162 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
             {
                 "success": True,
                 "message": "Crawl accepted",
-                "data": {"source": source, "mode": "async", "task_id": task_id},
+                "data": {"source": source, "crawler": crawler_type, "mode": "async", "task_id": task_id},
             },
             status=status.HTTP_202_ACCEPTED,
         )
+
+    @action(detail=True, methods=['delete'])
+    def delete_news(self, request, pk=None):
+        """删除单条新闻"""
+        try:
+            news = self.get_object()
+            # 删除对应的图片文件
+            if news.image_url and news.image_url.startswith('news_images/'):
+                import os
+                from django.conf import settings
+                image_path = os.path.join(settings.MEDIA_ROOT, news.image_url)
+                if os.path.exists(image_path):
+                    os.remove(image_path)
+            
+            news.delete()
+            return Response(
+                {"success": True, "message": "新闻删除成功"},
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response(
+                {"success": False, "message": f"删除失败: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    @action(detail=False, methods=['post'])
+    def batch_delete(self, request):
+        """批量删除新闻"""
+        news_ids = request.data.get('news_ids', [])
+        if not news_ids:
+            return Response(
+                {"success": False, "message": "请选择要删除的新闻"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            deleted_count = 0
+            for news_id in news_ids:
+                try:
+                    news = News.objects.get(id=news_id)
+                    # 删除对应的图片文件
+                    if news.image_url and news.image_url.startswith('news_images/'):
+                        import os
+                        from django.conf import settings
+                        image_path = os.path.join(settings.MEDIA_ROOT, news.image_url)
+                        if os.path.exists(image_path):
+                            os.remove(image_path)
+                    
+                    news.delete()
+                    deleted_count += 1
+                except News.DoesNotExist:
+                    continue
+            
+            return Response(
+                {"success": True, "message": f"成功删除 {deleted_count} 条新闻"},
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response(
+                {"success": False, "message": f"批量删除失败: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    @action(detail=False, methods=['get'])
+    def categories(self, request):
+        """获取新闻分类统计"""
+        try:
+            from django.db.models import Count
+            
+            # 按来源分类
+            source_stats = News.objects.values('source').annotate(
+                count=Count('id')
+            ).order_by('-count')
+            
+            # 按难度分类
+            difficulty_stats = News.objects.values('difficulty_level').annotate(
+                count=Count('id')
+            ).order_by('-count')
+            
+            # 按发布时间分类（最近7天）
+            from datetime import datetime, timedelta
+            from django.utils import timezone
+            
+            today = timezone.now().date()
+            week_ago = today - timedelta(days=7)
+            
+            recent_stats = News.objects.filter(
+                publish_date__gte=week_ago
+            ).values('publish_date').annotate(
+                count=Count('id')
+            ).order_by('-publish_date')
+            
+            return Response(
+                {
+                    "success": True,
+                    "data": {
+                        "source_stats": list(source_stats),
+                        "difficulty_stats": list(difficulty_stats),
+                        "recent_stats": list(recent_stats)
+                    }
+                },
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response(
+                {"success": False, "message": f"获取分类统计失败: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    @action(detail=False, methods=['get'])
+    def filter_by_category(self, request):
+        """按分类筛选新闻"""
+        source = request.query_params.get('source')
+        difficulty = request.query_params.get('difficulty')
+        date_from = request.query_params.get('date_from')
+        date_to = request.query_params.get('date_to')
+        
+        queryset = self.get_queryset()
+        
+        if source:
+            queryset = queryset.filter(source=source)
+        if difficulty:
+            queryset = queryset.filter(difficulty_level=difficulty)
+        if date_from:
+            queryset = queryset.filter(publish_date__gte=date_from)
+        if date_to:
+            queryset = queryset.filter(publish_date__lte=date_to)
+        
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(
+            {"success": True, "data": serializer.data},
+            status=status.HTTP_200_OK
+        )
+
+    @action(detail=False, methods=['get'], permission_classes=[AllowAny])
+    def fundus_publishers(self, request):
+        """列出Fundus可用的全部发布者供前端选择"""
+        try:
+            from .news_crawler import FUNDUS_AVAILABLE
+            if not FUNDUS_AVAILABLE:
+                return Response({"success": False, "message": "Fundus 未可用"}, status=200)
+            from .fundus_crawler import get_fundus_service
+            service = get_fundus_service()
+            items = service.list_all_publishers()
+            return Response({"success": True, "data": items}, status=200)
+        except Exception as e:
+            return Response({"success": False, "message": str(e)}, status=500)
 
 
 class LearningPlanViewSet(viewsets.ModelViewSet):

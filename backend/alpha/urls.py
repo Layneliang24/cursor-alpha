@@ -200,7 +200,7 @@ urlpatterns = [
     path('api/v1/', include('apps.ai.urls')),  # AI
     path('api/v1/', include('apps.search.urls')),  # Search
     path('admin/', admin.site.urls),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
 # --- english module urls ---
 from django.urls import include

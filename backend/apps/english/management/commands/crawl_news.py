@@ -20,8 +20,7 @@ class Command(BaseCommand):
             '--source',
             type=str,
             default='bbc',
-            choices=['bbc', 'cnn', 'reuters', 'techcrunch', 'local_test', 'xinhua', 'all'],
-            help='新闻源 (默认: bbc)'
+            help='新闻源 (默认: bbc). 支持预设源或任意Fundus发布者ID (如: de.DieWelt)'
         )
         
         parser.add_argument(
@@ -30,6 +29,13 @@ class Command(BaseCommand):
             default='traditional',
             choices=['traditional', 'fundus', 'both'],
             help='爬虫类型: traditional(传统), fundus(Fundus), both(两者)'
+        )
+        
+        parser.add_argument(
+            '--max-articles',
+            type=int,
+            default=10,
+            help='最大抓取文章数量 (默认: 10)'
         )
         
         parser.add_argument(
@@ -47,6 +53,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         source = options['source']
         crawler_type = options['crawler']
+        max_articles = options['max_articles']
         dry_run = options['dry_run']
         verbose = options['verbose']
         
@@ -75,27 +82,24 @@ class Command(BaseCommand):
                 if source == 'all':
                     traditional_items = real_news_crawler_service.crawl_all_sources()
                 else:
+                    # 传统爬虫目前不支持按数量限制，抓取后再截取
                     traditional_items = real_news_crawler_service.crawl_news(source)
+                    if max_articles and isinstance(max_articles, int):
+                        traditional_items = traditional_items[:max_articles]
                 all_news_items.extend(traditional_items)
                 self.stdout.write(f'传统爬虫获取 {len(traditional_items)} 条新闻')
             
             # Fundus爬虫
             if crawler_type in ['fundus', 'both'] and FUNDUS_AVAILABLE:
                 self.stdout.write('使用Fundus爬虫...')
-                from apps.english.fundus_crawler import fundus_crawler_service
+                from apps.english.fundus_crawler import get_fundus_service
                 
+                fundus_service = get_fundus_service()
                 if source == 'all':
-                    fundus_items = fundus_crawler_service.crawl_all_supported()
+                    fundus_items = fundus_service.crawl_all_supported(max_articles_per_publisher=max_articles)
                 else:
-                    # 将传统源名称映射到Fundus源名称
-                    fundus_source_map = {
-                        'bbc': 'bbc',
-                        'cnn': 'cnn',
-                        'reuters': 'reuters',
-                        'techcrunch': 'techcrunch'
-                    }
-                    fundus_source = fundus_source_map.get(source, source)
-                    fundus_items = fundus_crawler_service.crawl_publisher(fundus_source)
+                    # 支持任意Fundus发布者ID
+                    fundus_items = fundus_service.crawl_publisher(source, max_articles)
                 
                 all_news_items.extend(fundus_items)
                 self.stdout.write(f'Fundus爬虫获取 {len(fundus_items)} 条新闻')
@@ -129,15 +133,21 @@ class Command(BaseCommand):
                 
                 # 分别保存传统爬虫和Fundus爬虫的结果
                 saved_count = 0
+                
+                # 传统爬虫的新闻（预定义的源）
+                traditional_sources = ['BBC', 'CNN', 'Reuters', 'TechCrunch', 'China Daily', 'Xinhua', 'Generated']
                 if crawler_type in ['traditional', 'both']:
-                    traditional_items = [item for item in all_news_items if hasattr(item, 'source') and item.source in ['BBC', 'CNN', 'Reuters', 'TechCrunch', 'China Daily', 'Xinhua', 'Generated']]
+                    traditional_items = [item for item in all_news_items if hasattr(item, 'source') and item.source in traditional_sources]
                     if traditional_items:
                         saved_count += real_news_crawler_service.save_news_to_db(traditional_items)
                 
+                # Fundus爬虫的新闻（所有其他源）
                 if crawler_type in ['fundus', 'both'] and FUNDUS_AVAILABLE:
-                    fundus_items = [item for item in all_news_items if hasattr(item, 'source') and item.source in ['BBC', 'CNN', 'Reuters', 'TechCrunch', 'The Guardian', 'The New York Times', 'Wired', 'Ars Technica', 'Hacker News', 'Stack Overflow Blog']]
+                    fundus_items = [item for item in all_news_items if hasattr(item, 'source') and item.source not in traditional_sources]
                     if fundus_items:
-                        saved_count += fundus_crawler_service.save_news_to_db(fundus_items)
+                        from apps.english.fundus_crawler import get_fundus_service
+                        fundus_service = get_fundus_service()
+                        saved_count += fundus_service.save_news_to_db(fundus_items)
                 
                 self.stdout.write(
                     self.style.SUCCESS(

@@ -79,6 +79,13 @@ class FundusCrawlerService:
     def _get_publisher(self, publisher_id: str):
         """获取发布者对象"""
         try:
+            # 支持通用标识：country.PublisherName
+            if '.' in publisher_id:
+                country_key, publisher_name = publisher_id.split('.', 1)
+                country_obj = getattr(self.publishers, country_key, None)
+                if country_obj:
+                    return getattr(country_obj, publisher_name, None)
+
             # 映射发布者ID到实际的Fundus发布者
             publisher_mapping = {
                 'bbc': ('uk', 'BBC'),
@@ -105,7 +112,8 @@ class FundusCrawlerService:
     
     def crawl_publisher(self, publisher_id: str, max_articles: int = 10) -> List[FundusNewsItem]:
         """爬取指定发布者的新闻"""
-        if publisher_id not in self.supported_publishers:
+        # 允许两类：1) 预设支持的发布者；2) 通用 country.PublisherName 标识
+        if (publisher_id not in self.supported_publishers) and ('.' not in publisher_id):
             logger.error(f"不支持的发布者: {publisher_id}")
             return []
         
@@ -139,6 +147,68 @@ class FundusCrawlerService:
         except Exception as e:
             logger.error(f"爬取 {publisher_id} 失败: {str(e)}")
             return []
+
+    def list_all_publishers(self) -> List[dict]:
+        """列出Fundus中经过测试验证的可用发布者
+        返回: [{ id, label, country, name }]
+        """
+        publishers: List[dict] = []
+        try:
+            # 导入经过测试验证的发布者列表
+            try:
+                import os
+                import sys
+                # 获取当前文件所在目录的上级目录（backend目录）
+                backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+                sys.path.insert(0, backend_dir)
+                from available_publishers import AVAILABLE_PUBLISHERS
+                tested_publishers = AVAILABLE_PUBLISHERS
+            except ImportError:
+                # 如果配置文件不存在，回退到原来的方法
+                logger.warning("未找到测试验证的发布者配置文件，使用原始方法")
+                tested_publishers = []
+                for country_key in dir(self.publishers):
+                    if country_key.startswith('_'):
+                        continue
+                    try:
+                        country_obj = getattr(self.publishers, country_key)
+                        for pub_name in dir(country_obj):
+                            if pub_name.startswith('_'):
+                                continue
+                            try:
+                                pub_obj = getattr(country_obj, pub_name)
+                                if hasattr(pub_obj, 'name'):
+                                    pub_id = f"{country_key}.{pub_name}"
+                                    tested_publishers.append(pub_id)
+                            except Exception:
+                                continue
+                    except Exception:
+                        continue
+            
+            # 只返回经过测试验证的发布者
+            for pub_id in tested_publishers:
+                try:
+                    country_key, pub_name = pub_id.split('.', 1)
+                    label = f"{pub_name} ({country_key.upper()})"
+                    publishers.append({
+                        "id": pub_id,
+                        "label": label,
+                        "country": country_key,
+                        "name": pub_name,
+                    })
+                except Exception:
+                    continue
+                    
+        except Exception as e:
+            logger.warning(f"枚举Fundus发布者失败: {e}")
+        
+        # 将预设支持的发布者置顶
+        preferred_ids = set(self.supported_publishers.keys())
+        def sort_key(item):
+            # 预设的优先，其他按国家+名称排序
+            return (0 if item["id"] in preferred_ids else 1, item["country"], item["name"])
+        publishers.sort(key=sort_key)
+        return publishers
     
     def crawl_all_supported(self, max_articles_per_publisher: int = 5) -> List[FundusNewsItem]:
         """爬取所有支持的发布者"""
@@ -196,10 +266,31 @@ class FundusCrawlerService:
             # 提取图片信息
             image_url, image_alt = self._extract_image_info(article)
             
+            # 尝试从article对象获取URL
+            url = ""
+            try:
+                if hasattr(article, 'url') and article.url:
+                    url = article.url
+                elif hasattr(article, 'meta') and article.meta:
+                    # 从meta中获取URL
+                    if 'url' in article.meta:
+                        url = article.meta['url']
+                    elif 'og:url' in article.meta:
+                        url = article.meta['og:url']
+                    elif 'link' in article.meta:
+                        url = article.meta['link']
+            except:
+                pass
+            
+            # 如果还是没有URL，使用标题生成一个唯一标识
+            if not url:
+                import hashlib
+                url = f"fundus_{publisher_id}_{hashlib.md5(title.encode()).hexdigest()[:16]}"
+            
             return FundusNewsItem(
                 title=title,
                 content=content,
-                url="",  # Fundus Article对象没有url属性
+                url=url,
                 source=self.supported_publishers.get(publisher_id, publisher_id),
                 published_at=published_at,
                 summary=summary,
@@ -285,37 +376,151 @@ class FundusCrawlerService:
         try:
             # 尝试从文章元数据中提取图片
             if hasattr(article, 'meta') and article.meta:
-                if 'image' in article.meta:
-                    image_url = article.meta['image']
-                elif 'og:image' in article.meta:
+                # 优先使用Open Graph图片
+                if 'og:image' in article.meta:
                     image_url = article.meta['og:image']
+                    image_alt = article.meta.get('og:image:alt', '')
                 elif 'twitter:image' in article.meta:
                     image_url = article.meta['twitter:image']
-        except:
-            pass
+                    image_alt = article.meta.get('twitter:image:alt', '')
+                elif 'image' in article.meta:
+                    image_url = article.meta['image']
+                
+                # 验证图片URL的有效性
+                if image_url and not image_url.startswith('http'):
+                    # 如果是相对路径，尝试构建完整URL
+                    if hasattr(article, 'url') and article.url:
+                        from urllib.parse import urljoin, urlparse
+                        parsed_url = urlparse(article.url)
+                        base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
+                        image_url = urljoin(base_url, image_url)
+                    else:
+                        image_url = ""
+                        
+        except Exception as e:
+            logger.warning(f"图片信息提取失败: {str(e)}")
+            image_url = ""
+            image_alt = ""
         
         return image_url, image_alt
     
+    def _download_and_save_image(self, image_url: str, news_title: str) -> str:
+        """下载并保存图片到本地"""
+        if not image_url:
+            return ""
+        
+        try:
+            import os
+            import requests
+            from django.conf import settings
+            from urllib.parse import urlparse
+            import hashlib
+            
+            # 创建图片保存目录
+            image_dir = os.path.join(settings.MEDIA_ROOT, 'news_images')
+            os.makedirs(image_dir, exist_ok=True)
+            
+            # 生成文件名
+            parsed_url = urlparse(image_url)
+            file_extension = os.path.splitext(parsed_url.path)[1] or '.jpg'
+            if not file_extension.startswith('.'):
+                file_extension = '.' + file_extension
+            
+            # 使用标题和URL的哈希值生成唯一文件名
+            title_hash = hashlib.md5(news_title.encode()).hexdigest()[:8]
+            url_hash = hashlib.md5(image_url.encode()).hexdigest()[:8]
+            filename = f"{title_hash}_{url_hash}{file_extension}"
+            filepath = os.path.join(image_dir, filename)
+            
+            # 如果文件已存在，直接返回路径
+            if os.path.exists(filepath):
+                return f'news_images/{filename}'
+            
+            # 下载图片
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+            response = requests.get(image_url, headers=headers, timeout=10)
+            response.raise_for_status()
+            
+            # 保存图片
+            with open(filepath, 'wb') as f:
+                f.write(response.content)
+            
+            logger.info(f"图片下载成功: {filename}")
+            return f'news_images/{filename}'
+            
+        except Exception as e:
+            logger.warning(f"图片下载失败 {image_url}: {str(e)}")
+            return ""
+    
     def save_news_to_db(self, news_items: List[FundusNewsItem]) -> int:
-        """保存新闻到数据库"""
+        """保存新闻到数据库（覆盖式）：
+        - 若URL不存在：创建
+        - 若URL已存在：覆盖更新（标题、正文、摘要、难度、词数、图片等）
+        """
         from .models import News
-        
+
         saved_count = 0
-        
+
         for item in news_items:
             try:
-                # 检查是否已存在相同URL的新闻
-                if News.objects.filter(source_url=item.url).exists():
-                    logger.info(f"新闻已存在，跳过: {item.title[:50]}...")
-                    continue
-                
-                # 确认内容长度
+                # 计算词数并做最低内容长度校验（避免保存空/极短内容）
                 word_count = len(item.content.split()) if item.content else 0
                 if word_count < 50:
                     logger.warning(f"新闻内容太短({word_count}词)，跳过: {item.title[:50]}")
                     continue
-                
-                # 创建新闻记录
+
+                # 统一处理图片：尝试下载到本地；失败则保留原外链
+                new_local_image_path = self._download_and_save_image(item.image_url, item.title) if item.image_url else ""
+                image_alt = item.image_alt[:200] if item.image_alt else ""
+
+                # 查找是否已存在相同URL
+                existing = News.objects.filter(source_url=item.url).first()
+                if existing:
+                    # 覆盖更新
+                    # 如果需要替换为本地图片，清理旧本地文件
+                    try:
+                        if new_local_image_path:
+                            if existing.image_url and existing.image_url.startswith('news_images/') and existing.image_url != new_local_image_path:
+                                import os
+                                from django.conf import settings
+                                old_path = os.path.join(settings.MEDIA_ROOT, existing.image_url)
+                                if os.path.exists(old_path):
+                                    os.remove(old_path)
+                            existing.image_url = new_local_image_path
+                        elif item.image_url:
+                            # 没有成功下载，但有外链，则记录外链
+                            existing.image_url = item.image_url
+                    except Exception as _img_err:
+                        logger.warning(f"更新图片时出错: {_img_err}")
+
+                    existing.title = item.title or existing.title
+                    existing.content = item.content or existing.content
+                    existing.summary = item.summary or existing.summary
+                    existing.difficulty_level = item.difficulty_level or existing.difficulty_level
+                    existing.word_count = word_count
+                    existing.reading_time_minutes = max(1, word_count // 200)
+                    existing.key_vocabulary = ', '.join(item.tags[:5]) if item.tags else existing.key_vocabulary
+                    existing.comprehension_questions = self._generate_comprehension_questions(item.content)
+                    existing.image_alt = image_alt or existing.image_alt
+                    if item.published_at:
+                        try:
+                            existing.publish_date = item.published_at.date()
+                        except Exception:
+                            pass
+                    # 规范source（保持已有值或覆盖为更规范）
+                    existing.source = item.source or existing.source
+                    existing.save(update_fields=[
+                        'title', 'content', 'summary', 'difficulty_level', 'word_count',
+                        'reading_time_minutes', 'key_vocabulary', 'comprehension_questions',
+                        'image_url', 'image_alt', 'publish_date', 'source'
+                    ])
+                    saved_count += 1
+                    logger.info(f"更新Fundus新闻成功({word_count}词): {existing.title[:50]}...")
+                    continue
+
+                # 不存在则创建
                 news = News.objects.create(
                     title=item.title,
                     content=item.content,
@@ -328,17 +533,17 @@ class FundusCrawlerService:
                     reading_time_minutes=max(1, word_count // 200),
                     key_vocabulary=', '.join(item.tags[:5]) if item.tags else '',
                     comprehension_questions=self._generate_comprehension_questions(item.content),
-                    image_url=item.image_url,
-                    image_alt=item.image_alt
+                    image_url=new_local_image_path if new_local_image_path else item.image_url,
+                    image_alt=image_alt
                 )
-                
+
                 saved_count += 1
                 logger.info(f"保存Fundus新闻成功({word_count}词): {news.title[:50]}...")
-                
+
             except Exception as e:
-                logger.error(f"保存Fundus新闻失败 {item.title[:50]}: {str(e)}")
-        
-        logger.info(f"Fundus新闻保存完成，成功保存 {saved_count} 条")
+                logger.error(f"保存/更新Fundus新闻失败 {item.title[:50]}: {str(e)}")
+
+        logger.info(f"Fundus新闻保存完成，保存/更新 {saved_count} 条")
         return saved_count
     
     def _generate_comprehension_questions(self, content: str) -> list:

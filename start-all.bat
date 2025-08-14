@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 echo ========================================
 echo       Alpha 项目一键启动脚本
 echo ========================================
@@ -23,14 +24,14 @@ if not exist "frontend\package.json" (
 
 :: 启动后端服务（在新窗口）
 echo [信息] 启动后端服务...
-start "Alpha Backend" cmd /c "start-backend.bat"
+start "Alpha Backend" cmd /k "cd /d %CD% && start-backend.bat"
 
-:: 等待2秒
-timeout /t 2 /nobreak >nul
+:: 等待3秒
+timeout /t 3 /nobreak >nul
 
 :: 启动前端服务（在新窗口）
 echo [信息] 启动前端服务...
-start "Alpha Frontend" cmd /c "start-frontend.bat"
+start "Alpha Frontend" cmd /k "cd /d %CD% && start-frontend.bat"
 
 echo.
 echo ========================================

@@ -76,7 +76,7 @@ class NewsSerializer(serializers.ModelSerializer):
             'id', 'title', 'summary', 'content', 'category',
             'difficulty_level', 'publish_date', 'word_count', 'source',
             'reading_time_minutes', 'key_vocabulary', 'comprehension_questions',
-            'source_url', 'license', 'quality_score',
+            'source_url', 'license', 'quality_score', 'image_url', 'image_alt',
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']

@@ -64,8 +64,29 @@ export const englishAPI = {
   getNews(id) {
     return request.get(`/english/news/${id}/`)
   },
-  triggerNewsCrawl(source = 'bbc') {
-    return request.post('/english/news/crawl/', { source })
+  triggerNewsCrawl(source = 'bbc', crawler = 'fundus', maxArticles = 10) {
+    // 抓取可能耗时较长，提高超时时间到120秒
+    return request.post('/english/news/crawl/', { source, crawler, max_articles: maxArticles }, { timeout: 120000 })
+  },
+  
+  // 新闻管理API
+  getFundusPublishers() {
+    return request.get('/english/news/fundus_publishers/')
+  },
+  deleteNews(id) {
+    return request.delete(`/english/news/${id}/delete_news/`)
+  },
+  
+  batchDeleteNews(newsIds) {
+    return request.post('/english/news/batch_delete/', { news_ids: newsIds })
+  },
+  
+  getNewsCategories() {
+    return request.get('/english/news/categories/')
+  },
+  
+  filterNewsByCategory(params) {
+    return request.get('/english/news/filter_by_category/', { params })
   },
 
   // Learning Plans
