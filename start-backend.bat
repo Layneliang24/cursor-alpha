@@ -45,7 +45,7 @@ python manage.py migrate --verbosity=0
 
 :: 创建测试数据（可选）
 echo [信息] 创建测试数据...
-python manage.py create_test_learning_data --verbosity=0
+python manage.py import_english_seed --file ../tests/fixtures/english_seed.json --verbosity=0
 
 :: 启动开发服务器
 echo.

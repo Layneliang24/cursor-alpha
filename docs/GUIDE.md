@@ -135,7 +135,7 @@
 ### 创建测试数据
 ```bash
 cd backend
-python manage.py create_test_learning_data
+python manage.py import_english_seed --file ../tests/fixtures/english_seed.json
 ```
 
 ---
