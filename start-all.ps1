@@ -26,7 +26,7 @@ $backendJob = Start-Job -ScriptBlock {
     Set-Location $using:PWD
     cd backend
     python manage.py migrate --verbosity=0
-    python manage.py create_test_learning_data --verbosity=0
+    python manage.py import_english_seed --file ../tests/fixtures/english_seed.json --verbosity=0
     python manage.py runserver 0.0.0.0:8000
 }
 

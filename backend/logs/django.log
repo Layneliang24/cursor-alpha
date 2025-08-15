@@ -13799,3 +13799,144 @@ INFO 2025-08-15 11:50:26,858 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成
 INFO 2025-08-15 11:50:27,018 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
 INFO 2025-08-15 11:50:27,153 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
 INFO 2025-08-15 11:50:27,292 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-16 00:01:13,560 autoreload 4384 34956 Watching for file changes with StatReloader
+INFO 2025-08-16 00:03:12,359 basehttp 4384 8028 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 43
+INFO 2025-08-16 00:03:12,365 basehttp 4384 24804 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:03:12,495 basehttp 4384 39196 "GET /api/v1/external-links/ HTTP/1.1" 200 52
+INFO 2025-08-16 00:03:12,581 basehttp 4384 21584 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:03:12,645 basehttp 4384 7780 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 21647
+INFO 2025-08-16 00:03:12,830 basehttp 4384 2392 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 73290
+INFO 2025-08-16 00:03:12,878 basehttp 4384 30696 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:04:49,935 basehttp 4384 32216 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:04:49,963 basehttp 4384 43588 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:04:50,051 basehttp 4384 30940 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 43
+INFO 2025-08-16 00:04:50,071 basehttp 4384 42040 "GET /api/v1/external-links/ HTTP/1.1" 200 52
+INFO 2025-08-16 00:04:50,129 basehttp 4384 30928 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 21647
+INFO 2025-08-16 00:04:50,249 basehttp 4384 43168 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 73290
+INFO 2025-08-16 00:04:50,267 basehttp 4384 11348 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:05:28,069 basehttp 4384 34176 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:05:28,130 basehttp 4384 10944 "GET /api/v1/external-links/ HTTP/1.1" 200 52
+INFO 2025-08-16 00:05:28,185 basehttp 4384 2324 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 43
+INFO 2025-08-16 00:05:28,196 basehttp 4384 11964 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 21647
+INFO 2025-08-16 00:05:28,303 basehttp 4384 34124 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:05:28,308 basehttp 4384 24000 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 73290
+WARNING 2025-08-16 00:05:30,013 log 4384 34568 Unauthorized: /api/v1/auth/verify-identity/
+WARNING 2025-08-16 00:05:30,015 basehttp 4384 34568 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 401 53
+WARNING 2025-08-16 00:05:32,812 log 4384 24276 Unauthorized: /api/v1/auth/verify-identity/
+WARNING 2025-08-16 00:05:32,813 basehttp 4384 24276 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 401 53
+WARNING 2025-08-16 00:05:34,859 log 4384 21336 Unauthorized: /api/v1/auth/verify-identity/
+WARNING 2025-08-16 00:05:34,860 basehttp 4384 21336 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 401 53
+WARNING 2025-08-16 00:05:37,776 log 4384 22672 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-16 00:05:37,776 basehttp 4384 22672 "POST /api/v1/auth/login/ HTTP/1.1" 400 36
+INFO 2025-08-16 00:05:44,630 basehttp 4384 14940 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 200 180
+INFO 2025-08-16 00:05:54,681 basehttp 4384 15652 "POST /api/v1/auth/login/ HTTP/1.1" 200 894
+INFO 2025-08-16 00:05:55,304 basehttp 4384 31364 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:05:55,331 basehttp 4384 31128 "GET /api/v1/external-links/ HTTP/1.1" 200 52
+INFO 2025-08-16 00:05:55,362 basehttp 4384 30804 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 43
+INFO 2025-08-16 00:05:55,385 basehttp 4384 21188 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:05:55,393 basehttp 4384 31652 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 21647
+INFO 2025-08-16 00:05:55,471 basehttp 4384 17620 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 73290
+INFO 2025-08-16 00:05:55,515 basehttp 4384 9300 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:06:00,238 basehttp 4384 28988 "GET /api/v1/articles/?author=3&page=1&page_size=20 HTTP/1.1" 200 58213
+INFO 2025-08-16 00:06:04,493 basehttp 4384 25628 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:05,723 fundus_crawler 4384 25688 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-16 00:06:05,819 basehttp 4384 25688 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:06:13,914 fundus_crawler 4384 15064 开始爬取 bbc 的新闻...
+INFO 2025-08-16 00:06:17,143 fundus_crawler 4384 15064 成功解析 bbc 文章: What is an apprenticeship and how do you get one?...
+INFO 2025-08-16 00:06:18,082 fundus_crawler 4384 15064 成功解析 bbc 文章: When is the next international break and why are t...
+INFO 2025-08-16 00:06:19,172 fundus_crawler 4384 15064 成功解析 bbc 文章: Follow your Premier League, Scottish Premiership a...
+INFO 2025-08-16 00:06:20,374 fundus_crawler 4384 15064 成功解析 bbc 文章:  Match of the Day: who decides the running order?...
+INFO 2025-08-16 00:06:21,141 fundus_crawler 4384 15064 成功解析 bbc 文章: The Hundred 2025 Teams & players: Full squad lists...
+INFO 2025-08-16 00:06:22,440 fundus_crawler 4384 15064 成功解析 bbc 文章: Spring is "fastest-warming" season in the UK...
+INFO 2025-08-16 00:06:23,512 fundus_crawler 4384 15064 成功解析 bbc 文章: Why did Putin’s Russia invade Ukraine and how coul...
+INFO 2025-08-16 00:06:24,384 fundus_crawler 4384 15064 成功解析 bbc 文章: Keely Hodgkinson: Olympic champion to return at Di...
+INFO 2025-08-16 00:06:25,252 fundus_crawler 4384 15064 成功解析 bbc 文章: Ukraine in maps: Tracking the war with Russia...
+INFO 2025-08-16 00:06:26,230 fundus_crawler 4384 15064 成功解析 bbc 文章: UK inflation: What is the rate and why are prices ...
+INFO 2025-08-16 00:06:26,564 basehttp 4384 31524 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 73466
+INFO 2025-08-16 00:06:26,770 fundus_crawler 4384 15064 bbc 爬取完成，共获取 10 条新闻
+INFO 2025-08-16 00:06:26,827 basehttp 4384 15064 "POST /api/v1/english/news/crawl/ HTTP/1.1" 200 174
+INFO 2025-08-16 00:06:26,903 basehttp 4384 11376 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:34,419 basehttp 4384 27892 "GET /api/v1/users/me/ HTTP/1.1" 200 367
+INFO 2025-08-16 00:06:34,427 basehttp 4384 33420 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:06:35,254 basehttp 4384 33756 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:06:36,112 basehttp 4384 32972 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:06:37,143 basehttp 4384 32692 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:06:37,150 basehttp 4384 28068 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:39,865 basehttp 4384 33564 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:40,562 basehttp 4384 32060 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:41,263 basehttp 4384 23712 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:42,048 basehttp 4384 31444 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:42,680 basehttp 4384 30020 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:42,910 basehttp 4384 32876 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:43,327 basehttp 4384 12084 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:43,877 basehttp 4384 26008 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:44,300 basehttp 4384 28488 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:44,690 basehttp 4384 31492 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:45,181 basehttp 4384 31892 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:06:45,554 basehttp 4384 33896 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:07:02,738 basehttp 4384 36596 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:07:03,388 basehttp 4384 36352 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:07:03,709 basehttp 4384 32960 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:07:04,005 basehttp 4384 37816 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 1075
+INFO 2025-08-16 00:07:10,492 fundus_crawler 4384 36544 开始爬取 wired 的新闻...
+INFO 2025-08-16 00:07:13,984 fundus_crawler 4384 36544 成功解析 wired 文章: Now You Can Get Your Flu Vaccine at Home...
+INFO 2025-08-16 00:07:14,743 fundus_crawler 4384 36544 成功解析 wired 文章: Dyson Airwrap Co-anda 2x Review: Great, Not a Must...
+INFO 2025-08-16 00:07:15,806 fundus_crawler 4384 36544 成功解析 wired 文章: ‘Cheapfake’ AI Celeb Videos Are Rage-Baiting Peopl...
+INFO 2025-08-16 00:07:16,708 base_parser 4384 39188 Couldn't parse attribute 'images' for 'https://www.wired.com/gallery/best-mattress-for-sex/': Bounds could not be determined
+INFO 2025-08-16 00:07:17,794 fundus_crawler 4384 36544 成功解析 wired 文章: Lelo Sona 3 Cruise Review: Stale Update...
+INFO 2025-08-16 00:07:18,775 fundus_crawler 4384 36544 成功解析 wired 文章: Sealy Promo Code: Save $300 on Mattresses in Augus...
+INFO 2025-08-16 00:07:19,755 fundus_crawler 4384 36544 成功解析 wired 文章: AI Slop Is Ripping Off One of Summer’s Best Games....
+INFO 2025-08-16 00:07:19,873 basehttp 4384 33148 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:07:19,914 basehttp 4384 36124 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 73466
+INFO 2025-08-16 00:07:20,745 fundus_crawler 4384 36544 成功解析 wired 文章: Why Trump Flip-Flopped on Nvidia Selling H20 Chips...
+INFO 2025-08-16 00:07:21,817 fundus_crawler 4384 36544 成功解析 wired 文章: Inside the Biden Administration's Gamble to Freeze...
+INFO 2025-08-16 00:07:22,792 fundus_crawler 4384 36544 成功解析 wired 文章: A DOGE AI Tool Called SweetREX Is Coming to Slash ...
+INFO 2025-08-16 00:07:23,992 fundus_crawler 4384 36544 成功解析 wired 文章: The 65 Best Movies on Disney+ Right Now (August 20...
+INFO 2025-08-16 00:07:24,183 basehttp 4384 27872 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:07:24,318 fundus_crawler 4384 36544 wired 爬取完成，共获取 10 条新闻
+INFO 2025-08-16 00:07:25,467 fundus_crawler 4384 36544 图片下载成功: ac13fa4c_61421feb.jpg
+INFO 2025-08-16 00:07:25,574 fundus_crawler 4384 36544 保存Fundus新闻成功(563词): Now You Can Get Your Flu Vaccine at Home...
+INFO 2025-08-16 00:07:26,973 basehttp 4384 39696 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:07:27,702 basehttp 4384 40064 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:07:27,702 fundus_crawler 4384 36544 图片下载成功: a26c9094_9b98094d.png
+INFO 2025-08-16 00:07:27,710 fundus_crawler 4384 36544 保存Fundus新闻成功(835词): Dyson Airwrap Co-anda 2x Review: Great, Not a Must...
+INFO 2025-08-16 00:07:28,569 basehttp 4384 24628 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:07:28,576 basehttp 4384 39828 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 11729
+INFO 2025-08-16 00:07:28,691 basehttp 4384 38056 "GET /media/news_images/ac13fa4c_61421feb.jpg HTTP/1.1" 200 99497
+INFO 2025-08-16 00:07:28,697 basehttp 4384 37400 "GET /media/news_images/a26c9094_9b98094d.png HTTP/1.1" 200 555416
+INFO 2025-08-16 00:07:29,022 fundus_crawler 4384 36544 图片下载成功: 8154658d_1cba17a7.jpg
+INFO 2025-08-16 00:07:29,029 fundus_crawler 4384 36544 保存Fundus新闻成功(1892词): ‘Cheapfake’ AI Celeb Videos Are Rage-Baiting Peopl...
+INFO 2025-08-16 00:07:31,043 fundus_crawler 4384 36544 图片下载成功: 3cc68de3_508daf54.png
+INFO 2025-08-16 00:07:31,050 fundus_crawler 4384 36544 保存Fundus新闻成功(737词): Lelo Sona 3 Cruise Review: Stale Update...
+INFO 2025-08-16 00:07:33,660 fundus_crawler 4384 36544 图片下载成功: 7b259abb_8f7bc30e.png
+INFO 2025-08-16 00:07:33,670 fundus_crawler 4384 36544 保存Fundus新闻成功(798词): Sealy Promo Code: Save $300 on Mattresses in Augus...
+INFO 2025-08-16 00:07:35,094 fundus_crawler 4384 36544 图片下载成功: 6f54ae48_e449075f.png
+INFO 2025-08-16 00:07:35,099 fundus_crawler 4384 36544 保存Fundus新闻成功(1255词): AI Slop Is Ripping Off One of Summer’s Best Games....
+INFO 2025-08-16 00:07:36,523 fundus_crawler 4384 36544 图片下载成功: 2dd19ad7_f9b6c144.jpg
+INFO 2025-08-16 00:07:36,530 fundus_crawler 4384 36544 保存Fundus新闻成功(798词): Why Trump Flip-Flopped on Nvidia Selling H20 Chips...
+INFO 2025-08-16 00:07:37,361 basehttp 4384 36704 "GET /media/news_images/ac13fa4c_61421feb.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:07:37,372 basehttp 4384 34320 "GET /media/news_images/a26c9094_9b98094d.png HTTP/1.1" 304 0
+INFO 2025-08-16 00:07:37,372 basehttp 4384 38024 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:07:37,379 basehttp 4384 37156 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 51082
+INFO 2025-08-16 00:07:37,625 basehttp 4384 33596 "GET /media/news_images/8154658d_1cba17a7.jpg HTTP/1.1" 200 140724
+INFO 2025-08-16 00:07:37,632 basehttp 4384 38564 "GET /media/news_images/2dd19ad7_f9b6c144.jpg HTTP/1.1" 200 246442
+INFO 2025-08-16 00:07:37,634 basehttp 4384 39872 "GET /media/news_images/6f54ae48_e449075f.png HTTP/1.1" 200 219844
+INFO 2025-08-16 00:07:37,640 basehttp 4384 39564 "GET /media/news_images/3cc68de3_508daf54.png HTTP/1.1" 200 573906
+INFO 2025-08-16 00:07:37,641 basehttp 4384 39492 "GET /media/news_images/7b259abb_8f7bc30e.png HTTP/1.1" 200 751432
+INFO 2025-08-16 00:07:37,883 fundus_crawler 4384 36544 图片下载成功: 08e4f57a_d52258da.jpg
+INFO 2025-08-16 00:07:37,891 fundus_crawler 4384 36544 保存Fundus新闻成功(3065词): Inside the Biden Administration's Gamble to Freeze...
+INFO 2025-08-16 00:07:38,961 basehttp 4384 14256 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:07:39,074 fundus_crawler 4384 36544 图片下载成功: 470271ad_15f8ce3a.jpg
+INFO 2025-08-16 00:07:39,079 fundus_crawler 4384 36544 保存Fundus新闻成功(906词): A DOGE AI Tool Called SweetREX Is Coming to Slash ...
+INFO 2025-08-16 00:07:39,896 basehttp 4384 26788 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:07:40,260 fundus_crawler 4384 36544 图片下载成功: d2fae559_b7c57738.jpg
+INFO 2025-08-16 00:07:40,268 fundus_crawler 4384 36544 保存Fundus新闻成功(7147词): The 65 Best Movies on Disney+ Right Now (August 20...
+INFO 2025-08-16 00:07:40,269 fundus_crawler 4384 36544 Fundus新闻保存完成，保存/更新 10 条
+INFO 2025-08-16 00:07:40,549 basehttp 4384 36544 "POST /api/v1/english/news/crawl/ HTTP/1.1" 200 176
+INFO 2025-08-16 00:07:40,694 basehttp 4384 11484 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 78471
+INFO 2025-08-16 00:07:40,838 basehttp 4384 10444 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:07:41,907 basehttp 4384 27064 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-16 00:07:46,834 basehttp 4384 2212 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:07:46,837 basehttp 4384 33064 "GET /api/v1/users/me/ HTTP/1.1" 200 367
+INFO 2025-08-16 00:07:46,867 basehttp 4384 4340 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-16 00:11:28,034 autoreload 15644 24828 Watching for file changes with StatReloader
