@@ -13788,3 +13788,14 @@ INFO 2025-08-14 23:37:44,894 fundus_crawler 14020 24592 图片下载成功: d308b309_b
 INFO 2025-08-14 23:37:47,278 fundus_crawler 14020 24592 图片下载成功: 8ae14a15_cb991b68.jpg
 INFO 2025-08-14 23:37:49,176 fundus_crawler 14020 24592 图片下载成功: dc0a36c8_48d3acdf.jpg
 INFO 2025-08-14 23:37:49,186 fundus_crawler 14020 24592 Fundus新闻保存完成，保存/更新 3 条
+INFO 2025-08-15 11:50:26,808 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-15 11:50:26,818 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-15 11:50:26,822 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-15 11:50:26,837 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-15 11:50:26,840 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-15 11:50:26,846 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-15 11:50:26,850 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-15 11:50:26,858 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-15 11:50:27,018 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-15 11:50:27,153 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-15 11:50:27,292 fundus_crawler 34976 48296 Fundus爬虫服务初始化完成，支持 10 个新闻源

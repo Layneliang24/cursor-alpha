@@ -110,41 +110,99 @@ cursor-alpha/
 ## 🚀 快速开始
 
 ### 环境要求
-- Docker & Docker Compose
-- Node.js 18+
-- Python 3.9+
-- MySQL 8.0+
+- Python 3.8+
+- Node.js 16+
+- MySQL 8.0+ (生产环境)
+- Redis 6.0+ (生产环境)
 
-### 快速启动
+### 一键部署 (推荐)
+
+#### Windows 用户
 ```bash
-# 一键启动所有服务
-./start-all.bat
+# 1. 克隆项目
+git clone <repository-url>
+cd cursor-alpha
 
-# 或分别启动
-./start-backend.bat  # 启动后端
-./start-frontend.bat # 启动前端
+# 2. 运行一键部署脚本
+setup_project.bat
+
+# 3. 验证部署
+python check_environment.py
+python verify_tests.py
+```
+
+#### Linux/macOS 用户
+```bash
+# 1. 克隆项目
+git clone <repository-url>
+cd cursor-alpha
+
+# 2. 运行一键部署脚本
+chmod +x setup_project.sh
+./setup_project.sh
+
+# 3. 验证部署
+python check_environment.py
+python verify_tests.py
+```
+
+### 手动安装步骤
+
+1. **环境检查**
+```bash
+python check_environment.py
+```
+
+2. **后端设置**
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Linux/macOS
+# 或 venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser
+```
+
+3. **前端设置**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+4. **测试验证**
+```bash
+# 运行测试
+run_tests.bat  # Windows
+# 或 ./run_tests.sh  # Linux/macOS
+
+# 验证测试流程
+python verify_tests.py
+```
+
+5. **启动服务**
+```bash
+# 后端
+start_backend.bat  # Windows
+# 或 ./start_backend.sh  # Linux/macOS
+
+# 前端
+start_frontend.bat  # Windows
+# 或 ./start_frontend.sh  # Linux/macOS
 ```
 
 ### 详细指南
 请查看 [docs/GUIDE.md](docs/GUIDE.md) 获取详细的使用指南和开发文档。
 
+### 部署指南
+请查看 [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) 获取完整的部署说明。
+
+### 测试指南
+请查看 [docs/TESTING_STANDARDS.md](docs/TESTING_STANDARDS.md) 了解测试规范和流程。
+
 ### 待办事项
 请查看 [docs/TODO.md](docs/TODO.md) 了解项目进度和后续计划。
-
-### 开发模式
-```bash
-npm run dev
-```
-
-### 构建应用
-```bash
-npm run build
-```
-
-### 打包发布
-```bash
-npm run dist
-```
 
 ## 📊 数据流程
 

@@ -150,20 +150,23 @@ DATABASES_SQLITE = {
 }
 
 # MySQL 配置 - 支持Docker环境变量
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME', 'alpha_db'),
-        'USER': os.environ.get('DB_USER', 'root'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'meimei520'),
-        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
-        'PORT': os.environ.get('DB_PORT', '3306'),
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES', time_zone='+08:00'",
-        },
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.environ.get('DB_NAME', 'alpha_db'),
+#         'USER': os.environ.get('DB_USER', 'root'),
+#         'PASSWORD': os.environ.get('DB_PASSWORD', 'meimei520'),
+#         'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
+#         'PORT': os.environ.get('DB_PORT', '3306'),
+#         'OPTIONS': {
+#             'charset': 'utf8mb4',
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES', time_zone='+08:00'",
+#         },
+#     }
+# }
+
+# 临时使用SQLite进行测试
+DATABASES = DATABASES_SQLITE
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

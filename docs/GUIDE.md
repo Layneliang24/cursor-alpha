@@ -247,6 +247,65 @@ docker-compose logs -f frontend
 - 集成测试覆盖关键路径
 - E2E测试覆盖用户流程
 
+## 🧪 测试指南
+
+### 测试环境搭建
+```bash
+# 安装测试依赖
+cd backend
+pip install pytest pytest-django pytest-cov factory-boy faker
+
+cd frontend
+npm install --save-dev vitest @vue/test-utils jsdom
+```
+
+### 运行测试
+```bash
+# 后端测试
+cd tests
+pytest                           # 运行所有测试
+pytest unit/                     # 运行单元测试
+pytest integration/              # 运行集成测试
+pytest --cov=backend --cov-report=html  # 生成覆盖率报告
+
+# 前端测试
+cd frontend
+npm run test:unit               # 运行单元测试
+npm run test:coverage           # 生成覆盖率报告
+```
+
+### 测试报告
+- **后端覆盖率报告**: `tests/htmlcov/index.html`
+- **前端覆盖率报告**: `frontend/coverage/index.html`
+
+### 测试数据管理
+```bash
+# 创建测试数据
+python manage.py create_test_data
+
+# 清理测试数据
+python manage.py flush --noinput
+```
+
+### 常见测试问题
+1. **数据库连接问题**
+   ```bash
+   # 使用测试数据库
+   export DJANGO_SETTINGS_MODULE=alpha.test_settings
+   ```
+
+2. **测试数据冲突**
+   ```bash
+   # 重置测试数据库
+   python manage.py test --keepdb
+   ```
+
+3. **前端测试环境**
+   ```bash
+   # 确保Node.js版本兼容
+   node --version  # 需要 16+
+   ```
+
 ### 文档规范
 - API文档：使用 OpenAPI 3.0
 - 代码注释：使用 docstring
@@ -267,6 +326,7 @@ docker-compose logs -f frontend
 
 - **项目概述**: `README.md`
 - **开发规范**: `docs/DOCUMENTATION_STANDARDS.md`
+- **测试规范**: `docs/TESTING_STANDARDS.md`
 - **待办事项**: `docs/TODO.md`
 - **Fundus集成**: `docs/FUNDUS_INTEGRATION.md`
 - **新闻爬虫总结**: `docs/新闻爬虫功能完成总结.md`
