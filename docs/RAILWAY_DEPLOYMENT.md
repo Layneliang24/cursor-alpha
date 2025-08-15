@@ -37,11 +37,11 @@ SECRET_KEY=your-super-secret-key-here
 DJANGO_SETTINGS_MODULE=alpha.production
 
 # 数据库配置 (Railway会自动提供)
-PGDATABASE=railway
-PGUSER=postgres
-PGPASSWORD=your-password
-PGHOST=your-host
-PGPORT=5432
+MYSQLDATABASE=railway
+MYSQLUSER=root
+MYSQLPASSWORD=your-password
+MYSQLHOST=your-host
+MYSQLPORT=3306
 
 # 应用配置
 ALLOWED_HOSTS=.railway.app
@@ -50,7 +50,7 @@ CORS_ALLOWED_ORIGINS=https://your-frontend-domain.vercel.app
 
 ### 第四步：添加数据库
 1. 在Railway控制台点击 "New"
-2. 选择 "Database" → "PostgreSQL"
+2. 选择 "Database" → "MySQL"
 3. 等待数据库创建完成
 4. 复制数据库连接信息到环境变量
 
