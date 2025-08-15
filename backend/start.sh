@@ -4,7 +4,7 @@
 echo "🚀 启动Alpha项目..."
 
 # 等待数据库准备就绪
-echo "⏳ 等待数据库连接..."
+echo "⏳ 等待MySQL数据库连接..."
 python manage.py wait_for_db
 
 # 运行数据库迁移
