@@ -13,6 +13,7 @@ django-simple-captcha==0.5.17
 drf-yasg==1.21.7
 
 # Database
+psycopg2-binary==2.9.9
 mysqlclient==2.1.1
 PyMySQL==1.1.0
 
