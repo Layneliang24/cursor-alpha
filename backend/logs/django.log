@@ -13940,3 +13940,916 @@ INFO 2025-08-16 00:07:46,834 basehttp 4384 2212 "GET /api/v1/home/stats/ HTTP/1.
 INFO 2025-08-16 00:07:46,837 basehttp 4384 33064 "GET /api/v1/users/me/ HTTP/1.1" 200 367
 INFO 2025-08-16 00:07:46,867 basehttp 4384 4340 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
 INFO 2025-08-16 00:11:28,034 autoreload 15644 24828 Watching for file changes with StatReloader
+INFO 2025-08-16 00:12:30,672 basehttp 4384 32464 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:12:30,681 basehttp 4384 34376 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 78471
+INFO 2025-08-16 00:12:30,936 basehttp 4384 38192 "GET /media/news_images/8154658d_1cba17a7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:12:30,946 basehttp 4384 22400 "GET /media/news_images/3cc68de3_508daf54.png HTTP/1.1" 304 0
+INFO 2025-08-16 00:12:30,947 basehttp 4384 35384 "GET /media/news_images/a26c9094_9b98094d.png HTTP/1.1" 304 0
+INFO 2025-08-16 00:12:30,961 basehttp 4384 20028 "GET /media/news_images/7b259abb_8f7bc30e.png HTTP/1.1" 304 0
+INFO 2025-08-16 00:12:30,978 basehttp 4384 32124 "GET /media/news_images/ac13fa4c_61421feb.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:12:30,985 basehttp 4384 34500 "GET /media/news_images/470271ad_15f8ce3a.jpg HTTP/1.1" 200 122214
+INFO 2025-08-16 00:12:31,089 basehttp 4384 43652 "GET /media/news_images/08e4f57a_d52258da.jpg HTTP/1.1" 200 214914
+INFO 2025-08-16 00:12:31,095 basehttp 4384 27792 "GET /media/news_images/6f54ae48_e449075f.png HTTP/1.1" 304 0
+INFO 2025-08-16 00:12:31,101 basehttp 4384 18816 "GET /media/news_images/2dd19ad7_f9b6c144.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:12:33,695 basehttp 4384 36632 "GET /api/v1/english/news/7/ HTTP/1.1" 200 5690
+INFO 2025-08-16 00:12:40,094 basehttp 4384 37340 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:12:40,104 basehttp 4384 35864 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 78471
+INFO 2025-08-16 00:12:41,728 basehttp 4384 23944 "GET /api/v1/english/news/5/ HTTP/1.1" 200 13570
+INFO 2025-08-16 00:12:50,610 basehttp 4384 15960 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+WARNING 2025-08-16 00:12:50,617 log 4384 3652 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-16 00:12:50,624 basehttp 4384 26372 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+WARNING 2025-08-16 00:12:50,624 basehttp 4384 3652 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-16 00:12:50,632 basehttp 4384 7364 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-16 00:12:50,640 basehttp 4384 29276 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-16 00:12:51,226 basehttp 4384 17968 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:12:51,234 basehttp 4384 43116 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 78471
+INFO 2025-08-16 00:12:54,598 basehttp 4384 25864 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:12:55,318 basehttp 4384 38320 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:12:56,952 basehttp 4384 37144 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+WARNING 2025-08-16 00:12:58,929 log 4384 33828 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-16 00:12:58,934 basehttp 4384 31472 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+WARNING 2025-08-16 00:12:58,939 basehttp 4384 33828 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-16 00:12:58,940 basehttp 4384 37984 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-16 00:12:58,951 basehttp 4384 33724 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-16 00:12:58,960 basehttp 4384 33920 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-16 00:12:59,812 basehttp 4384 28044 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-16 00:13:01,280 basehttp 4384 41936 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:13:02,367 basehttp 4384 26164 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:13:04,772 basehttp 4384 23024 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:13:05,608 basehttp 4384 24836 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:13:05,615 basehttp 4384 30300 "GET /media/news_images/7b259abb_8f7bc30e.png HTTP/1.1" 304 0
+INFO 2025-08-16 00:13:05,649 basehttp 4384 7136 "GET /media/news_images/08e4f57a_d52258da.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:13:05,669 basehttp 4384 26724 "GET /media/news_images/8154658d_1cba17a7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:13:05,669 basehttp 4384 22396 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 78471
+INFO 2025-08-16 00:13:05,669 basehttp 4384 23940 "GET /media/news_images/3cc68de3_508daf54.png HTTP/1.1" 304 0
+INFO 2025-08-16 00:13:05,873 basehttp 4384 43360 "GET /media/news_images/ac13fa4c_61421feb.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:13:05,874 basehttp 4384 30868 "GET /media/news_images/6f54ae48_e449075f.png HTTP/1.1" 304 0
+INFO 2025-08-16 00:13:05,890 basehttp 4384 14756 "GET /media/news_images/470271ad_15f8ce3a.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:13:05,891 basehttp 4384 25912 "GET /media/news_images/a26c9094_9b98094d.png HTTP/1.1" 304 0
+INFO 2025-08-16 00:13:05,902 basehttp 4384 33660 "GET /media/news_images/2dd19ad7_f9b6c144.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:13:07,984 basehttp 4384 34888 "GET /api/v1/english/news/?page=2&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 44967
+INFO 2025-08-16 00:13:08,066 basehttp 4384 2324 "GET /media/news_images/d2fae559_b7c57738.jpg HTTP/1.1" 200 114691
+INFO 2025-08-16 00:13:09,225 basehttp 4384 24000 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 78471
+INFO 2025-08-16 00:13:14,445 fundus_crawler 4384 31300 开始爬取 the_new_york_times 的新闻...
+ERROR 2025-08-16 00:13:14,446 fundus_crawler 4384 31300 发布者 the_new_york_times 在Fundus中不可用
+INFO 2025-08-16 00:13:14,494 basehttp 4384 31300 "POST /api/v1/english/news/crawl/ HTTP/1.1" 200 186
+INFO 2025-08-16 00:13:14,583 basehttp 4384 32528 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 78471
+INFO 2025-08-16 00:13:37,650 fundus_crawler 4384 29412 开始爬取 ind.TimesOfIndia 的新闻...
+INFO 2025-08-16 00:13:42,148 fundus_crawler 4384 29412 成功解析 ind.TimesOfIndia 文章: Could shape course of Russia-Ukraine war: High-sta...
+INFO 2025-08-16 00:13:42,909 fundus_crawler 4384 29412 成功解析 ind.TimesOfIndia 文章: MS Dhoni, Virat Kohli, Rohit Sharma — India's rare...
+INFO 2025-08-16 00:13:43,777 fundus_crawler 4384 29412 成功解析 ind.TimesOfIndia 文章: US says ties with India good despite Trump's tarif...
+INFO 2025-08-16 00:13:44,976 fundus_crawler 4384 29412 成功解析 ind.TimesOfIndia 文章: 'Honestly': Hillary Clinton says she would nominat...
+INFO 2025-08-16 00:13:45,711 fundus_crawler 4384 29412 成功解析 ind.TimesOfIndia 文章: Apple founder Steve Jobs lived by the rule that Go...
+INFO 2025-08-16 00:13:46,810 fundus_crawler 4384 29412 成功解析 ind.TimesOfIndia 文章: Independence Day: From ‘Make in India’ push to a s...
+INFO 2025-08-16 00:13:47,898 fundus_crawler 4384 29412 成功解析 ind.TimesOfIndia 文章: Watch: Mondo Duplantis gets cold reply from Noah L...
+INFO 2025-08-16 00:13:48,740 fundus_crawler 4384 29412 成功解析 ind.TimesOfIndia 文章: Kishtwar cloudburst: Videos show moment flash floo...
+INFO 2025-08-16 00:13:50,031 fundus_crawler 4384 29412 成功解析 ind.TimesOfIndia 文章: Yes, the USA NEEDS INTEL, as Intel is the only Ame...
+INFO 2025-08-16 00:13:50,778 fundus_crawler 4384 29412 成功解析 ind.TimesOfIndia 文章: Another tariff hit: Donald Trump signals levies on...
+INFO 2025-08-16 00:13:51,235 fundus_crawler 4384 29412 ind.TimesOfIndia 爬取完成，共获取 10 条新闻
+INFO 2025-08-16 00:13:52,931 fundus_crawler 4384 29412 图片下载成功: 1bdcef93_5d103636.jpg
+INFO 2025-08-16 00:13:52,938 fundus_crawler 4384 29412 保存Fundus新闻成功(798词): Could shape course of Russia-Ukraine war: High-sta...
+INFO 2025-08-16 00:13:54,116 fundus_crawler 4384 29412 图片下载成功: af25af4b_6d0875eb.jpg
+INFO 2025-08-16 00:13:54,124 fundus_crawler 4384 29412 保存Fundus新闻成功(511词): MS Dhoni, Virat Kohli, Rohit Sharma — India's rare...
+INFO 2025-08-16 00:13:55,922 fundus_crawler 4384 29412 图片下载成功: 222f7611_707599c3.jpg
+INFO 2025-08-16 00:13:55,928 fundus_crawler 4384 29412 保存Fundus新闻成功(861词): US says ties with India good despite Trump's tarif...
+INFO 2025-08-16 00:13:56,165 basehttp 4384 24344 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 79981
+INFO 2025-08-16 00:13:56,340 basehttp 4384 40912 "GET /media/news_images/222f7611_707599c3.jpg HTTP/1.1" 200 753557
+INFO 2025-08-16 00:13:56,340 basehttp 4384 35888 "GET /media/news_images/af25af4b_6d0875eb.jpg HTTP/1.1" 200 87131
+INFO 2025-08-16 00:13:56,355 basehttp 4384 40144 "GET /media/news_images/1bdcef93_5d103636.jpg HTTP/1.1" 200 581981
+INFO 2025-08-16 00:13:56,760 fundus_crawler 4384 29412 图片下载成功: aa0b182e_d31b11f2.jpg
+INFO 2025-08-16 00:13:56,766 fundus_crawler 4384 29412 保存Fundus新闻成功(540词): 'Honestly': Hillary Clinton says she would nominat...
+INFO 2025-08-16 00:13:57,782 fundus_crawler 4384 29412 图片下载成功: 01be808b_dd5062ac.jpg
+INFO 2025-08-16 00:13:57,788 fundus_crawler 4384 29412 保存Fundus新闻成功(195词): Apple founder Steve Jobs lived by the rule that Go...
+INFO 2025-08-16 00:13:58,520 basehttp 4384 31496 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 58927
+INFO 2025-08-16 00:13:58,664 basehttp 4384 37120 "GET /media/news_images/aa0b182e_d31b11f2.jpg HTTP/1.1" 200 16750
+INFO 2025-08-16 00:13:58,665 basehttp 4384 28136 "GET /media/news_images/01be808b_dd5062ac.jpg HTTP/1.1" 200 40777
+INFO 2025-08-16 00:13:59,377 basehttp 4384 39100 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 58927
+INFO 2025-08-16 00:13:59,505 fundus_crawler 4384 29412 图片下载成功: a0d7399d_91a222f8.jpg
+INFO 2025-08-16 00:13:59,516 fundus_crawler 4384 29412 保存Fundus新闻成功(1408词): Independence Day: From ‘Make in India’ push to a s...
+INFO 2025-08-16 00:14:00,092 basehttp 4384 26936 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 64384
+INFO 2025-08-16 00:14:00,202 basehttp 4384 31548 "GET /media/news_images/a0d7399d_91a222f8.jpg HTTP/1.1" 200 778774
+INFO 2025-08-16 00:14:00,691 fundus_crawler 4384 29412 图片下载成功: 587a48b8_e0a42d17.jpg
+INFO 2025-08-16 00:14:00,697 fundus_crawler 4384 29412 保存Fundus新闻成功(534词): Watch: Mondo Duplantis gets cold reply from Noah L...
+INFO 2025-08-16 00:14:00,921 basehttp 4384 3220 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 62937
+INFO 2025-08-16 00:14:01,023 basehttp 4384 3732 "GET /media/news_images/587a48b8_e0a42d17.jpg HTTP/1.1" 200 77533
+INFO 2025-08-16 00:14:01,594 basehttp 4384 21844 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 62937
+INFO 2025-08-16 00:14:02,109 basehttp 4384 24876 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 62937
+INFO 2025-08-16 00:14:02,642 basehttp 4384 30996 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 62937
+INFO 2025-08-16 00:14:03,188 basehttp 4384 29700 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 62937
+INFO 2025-08-16 00:14:05,864 basehttp 4384 1060 "GET /api/v1/english/news/18/ HTTP/1.1" 200 10008
+INFO 2025-08-16 00:14:14,978 fundus_crawler 4384 29412 图片下载成功: 3651d0cf_ae4fdf0d.jpg
+INFO 2025-08-16 00:14:14,985 fundus_crawler 4384 29412 保存Fundus新闻成功(263词): Kishtwar cloudburst: Videos show moment flash floo...
+INFO 2025-08-16 00:14:16,056 fundus_crawler 4384 29412 图片下载成功: 4ab4a085_5f7b88e4.jpg
+INFO 2025-08-16 00:14:16,063 fundus_crawler 4384 29412 保存Fundus新闻成功(622词): Yes, the USA NEEDS INTEL, as Intel is the only Ame...
+INFO 2025-08-16 00:14:17,109 fundus_crawler 4384 29412 图片下载成功: 61c6970f_da92ffb6.jpg
+INFO 2025-08-16 00:14:17,121 fundus_crawler 4384 29412 保存Fundus新闻成功(661词): Another tariff hit: Donald Trump signals levies on...
+INFO 2025-08-16 00:14:17,124 fundus_crawler 4384 29412 Fundus新闻保存完成，保存/更新 10 条
+INFO 2025-08-16 00:14:17,304 basehttp 4384 29412 "POST /api/v1/english/news/crawl/ HTTP/1.1" 200 187
+INFO 2025-08-16 00:14:17,379 basehttp 4384 23360 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 52369
+INFO 2025-08-16 00:14:36,039 basehttp 4384 34212 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:14:36,069 basehttp 4384 25248 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 52369
+INFO 2025-08-16 00:14:36,083 basehttp 4384 42240 "GET /media/news_images/61c6970f_da92ffb6.jpg HTTP/1.1" 200 57997
+INFO 2025-08-16 00:14:36,176 basehttp 4384 34224 "GET /media/news_images/3651d0cf_ae4fdf0d.jpg HTTP/1.1" 200 13450224
+INFO 2025-08-16 00:14:37,408 basehttp 4384 43260 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 52369
+INFO 2025-08-16 00:14:40,272 basehttp 4384 22032 "GET /api/v1/english/news/20/ HTTP/1.1" 200 2801
+INFO 2025-08-16 00:14:49,862 basehttp 4384 43344 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:14:49,880 basehttp 4384 5784 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 52369
+INFO 2025-08-16 00:14:49,891 basehttp 4384 42436 "GET /media/news_images/61c6970f_da92ffb6.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:14:53,767 basehttp 4384 40588 "GET /api/v1/english/news/17/ HTTP/1.1" 200 2420
+INFO 2025-08-16 00:15:00,778 basehttp 4384 22900 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:15:00,792 basehttp 4384 34780 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 52369
+INFO 2025-08-16 00:15:00,806 basehttp 4384 32156 "GET /media/news_images/61c6970f_da92ffb6.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:15:00,812 basehttp 4384 28032 "GET /media/news_images/3651d0cf_ae4fdf0d.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:15:16,095 fundus_crawler 4384 34156 开始爬取 tw.TaipeiTimes 的新闻...
+INFO 2025-08-16 00:15:19,568 fundus_crawler 4384 34156 成功解析 tw.TaipeiTimes 文章: SPEAK UP: Sodagreen, Camila Cabello,  Sun Yanzi to...
+INFO 2025-08-16 00:15:20,217 fundus_crawler 4384 34156 成功解析 tw.TaipeiTimes 文章: Hon Hai reports profit rose 27 percent...
+INFO 2025-08-16 00:15:21,706 fundus_crawler 4384 34156 成功解析 tw.TaipeiTimes 文章: Fire losses to be NT$11bn: TCC...
+INFO 2025-08-16 00:15:22,370 fundus_crawler 4384 34156 成功解析 tw.TaipeiTimes 文章: Premium Financing by Standard Chartered: Tailored ...
+INFO 2025-08-16 00:15:23,879 fundus_crawler 4384 34156 成功解析 tw.TaipeiTimes 文章: CSC increases steel prices as raw material costs r...
+INFO 2025-08-16 00:15:24,250 basehttp 4384 42592 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:15:24,350 basehttp 4384 30000 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 73466
+INFO 2025-08-16 00:15:24,440 fundus_crawler 4384 34156 成功解析 tw.TaipeiTimes 文章: Hotel chains cautiously optimistic after 1H woe...
+INFO 2025-08-16 00:15:25,617 fundus_crawler 4384 34156 成功解析 tw.TaipeiTimes 文章: Formosa Plastics Group to raise wages by 2%...
+INFO 2025-08-16 00:15:26,459 fundus_crawler 4384 34156 成功解析 tw.TaipeiTimes 文章: Prayer protected?...
+INFO 2025-08-16 00:15:27,414 fundus_crawler 4384 34156 成功解析 tw.TaipeiTimes 文章: EDITORIAL: Nuclear needs experts, not voters...
+INFO 2025-08-16 00:15:28,716 fundus_crawler 4384 34156 成功解析 tw.TaipeiTimes 文章: Global dangers of nuclear power...
+INFO 2025-08-16 00:15:29,075 fundus_crawler 4384 34156 tw.TaipeiTimes 爬取完成，共获取 10 条新闻
+INFO 2025-08-16 00:15:29,595 basehttp 4384 8148 "GET /api/v1/profiles/me/ HTTP/1.1" 200 586
+INFO 2025-08-16 00:15:29,669 basehttp 4384 28068 "GET /api/v1/articles/?author=3 HTTP/1.1" 200 58213
+INFO 2025-08-16 00:15:30,160 fundus_crawler 4384 34156 图片下载成功: c7c12588_6b2273e7.jpg
+INFO 2025-08-16 00:15:30,166 fundus_crawler 4384 34156 保存Fundus新闻成功(106词): SPEAK UP: Sodagreen, Camila Cabello,  Sun Yanzi to...
+INFO 2025-08-16 00:15:31,241 fundus_crawler 4384 34156 图片下载成功: 5210f9a2_788bc198.jpg
+INFO 2025-08-16 00:15:31,247 fundus_crawler 4384 34156 保存Fundus新闻成功(517词): Hon Hai reports profit rose 27 percent...
+INFO 2025-08-16 00:15:32,343 fundus_crawler 4384 34156 图片下载成功: 23a1464a_6bd89624.jpg
+INFO 2025-08-16 00:15:32,350 fundus_crawler 4384 34156 保存Fundus新闻成功(406词): Fire losses to be NT$11bn: TCC...
+INFO 2025-08-16 00:15:33,524 fundus_crawler 4384 34156 图片下载成功: a867c0d4_b89b2be1.jpg
+INFO 2025-08-16 00:15:33,531 fundus_crawler 4384 34156 保存Fundus新闻成功(597词): Premium Financing by Standard Chartered: Tailored ...
+INFO 2025-08-16 00:15:34,779 fundus_crawler 4384 34156 图片下载成功: 958a7384_ef0259c9.jpg
+INFO 2025-08-16 00:15:34,786 fundus_crawler 4384 34156 保存Fundus新闻成功(269词): CSC increases steel prices as raw material costs r...
+INFO 2025-08-16 00:15:36,106 fundus_crawler 4384 34156 图片下载成功: 4981bcba_57766813.jpg
+INFO 2025-08-16 00:15:36,118 fundus_crawler 4384 34156 保存Fundus新闻成功(199词): Hotel chains cautiously optimistic after 1H woe...
+INFO 2025-08-16 00:15:36,127 basehttp 4384 8816 "POST /api/v1/update-avatar-url/ HTTP/1.1" 200 75
+INFO 2025-08-16 00:15:37,281 fundus_crawler 4384 34156 图片下载成功: a37ce99c_c6ba767f.jpg
+INFO 2025-08-16 00:15:37,287 fundus_crawler 4384 34156 保存Fundus新闻成功(317词): Formosa Plastics Group to raise wages by 2%...
+INFO 2025-08-16 00:15:38,333 fundus_crawler 4384 34156 图片下载成功: 794a3712_3a005540.jpg
+INFO 2025-08-16 00:15:38,340 fundus_crawler 4384 34156 保存Fundus新闻成功(57词): Prayer protected?...
+INFO 2025-08-16 00:15:38,978 basehttp 4384 10692 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 73039
+INFO 2025-08-16 00:15:39,499 fundus_crawler 4384 34156 图片下载成功: 931aea4b_a003d47c.jpg
+INFO 2025-08-16 00:15:39,505 fundus_crawler 4384 34156 保存Fundus新闻成功(698词): EDITORIAL: Nuclear needs experts, not voters...
+INFO 2025-08-16 00:15:40,586 fundus_crawler 4384 34156 图片下载成功: 18fdf084_a003d47c.jpg
+INFO 2025-08-16 00:15:40,592 fundus_crawler 4384 34156 保存Fundus新闻成功(607词): Global dangers of nuclear power...
+INFO 2025-08-16 00:15:40,593 fundus_crawler 4384 34156 Fundus新闻保存完成，保存/更新 10 条
+INFO 2025-08-16 00:15:40,707 basehttp 4384 34156 "POST /api/v1/english/news/crawl/ HTTP/1.1" 200 185
+INFO 2025-08-16 00:15:40,771 basehttp 4384 10364 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:15:41,594 basehttp 4384 33476 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-16 00:15:43,362 basehttp 4384 31892 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:15:43,476 basehttp 4384 32072 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:15:43,505 basehttp 4384 30736 "GET /media/news_images/18fdf084_a003d47c.jpg HTTP/1.1" 200 73820
+INFO 2025-08-16 00:15:43,535 basehttp 4384 20724 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 200 73820
+INFO 2025-08-16 00:15:43,560 basehttp 4384 32760 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 200 47301
+INFO 2025-08-16 00:15:43,575 basehttp 4384 11460 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 200 85030
+INFO 2025-08-16 00:15:43,743 basehttp 4384 8988 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 200 67168
+INFO 2025-08-16 00:15:43,758 basehttp 4384 42548 "GET /media/news_images/794a3712_3a005540.jpg HTTP/1.1" 200 43264
+INFO 2025-08-16 00:15:43,793 basehttp 4384 37244 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 200 152764
+INFO 2025-08-16 00:15:43,794 basehttp 4384 40212 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 200 57699
+INFO 2025-08-16 00:15:43,817 basehttp 4384 9732 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 200 104249
+INFO 2025-08-16 00:15:43,817 basehttp 4384 1052 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 200 163038
+INFO 2025-08-16 00:15:50,936 basehttp 4384 40196 "GET /api/v1/english/news/32/ HTTP/1.1" 200 4886
+INFO 2025-08-16 00:15:59,580 basehttp 4384 39336 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:15:59,581 basehttp 4384 38460 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:15:59,604 basehttp 4384 30908 "GET /media/news_images/794a3712_3a005540.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:15:59,622 basehttp 4384 33444 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:15:59,630 basehttp 4384 26084 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:15:59,639 basehttp 4384 41692 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:15:59,831 basehttp 4384 13564 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:15:59,832 basehttp 4384 1036 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:15:59,845 basehttp 4384 33428 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:15:59,848 basehttp 4384 35752 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:15:59,863 basehttp 4384 36120 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:12,396 basehttp 4384 35132 "GET /api/v1/english/news/?page=2&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 52369
+INFO 2025-08-16 00:16:15,059 basehttp 4384 34284 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:16:15,327 basehttp 4384 34160 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:15,327 basehttp 4384 32896 "GET /media/news_images/18fdf084_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:15,334 basehttp 4384 26496 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:15,345 basehttp 4384 29512 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:15,361 basehttp 4384 33480 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:15,361 basehttp 4384 38936 "GET /media/news_images/794a3712_3a005540.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:15,509 basehttp 4384 33320 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:15,509 basehttp 4384 31232 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:15,521 basehttp 4384 18924 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:15,521 basehttp 4384 20848 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:26,080 basehttp 4384 35824 "GET /api/v1/english/news/30/ HTTP/1.1" 200 1282
+INFO 2025-08-16 00:16:39,991 basehttp 4384 36400 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:16:40,007 basehttp 4384 31192 "GET /media/news_images/18fdf084_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:40,023 basehttp 4384 28296 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:16:40,030 basehttp 4384 33780 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:40,030 basehttp 4384 30688 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:40,045 basehttp 4384 11656 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:40,221 basehttp 4384 34372 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:40,242 basehttp 4384 3432 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:40,242 basehttp 4384 32564 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:40,252 basehttp 4384 33384 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:40,259 basehttp 4384 32868 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:46,868 basehttp 4384 25336 "GET /api/v1/english/news/30/ HTTP/1.1" 200 1282
+INFO 2025-08-16 00:16:48,402 basehttp 4384 10744 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:16:48,441 basehttp 4384 14696 "GET /media/news_images/18fdf084_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:48,456 basehttp 4384 5824 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:48,470 basehttp 4384 31176 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:16:48,473 basehttp 4384 13728 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:48,485 basehttp 4384 18352 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:48,655 basehttp 4384 22532 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:48,681 basehttp 4384 32676 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:48,702 basehttp 4384 24032 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:48,703 basehttp 4384 40900 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:48,710 basehttp 4384 31052 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:16:49,879 basehttp 4384 28228 "GET /api/v1/english/news/27/ HTTP/1.1" 200 2747
+INFO 2025-08-16 00:17:05,203 basehttp 4384 20584 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:17:05,269 basehttp 4384 21888 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:17:05,285 basehttp 4384 25376 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:17:05,294 basehttp 4384 21700 "GET /media/news_images/18fdf084_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:17:05,309 basehttp 4384 30512 "GET /media/news_images/794a3712_3a005540.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:17:05,316 basehttp 4384 43272 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:17:05,476 basehttp 4384 2020 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:17:05,515 basehttp 4384 34404 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:17:05,521 basehttp 4384 34252 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:17:05,526 basehttp 4384 42056 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:17:05,532 basehttp 4384 5112 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:17:07,385 basehttp 4384 42140 "GET /api/v1/tags/ HTTP/1.1" 200 187
+INFO 2025-08-16 00:17:07,387 basehttp 4384 8024 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:17:08,439 basehttp 4384 16824 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 73039
+INFO 2025-08-16 00:17:11,316 basehttp 4384 29148 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:17:11,331 basehttp 4384 39120 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:17:11,341 basehttp 4384 29272 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:17:17,312 basehttp 4384 31276 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 43
+INFO 2025-08-16 00:17:17,313 basehttp 4384 39696 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:17:17,325 basehttp 4384 33880 "GET /api/v1/external-links/ HTTP/1.1" 200 52
+INFO 2025-08-16 00:17:17,395 basehttp 4384 40064 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 21525
+INFO 2025-08-16 00:17:17,620 basehttp 4384 30244 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 72863
+INFO 2025-08-16 00:19:04,115 basehttp 4384 18716 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:19:04,116 basehttp 4384 16468 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:19:04,127 basehttp 4384 31320 "GET /media/news_images/18fdf084_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:19:04,139 basehttp 4384 8932 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:19:04,158 basehttp 4384 29468 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:19:04,174 basehttp 4384 40368 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:19:04,419 basehttp 4384 43364 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:19:04,459 basehttp 4384 2384 "GET /media/news_images/794a3712_3a005540.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:19:04,476 basehttp 4384 28320 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:19:04,490 basehttp 4384 7704 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:19:04,498 basehttp 4384 43040 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:19:04,502 basehttp 4384 11884 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:19:08,132 basehttp 4384 38340 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:19:09,245 basehttp 4384 7260 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:19:10,026 basehttp 4384 23136 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:20:26,200 basehttp 4384 40176 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:21:03,828 basehttp 4384 31132 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:21:23,892 basehttp 4384 3312 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:21:38,739 basehttp 4384 38220 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:21:48,546 basehttp 4384 2900 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:21:57,111 basehttp 4384 31292 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:23:43,453 basehttp 4384 30360 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:23:43,472 basehttp 4384 12648 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:23:43,488 basehttp 4384 30452 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:23:44,590 basehttp 4384 42360 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:23:44,592 basehttp 4384 41776 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:23:45,142 basehttp 4384 32828 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:23:45,145 basehttp 4384 20944 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:23:45,601 basehttp 4384 12244 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:23:45,602 basehttp 4384 41640 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:25:26,179 basehttp 4384 43208 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:25:26,202 basehttp 4384 25596 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:25:26,208 basehttp 4384 39184 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:25:26,218 basehttp 4384 38700 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:25:27,105 basehttp 4384 40912 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:25:27,109 basehttp 4384 24344 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:25:27,119 basehttp 4384 41644 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:25:27,836 basehttp 4384 34612 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:25:27,843 basehttp 4384 18552 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:25:27,860 basehttp 4384 28944 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:25:29,555 basehttp 4384 37560 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:25:30,628 basehttp 4384 30852 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:25:31,622 basehttp 4384 40220 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:25:31,630 basehttp 4384 16432 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:25:31,889 basehttp 4384 42920 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:25:31,903 basehttp 4384 43744 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:25:31,912 basehttp 4384 27256 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:25:31,924 basehttp 4384 14916 "GET /media/news_images/794a3712_3a005540.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:25:31,931 basehttp 4384 43944 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:25:31,938 basehttp 4384 39476 "GET /media/news_images/18fdf084_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:25:32,077 basehttp 4384 34968 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:25:32,087 basehttp 4384 29904 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:25:32,104 basehttp 4384 2180 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:25:32,110 basehttp 4384 42556 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:25:35,360 basehttp 4384 36920 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:26:49,044 basehttp 4384 39660 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:26:58,868 basehttp 4384 39192 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:26:58,919 basehttp 4384 42308 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 73039
+INFO 2025-08-16 00:26:59,504 basehttp 4384 27288 "GET /api/v1/tags/ HTTP/1.1" 200 187
+INFO 2025-08-16 00:27:01,945 basehttp 4384 35160 "GET /api/v1/articles/?author=3&page=1&page_size=20 HTTP/1.1" 200 57603
+INFO 2025-08-16 00:27:09,405 basehttp 4384 26012 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:27:09,439 basehttp 4384 32396 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:27:09,450 basehttp 4384 29392 "GET /media/news_images/18fdf084_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:27:09,453 basehttp 4384 43080 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:27:09,468 basehttp 4384 18608 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:27:09,476 basehttp 4384 35292 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:27:09,696 basehttp 4384 34364 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:27:09,710 basehttp 4384 10924 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:27:09,723 basehttp 4384 35696 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:27:09,736 basehttp 4384 34856 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:27:09,748 basehttp 4384 36676 "GET /media/news_images/794a3712_3a005540.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:27:09,749 basehttp 4384 32876 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:27:23,844 fundus_crawler 4384 40652 开始爬取 hacker_news 的新闻...
+ERROR 2025-08-16 00:27:23,844 fundus_crawler 4384 40652 发布者 hacker_news 在Fundus中不可用
+INFO 2025-08-16 00:27:23,906 basehttp 4384 40652 "POST /api/v1/english/news/crawl/ HTTP/1.1" 200 179
+INFO 2025-08-16 00:27:24,032 basehttp 4384 30572 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:27:39,982 basehttp 4384 39652 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:27:40,759 basehttp 4384 8536 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:27:40,768 basehttp 4384 19720 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:27:42,189 basehttp 4384 21648 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:27:42,650 basehttp 4384 29888 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:28:23,822 basehttp 4384 34280 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:28:23,832 basehttp 4384 39132 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:28:23,841 basehttp 4384 43300 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:28:23,845 basehttp 4384 14116 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:28:24,524 basehttp 4384 3520 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:28:24,543 basehttp 4384 26992 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:28:24,556 basehttp 4384 39152 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:28:25,243 basehttp 4384 38588 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:28:25,254 basehttp 4384 19560 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:28:25,263 basehttp 4384 5060 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:29:12,758 basehttp 4384 26396 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:36:37,527 basehttp 4384 15964 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:36:37,552 basehttp 4384 10352 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:36:37,569 basehttp 4384 28976 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:36:37,575 basehttp 4384 25948 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:36:38,534 basehttp 4384 36176 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:36:38,543 basehttp 4384 27696 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:36:38,549 basehttp 4384 32312 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:36:39,477 basehttp 4384 39660 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:36:39,482 basehttp 4384 1080 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:36:39,489 basehttp 4384 40616 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:37:07,303 autoreload 41972 30592 Watching for file changes with StatReloader
+INFO 2025-08-16 00:37:10,434 basehttp 41972 30264 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:37:10,447 basehttp 41972 33764 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 43
+INFO 2025-08-16 00:37:10,450 basehttp 41972 16356 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:37:10,501 basehttp 41972 12732 "GET /api/v1/external-links/ HTTP/1.1" 200 52
+INFO 2025-08-16 00:37:10,800 basehttp 41972 40292 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 21525
+INFO 2025-08-16 00:37:10,831 basehttp 41972 32544 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 72863
+INFO 2025-08-16 00:37:10,840 basehttp 41972 40384 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:37:21,481 basehttp 41972 3480 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:37:21,548 basehttp 41972 36664 "GET /api/v1/external-links/ HTTP/1.1" 200 52
+INFO 2025-08-16 00:37:21,549 basehttp 41972 38096 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:37:21,565 basehttp 41972 35600 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 43
+INFO 2025-08-16 00:37:21,620 basehttp 41972 21476 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 21525
+INFO 2025-08-16 00:37:21,705 basehttp 41972 38248 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 72863
+INFO 2025-08-16 00:37:21,737 basehttp 41972 34804 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:37:24,768 basehttp 41972 11024 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:37:26,046 basehttp 41972 38160 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:37:26,826 basehttp 41972 31856 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:41:14,518 basehttp 41972 31648 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:41:14,522 basehttp 41972 23244 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:41:14,563 basehttp 41972 26628 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:41:14,563 basehttp 41972 38268 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:41:15,547 basehttp 41972 25848 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:41:15,554 basehttp 41972 36732 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:41:15,566 basehttp 41972 28276 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:41:16,443 basehttp 41972 38876 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:41:16,443 basehttp 41972 18568 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:41:16,471 basehttp 41972 29124 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:43:13,830 basehttp 41972 39200 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:43:33,897 basehttp 41972 32196 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:43:33,910 basehttp 41972 27872 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:43:33,916 basehttp 41972 43652 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:43:33,928 basehttp 41972 36136 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:43:34,851 basehttp 41972 12392 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:43:34,861 basehttp 41972 31024 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:43:34,869 basehttp 41972 22352 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:43:35,694 basehttp 41972 36648 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:43:35,701 basehttp 41972 30784 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:43:35,716 basehttp 41972 24192 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:43:37,166 basehttp 41972 28204 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+WARNING 2025-08-16 00:43:38,266 log 41972 40988 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-16 00:43:38,267 basehttp 41972 40988 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-16 00:43:38,275 basehttp 41972 27948 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-16 00:43:38,281 basehttp 41972 37144 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-16 00:43:38,287 basehttp 41972 41988 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-16 00:43:38,294 basehttp 41972 33552 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-16 00:43:39,304 basehttp 41972 33020 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:43:40,013 basehttp 41972 8988 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:43:41,175 basehttp 41972 32316 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:43:42,219 basehttp 41972 31492 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:43:42,486 basehttp 41972 24596 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:43:42,495 basehttp 41972 10896 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:43:42,514 basehttp 41972 28760 "GET /media/news_images/794a3712_3a005540.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:43:42,517 basehttp 41972 26496 "GET /media/news_images/18fdf084_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:43:42,537 basehttp 41972 39548 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:43:42,811 basehttp 41972 32504 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:43:42,814 basehttp 41972 28384 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:43:42,841 basehttp 41972 37220 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:43:42,849 basehttp 41972 30788 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:43:42,864 basehttp 41972 32812 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:43:43,742 fundus_crawler 41972 32676 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-16 00:43:43,833 basehttp 41972 32676 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:43:52,002 basehttp 41972 28704 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:43:53,453 basehttp 41972 39368 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:43:54,265 basehttp 41972 42900 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:45:10,368 basehttp 41972 27044 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:45:10,384 basehttp 41972 3584 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:45:10,395 basehttp 41972 20972 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:45:10,405 basehttp 41972 34452 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:45:11,490 basehttp 41972 39108 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:45:11,501 basehttp 41972 8716 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:45:11,534 basehttp 41972 9708 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:45:13,065 basehttp 41972 41936 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-16 00:45:14,472 basehttp 41972 30908 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-16 00:45:14,473 basehttp 41972 27276 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-16 00:45:14,489 basehttp 41972 35868 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+WARNING 2025-08-16 00:45:14,503 log 41972 38116 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-16 00:45:14,505 basehttp 41972 38116 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-16 00:45:14,516 basehttp 41972 35400 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-16 00:45:15,066 basehttp 41972 35212 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:46:31,281 basehttp 41972 32588 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:46:49,866 basehttp 41972 40652 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 00:46:49,881 basehttp 41972 30572 "GET /api/v1/users/me/ HTTP/1.1" 200 306
+INFO 2025-08-16 00:46:49,885 basehttp 41972 32816 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 00:46:49,895 basehttp 41972 23944 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:47:02,576 basehttp 41972 28692 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+WARNING 2025-08-16 00:47:03,691 log 41972 39016 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-16 00:47:03,692 basehttp 41972 39016 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-16 00:47:03,708 basehttp 41972 40500 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-16 00:47:03,714 basehttp 41972 39448 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-16 00:47:03,723 basehttp 41972 42664 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-16 00:47:03,731 basehttp 41972 20936 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-16 00:47:05,247 basehttp 41972 27744 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:47:47,259 basehttp 41972 35052 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:47:47,769 basehttp 41972 36656 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:47:48,650 basehttp 41972 19176 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:47:58,547 basehttp 41972 31012 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+WARNING 2025-08-16 00:48:00,518 log 41972 19688 Not Found: /api/v1/english/progress/review/
+WARNING 2025-08-16 00:48:00,522 basehttp 41972 19688 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-16 00:48:00,542 basehttp 41972 32900 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-16 00:48:00,543 basehttp 41972 23404 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+INFO 2025-08-16 00:48:00,558 basehttp 41972 12064 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+INFO 2025-08-16 00:48:00,568 basehttp 41972 31100 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-16 00:48:01,006 basehttp 41972 35520 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:48:01,442 basehttp 41972 40488 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:48:02,705 basehttp 41972 36920 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:48:03,776 basehttp 41972 41084 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:48:03,788 basehttp 41972 34828 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:48:04,209 basehttp 41972 11292 "GET /media/news_images/794a3712_3a005540.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:48:04,211 basehttp 41972 12520 "GET /media/news_images/18fdf084_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:48:04,236 basehttp 41972 35776 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:48:04,248 basehttp 41972 36720 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:48:04,274 basehttp 41972 17920 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:48:04,288 basehttp 41972 36900 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:48:04,485 basehttp 41972 35656 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:48:04,496 basehttp 41972 31292 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:48:04,506 basehttp 41972 36256 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:48:04,518 basehttp 41972 12132 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 00:48:18,695 basehttp 41972 41088 "GET /api/v1/english/news/25/ HTTP/1.1" 200 3587
+INFO 2025-08-16 00:50:11,720 basehttp 41972 23148 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 00:50:11,729 basehttp 41972 28364 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 00:50:12,860 basehttp 41972 31144 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 00:50:13,571 basehttp 41972 18188 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:50:14,517 basehttp 41972 19532 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 00:50:16,913 basehttp 41972 41332 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+WARNING 2025-08-16 00:50:17,877 log 41972 10312 Not Found: /api/v1/english/progress/review/
+INFO 2025-08-16 00:50:17,877 basehttp 41972 40928 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 200 90
+WARNING 2025-08-16 00:50:17,884 basehttp 41972 10312 "GET /api/v1/english/progress/review/ HTTP/1.1" 404 77
+INFO 2025-08-16 00:50:17,884 basehttp 41972 37936 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 200 90
+INFO 2025-08-16 00:50:17,894 basehttp 41972 4028 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 200 309
+INFO 2025-08-16 00:50:17,903 basehttp 41972 37080 "GET /api/v1/english/plans/ HTTP/1.1" 200 90
+WARNING 2025-08-16 08:17:07,723 log 41972 27812 Unauthorized: /api/v1/users/me/
+WARNING 2025-08-16 08:17:07,742 log 41972 40892 Unauthorized: /api/v1/categories/
+WARNING 2025-08-16 08:17:07,744 log 41972 37496 Unauthorized: /api/v1/home/stats/
+WARNING 2025-08-16 08:17:07,744 basehttp 41972 27812 "GET /api/v1/users/me/ HTTP/1.1" 401 258
+WARNING 2025-08-16 08:17:07,756 basehttp 41972 40892 "GET /api/v1/categories/ HTTP/1.1" 401 258
+WARNING 2025-08-16 08:17:07,757 basehttp 41972 37496 "GET /api/v1/home/stats/ HTTP/1.1" 401 258
+WARNING 2025-08-16 08:17:07,986 log 41972 43520 Unauthorized: /api/v1/english/plans/
+WARNING 2025-08-16 08:17:07,988 basehttp 41972 43520 "GET /api/v1/english/plans/ HTTP/1.1" 401 258
+WARNING 2025-08-16 08:17:07,998 log 41972 41032 Unauthorized: /api/v1/english/practice/
+WARNING 2025-08-16 08:17:08,001 basehttp 41972 41032 "GET /api/v1/english/practice/?page=1&page_size=50 HTTP/1.1" 401 258
+WARNING 2025-08-16 08:17:08,037 log 41972 14636 Unauthorized: /api/v1/english/progress/review/
+WARNING 2025-08-16 08:17:08,039 basehttp 41972 14636 "GET /api/v1/english/progress/review/ HTTP/1.1" 401 258
+WARNING 2025-08-16 08:17:08,044 log 41972 10364 Unauthorized: /api/v1/english/stats/
+WARNING 2025-08-16 08:17:08,046 basehttp 41972 10364 "GET /api/v1/english/stats/?page=1&page_size=30 HTTP/1.1" 401 258
+WARNING 2025-08-16 08:17:08,054 log 41972 38344 Unauthorized: /api/v1/english/progress/learning_overview/
+WARNING 2025-08-16 08:17:08,056 basehttp 41972 38344 "GET /api/v1/english/progress/learning_overview/?days=7 HTTP/1.1" 401 258
+INFO 2025-08-16 08:17:08,114 basehttp 41972 3056 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 08:17:08,125 basehttp 41972 36804 "GET /api/v1/categories/ HTTP/1.1" 200 558
+WARNING 2025-08-16 08:17:12,925 log 41972 37248 Forbidden: /api/v1/auth/verify-identity/
+WARNING 2025-08-16 08:17:12,926 basehttp 41972 37248 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 403 243
+INFO 2025-08-16 08:17:15,007 basehttp 41972 43800 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+WARNING 2025-08-16 08:17:17,265 log 41972 31776 Forbidden: /api/v1/auth/verify-identity/
+WARNING 2025-08-16 08:17:17,265 basehttp 41972 31776 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 403 243
+WARNING 2025-08-16 08:17:21,774 log 41972 41228 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-16 08:17:21,777 basehttp 41972 41228 "POST /api/v1/auth/login/ HTTP/1.1" 400 36
+WARNING 2025-08-16 08:17:31,793 log 41972 12048 Forbidden: /api/v1/auth/verify-identity/
+WARNING 2025-08-16 08:17:31,795 basehttp 41972 12048 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 403 243
+INFO 2025-08-16 08:17:35,514 basehttp 41972 24932 "POST /api/v1/auth/login/ HTTP/1.1" 200 833
+INFO 2025-08-16 08:17:35,971 basehttp 41972 42716 "GET /api/v1/external-links/ HTTP/1.1" 200 52
+INFO 2025-08-16 08:17:35,976 basehttp 41972 42252 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 43
+INFO 2025-08-16 08:17:35,989 basehttp 41972 33184 "GET /api/v1/categories/ HTTP/1.1" 200 558
+INFO 2025-08-16 08:17:36,012 basehttp 41972 40216 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 08:17:36,059 basehttp 41972 42572 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 21525
+INFO 2025-08-16 08:17:36,188 basehttp 41972 25308 "GET /api/v1/home/stats/ HTTP/1.1" 200 49
+INFO 2025-08-16 08:17:36,206 basehttp 41972 30820 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 72863
+INFO 2025-08-16 08:17:48,815 basehttp 41972 42556 "GET /api/v1/tags/ HTTP/1.1" 200 187
+INFO 2025-08-16 08:17:49,410 basehttp 41972 35852 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 73039
+INFO 2025-08-16 08:17:50,386 basehttp 41972 18960 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:17:51,278 basehttp 41972 18360 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 08:17:52,205 basehttp 41972 29964 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 08:18:05,709 basehttp 41972 36348 "GET /api/v1/english/words/?page=1&page_size=10&q=&difficulty_level=&ordering=-updated_at HTTP/1.1" 200 1108
+INFO 2025-08-16 08:18:07,055 basehttp 41972 6612 "GET /api/v1/english/expressions/?page=1&page_size=10&q=&ordering=-updated_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:18:08,116 basehttp 41972 3108 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 08:18:08,123 basehttp 41972 16076 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 34341
+INFO 2025-08-16 08:18:08,373 basehttp 41972 17892 "GET /media/news_images/931aea4b_a003d47c.jpg HTTP/1.1" 200 73820
+INFO 2025-08-16 08:18:08,382 basehttp 41972 35700 "GET /media/news_images/18fdf084_a003d47c.jpg HTTP/1.1" 200 73820
+INFO 2025-08-16 08:18:08,395 basehttp 41972 31888 "GET /media/news_images/794a3712_3a005540.jpg HTTP/1.1" 200 43264
+INFO 2025-08-16 08:18:08,421 basehttp 41972 14428 "GET /media/news_images/4981bcba_57766813.jpg HTTP/1.1" 200 163038
+INFO 2025-08-16 08:18:08,431 basehttp 41972 38428 "GET /media/news_images/a37ce99c_c6ba767f.jpg HTTP/1.1" 200 104249
+INFO 2025-08-16 08:18:08,438 basehttp 41972 14072 "GET /media/news_images/958a7384_ef0259c9.jpg HTTP/1.1" 200 152764
+INFO 2025-08-16 08:18:08,532 basehttp 41972 29700 "GET /media/news_images/a867c0d4_b89b2be1.jpg HTTP/1.1" 200 85030
+INFO 2025-08-16 08:18:08,591 basehttp 41972 39996 "GET /media/news_images/23a1464a_6bd89624.jpg HTTP/1.1" 200 57699
+INFO 2025-08-16 08:18:08,598 basehttp 41972 28176 "GET /media/news_images/5210f9a2_788bc198.jpg HTTP/1.1" 200 67168
+INFO 2025-08-16 08:18:08,606 basehttp 41972 39632 "GET /media/news_images/c7c12588_6b2273e7.jpg HTTP/1.1" 200 47301
+INFO 2025-08-16 08:23:39,804 autoreload 41972 30592 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-16 08:23:41,239 autoreload 35752 11868 Watching for file changes with StatReloader
+INFO 2025-08-16 08:25:00,811 autoreload 35752 11868 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-16 08:25:01,508 autoreload 40004 31444 Watching for file changes with StatReloader
+INFO 2025-08-16 08:25:46,789 autoreload 11292 22200 Watching for file changes with StatReloader
+INFO 2025-08-16 08:28:02,284 autoreload 40004 31444 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-16 08:28:02,957 autoreload 21856 31220 Watching for file changes with StatReloader
+INFO 2025-08-16 08:31:40,750 autoreload 21856 31220 S:\WorkShop\cursor\alpha\backend\alpha\settings.py changed, reloading.
+INFO 2025-08-16 08:31:41,505 autoreload 36288 25652 Watching for file changes with StatReloader
+INFO 2025-08-16 08:31:48,273 basehttp 36288 26852 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-16 08:31:48,278 basehttp 36288 37368 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-16 08:31:48,280 basehttp 36288 37852 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-16 08:31:48,282 basehttp 36288 9340 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-16 08:31:48,290 basehttp 36288 43120 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-16 08:31:48,291 basehttp 36288 8428 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-16 08:31:48,716 basehttp 36288 28788 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-16 08:31:48,751 basehttp 36288 40836 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-16 08:31:48,780 basehttp 36288 33944 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-16 08:31:48,787 basehttp 36288 41844 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-16 08:31:48,846 basehttp 36288 18212 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-16 08:31:48,933 basehttp 36288 28048 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-16 08:31:48,950 basehttp 36288 33940 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-16 08:31:51,241 basehttp 36288 33404 "GET /api/v1/articles/?page=1&page_size=10&ordering=-created_at HTTP/1.1" 200 7251
+WARNING 2025-08-16 08:31:54,454 log 36288 40072 Unauthorized: /api/v1/auth/verify-identity/
+WARNING 2025-08-16 08:31:54,457 basehttp 36288 40072 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 401 53
+INFO 2025-08-16 08:32:28,693 autoreload 38792 29052 Watching for file changes with StatReloader
+INFO 2025-08-16 08:35:01,225 basehttp 36288 2804 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-16 08:35:01,236 basehttp 36288 29464 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-16 08:35:01,681 basehttp 36288 28324 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+WARNING 2025-08-16 08:35:02,970 log 36288 22200 Unauthorized: /api/v1/auth/verify-identity/
+WARNING 2025-08-16 08:35:02,971 basehttp 36288 22200 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 401 53
+WARNING 2025-08-16 08:35:06,927 log 36288 41104 Bad Request: /api/v1/auth/login/
+WARNING 2025-08-16 08:35:06,934 basehttp 36288 41104 "POST /api/v1/auth/login/ HTTP/1.1" 400 36
+INFO 2025-08-16 08:35:13,697 basehttp 36288 8516 "POST /api/v1/auth/verify-identity/ HTTP/1.1" 200 122
+INFO 2025-08-16 08:35:18,683 basehttp 36288 39216 "POST /api/v1/auth/login/ HTTP/1.1" 200 840
+INFO 2025-08-16 08:35:19,163 basehttp 36288 40348 "GET /api/v1/categories/ HTTP/1.1" 200 580
+INFO 2025-08-16 08:35:19,186 basehttp 36288 21696 "GET /api/v1/external-links/ HTTP/1.1" 200 2024
+INFO 2025-08-16 08:35:19,196 basehttp 36288 35576 "GET /api/v1/home/popular-tags/ HTTP/1.1" 200 877
+INFO 2025-08-16 08:35:19,220 basehttp 36288 35668 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-16 08:35:19,271 basehttp 36288 9540 "GET /api/v1/articles/?page_size=5&ordering=-views HTTP/1.1" 200 6127
+INFO 2025-08-16 08:35:19,279 basehttp 36288 30768 "GET /api/v1/home/recent-articles/ HTTP/1.1" 200 7153
+INFO 2025-08-16 08:35:19,344 basehttp 36288 37064 "GET /api/v1/home/stats/ HTTP/1.1" 200 50
+INFO 2025-08-16 08:35:25,204 basehttp 36288 35708 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 56909
+WARNING 2025-08-16 08:35:25,718 log 36288 24624 Not Found: /media/news_images/15e5c5d3_1d6b6b4a.jpg
+WARNING 2025-08-16 08:35:25,722 basehttp 36288 24624 "GET /media/news_images/15e5c5d3_1d6b6b4a.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:25,748 log 36288 31212 Not Found: /media/news_images/543185ef_af1045ad.jpg
+WARNING 2025-08-16 08:35:25,751 basehttp 36288 31212 "GET /media/news_images/543185ef_af1045ad.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:25,777 log 36288 36312 Not Found: /media/news_images/e1c2d4aa_de3c1068.jpg
+WARNING 2025-08-16 08:35:25,793 basehttp 36288 36312 "GET /media/news_images/e1c2d4aa_de3c1068.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:25,806 log 36288 33752 Not Found: /media/news_images/61b55f46_6e522623.jpg
+WARNING 2025-08-16 08:35:25,811 basehttp 36288 33752 "GET /media/news_images/61b55f46_6e522623.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:25,825 log 36288 11584 Not Found: /media/news_images/9002aad7_47d2a151.jpg
+WARNING 2025-08-16 08:35:25,827 basehttp 36288 11584 "GET /media/news_images/9002aad7_47d2a151.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:26,294 log 36288 36868 Not Found: /media/news_images/2415c202_5f606feb.jpg
+WARNING 2025-08-16 08:35:26,298 basehttp 36288 36868 "GET /media/news_images/2415c202_5f606feb.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:26,311 log 36288 37292 Not Found: /media/news_images/9dbf65c5_710e7d70.jpg
+WARNING 2025-08-16 08:35:26,317 log 36288 18052 Not Found: /media/news_images/1e41b9b5_6ddaf09c.jpg
+WARNING 2025-08-16 08:35:26,317 basehttp 36288 37292 "GET /media/news_images/9dbf65c5_710e7d70.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:26,318 basehttp 36288 18052 "GET /media/news_images/1e41b9b5_6ddaf09c.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:26,329 log 36288 36360 Not Found: /media/news_images/acbfa7e5_bc474f1d.jpg
+WARNING 2025-08-16 08:35:26,334 log 36288 21476 Not Found: /media/news_images/188522f2_f5ac6943.jpg
+WARNING 2025-08-16 08:35:26,341 basehttp 36288 36360 "GET /media/news_images/acbfa7e5_bc474f1d.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:26,342 basehttp 36288 21476 "GET /media/news_images/188522f2_f5ac6943.jpg HTTP/1.1" 404 12348
+INFO 2025-08-16 08:35:27,516 fundus_crawler 36288 34152 Fundus爬虫服务初始化完成，支持 10 个新闻源
+INFO 2025-08-16 08:35:27,629 basehttp 36288 34152 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 08:35:30,259 basehttp 36288 24884 "GET /api/v1/english/news/?page=2&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 46519
+WARNING 2025-08-16 08:35:30,756 log 36288 30364 Not Found: /media/news_images/d3687176_034046be.jpg
+WARNING 2025-08-16 08:35:30,768 basehttp 36288 30364 "GET /media/news_images/d3687176_034046be.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:30,779 log 36288 43656 Not Found: /media/news_images/73ab93f6_865401d1.jpg
+WARNING 2025-08-16 08:35:30,788 basehttp 36288 43656 "GET /media/news_images/73ab93f6_865401d1.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:30,806 log 36288 11340 Not Found: /media/news_images/3f57b56b_ae68a04c.jpg
+WARNING 2025-08-16 08:35:30,808 basehttp 36288 11340 "GET /media/news_images/3f57b56b_ae68a04c.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:30,885 log 36288 7804 Not Found: /media/news_images/b6b458c0_83921afc.jpg
+WARNING 2025-08-16 08:35:30,908 basehttp 36288 7804 "GET /media/news_images/b6b458c0_83921afc.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:30,916 log 36288 43064 Not Found: /media/news_images/0338bdcf_0979b0a5.png
+WARNING 2025-08-16 08:35:30,917 basehttp 36288 43064 "GET /media/news_images/0338bdcf_0979b0a5.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:30,939 log 36288 35444 Not Found: /media/news_images/07767745_a00c8848.jpg
+WARNING 2025-08-16 08:35:30,999 basehttp 36288 35444 "GET /media/news_images/07767745_a00c8848.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:31,097 log 36288 39948 Not Found: /media/news_images/e7a1d798_f79e103a.jpg
+WARNING 2025-08-16 08:35:31,098 basehttp 36288 39948 "GET /media/news_images/e7a1d798_f79e103a.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:31,108 log 36288 32192 Not Found: /media/news_images/7e2ffc87_62127b75.jpeg
+WARNING 2025-08-16 08:35:31,110 basehttp 36288 32192 "GET /media/news_images/7e2ffc87_62127b75.jpeg HTTP/1.1" 404 12352
+WARNING 2025-08-16 08:35:31,130 log 36288 36428 Not Found: /media/news_images/8bb59caa_beefcf75.jpg
+WARNING 2025-08-16 08:35:31,137 basehttp 36288 36428 "GET /media/news_images/8bb59caa_beefcf75.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:31,145 log 36288 29508 Not Found: /media/news_images/e551a28c_fcbbd39b.jpeg
+WARNING 2025-08-16 08:35:31,146 basehttp 36288 29508 "GET /media/news_images/e551a28c_fcbbd39b.jpeg HTTP/1.1" 404 12352
+INFO 2025-08-16 08:35:31,177 basehttp 36288 42108 "GET /api/v1/english/news/?page=3&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 52210
+WARNING 2025-08-16 08:35:31,627 log 36288 28508 Not Found: /media/news_images/0ac9a2db_0c384926.jpg
+WARNING 2025-08-16 08:35:31,634 log 36288 39392 Not Found: /media/news_images/d308b309_b7bf837d.jpg
+WARNING 2025-08-16 08:35:31,638 basehttp 36288 39392 "GET /media/news_images/d308b309_b7bf837d.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:31,639 basehttp 36288 28508 "GET /media/news_images/0ac9a2db_0c384926.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:31,674 log 36288 36988 Not Found: /media/news_images/68907c27_2ca73c8a.jpg
+WARNING 2025-08-16 08:35:31,679 log 36288 11696 Not Found: /media/news_images/dc0a36c8_48d3acdf.jpg
+WARNING 2025-08-16 08:35:31,689 basehttp 36288 36988 "GET /media/news_images/68907c27_2ca73c8a.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:31,693 log 36288 916 Not Found: /media/news_images/f7273524_6925e53b.jpg
+WARNING 2025-08-16 08:35:31,696 log 36288 33512 Not Found: /media/news_images/8ae14a15_cb991b68.jpg
+WARNING 2025-08-16 08:35:31,708 basehttp 36288 11696 "GET /media/news_images/dc0a36c8_48d3acdf.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:31,740 basehttp 36288 916 "GET /media/news_images/f7273524_6925e53b.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:31,755 basehttp 36288 33512 "GET /media/news_images/8ae14a15_cb991b68.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:32,024 log 36288 14996 Not Found: /media/news_images/5214f49f_7975d514.jpg
+WARNING 2025-08-16 08:35:32,043 basehttp 36288 14996 "GET /media/news_images/5214f49f_7975d514.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:32,055 log 36288 42368 Not Found: /media/news_images/a30bf9e4_498534a8.jpg
+WARNING 2025-08-16 08:35:32,057 basehttp 36288 42368 "GET /media/news_images/a30bf9e4_498534a8.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:32,079 log 36288 43184 Not Found: /media/news_images/944e4564_58189598.jpg
+WARNING 2025-08-16 08:35:32,084 log 36288 19428 Not Found: /media/news_images/8347ae2d_1cc2c53a.png
+WARNING 2025-08-16 08:35:32,093 basehttp 36288 19428 "GET /media/news_images/8347ae2d_1cc2c53a.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:32,087 basehttp 36288 43184 "GET /media/news_images/944e4564_58189598.jpg HTTP/1.1" 404 12348
+INFO 2025-08-16 08:35:32,133 basehttp 36288 31624 "GET /api/v1/english/news/?page=4&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 70797
+WARNING 2025-08-16 08:35:32,575 log 36288 30056 Not Found: /media/news_images/561fa358_22b99aea.jpg
+WARNING 2025-08-16 08:35:32,577 basehttp 36288 30056 "GET /media/news_images/561fa358_22b99aea.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:32,624 log 36288 38856 Not Found: /media/news_images/83cb154f_e1db65ea.jpg
+WARNING 2025-08-16 08:35:32,625 basehttp 36288 38856 "GET /media/news_images/83cb154f_e1db65ea.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:32,635 log 36288 18524 Not Found: /media/news_images/9ae61ad0_b5749c48.jpg
+WARNING 2025-08-16 08:35:32,640 log 36288 36184 Not Found: /media/news_images/3bb772ff_bb299c55.png
+WARNING 2025-08-16 08:35:32,646 basehttp 36288 18524 "GET /media/news_images/9ae61ad0_b5749c48.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:32,647 basehttp 36288 36184 "GET /media/news_images/3bb772ff_bb299c55.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:32,699 log 36288 43636 Not Found: /media/news_images/513408d5_2e7d645f.png
+WARNING 2025-08-16 08:35:32,707 log 36288 18592 Not Found: /media/news_images/451cc0eb_62dd5614.jpg
+WARNING 2025-08-16 08:35:32,709 basehttp 36288 43636 "GET /media/news_images/513408d5_2e7d645f.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:32,710 basehttp 36288 18592 "GET /media/news_images/451cc0eb_62dd5614.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:33,021 log 36288 19564 Not Found: /media/news_images/dd648a15_0aa9f4ce.jpg
+WARNING 2025-08-16 08:35:33,036 basehttp 36288 19564 "GET /media/news_images/dd648a15_0aa9f4ce.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:33,059 log 36288 17228 Not Found: /media/news_images/c7f8c4a4_acb62ed6.jpg
+WARNING 2025-08-16 08:35:33,061 basehttp 36288 17228 "GET /media/news_images/c7f8c4a4_acb62ed6.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:33,071 log 36288 28276 Not Found: /media/news_images/4b40677a_5c15b939.png
+WARNING 2025-08-16 08:35:33,074 basehttp 36288 28276 "GET /media/news_images/4b40677a_5c15b939.png HTTP/1.1" 404 12348
+INFO 2025-08-16 08:35:33,088 basehttp 36288 36324 "GET /api/v1/english/news/?page=5&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 31208
+WARNING 2025-08-16 08:35:33,098 log 36288 6392 Not Found: /media/news_images/91d710cc_cd3f347e.jpg
+WARNING 2025-08-16 08:35:33,099 basehttp 36288 6392 "GET /media/news_images/91d710cc_cd3f347e.jpg HTTP/1.1" 404 12348
+INFO 2025-08-16 08:35:33,550 basehttp 36288 34788 "GET /api/v1/english/news/?page=6&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 24606
+WARNING 2025-08-16 08:35:33,599 log 36288 29828 Not Found: /media/news_images/e8129974_2ca1a6c6.jpg
+WARNING 2025-08-16 08:35:33,601 basehttp 36288 29828 "GET /media/news_images/e8129974_2ca1a6c6.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:33,608 log 36288 36020 Not Found: /media/news_images/611ef664_f65a202a.jpg
+WARNING 2025-08-16 08:35:33,617 log 36288 23316 Not Found: /media/news_images/3a029aae_4981935f.jpg
+WARNING 2025-08-16 08:35:33,617 basehttp 36288 36020 "GET /media/news_images/611ef664_f65a202a.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:33,647 basehttp 36288 23316 "GET /media/news_images/3a029aae_4981935f.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:33,674 log 36288 20704 Not Found: /media/news_images/db6698bd_eb96ff15.jpg
+WARNING 2025-08-16 08:35:33,684 log 36288 24776 Not Found: /media/news_images/edf8fc0a_6e522623.jpg
+WARNING 2025-08-16 08:35:33,701 basehttp 36288 20704 "GET /media/news_images/db6698bd_eb96ff15.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:33,708 basehttp 36288 24776 "GET /media/news_images/edf8fc0a_6e522623.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:33,980 log 36288 36212 Not Found: /media/news_images/d8bc6205_10c903c3.jpg
+WARNING 2025-08-16 08:35:33,981 basehttp 36288 36212 "GET /media/news_images/d8bc6205_10c903c3.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,121 log 36288 24136 Not Found: /media/news_images/423d7638_6da45cca.jpg
+WARNING 2025-08-16 08:35:34,125 basehttp 36288 24136 "GET /media/news_images/423d7638_6da45cca.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,140 log 36288 30108 Not Found: /media/news_images/ee1f8610_8da0d50f.jpg
+WARNING 2025-08-16 08:35:34,144 basehttp 36288 30108 "GET /media/news_images/ee1f8610_8da0d50f.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,163 log 36288 43848 Not Found: /media/news_images/e6b27e4b_e401dc28.png
+WARNING 2025-08-16 08:35:34,170 basehttp 36288 43848 "GET /media/news_images/e6b27e4b_e401dc28.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,187 log 36288 28136 Not Found: /media/news_images/9be166b6_618300ed.jpg
+WARNING 2025-08-16 08:35:34,191 basehttp 36288 28136 "GET /media/news_images/9be166b6_618300ed.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,303 log 36288 34196 Not Found: /media/news_images/1890ecd2_51e99d87.jpg
+WARNING 2025-08-16 08:35:34,346 basehttp 36288 34196 "GET /media/news_images/1890ecd2_51e99d87.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,617 log 36288 6912 Not Found: /media/news_images/50d7d2ae_d07f6ec5.jpg
+WARNING 2025-08-16 08:35:34,627 basehttp 36288 6912 "GET /media/news_images/50d7d2ae_d07f6ec5.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,675 log 36288 18116 Not Found: /media/news_images/565299b4_af74d90b.jpg
+WARNING 2025-08-16 08:35:34,676 basehttp 36288 18116 "GET /media/news_images/565299b4_af74d90b.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,704 log 36288 15128 Not Found: /media/news_images/a5d2ade2_8586740b.jpg
+WARNING 2025-08-16 08:35:34,718 basehttp 36288 15128 "GET /media/news_images/a5d2ade2_8586740b.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,765 log 36288 43836 Not Found: /media/news_images/8a012429_72443aaf.jpg
+WARNING 2025-08-16 08:35:34,766 basehttp 36288 43836 "GET /media/news_images/8a012429_72443aaf.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,772 log 36288 10668 Not Found: /media/news_images/1a5e0637_49141462.png
+WARNING 2025-08-16 08:35:34,773 basehttp 36288 10668 "GET /media/news_images/1a5e0637_49141462.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,793 log 36288 10984 Not Found: /media/news_images/85d352b1_49f7b010.jpg
+WARNING 2025-08-16 08:35:34,793 basehttp 36288 10984 "GET /media/news_images/85d352b1_49f7b010.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:34,805 log 36288 22392 Not Found: /media/news_images/fb489c54_cda9d5ae.jpg
+WARNING 2025-08-16 08:35:34,806 basehttp 36288 22392 "GET /media/news_images/fb489c54_cda9d5ae.jpg HTTP/1.1" 404 12348
+INFO 2025-08-16 08:35:38,517 basehttp 36288 32664 "POST /api/v1/english/news/batch_delete/ HTTP/1.1" 200 53
+WARNING 2025-08-16 08:35:38,614 log 36288 32892 Not Found: /api/v1/english/news/
+WARNING 2025-08-16 08:35:38,615 basehttp 36288 32892 "GET /api/v1/english/news/?page=6&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 404 83
+INFO 2025-08-16 08:35:42,372 basehttp 36288 41112 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 56909
+WARNING 2025-08-16 08:35:42,860 log 36288 37240 Not Found: /media/news_images/61b55f46_6e522623.jpg
+WARNING 2025-08-16 08:35:42,864 basehttp 36288 37240 "GET /media/news_images/61b55f46_6e522623.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:42,895 log 36288 28720 Not Found: /media/news_images/543185ef_af1045ad.jpg
+WARNING 2025-08-16 08:35:42,897 basehttp 36288 28720 "GET /media/news_images/543185ef_af1045ad.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:42,907 log 36288 12872 Not Found: /media/news_images/9002aad7_47d2a151.jpg
+WARNING 2025-08-16 08:35:42,914 log 36288 7020 Not Found: /media/news_images/15e5c5d3_1d6b6b4a.jpg
+WARNING 2025-08-16 08:35:42,919 basehttp 36288 12872 "GET /media/news_images/9002aad7_47d2a151.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:42,920 basehttp 36288 7020 "GET /media/news_images/15e5c5d3_1d6b6b4a.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:42,961 log 36288 20028 Not Found: /media/news_images/e1c2d4aa_de3c1068.jpg
+WARNING 2025-08-16 08:35:42,964 basehttp 36288 20028 "GET /media/news_images/e1c2d4aa_de3c1068.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:43,003 log 36288 39796 Not Found: /media/news_images/2415c202_5f606feb.jpg
+WARNING 2025-08-16 08:35:43,020 basehttp 36288 39796 "GET /media/news_images/2415c202_5f606feb.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:43,183 log 36288 34924 Not Found: /media/news_images/9dbf65c5_710e7d70.jpg
+WARNING 2025-08-16 08:35:43,184 basehttp 36288 34924 "GET /media/news_images/9dbf65c5_710e7d70.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:43,212 log 36288 43692 Not Found: /media/news_images/1e41b9b5_6ddaf09c.jpg
+WARNING 2025-08-16 08:35:43,224 log 36288 39724 Not Found: /media/news_images/acbfa7e5_bc474f1d.jpg
+WARNING 2025-08-16 08:35:43,225 basehttp 36288 39724 "GET /media/news_images/acbfa7e5_bc474f1d.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:43,226 basehttp 36288 43692 "GET /media/news_images/1e41b9b5_6ddaf09c.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:43,237 log 36288 21580 Not Found: /media/news_images/188522f2_f5ac6943.jpg
+WARNING 2025-08-16 08:35:43,238 basehttp 36288 21580 "GET /media/news_images/188522f2_f5ac6943.jpg HTTP/1.1" 404 12348
+INFO 2025-08-16 08:35:45,904 basehttp 36288 18816 "POST /api/v1/english/news/batch_delete/ HTTP/1.1" 200 54
+INFO 2025-08-16 08:35:46,003 basehttp 36288 8336 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 46519
+WARNING 2025-08-16 08:35:46,455 log 36288 32620 Not Found: /media/news_images/07767745_a00c8848.jpg
+WARNING 2025-08-16 08:35:46,457 basehttp 36288 32620 "GET /media/news_images/07767745_a00c8848.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:46,488 log 36288 27832 Not Found: /media/news_images/3f57b56b_ae68a04c.jpg
+WARNING 2025-08-16 08:35:46,491 basehttp 36288 27832 "GET /media/news_images/3f57b56b_ae68a04c.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:46,507 log 36288 38060 Not Found: /media/news_images/0338bdcf_0979b0a5.png
+WARNING 2025-08-16 08:35:46,520 basehttp 36288 38060 "GET /media/news_images/0338bdcf_0979b0a5.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:46,549 log 36288 26488 Not Found: /media/news_images/73ab93f6_865401d1.jpg
+WARNING 2025-08-16 08:35:46,559 log 36288 39092 Not Found: /media/news_images/d3687176_034046be.jpg
+WARNING 2025-08-16 08:35:46,569 log 36288 43752 Not Found: /media/news_images/b6b458c0_83921afc.jpg
+WARNING 2025-08-16 08:35:46,572 basehttp 36288 39092 "GET /media/news_images/d3687176_034046be.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:46,572 basehttp 36288 43752 "GET /media/news_images/b6b458c0_83921afc.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:46,572 basehttp 36288 26488 "GET /media/news_images/73ab93f6_865401d1.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:46,752 log 36288 39284 Not Found: /media/news_images/e7a1d798_f79e103a.jpg
+WARNING 2025-08-16 08:35:46,752 basehttp 36288 39284 "GET /media/news_images/e7a1d798_f79e103a.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:46,776 log 36288 1408 Not Found: /media/news_images/e551a28c_fcbbd39b.jpeg
+WARNING 2025-08-16 08:35:46,777 basehttp 36288 1408 "GET /media/news_images/e551a28c_fcbbd39b.jpeg HTTP/1.1" 404 12352
+WARNING 2025-08-16 08:35:46,794 log 36288 32652 Not Found: /media/news_images/7e2ffc87_62127b75.jpeg
+WARNING 2025-08-16 08:35:46,797 log 36288 7704 Not Found: /media/news_images/8bb59caa_beefcf75.jpg
+WARNING 2025-08-16 08:35:46,798 basehttp 36288 32652 "GET /media/news_images/7e2ffc87_62127b75.jpeg HTTP/1.1" 404 12352
+WARNING 2025-08-16 08:35:46,798 basehttp 36288 7704 "GET /media/news_images/8bb59caa_beefcf75.jpg HTTP/1.1" 404 12348
+INFO 2025-08-16 08:35:50,433 basehttp 36288 43092 "POST /api/v1/english/news/batch_delete/ HTTP/1.1" 200 54
+INFO 2025-08-16 08:35:50,518 basehttp 36288 37128 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 52210
+WARNING 2025-08-16 08:35:51,054 log 36288 13964 Not Found: /media/news_images/68907c27_2ca73c8a.jpg
+WARNING 2025-08-16 08:35:51,058 basehttp 36288 13964 "GET /media/news_images/68907c27_2ca73c8a.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:51,107 log 36288 20596 Not Found: /media/news_images/f7273524_6925e53b.jpg
+WARNING 2025-08-16 08:35:51,112 log 36288 39916 Not Found: /media/news_images/8ae14a15_cb991b68.jpg
+WARNING 2025-08-16 08:35:51,116 basehttp 36288 20596 "GET /media/news_images/f7273524_6925e53b.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:51,122 log 36288 41536 Not Found: /media/news_images/0ac9a2db_0c384926.jpg
+WARNING 2025-08-16 08:35:51,125 basehttp 36288 39916 "GET /media/news_images/8ae14a15_cb991b68.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:51,128 basehttp 36288 41536 "GET /media/news_images/0ac9a2db_0c384926.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:51,151 log 36288 15652 Not Found: /media/news_images/d308b309_b7bf837d.jpg
+WARNING 2025-08-16 08:35:51,151 basehttp 36288 15652 "GET /media/news_images/d308b309_b7bf837d.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:51,182 log 36288 28420 Not Found: /media/news_images/dc0a36c8_48d3acdf.jpg
+WARNING 2025-08-16 08:35:51,184 basehttp 36288 28420 "GET /media/news_images/dc0a36c8_48d3acdf.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:51,385 log 36288 27688 Not Found: /media/news_images/8347ae2d_1cc2c53a.png
+WARNING 2025-08-16 08:35:51,389 basehttp 36288 27688 "GET /media/news_images/8347ae2d_1cc2c53a.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:51,432 log 36288 42304 Not Found: /media/news_images/a30bf9e4_498534a8.jpg
+WARNING 2025-08-16 08:35:51,433 basehttp 36288 42304 "GET /media/news_images/a30bf9e4_498534a8.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:51,438 log 36288 40472 Not Found: /media/news_images/5214f49f_7975d514.jpg
+WARNING 2025-08-16 08:35:51,441 log 36288 6208 Not Found: /media/news_images/944e4564_58189598.jpg
+WARNING 2025-08-16 08:35:51,441 basehttp 36288 40472 "GET /media/news_images/5214f49f_7975d514.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:51,441 basehttp 36288 6208 "GET /media/news_images/944e4564_58189598.jpg HTTP/1.1" 404 12348
+INFO 2025-08-16 08:35:55,218 basehttp 36288 41488 "POST /api/v1/english/news/batch_delete/ HTTP/1.1" 200 54
+INFO 2025-08-16 08:35:55,322 basehttp 36288 37832 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 70797
+WARNING 2025-08-16 08:35:55,847 log 36288 34064 Not Found: /media/news_images/3bb772ff_bb299c55.png
+WARNING 2025-08-16 08:35:55,861 log 36288 3096 Not Found: /media/news_images/513408d5_2e7d645f.png
+WARNING 2025-08-16 08:35:55,863 log 36288 20056 Not Found: /media/news_images/561fa358_22b99aea.jpg
+WARNING 2025-08-16 08:35:55,867 log 36288 35536 Not Found: /media/news_images/9ae61ad0_b5749c48.jpg
+WARNING 2025-08-16 08:35:55,867 basehttp 36288 34064 "GET /media/news_images/3bb772ff_bb299c55.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:55,870 basehttp 36288 3096 "GET /media/news_images/513408d5_2e7d645f.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:55,871 basehttp 36288 20056 "GET /media/news_images/561fa358_22b99aea.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:55,872 basehttp 36288 35536 "GET /media/news_images/9ae61ad0_b5749c48.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:55,898 log 36288 36048 Not Found: /media/news_images/451cc0eb_62dd5614.jpg
+WARNING 2025-08-16 08:35:55,905 log 36288 26088 Not Found: /media/news_images/83cb154f_e1db65ea.jpg
+WARNING 2025-08-16 08:35:55,907 basehttp 36288 26088 "GET /media/news_images/83cb154f_e1db65ea.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:55,907 basehttp 36288 36048 "GET /media/news_images/451cc0eb_62dd5614.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:56,203 log 36288 30428 Not Found: /media/news_images/4b40677a_5c15b939.png
+WARNING 2025-08-16 08:35:56,205 basehttp 36288 30428 "GET /media/news_images/4b40677a_5c15b939.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:56,236 log 36288 34028 Not Found: /media/news_images/dd648a15_0aa9f4ce.jpg
+WARNING 2025-08-16 08:35:56,241 basehttp 36288 34028 "GET /media/news_images/dd648a15_0aa9f4ce.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:56,261 log 36288 2016 Not Found: /media/news_images/c7f8c4a4_acb62ed6.jpg
+WARNING 2025-08-16 08:35:56,263 basehttp 36288 2016 "GET /media/news_images/c7f8c4a4_acb62ed6.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:56,271 log 36288 36304 Not Found: /media/news_images/91d710cc_cd3f347e.jpg
+WARNING 2025-08-16 08:35:56,280 basehttp 36288 36304 "GET /media/news_images/91d710cc_cd3f347e.jpg HTTP/1.1" 404 12348
+INFO 2025-08-16 08:35:58,654 basehttp 36288 31568 "POST /api/v1/english/news/batch_delete/ HTTP/1.1" 200 54
+INFO 2025-08-16 08:35:58,739 basehttp 36288 23360 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 31208
+WARNING 2025-08-16 08:35:59,293 log 36288 38552 Not Found: /media/news_images/edf8fc0a_6e522623.jpg
+WARNING 2025-08-16 08:35:59,294 basehttp 36288 38552 "GET /media/news_images/edf8fc0a_6e522623.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:59,305 log 36288 8184 Not Found: /media/news_images/611ef664_f65a202a.jpg
+WARNING 2025-08-16 08:35:59,309 basehttp 36288 8184 "GET /media/news_images/611ef664_f65a202a.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:59,378 log 36288 23684 Not Found: /media/news_images/3a029aae_4981935f.jpg
+WARNING 2025-08-16 08:35:59,390 basehttp 36288 23684 "GET /media/news_images/3a029aae_4981935f.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:59,436 log 36288 31436 Not Found: /media/news_images/db6698bd_eb96ff15.jpg
+WARNING 2025-08-16 08:35:59,440 basehttp 36288 31436 "GET /media/news_images/db6698bd_eb96ff15.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:59,452 log 36288 32576 Not Found: /media/news_images/9be166b6_618300ed.jpg
+WARNING 2025-08-16 08:35:59,465 basehttp 36288 32576 "GET /media/news_images/9be166b6_618300ed.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:59,473 log 36288 34292 Not Found: /media/news_images/e8129974_2ca1a6c6.jpg
+WARNING 2025-08-16 08:35:59,482 basehttp 36288 34292 "GET /media/news_images/e8129974_2ca1a6c6.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:59,598 log 36288 37952 Not Found: /media/news_images/d8bc6205_10c903c3.jpg
+WARNING 2025-08-16 08:35:59,599 basehttp 36288 37952 "GET /media/news_images/d8bc6205_10c903c3.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:59,621 log 36288 36368 Not Found: /media/news_images/e6b27e4b_e401dc28.png
+WARNING 2025-08-16 08:35:59,630 basehttp 36288 36368 "GET /media/news_images/e6b27e4b_e401dc28.png HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:59,636 log 36288 38604 Not Found: /media/news_images/423d7638_6da45cca.jpg
+WARNING 2025-08-16 08:35:59,640 basehttp 36288 38604 "GET /media/news_images/423d7638_6da45cca.jpg HTTP/1.1" 404 12348
+WARNING 2025-08-16 08:35:59,648 log 36288 15008 Not Found: /media/news_images/ee1f8610_8da0d50f.jpg
+WARNING 2025-08-16 08:35:59,654 basehttp 36288 15008 "GET /media/news_images/ee1f8610_8da0d50f.jpg HTTP/1.1" 404 12348
+INFO 2025-08-16 08:36:02,633 basehttp 36288 40968 "POST /api/v1/english/news/batch_delete/ HTTP/1.1" 200 54
+INFO 2025-08-16 08:36:02,691 basehttp 36288 40852 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:11,881 basehttp 36288 30344 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:11,894 basehttp 36288 30576 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 08:36:14,320 fundus_crawler 36288 22592 开始爬取 bbc 的新闻...
+INFO 2025-08-16 08:36:18,187 fundus_crawler 36288 22592 成功解析 bbc 文章: What is an apprenticeship and how do you get one?...
+INFO 2025-08-16 08:36:18,854 fundus_crawler 36288 22592 成功解析 bbc 文章: When is the next international break and why are t...
+INFO 2025-08-16 08:36:20,540 fundus_crawler 36288 22592 成功解析 bbc 文章: Follow your Premier League, Scottish Premiership a...
+INFO 2025-08-16 08:36:21,295 fundus_crawler 36288 22592 成功解析 bbc 文章:  Match of the Day: who decides the running order?...
+INFO 2025-08-16 08:36:21,958 fundus_crawler 36288 22592 成功解析 bbc 文章: The Hundred 2025 Teams & players: Full squad lists...
+INFO 2025-08-16 08:36:23,652 fundus_crawler 36288 22592 成功解析 bbc 文章: Spring is "fastest-warming" season in the UK...
+INFO 2025-08-16 08:36:24,397 fundus_crawler 36288 22592 成功解析 bbc 文章: Keely Hodgkinson: Olympic champion to return at Di...
+INFO 2025-08-16 08:36:25,240 fundus_crawler 36288 22592 成功解析 bbc 文章: Ukraine in maps: Tracking the war with Russia...
+INFO 2025-08-16 08:36:26,323 fundus_crawler 36288 22592 成功解析 bbc 文章: UK inflation: What is the rate and why are prices ...
+INFO 2025-08-16 08:36:27,305 fundus_crawler 36288 22592 成功解析 bbc 文章: How fast is the UK's economy growing and what is G...
+INFO 2025-08-16 08:36:27,945 fundus_crawler 36288 22592 bbc 爬取完成，共获取 10 条新闻
+INFO 2025-08-16 08:36:28,004 basehttp 36288 22592 "POST /api/v1/english/news/crawl/ HTTP/1.1" 200 174
+INFO 2025-08-16 08:36:28,077 basehttp 36288 23356 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:39,863 basehttp 36288 31452 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:40,535 basehttp 36288 43600 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:40,964 basehttp 36288 33108 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:42,051 basehttp 36288 39840 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:42,515 basehttp 36288 36876 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:42,981 basehttp 36288 35224 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:43,448 basehttp 36288 43400 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:43,876 basehttp 36288 41132 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:47,199 basehttp 36288 39280 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:47,806 basehttp 36288 27900 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:48,302 basehttp 36288 36004 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:48,574 basehttp 36288 22108 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:48,930 basehttp 36288 15756 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:49,229 basehttp 36288 24128 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:49,440 basehttp 36288 20044 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:49,670 basehttp 36288 43736 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:50,080 basehttp 36288 24716 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:36:52,745 fundus_crawler 36288 28132 开始爬取 cnn 的新闻...
+ERROR 2025-08-16 08:36:52,746 fundus_crawler 36288 28132 发布者 cnn 在Fundus中不可用
+INFO 2025-08-16 08:36:52,806 basehttp 36288 28132 "POST /api/v1/english/news/crawl/ HTTP/1.1" 200 171
+INFO 2025-08-16 08:36:52,924 basehttp 36288 36644 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 90
+INFO 2025-08-16 08:37:01,607 fundus_crawler 36288 25344 开始爬取 the_guardian 的新闻...
+INFO 2025-08-16 08:37:05,682 base_parser 36288 25712 Couldn't parse attribute 'images' for 'https://www.theguardian.com/world/live/2025/aug/15/trump-putin-alaska-meeting-summit-news-updates': Bounds could not be determined
+INFO 2025-08-16 08:37:06,675 fundus_crawler 36288 25344 成功解析 the_guardian 文章: No deal, and no answers, after brief Trump-Putin t...
+INFO 2025-08-16 08:37:07,629 fundus_crawler 36288 25344 成功解析 the_guardian 文章: Trump says Xi told him China will not invade Taiwa...
+INFO 2025-08-16 08:37:08,582 fundus_crawler 36288 25344 成功解析 the_guardian 文章: Tuvalu considers pulling out of Pacific leaders’ s...
+INFO 2025-08-16 08:37:09,745 fundus_crawler 36288 25344 成功解析 the_guardian 文章: Police investigate after Antoine Semenyo reports r...
+INFO 2025-08-16 08:37:11,054 fundus_crawler 36288 25344 成功解析 the_guardian 文章: Sudoku 7,004 expert...
+INFO 2025-08-16 08:37:11,928 fundus_crawler 36288 25344 成功解析 the_guardian 文章: Killer sudoku 983...
+INFO 2025-08-16 08:37:12,774 fundus_crawler 36288 25344 成功解析 the_guardian 文章: Fuzzy hats and a ban on swearing: the New Zealand ...
+INFO 2025-08-16 08:37:13,638 fundus_crawler 36288 25344 成功解析 the_guardian 文章: Rybakina happy to have controversial coach back as...
+INFO 2025-08-16 08:37:14,718 fundus_crawler 36288 25344 成功解析 the_guardian 文章: Hugo Ekitiké makes another good impression but the...
+INFO 2025-08-16 08:37:15,599 fundus_crawler 36288 25344 成功解析 the_guardian 文章: Washington DC and White House agree to scale back ...
+INFO 2025-08-16 08:37:15,962 fundus_crawler 36288 25344 the_guardian 爬取完成，共获取 10 条新闻
+INFO 2025-08-16 08:37:18,376 fundus_crawler 36288 25344 图片下载成功: 61e6029c_dad383b5.jpg
+INFO 2025-08-16 08:37:18,493 fundus_crawler 36288 25344 保存Fundus新闻成功(1032词): No deal, and no answers, after brief Trump-Putin t...
+INFO 2025-08-16 08:37:19,734 fundus_crawler 36288 25344 图片下载成功: e68c71f3_4e49c36e.jpg
+INFO 2025-08-16 08:37:19,739 fundus_crawler 36288 25344 保存Fundus新闻成功(258词): Trump says Xi told him China will not invade Taiwa...
+INFO 2025-08-16 08:37:21,239 fundus_crawler 36288 25344 图片下载成功: 1e89edec_1e8cab51.jpg
+INFO 2025-08-16 08:37:21,245 fundus_crawler 36288 25344 保存Fundus新闻成功(844词): Tuvalu considers pulling out of Pacific leaders’ s...
+INFO 2025-08-16 08:37:22,290 fundus_crawler 36288 25344 图片下载成功: 2c04b0a7_3c3e7c98.jpg
+INFO 2025-08-16 08:37:22,297 fundus_crawler 36288 25344 保存Fundus新闻成功(410词): Police investigate after Antoine Semenyo reports r...
+INFO 2025-08-16 08:37:23,457 fundus_crawler 36288 25344 图片下载成功: b54f1d2f_cdf44939.jpg
+INFO 2025-08-16 08:37:23,462 fundus_crawler 36288 25344 保存Fundus新闻成功(51词): Sudoku 7,004 expert...
+INFO 2025-08-16 08:37:24,922 fundus_crawler 36288 25344 图片下载成功: b9713a1c_ce739f25.jpg
+INFO 2025-08-16 08:37:24,928 fundus_crawler 36288 25344 保存Fundus新闻成功(66词): Killer sudoku 983...
+INFO 2025-08-16 08:37:26,148 fundus_crawler 36288 25344 图片下载成功: f1d2246e_fe5b24a4.jpg
+INFO 2025-08-16 08:37:26,153 fundus_crawler 36288 25344 保存Fundus新闻成功(583词): Fuzzy hats and a ban on swearing: the New Zealand ...
+INFO 2025-08-16 08:37:27,296 fundus_crawler 36288 25344 图片下载成功: 618140b6_9d11208f.jpg
+INFO 2025-08-16 08:37:27,304 fundus_crawler 36288 25344 保存Fundus新闻成功(575词): Rybakina happy to have controversial coach back as...
+INFO 2025-08-16 08:37:28,764 fundus_crawler 36288 25344 图片下载成功: e53d70a8_f396d125.jpg
+INFO 2025-08-16 08:37:28,769 fundus_crawler 36288 25344 保存Fundus新闻成功(890词): Hugo Ekitiké makes another good impression but the...
+INFO 2025-08-16 08:37:29,949 fundus_crawler 36288 25344 图片下载成功: e867f916_df0ca0dc.jpg
+INFO 2025-08-16 08:37:29,958 fundus_crawler 36288 25344 保存Fundus新闻成功(874词): Washington DC and White House agree to scale back ...
+INFO 2025-08-16 08:37:29,958 fundus_crawler 36288 25344 Fundus新闻保存完成，保存/更新 10 条
+INFO 2025-08-16 08:37:30,099 basehttp 36288 25344 "POST /api/v1/english/news/crawl/ HTTP/1.1" 200 183
+INFO 2025-08-16 08:37:30,179 basehttp 36288 33584 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 44262
+INFO 2025-08-16 08:37:30,418 basehttp 36288 37660 "GET /media/news_images/e68c71f3_4e49c36e.jpg HTTP/1.1" 200 94173
+INFO 2025-08-16 08:37:30,463 basehttp 36288 11836 "GET /media/news_images/618140b6_9d11208f.jpg HTTP/1.1" 200 66113
+INFO 2025-08-16 08:37:30,471 basehttp 36288 29376 "GET /media/news_images/61e6029c_dad383b5.jpg HTTP/1.1" 200 64483
+INFO 2025-08-16 08:37:30,473 basehttp 36288 31080 "GET /media/news_images/e867f916_df0ca0dc.jpg HTTP/1.1" 200 104110
+INFO 2025-08-16 08:37:30,507 basehttp 36288 26268 "GET /media/news_images/f1d2246e_fe5b24a4.jpg HTTP/1.1" 200 128559
+INFO 2025-08-16 08:37:30,515 basehttp 36288 29204 "GET /media/news_images/e53d70a8_f396d125.jpg HTTP/1.1" 200 95160
+INFO 2025-08-16 08:37:30,603 basehttp 36288 38716 "GET /media/news_images/b54f1d2f_cdf44939.jpg HTTP/1.1" 200 44373
+INFO 2025-08-16 08:37:30,606 basehttp 36288 3700 "GET /media/news_images/1e89edec_1e8cab51.jpg HTTP/1.1" 200 178073
+INFO 2025-08-16 08:37:30,617 basehttp 36288 19164 "GET /media/news_images/2c04b0a7_3c3e7c98.jpg HTTP/1.1" 200 57852
+INFO 2025-08-16 08:37:30,619 basehttp 36288 29420 "GET /media/news_images/b9713a1c_ce739f25.jpg HTTP/1.1" 200 64040
+INFO 2025-08-16 08:38:22,521 basehttp 36288 42872 "GET /api/v1/english/news/179/ HTTP/1.1" 200 2450
+INFO 2025-08-16 08:38:51,585 basehttp 36288 27924 "GET /media/news_images/e867f916_df0ca0dc.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 08:38:51,624 basehttp 36288 33984 "GET /api/v1/english/news/fundus_publishers/ HTTP/1.1" 200 11188
+INFO 2025-08-16 08:38:51,641 basehttp 36288 36456 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 44262
+INFO 2025-08-16 08:38:51,659 basehttp 36288 22756 "GET /media/news_images/618140b6_9d11208f.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 08:38:51,659 basehttp 36288 37748 "GET /media/news_images/61e6029c_dad383b5.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 08:38:51,670 basehttp 36288 4768 "GET /media/news_images/e53d70a8_f396d125.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 08:38:51,832 basehttp 36288 38044 "GET /media/news_images/b9713a1c_ce739f25.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 08:38:51,909 basehttp 36288 4328 "GET /media/news_images/2c04b0a7_3c3e7c98.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 08:38:51,925 basehttp 36288 14076 "GET /media/news_images/1e89edec_1e8cab51.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 08:38:51,932 basehttp 36288 38464 "GET /media/news_images/f1d2246e_fe5b24a4.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 08:38:51,957 basehttp 36288 34676 "GET /media/news_images/b54f1d2f_cdf44939.jpg HTTP/1.1" 304 0
+INFO 2025-08-16 08:42:26,593 basehttp 36288 29204 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 44262
+INFO 2025-08-16 08:42:27,289 basehttp 36288 31308 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 44262
+INFO 2025-08-16 08:42:47,699 fundus_crawler 36288 14744 开始爬取 stack_overflow 的新闻...
+ERROR 2025-08-16 08:42:47,700 fundus_crawler 36288 14744 发布者 stack_overflow 在Fundus中不可用
+INFO 2025-08-16 08:42:47,772 basehttp 36288 14744 "POST /api/v1/english/news/crawl/ HTTP/1.1" 200 182
+INFO 2025-08-16 08:42:47,896 basehttp 36288 33908 "GET /api/v1/english/news/?page=1&page_size=10&q=&category=&ordering=-published_at HTTP/1.1" 200 44262
