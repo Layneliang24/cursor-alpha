@@ -64,7 +64,7 @@
               <el-icon><Notebook /></el-icon>
               <span>单词学习</span>
             </router-link>
-            <router-link to="/english/news" class="dropdown-item" @click="closeEnglishDropdown">
+            <router-link to="/english/news-dashboard" class="dropdown-item" @click="closeEnglishDropdown">
               <el-icon><Notification /></el-icon>
               <span>英语新闻</span>
             </router-link>

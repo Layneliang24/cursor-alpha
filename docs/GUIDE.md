@@ -98,6 +98,11 @@ python -m pytest ../tests/ -v
 2. **英语学习模块测试**
    - 词汇学习：http://localhost:5173/english/vocabulary
    - 智能练习：http://localhost:5173/english/practice
+   - **新闻爬取测试**：http://localhost:5173/english/news-dashboard
+     - 测试爬取设置（选择新闻源、设置爬取数量）
+     - 验证新闻爬取功能（Fundus爬虫）
+     - 检查新闻图片显示
+     - 测试新闻管理功能（删除、可见性设置）
    - 阅读训练：http://localhost:5173/english/reading
 
 3. **新闻爬虫测试**

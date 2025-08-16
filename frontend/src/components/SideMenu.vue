@@ -47,7 +47,7 @@
           <router-link class="nav-link" to="/english/expressions" :class="{ active: $route.path.startsWith('/english/expressions') }">
             <el-icon class="me-2"><ChatDotRound /></el-icon>地道表达
           </router-link>
-          <router-link class="nav-link" to="/english/news" :class="{ active: $route.path.startsWith('/english/news') }">
+          <router-link class="nav-link" to="/english/news-dashboard" :class="{ active: $route.path.startsWith('/english/news') }" @click="handleNewsClick">
             <el-icon class="me-2"><Notification /></el-icon>英语新闻
           </router-link>
           <router-link class="nav-link" to="/english/api-integration" :class="{ active: $route.path === '/english/api-integration' }">
@@ -104,6 +104,13 @@ const stats = ref({
   total_articles: 0,
   total_users: 0
 })
+
+// 处理英语新闻点击
+const handleNewsClick = () => {
+  console.log('英语新闻链接被点击')
+  console.log('当前路由:', window.location.pathname)
+  console.log('目标路由: /english/news-dashboard')
+}
 
 // 获取分类数据（兼容多种返回结构）
 const fetchCategories = async () => {

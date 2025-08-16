@@ -465,10 +465,10 @@ class FundusCrawlerService:
 
         for item in news_items:
             try:
-                # 计算词数并做最低内容长度校验（避免保存空/极短内容）
+                # 删除字数限制，只要内容不为空就保存
                 word_count = len(item.content.split()) if item.content else 0
-                if word_count < 50:
-                    logger.warning(f"新闻内容太短({word_count}词)，跳过: {item.title[:50]}")
+                if not item.content or word_count == 0:
+                    logger.warning(f"新闻内容为空，跳过: {item.title[:50]}")
                     continue
 
                 # 统一处理图片：尝试下载到本地；失败则保留原外链

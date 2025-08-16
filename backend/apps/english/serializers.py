@@ -70,6 +70,9 @@ class ExpressionSerializer(serializers.ModelSerializer):
 
 
 class NewsSerializer(serializers.ModelSerializer):
+    # 格式化发布日期，只显示日期不显示时间
+    publish_date = serializers.DateField(format='%Y-%m-%d', read_only=True)
+    
     class Meta:
         model = News
         fields = [

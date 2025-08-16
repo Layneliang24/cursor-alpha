@@ -17,10 +17,28 @@
       <span>文章</span>
     </el-menu-item>
     
-    <el-menu-item index="/english/words">
-      <el-icon><Document /></el-icon>
-      <span>英语学习</span>
-    </el-menu-item>
+    <el-sub-menu index="english">
+      <template #title>
+        <el-icon><Document /></el-icon>
+        <span>英语学习</span>
+      </template>
+      <el-menu-item index="/english/news-dashboard">
+        <el-icon><Notification /></el-icon>
+        新闻仪表板
+      </el-menu-item>
+      <el-menu-item index="/english/words">
+        <el-icon><Document /></el-icon>
+        单词学习
+      </el-menu-item>
+      <el-menu-item index="/english/expressions">
+        <el-icon><ChatDotRound /></el-icon>
+        地道表达
+      </el-menu-item>
+      <el-menu-item index="/english/news">
+        <el-icon><List /></el-icon>
+        新闻列表
+      </el-menu-item>
+    </el-sub-menu>
     
     <template v-if="!authStore.isAuthenticated">
       <el-menu-item index="/login">
@@ -68,6 +86,17 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { 
+  HomeFilled, 
+  Document, 
+  User, 
+  UserFilled, 
+  EditPen, 
+  SwitchButton,
+  Notification,
+  ChatDotRound,
+  List
+} from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()

@@ -105,15 +105,17 @@ class EnhancedNewsCrawler:
             
             # 通用文章内容提取策略
             content_selectors = [
-                'article p',
+                # BBC特定选择器（优先）
+                '[data-component="text-block"]',
+                '.zn-body__paragraph',
+                '.article-body p',
                 '.story-body p',
-                '.article-body p', 
+                '.pg-rail-tall__body p',
+                # 通用选择器
+                'article p',
                 '.post-content p',
                 '.entry-content p',
                 '.content p',
-                '[data-component="text-block"]',
-                '.zn-body__paragraph',
-                '.pg-rail-tall__body p',
                 '.article__content p',
                 '.story__content p',
                 '.article-text p',
@@ -123,7 +125,6 @@ class EnhancedNewsCrawler:
                 '.main_content p',
                 '.article-content p',
                 '.content-wrapper p',
-                '.article-body p',
                 '.story-content p'
             ]
             
@@ -143,20 +144,19 @@ class EnhancedNewsCrawler:
             if content_parts:
                 full_content = ' '.join(content_parts)
                 
-                # 确保内容足够长（降低要求到100个单词）
+                # 删除字数限制，只要提取到内容就返回
                 word_count = len(full_content.split())
-                if word_count >= 100:
-                    logger.info(f"成功提取文章内容，共 {word_count} 个单词")
-                    return {
-                        'content': full_content,
-                        'image_url': image_url,
-                        'image_alt': image_alt
-                    }
-                else:
-                    logger.warning(f"文章内容太短，只有 {word_count} 个单词，跳过")
-                    return None
+                logger.info(f"成功提取文章内容，共 {word_count} 个单词")
+                return {
+                    'content': full_content,
+                    'image_url': image_url,
+                    'image_alt': image_alt
+                }
             
+            # 详细记录无法提取内容的原因
             logger.warning(f"无法提取文章内容: {url}")
+            logger.warning(f"尝试的选择器: {content_selectors}")
+            logger.warning(f"页面标题: {soup.title.string if soup.title else '无标题'}")
             return None
             
         except Exception as e:
@@ -560,11 +560,17 @@ class TechCrunchNewsCrawler(EnhancedNewsCrawler):
     
     def __init__(self):
         super().__init__('TechCrunch')
+        # 更新RSS源，使用更可靠的源
         self.rss_feeds = [
             'https://techcrunch.com/feed/',
             'https://techcrunch.com/category/artificial-intelligence/feed/',
-            'https://techcrunch.com/category/startups/feed/'
+            'https://techcrunch.com/category/startups/feed/',
+            'https://techcrunch.com/category/enterprise/feed/',
+            'https://techcrunch.com/category/security/feed/'
         ]
+        # 增加重试次数和延迟
+        self.max_retries = 3
+        self.retry_delay = 2
     
     def crawl_news_list(self) -> List[NewsItem]:
         """抓取TechCrunch新闻列表"""
@@ -572,23 +578,29 @@ class TechCrunchNewsCrawler(EnhancedNewsCrawler):
         
         for rss_url in self.rss_feeds:
             try:
+                logger.info(f"正在处理TechCrunch RSS源: {rss_url}")
                 soup = self.get_rss_content(rss_url)
                 if not soup:
+                    logger.warning(f"无法获取RSS内容: {rss_url}")
                     continue
                 
                 items = soup.find_all('item')
                 logger.info(f"从 {rss_url} 找到 {len(items)} 个RSS条目")
                 
-                for item in items[:5]:  # 每个RSS源最多处理5条
+                if not items:
+                    logger.warning(f"RSS源 {rss_url} 没有找到条目")
+                    continue
+                
+                for item in items[:6]:  # 每个RSS源最多处理6条
                     news_item = self._parse_rss_item(item)
                     if news_item:
                         news_items.append(news_item)
                         logger.info(f"成功解析TechCrunch新闻: {news_item.title[:50]}...")
                     
-                    if len(news_items) >= 10:
+                    if len(news_items) >= 15:  # 增加最大新闻数量
                         break
                 
-                if len(news_items) >= 10:
+                if len(news_items) >= 15:
                     break
                     
             except Exception as e:
@@ -599,45 +611,73 @@ class TechCrunchNewsCrawler(EnhancedNewsCrawler):
         return news_items
     
     def _parse_rss_item(self, item) -> Optional[NewsItem]:
-        """解析TechCrunch RSS条目"""
-        try:
-            title_elem = item.find('title')
-            link_elem = item.find('link')
-            description_elem = item.find('description')
-            pub_date_elem = item.find('pubDate')
-            
-            if not title_elem or not link_elem:
-                return None
-            
-            title = self.clean_text(title_elem.get_text())
-            url = link_elem.get_text().strip()
-            
-            # 获取完整文章内容和图片
-            article_data = self.get_article_content(url)
-            if not article_data:
-                logger.warning(f"无法获取完整内容，跳过: {title[:50]}")
-                return None
-            
-            published_at = timezone.now()
-            if pub_date_elem:
-                published_at = self.parse_date(pub_date_elem.get_text())
-            
-            return NewsItem(
-                title=title,
-                content=article_data['content'],
-                url=url,
-                source='TechCrunch',
-                published_at=published_at,
-                summary=self.extract_summary(article_data['content']),
-                difficulty_level=self.determine_difficulty(article_data['content']),
-                tags=self.extract_tags(article_data['content'], 'TechCrunch'),
-                image_url=article_data['image_url'],
-                image_alt=article_data['image_alt']
-            )
-            
-        except Exception as e:
-            logger.error(f"解析TechCrunch RSS条目失败: {str(e)}")
-            return None
+        """解析TechCrunch RSS条目，增加重试机制"""
+        
+        for attempt in range(self.max_retries):
+            try:
+                title_elem = item.find('title')
+                link_elem = item.find('link')
+                description_elem = item.find('description')
+                pub_date_elem = item.find('pubDate')
+                
+                if not title_elem or not link_elem:
+                    logger.warning("RSS条目缺少标题或链接")
+                    return None
+                
+                title = self.clean_text(title_elem.get_text())
+                url = link_elem.get_text().strip()
+                
+                # 验证URL格式
+                if not url.startswith('http'):
+                    logger.warning(f"无效的URL格式: {url}")
+                    return None
+                
+                logger.info(f"正在获取文章内容: {title[:50]}...")
+                
+                # 获取完整文章内容和图片
+                article_data = self.get_article_content(url)
+                if not article_data:
+                    if attempt < self.max_retries - 1:
+                        logger.warning(f"第{attempt + 1}次尝试获取内容失败，将重试: {title[:50]}")
+                        time.sleep(self.retry_delay)
+                        continue
+                    else:
+                        logger.warning(f"无法获取完整内容，跳过: {title[:50]}")
+                        return None
+                
+                # 验证内容质量
+                content_length = len(article_data['content'])
+                if content_length < 100:  # 降低最小内容长度要求
+                    logger.warning(f"文章内容太短({content_length}字符)，跳过: {title[:50]}")
+                    return None
+                
+                published_at = timezone.now()
+                if pub_date_elem:
+                    published_at = self.parse_date(pub_date_elem.get_text())
+                
+                return NewsItem(
+                    title=title,
+                    content=article_data['content'],
+                    url=url,
+                    source='TechCrunch',
+                    published_at=published_at,
+                    summary=self.extract_summary(article_data['content']),
+                    difficulty_level=self.determine_difficulty(article_data['content']),
+                    tags=self.extract_tags(article_data['content'], 'TechCrunch'),
+                    image_url=article_data['image_url'],
+                    image_alt=article_data['image_alt']
+                )
+                
+            except Exception as e:
+                if attempt < self.max_retries - 1:
+                    logger.warning(f"第{attempt + 1}次解析失败，将重试: {str(e)}")
+                    time.sleep(self.retry_delay)
+                    continue
+                else:
+                    logger.error(f"解析TechCrunch RSS条目失败: {str(e)}")
+                    return None
+        
+        return None
 
 
 class EnhancedNewsCrawlerService:
@@ -703,13 +743,13 @@ class EnhancedNewsCrawlerService:
             try:
                 # 检查是否已存在相同URL的新闻
                 if News.objects.filter(source_url=item.url).exists():
-                    logger.info(f"新闻已存在，跳过: {item.title[:50]}...")
+                    logger.info(f"新闻已存在，跳过: {item.title[:50]}... (URL: {item.url})")
                     continue
                 
-                # 再次确认内容长度
+                # 删除字数限制，只要内容不为空就保存
                 word_count = len(item.content.split()) if item.content else 0
-                if word_count < 50:  # 进一步降低最小字数要求
-                    logger.warning(f"新闻内容太短({word_count}词)，跳过: {item.title[:50]}")
+                if not item.content or word_count == 0:
+                    logger.warning(f"新闻内容为空，跳过: {item.title[:50]} (URL: {item.url})")
                     continue
                 
                 # 创建新闻记录
