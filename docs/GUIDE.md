@@ -60,6 +60,35 @@
 
 ## 🧪 本地测试指南
 
+### 自动化测试
+```bash
+# Windows
+run_tests.bat
+
+# PowerShell
+.\run_tests.ps1
+
+# 手动运行
+cd backend
+python -m pytest ../tests/ -v
+```
+
+### 测试类型
+1. **单元测试** (`tests/unit/`)
+   - 基础功能测试：数据库连接、用户创建、管理命令
+   - 模型测试：所有数据模型的CRUD操作
+   - MySQL连接测试：数据库配置验证
+
+2. **集成测试** (`tests/integration/`)
+   - API端点测试：认证、文章、英语学习、新闻
+   - 权限测试：用户权限验证
+   - 数据库集成测试
+
+3. **测试覆盖率**
+   - 目标覆盖率：> 80%
+   - 生成HTML报告：`htmlcov/index.html`
+   - 命令行报告：显示未覆盖代码行
+
 ### 功能测试
 1. **导航测试**
    - 访问 http://localhost:5173
@@ -90,14 +119,14 @@
    # Fundus爬虫: bbc, cnn, reuters, techcrunch, the_guardian, the_new_york_times, wired, ars_technica, hacker_news, stack_overflow
    
    # 图片功能
-# - 自动下载新闻图片到 media/news_images/ 目录
-# - 支持多种图片格式（jpg, png, gif等）
-# - 使用唯一文件名避免重复
-# - 图片可通过 /media/news_images/ 路径访问
-# - 新闻内容和图片严格对应，确保完整性
+   # - 自动下载新闻图片到 media/news_images/ 目录
+   # - 支持多种图片格式（jpg, png, gif等）
+   # - 使用唯一文件名避免重复
+   # - 图片可通过 /media/news_images/ 路径访问
+   # - 新闻内容和图片严格对应，确保完整性
 
-# 新闻管理功能
-# - 支持单条新闻删除（同时删除对应图片）
+   # 新闻管理功能
+   # - 支持单条新闻删除（同时删除对应图片）
 # - 支持批量删除新闻
 # - 按来源筛选（BBC、TechCrunch、The Guardian等）
 # - 按难度筛选（初级、中级、高级）

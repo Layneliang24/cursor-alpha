@@ -1,34 +1,28 @@
 @echo off
-echo ========================================
-echo Alpha 项目测试运行脚本
-echo ========================================
+echo 正在运行测试套件...
 
+echo.
+echo 1. 检查测试环境...
 cd backend
+python -c "import django; print('Django版本:', django.get_version())"
+python -c "import pytest; print('pytest版本:', pytest.__version__)"
 
 echo.
-echo 1. 检查Python环境...
-python --version
-if %errorlevel% neq 0 (
-    echo 错误: Python未安装或未配置PATH
-    pause
-    exit /b 1
-)
+echo 2. 运行单元测试...
+python -m pytest ../tests/unit/ -v --tb=short
 
 echo.
-echo 2. 安装测试依赖...
-pip install pytest pytest-django pytest-cov factory-boy faker
+echo 3. 运行集成测试...
+python -m pytest ../tests/integration/ -v --tb=short
 
 echo.
-echo 3. 运行数据库迁移...
-python manage.py migrate
+echo 4. 生成覆盖率报告...
+python -m pytest ../tests/ --cov=apps --cov-report=html --cov-report=term-missing
 
 echo.
-echo 4. 运行测试...
-cd tests
-pytest --cov=apps --cov-report=html --cov-report=term-missing
+echo 5. 运行快速测试...
+python -m pytest ../tests/ -m fast -v
 
 echo.
-echo 5. 测试完成！
-echo 覆盖率报告位置: tests/htmlcov/index.html
-echo.
-pause
+echo 测试完成！
+echo 覆盖率报告位置: htmlcov/index.html

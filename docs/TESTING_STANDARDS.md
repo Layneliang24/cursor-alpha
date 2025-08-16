@@ -1,434 +1,267 @@
-# Alpha 项目测试规范
+# 测试规范文档
 
-## 📋 目录
-- [测试架构](#测试架构)
-- [测试编写规范](#测试编写规范)
-- [测试数据管理](#测试数据管理)
-- [测试覆盖率要求](#测试覆盖率要求)
-- [测试运行规范](#测试运行规范)
+## 📋 概述
 
----
+本文档规定了Alpha项目的测试规范和标准，确保代码质量和功能可靠性。
 
-## 🏗️ 测试架构
+## 🎯 测试目标
 
-### 测试金字塔
-```
-┌─────────────────────────────────────┐
-│           E2E测试 (10%)              │  ← 用户流程测试
-├─────────────────────────────────────┤
-│        集成测试 (20%)                │  ← API和模块交互
-├─────────────────────────────────────┤
-│        单元测试 (70%)                │  ← 核心业务逻辑
-└─────────────────────────────────────┘
-```
+- **覆盖率目标**：> 80%
+- **测试类型**：单元测试、集成测试、端到端测试
+- **自动化程度**：100%自动化
+- **执行频率**：每次代码提交、每次功能开发
 
-### 目录结构
+## 📁 测试结构
+
 ```
 tests/
-├── conftest.py              # 全局测试配置
-├── factories/               # 测试数据工厂
+├── unit/                    # 单元测试
+│   ├── test_basic.py       # 基础功能测试
+│   ├── test_models.py      # 模型测试
+│   ├── test_mysql_connection.py  # 数据库连接测试
+│   └── test_simple.py      # 简化测试
+├── integration/            # 集成测试
+│   └── test_api.py         # API集成测试
+├── e2e/                    # 端到端测试（待开发）
+├── factories/              # 测试数据工厂
 │   ├── user_factory.py
 │   ├── article_factory.py
 │   └── category_factory.py
-├── unit/                   # 单元测试
-│   ├── test_models.py
-│   ├── test_views.py
-│   └── test_serializers.py
-├── integration/            # 集成测试
-│   ├── test_api.py
-│   └── test_auth.py
-├── e2e/                   # 端到端测试
-│   └── test_user_flows.py
-└── utils/                 # 测试工具
-    ├── test_helpers.py
-    └── mock_data.py
+├── fixtures/               # 测试数据
+│   └── english_seed.json
+├── conftest.py            # pytest配置
+├── pytest.ini            # pytest设置
+└── README.md             # 测试说明
 ```
 
----
+## 🧪 测试类型
 
-## 📝 测试编写规范
+### 1. 单元测试 (Unit Tests)
+- **位置**：`tests/unit/`
+- **范围**：单个函数、方法、类
+- **特点**：快速、独立、可重复
+- **工具**：pytest + Django TestCase
 
-### 命名规范
-
-#### 测试文件命名
-- 单元测试: `test_<模块名>.py`
-- 集成测试: `test_<功能>_integration.py`
-- E2E测试: `test_<用户流程>_e2e.py`
-
-#### 测试类命名
+**示例**：
 ```python
-class TestUserModel:          # 模型测试
-class TestArticleAPI:         # API测试
-class TestUserAuthentication: # 功能测试
+def test_user_creation(self):
+    """测试用户创建"""
+    user = User.objects.create_user(
+        username='testuser',
+        email='test@example.com',
+        password='testpass123'
+    )
+    self.assertEqual(user.username, 'testuser')
+    self.assertEqual(user.email, 'test@example.com')
 ```
 
-#### 测试方法命名
+### 2. 集成测试 (Integration Tests)
+- **位置**：`tests/integration/`
+- **范围**：模块间交互、API端点
+- **特点**：测试组件协作
+- **工具**：pytest + DRF APIClient
+
+**示例**：
 ```python
-def test_create_user_success():           # 成功场景
-def test_create_user_with_invalid_data(): # 失败场景
-def test_user_login_with_valid_credentials(): # 具体功能
+def test_article_api(self):
+    """测试文章API"""
+    url = reverse('article-list')
+    response = self.client.get(url)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 ```
 
-### 测试结构规范
+### 3. 端到端测试 (E2E Tests)
+- **位置**：`tests/e2e/`
+- **范围**：完整用户流程
+- **特点**：真实浏览器环境
+- **工具**：Selenium/Playwright（待实现）
 
-#### 单元测试模板
-```python
-import pytest
-from django.test import TestCase
+## 🔧 测试工具
 
-@pytest.mark.django_db
-class TestUserModel:
-    """用户模型测试"""
-    
-    def test_create_user_success(self, user_factory):
-        """测试成功创建用户"""
-        # Arrange
-        user_data = {
-            'username': 'testuser',
-            'email': 'test@example.com'
-        }
-        
-        # Act
-        user = user_factory(**user_data)
-        
-        # Assert
-        assert user.username == 'testuser'
-        assert user.email == 'test@example.com'
-    
-    def test_user_str_representation(self, user_factory):
-        """测试用户字符串表示"""
-        user = user_factory(username='testuser')
-        assert str(user) == 'testuser'
-```
+### 核心工具
+- **pytest**: 测试框架
+- **pytest-django**: Django集成
+- **pytest-cov**: 覆盖率报告
+- **factory-boy**: 测试数据生成
 
-#### API测试模板
-```python
-import pytest
-from django.urls import reverse
-from rest_framework import status
-
-@pytest.mark.django_db
-class TestArticleAPI:
-    """文章API测试"""
-    
-    def test_get_articles_list(self, api_client, article_factory):
-        """测试获取文章列表"""
-        # Arrange
-        article_factory(status='published')
-        article_factory(status='published')
-        
-        # Act
-        url = reverse('api:articles-list')
-        response = api_client.get(url)
-        
-        # Assert
-        assert response.status_code == status.HTTP_200_OK
-        assert 'results' in response.data
-        assert len(response.data['results']) == 2
-```
-
-### 测试数据规范
-
-#### 使用工厂模式
-```python
-# 好的做法
-def test_create_article(self, article_factory, user_factory):
-    user = user_factory()
-    article = article_factory(author=user)
-    assert article.author == user
-
-# 避免的做法
-def test_create_article(self):
-    user = User.objects.create(username='test', email='test@example.com')
-    article = Article.objects.create(title='Test', author=user)
-    assert article.author == user
-```
-
-#### 测试数据隔离
-```python
-@pytest.mark.django_db
-class TestUserModel:
-    def test_user_creation(self, user_factory):
-        # 每个测试方法都有独立的数据
-        user1 = user_factory()
-        user2 = user_factory()
-        assert user1.id != user2.id
-```
-
----
-
-## 🗄️ 测试数据管理
-
-### 测试数据工厂
-
-#### 用户工厂
-```python
-# tests/factories/user_factory.py
-import factory
-from django.contrib.auth import get_user_model
-
-class UserFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = get_user_model()
-    
-    username = factory.Sequence(lambda n: f'user{n}')
-    email = factory.LazyAttribute(lambda obj: f'{obj.username}@example.com')
-    password = factory.PostGenerationMethodCall('set_password', 'testpass123')
-    first_name = factory.Faker('first_name')
-    last_name = factory.Faker('last_name')
-```
-
-#### 文章工厂
-```python
-# tests/factories/article_factory.py
-import factory
-from apps.articles.models import Article
-
-class ArticleFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Article
-    
-    title = factory.Faker('sentence')
-    content = factory.Faker('text', max_nb_chars=1000)
-    summary = factory.Faker('text', max_nb_chars=200)
-    author = factory.SubFactory('tests.factories.user_factory.UserFactory')
-    category = factory.SubFactory('tests.factories.category_factory.CategoryFactory')
-    status = 'published'
-```
-
-### 测试数据清理
-
-#### 自动清理
-```python
-@pytest.fixture(autouse=True)
-def enable_db_access_for_all_tests(db):
-    """自动启用数据库访问"""
-    pass
-
-@pytest.fixture(autouse=True)
-def cleanup_test_data():
-    """自动清理测试数据"""
-    yield
-    # 测试后清理
-    User.objects.all().delete()
-    Article.objects.all().delete()
-```
-
----
-
-## 📊 测试覆盖率要求
-
-### 覆盖率目标
-- **总体覆盖率**: > 80%
-- **核心业务逻辑**: > 90%
-- **API接口**: > 85%
-- **模型层**: > 95%
-
-### 覆盖率检查
-```bash
-# 运行覆盖率测试
-pytest --cov=apps --cov-report=html --cov-report=term-missing
-
-# 检查覆盖率是否达标
-pytest --cov=apps --cov-fail-under=80
-```
-
-### 覆盖率报告解读
-```bash
-# 生成详细报告
-pytest --cov=apps --cov-report=html --cov-report=term-missing
-
-# 查看报告
-open htmlcov/index.html
-```
-
----
-
-## 🚀 测试运行规范
-
-### 测试命令
-
-#### 开发阶段
-```bash
-# 快速测试（只运行失败的测试）
-pytest --lf
-
-# 运行特定测试
-pytest tests/unit/test_models.py::TestUserModel::test_create_user
-
-# 运行标记的测试
-pytest -m "unit"
-pytest -m "integration"
-pytest -m "slow"
-```
-
-#### CI/CD阶段
-```bash
-# 完整测试套件
-pytest --cov=apps --cov-report=xml --cov-report=html
-
-# 并行测试
-pytest -n auto
-
-# 生成测试报告
-pytest --junitxml=test-results.xml
-```
-
-### 测试标记
-
-#### 测试类型标记
-```python
-@pytest.mark.unit
-def test_user_model():
-    pass
-
-@pytest.mark.integration
-def test_api_integration():
-    pass
-
-@pytest.mark.e2e
-def test_user_flow():
-    pass
-```
-
-#### 性能标记
-```python
-@pytest.mark.slow
-def test_performance():
-    pass
-
-@pytest.mark.fast
-def test_quick():
-    pass
-```
-
-### 测试环境配置
-
-#### 测试设置
-```python
-# tests/conftest.py
-import pytest
-from django.conf import settings
-
-@pytest.fixture(scope='session')
-def django_db_setup(django_db_setup, django_db_blocker):
-    """配置测试数据库"""
-    with django_db_blocker.unblock():
-        # 测试数据库配置
-        settings.DATABASES['default'] = {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': ':memory:',
-        }
-```
-
-#### 环境变量
-```bash
-# 测试环境变量
-export DJANGO_SETTINGS_MODULE=alpha.test_settings
-export TESTING=True
-export COVERAGE=True
-```
-
----
-
-## 🔧 测试工具配置
-
-### pytest配置
+### 配置
 ```ini
-# tests/pytest.ini
+# pytest.ini
 [tool:pytest]
 DJANGO_SETTINGS_MODULE = alpha.settings
 python_files = tests.py test_*.py *_tests.py
-python_classes = Test*
-python_functions = test_*
 addopts = 
     --strict-markers
     --verbose
-    --tb=short
     --cov=apps
     --cov-report=html
-    --cov-report=term-missing
-markers =
-    unit: Unit tests
-    integration: Integration tests
-    e2e: End-to-end tests
-    slow: Slow running tests
+    --cov-fail-under=80
 ```
 
-### 前端测试配置
-```javascript
-// frontend/vitest.config.js
-import { defineConfig } from 'vitest/config'
-import vue from '@vitejs/plugin-vue'
+## 📝 测试编写规范
 
-export default defineConfig({
-  plugins: [vue()],
-  test: {
-    environment: 'jsdom',
-    globals: true,
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-    }
-  }
-})
-```
+### 1. 命名规范
+- **文件命名**：`test_*.py`
+- **类命名**：`Test*` 或 `*Test`
+- **方法命名**：`test_*`
+- **描述性命名**：清晰表达测试目的
 
----
-
-## 📋 测试检查清单
-
-### 编写测试前
-- [ ] 理解业务需求
-- [ ] 确定测试边界
-- [ ] 设计测试数据
-- [ ] 选择测试类型
-
-### 编写测试时
-- [ ] 遵循命名规范
-- [ ] 使用工厂模式
-- [ ] 包含边界条件
-- [ ] 测试异常情况
-
-### 测试完成后
-- [ ] 检查覆盖率
-- [ ] 验证测试独立性
-- [ ] 确保测试可重复
-- [ ] 更新测试文档
-
----
-
-## 🚨 常见问题
-
-### 测试数据冲突
+### 2. 测试结构
 ```python
-# 问题：测试间数据相互影响
-# 解决：使用事务回滚
-@pytest.mark.django_db(transaction=True)
-def test_with_transaction():
-    # 测试结束后自动回滚
-    pass
+class TestFeature(TestCase):
+    """功能测试类"""
+    
+    def setUp(self):
+        """测试前准备"""
+        pass
+    
+    def test_specific_functionality(self):
+        """测试特定功能"""
+        # Arrange: 准备数据
+        # Act: 执行操作
+        # Assert: 验证结果
+        pass
+    
+    def tearDown(self):
+        """测试后清理"""
+        pass
 ```
 
-### 测试性能问题
+### 3. 断言使用
+- 使用明确的断言
+- 提供有意义的错误信息
+- 测试边界条件
+
 ```python
-# 问题：测试运行缓慢
-# 解决：使用数据库复用
-pytest --reuse-db
+# 好的断言
+self.assertEqual(result, expected, "结果不匹配")
+self.assertIn(item, collection, "项目不在集合中")
+
+# 避免的断言
+assert result == expected  # 错误信息不明确
 ```
 
-### 测试环境问题
+### 4. 测试数据管理
+- 使用工厂模式创建测试数据
+- 避免硬编码测试数据
+- 清理测试数据
+
 ```python
-# 问题：测试环境配置错误
-# 解决：使用独立的测试设置
-# settings/test.py
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
-    }
-}
+# 使用工厂
+user = user_factory(username='testuser')
+
+# 避免硬编码
+user = User.objects.create_user(username='testuser', ...)
 ```
+
+## 🚀 测试执行
+
+### 运行命令
+```bash
+# 运行所有测试
+python -m pytest ../tests/ -v
+
+# 运行特定类型测试
+python -m pytest ../tests/unit/ -v
+python -m pytest ../tests/integration/ -v
+
+# 运行标记测试
+python -m pytest ../tests/ -m fast
+python -m pytest ../tests/ -m slow
+
+# 生成覆盖率报告
+python -m pytest ../tests/ --cov=apps --cov-report=html
+```
+
+### 自动化脚本
+```bash
+# 完整测试（包含pytest）
+# Windows
+run_tests.bat
+
+# PowerShell
+.\run_tests.ps1
+
+# 简化测试（避免Django设置问题）
+# Windows
+run_simple_tests.bat
+
+# PowerShell
+.\run_simple_tests.ps1
+
+# 直接运行Django环境测试
+python test_django_setup.py
+```
+
+### 测试类型说明
+1. **简化测试**：`run_simple_tests.bat/.ps1`
+   - 避免复杂的pytest配置问题
+   - 验证Python环境和Django设置
+   - 检查项目结构完整性
+   - 适合快速验证环境
+
+2. **完整测试**：`run_tests.bat/.ps1`
+   - 使用pytest框架
+   - 包含单元测试、集成测试
+   - 生成覆盖率报告
+   - 适合正式测试流程
+
+3. **Django环境测试**：`test_django_setup.py`
+   - 独立验证Django配置
+   - 检查数据库连接
+   - 验证模型导入
+   - 适合环境诊断
+
+## 📊 覆盖率要求
+
+### 覆盖率目标
+- **总体覆盖率**：> 80%
+- **核心模块**：> 90%
+- **新增功能**：100%
+
+### 覆盖率报告
+- HTML报告：`htmlcov/index.html`
+- 命令行报告：显示未覆盖代码行
+- CI/CD集成：自动检查覆盖率
+
+## 🔄 测试流程
+
+### 开发流程
+1. **编写代码** → 2. **编写测试** → 3. **运行测试** → 4. **提交代码**
+
+### 测试检查清单
+- [ ] 新功能有对应测试
+- [ ] 测试覆盖边界条件
+- [ ] 测试通过率100%
+- [ ] 覆盖率达标
+- [ ] 测试文档更新
+
+## ⚠️ 注意事项
+
+### 禁止行为
+- ❌ 跳过测试
+- ❌ 硬编码测试数据
+- ❌ 测试间相互依赖
+- ❌ 不清理测试数据
+
+### 推荐行为
+- ✅ 每个功能都有测试
+- ✅ 使用工厂创建测试数据
+- ✅ 测试独立且可重复
+- ✅ 及时更新测试文档
+
+## 📈 持续改进
+
+### 定期评估
+- 每周检查测试覆盖率
+- 每月评估测试质量
+- 每季度优化测试策略
+
+### 改进方向
+- 增加端到端测试
+- 优化测试执行速度
+- 完善测试文档
+- 集成CI/CD流程
 
 ---
 
