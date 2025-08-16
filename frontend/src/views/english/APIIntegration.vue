@@ -1,178 +1,151 @@
 <template>
-  <div class="api-integration-page">
-    <div class="container mx-auto px-4 py-8">
-      <div class="max-w-6xl mx-auto">
-        <!-- 页面标题 -->
-        <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">API集成管理</h1>
-          <p class="text-gray-600">配置和管理英语学习相关的第三方API服务</p>
-        </div>
+  <div class="api-integration-container">
+    <div class="content-wrapper">
+      <!-- 页面标题 -->
+      <div class="page-header">
+        <h1 class="page-title">API集成管理</h1>
+        <p class="page-subtitle">配置和管理英语学习相关的第三方API服务</p>
+      </div>
 
-        <!-- API服务卡片 -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <!-- 语音合成API -->
-          <div class="bg-white rounded-lg shadow-lg p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h2 class="text-xl font-semibold">语音合成 (TTS)</h2>
-              <div class="flex items-center space-x-2">
-                <div class="w-3 h-3 rounded-full" :class="ttsStatus ? 'bg-green-500' : 'bg-red-500'"></div>
-                <span class="text-sm" :class="ttsStatus ? 'text-green-600' : 'text-red-600'">
-                  {{ ttsStatus ? '已连接' : '未连接' }}
-                </span>
-              </div>
-            </div>
-            
-            <div class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">API密钥</label>
-                <input 
-                  v-model="ttsConfig.apiKey"
-                  type="password"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="输入API密钥"
-                />
-              </div>
-              
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">服务提供商</label>
-                <select 
-                  v-model="ttsConfig.provider"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="google">Google Cloud TTS</option>
-                  <option value="azure">Microsoft Azure</option>
-                  <option value="aws">Amazon Polly</option>
-                  <option value="openai">OpenAI TTS</option>
-                </select>
-              </div>
-              
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">语音设置</label>
-                <div class="grid grid-cols-2 gap-2">
-                  <select 
-                    v-model="ttsConfig.voice"
-                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="en-US">英语 (美国)</option>
-                    <option value="en-GB">英语 (英国)</option>
-                    <option value="en-AU">英语 (澳大利亚)</option>
-                  </select>
-                  <select 
-                    v-model="ttsConfig.speed"
-                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="0.8">慢速</option>
-                    <option value="1.0">正常</option>
-                    <option value="1.2">快速</option>
-                  </select>
-                </div>
-              </div>
-              
-              <button 
-                @click="testTTS"
-                class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md transition-colors"
-              >
-                测试语音合成
-              </button>
-            </div>
-          </div>
-
-          <!-- 语音识别API -->
-          <div class="bg-white rounded-lg shadow-lg p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h2 class="text-xl font-semibold">语音识别 (STT)</h2>
-              <div class="flex items-center space-x-2">
-                <div class="w-3 h-3 rounded-full" :class="sttStatus ? 'bg-green-500' : 'bg-red-500'"></div>
-                <span class="text-sm" :class="sttStatus ? 'text-green-600' : 'text-red-600'">
-                  {{ sttStatus ? '已连接' : '未连接' }}
-                </span>
-              </div>
-            </div>
-            
-            <div class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">API密钥</label>
-                <input 
-                  v-model="sttConfig.apiKey"
-                  type="password"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="输入API密钥"
-                />
-              </div>
-              
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">服务提供商</label>
-                <select 
-                  v-model="sttConfig.provider"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="google">Google Cloud Speech</option>
-                  <option value="azure">Microsoft Azure</option>
-                  <option value="aws">Amazon Transcribe</option>
-                  <option value="openai">OpenAI Whisper</option>
-                </select>
-              </div>
-              
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">识别设置</label>
-                <div class="grid grid-cols-2 gap-2">
-                  <select 
-                    v-model="sttConfig.language"
-                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="en-US">英语 (美国)</option>
-                    <option value="en-GB">英语 (英国)</option>
-                    <option value="en-AU">英语 (澳大利亚)</option>
-                  </select>
-                  <select 
-                    v-model="sttConfig.model"
-                    class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="base">基础模型</option>
-                    <option value="enhanced">增强模型</option>
-                  </select>
-                </div>
-              </div>
-              
-              <button 
-                @click="testSTT"
-                class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md transition-colors"
-              >
-                测试语音识别
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 翻译API -->
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold">翻译服务</h2>
-            <div class="flex items-center space-x-2">
-              <div class="w-3 h-3 rounded-full" :class="translateStatus ? 'bg-green-500' : 'bg-red-500'"></div>
-              <span class="text-sm" :class="translateStatus ? 'text-green-600' : 'text-red-600'">
-                {{ translateStatus ? '已连接' : '未连接' }}
+      <!-- API服务卡片 -->
+      <div class="api-grid">
+        <!-- 语音合成API -->
+        <div class="api-card">
+          <div class="card-header">
+            <h2 class="card-title">语音合成 (TTS)</h2>
+            <div class="status-indicator">
+              <div class="status-dot" :class="ttsStatus ? 'status-connected' : 'status-disconnected'"></div>
+              <span class="status-text" :class="ttsStatus ? 'status-connected' : 'status-disconnected'">
+                {{ ttsStatus ? '已连接' : '未连接' }}
               </span>
             </div>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">API密钥</label>
+          <div class="card-content">
+            <div class="form-group">
+              <label class="form-label">API密钥</label>
               <input 
-                v-model="translateConfig.apiKey"
+                v-model="ttsConfig.apiKey"
                 type="password"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="form-input"
                 placeholder="输入API密钥"
               />
             </div>
             
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">服务提供商</label>
-              <select 
-                v-model="translateConfig.provider"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
+            <div class="form-group">
+              <label class="form-label">服务提供商</label>
+              <select v-model="ttsConfig.provider" class="form-select">
+                <option value="google">Google Cloud TTS</option>
+                <option value="azure">Microsoft Azure</option>
+                <option value="aws">Amazon Polly</option>
+                <option value="openai">OpenAI TTS</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">语音设置</label>
+              <div class="form-row">
+                <select v-model="ttsConfig.voice" class="form-select">
+                  <option value="en-US">英语 (美国)</option>
+                  <option value="en-GB">英语 (英国)</option>
+                  <option value="en-AU">英语 (澳大利亚)</option>
+                </select>
+                <select v-model="ttsConfig.speed" class="form-select">
+                  <option value="0.8">慢速</option>
+                  <option value="1.0">正常</option>
+                  <option value="1.2">快速</option>
+                </select>
+              </div>
+            </div>
+            
+            <button @click="testTTS" class="test-button tts-button">
+              测试语音合成
+            </button>
+          </div>
+        </div>
+
+        <!-- 语音识别API -->
+        <div class="api-card">
+          <div class="card-header">
+            <h2 class="card-title">语音识别 (STT)</h2>
+            <div class="status-indicator">
+              <div class="status-dot" :class="sttStatus ? 'status-connected' : 'status-disconnected'"></div>
+              <span class="status-text" :class="sttStatus ? 'status-connected' : 'status-disconnected'">
+                {{ sttStatus ? '已连接' : '未连接' }}
+              </span>
+            </div>
+          </div>
+          
+          <div class="card-content">
+            <div class="form-group">
+              <label class="form-label">API密钥</label>
+              <input 
+                v-model="sttConfig.apiKey"
+                type="password"
+                class="form-input"
+                placeholder="输入API密钥"
+              />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">服务提供商</label>
+              <select v-model="sttConfig.provider" class="form-select">
+                <option value="google">Google Cloud Speech</option>
+                <option value="azure">Microsoft Azure</option>
+                <option value="aws">Amazon Transcribe</option>
+                <option value="openai">OpenAI Whisper</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">识别设置</label>
+              <div class="form-row">
+                <select v-model="sttConfig.language" class="form-select">
+                  <option value="en-US">英语 (美国)</option>
+                  <option value="en-GB">英语 (英国)</option>
+                  <option value="en-AU">英语 (澳大利亚)</option>
+                </select>
+                <select v-model="sttConfig.model" class="form-select">
+                  <option value="base">基础模型</option>
+                  <option value="enhanced">增强模型</option>
+                </select>
+              </div>
+            </div>
+            
+            <button @click="testSTT" class="test-button stt-button">
+              测试语音识别
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 翻译API -->
+      <div class="api-card full-width">
+        <div class="card-header">
+          <h2 class="card-title">翻译服务</h2>
+          <div class="status-indicator">
+            <div class="status-dot" :class="translateStatus ? 'status-connected' : 'status-disconnected'"></div>
+            <span class="status-text" :class="translateStatus ? 'status-connected' : 'status-disconnected'">
+              {{ translateStatus ? '已连接' : '未连接' }}
+            </span>
+          </div>
+        </div>
+        
+        <div class="card-content">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">API密钥</label>
+              <input 
+                v-model="translateConfig.apiKey"
+                type="password"
+                class="form-input"
+                placeholder="输入API密钥"
+              />
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">服务提供商</label>
+              <select v-model="translateConfig.provider" class="form-select">
                 <option value="google">Google Translate</option>
                 <option value="azure">Microsoft Translator</option>
                 <option value="deepl">DeepL</option>
@@ -180,12 +153,9 @@
               </select>
             </div>
             
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">目标语言</label>
-              <select 
-                v-model="translateConfig.targetLanguage"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
+            <div class="form-group">
+              <label class="form-label">目标语言</label>
+              <select v-model="translateConfig.targetLanguage" class="form-select">
                 <option value="zh-CN">中文 (简体)</option>
                 <option value="zh-TW">中文 (繁体)</option>
                 <option value="ja">日语</option>
@@ -194,54 +164,43 @@
             </div>
           </div>
           
-          <div class="mt-4">
-            <button 
-              @click="testTranslate"
-              class="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md transition-colors"
-            >
+          <div class="button-container">
+            <button @click="testTranslate" class="test-button translate-button">
               测试翻译服务
             </button>
           </div>
         </div>
+      </div>
 
-        <!-- 测试结果 -->
-        <div v-if="testResults.length > 0" class="bg-white rounded-lg shadow-lg p-6">
-          <h2 class="text-xl font-semibold mb-4">测试结果</h2>
-          <div class="space-y-3">
-            <div 
-              v-for="(result, index) in testResults" 
-              :key="index"
-              class="p-3 rounded-lg"
-              :class="result.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'"
-            >
-              <div class="flex items-center justify-between">
-                <div>
-                  <span class="font-medium">{{ result.service }}</span>
-                  <span class="text-sm text-gray-600 ml-2">{{ result.message }}</span>
-                </div>
-                <span class="text-sm" :class="result.success ? 'text-green-600' : 'text-red-600'">
-                  {{ result.success ? '成功' : '失败' }}
-                </span>
-              </div>
+      <!-- 测试结果 -->
+      <div v-if="testResults.length > 0" class="results-card">
+        <h2 class="results-title">测试结果</h2>
+        <div class="results-list">
+          <div 
+            v-for="(result, index) in testResults" 
+            :key="index"
+            class="result-item"
+            :class="result.success ? 'result-success' : 'result-error'"
+          >
+            <div class="result-content">
+              <span class="result-service">{{ result.service }}</span>
+              <span class="result-message">{{ result.message }}</span>
             </div>
+            <span class="result-status" :class="result.success ? 'result-success' : 'result-error'">
+              {{ result.success ? '成功' : '失败' }}
+            </span>
           </div>
         </div>
+      </div>
 
-        <!-- 保存按钮 -->
-        <div class="flex justify-end space-x-4 mt-8">
-          <button 
-            @click="resetConfig"
-            class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-md transition-colors"
-          >
-            重置配置
-          </button>
-          <button 
-            @click="saveConfig"
-            class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-md transition-colors"
-          >
-            保存配置
-          </button>
-        </div>
+      <!-- 保存按钮 -->
+      <div class="action-buttons">
+        <button @click="resetConfig" class="action-button reset-button">
+          重置配置
+        </button>
+        <button @click="saveConfig" class="action-button save-button">
+          保存配置
+        </button>
       </div>
     </div>
   </div>
@@ -433,8 +392,297 @@ export default {
 </script>
 
 <style scoped>
-.api-integration-page {
+/* 基础样式 */
+.api-integration-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f0f4ff 0%, #e6f3ff 100%);
+  padding: 2rem 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 页面标题 */
+.page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1a202c;
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  font-size: 1.125rem;
+  color: #4a5568;
+}
+
+/* API网格 */
+.api-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* API卡片 */
+.api-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.api-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}
+
+.status-connected {
+  background: #38a169;
+  color: #38a169;
+}
+
+.status-disconnected {
+  background: #e53e3e;
+  color: #e53e3e;
+}
+
+.status-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+/* 表单样式 */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+/* 测试按钮 */
+.test-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: white;
+}
+
+.tts-button {
+  background: #3182ce;
+}
+
+.tts-button:hover {
+  background: #2c5aa0;
+}
+
+.stt-button {
+  background: #38a169;
+}
+
+.stt-button:hover {
+  background: #2f855a;
+}
+
+.translate-button {
+  background: #805ad5;
+}
+
+.translate-button:hover {
+  background: #6b46c1;
+}
+
+.button-container {
+  margin-top: 1rem;
+}
+
+/* 结果卡片 */
+.results-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.results-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 1rem;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid;
+}
+
+.result-success {
+  background: #f0fff4;
+  border-color: #9ae6b4;
+}
+
+.result-error {
+  background: #fed7d7;
+  border-color: #feb2b2;
+}
+
+.result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.result-service {
+  font-weight: 500;
+  color: #1a202c;
+}
+
+.result-message {
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
+.result-status {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.action-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: white;
+}
+
+.reset-button {
+  background: #718096;
+}
+
+.reset-button:hover {
+  background: #4a5568;
+}
+
+.save-button {
+  background: #3182ce;
+}
+
+.save-button:hover {
+  background: #2c5aa0;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .api-integration-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .api-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
 }
 </style>
+
