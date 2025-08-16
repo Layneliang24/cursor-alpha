@@ -126,7 +126,7 @@ onMounted(fetchDetail)
 <style scoped>
 .page-container { 
   padding: 24px; 
-  max-width: 1100px; 
+  max-width: 1400px; 
   margin: 0 auto;
   background: #fff;
 }
@@ -177,7 +177,7 @@ onMounted(fetchDetail)
 .article-image {
   margin: 24px auto;
   text-align: center;
-  max-width: 860px; /* 与正文列宽保持一致 */
+  max-width: 1200px; /* 与页面宽度保持一致 */
 }
 
 .article-image .el-image {
@@ -210,7 +210,7 @@ onMounted(fetchDetail)
   font-size: 17px;
   line-height: 1.9;
   color: #374151;
-  max-width: 860px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 

@@ -219,6 +219,8 @@ class News(TimeStampedModel, SoftDeleteModel):
     source_url = models.CharField(max_length=500, null=True, blank=True, verbose_name='来源URL')
     license = models.CharField(max_length=100, null=True, blank=True, verbose_name='许可证')
     quality_score = models.DecimalField(max_digits=3, decimal_places=2, default=0.0, verbose_name='质量分')
+    
+
 
     class Meta:
         db_table = 'english_news'
@@ -234,6 +236,41 @@ class News(TimeStampedModel, SoftDeleteModel):
 
     def __str__(self):
         return self.title
+    
+    def delete(self, *args, **kwargs):
+        """重写删除方法，确保删除本地图片文件"""
+        # 删除本地图片文件
+        self._cleanup_local_image()
+        # 调用父类的删除方法
+        super().delete(*args, **kwargs)
+    
+    def _cleanup_local_image(self):
+        """清理本地图片文件"""
+        try:
+            if self.image_url and self.image_url.startswith('news_images/'):
+                import os
+                from django.conf import settings
+                
+                image_path = os.path.join(settings.MEDIA_ROOT, self.image_url)
+                if os.path.exists(image_path):
+                    os.remove(image_path)
+                    print(f"已删除本地图片文件: {image_path}")
+        except Exception as e:
+            print(f"删除本地图片文件失败: {e}")
+    
+    def save(self, *args, **kwargs):
+        """重写保存方法，处理图片URL更新"""
+        # 如果是更新操作，检查图片URL是否发生变化
+        if self.pk:
+            try:
+                old_instance = News.objects.get(pk=self.pk)
+                # 如果图片URL发生变化，删除旧图片
+                if old_instance.image_url != self.image_url and old_instance.image_url.startswith('news_images/'):
+                    old_instance._cleanup_local_image()
+            except News.DoesNotExist:
+                pass
+        
+        super().save(*args, **kwargs)
 
 
 class EntityVersion(models.Model):

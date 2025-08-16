@@ -367,7 +367,7 @@ class ExpressionViewSet(viewsets.ReadOnlyModelViewSet):
         return Response({"success": True, "message": "OK", "data": data})
 
 
-class NewsViewSet(viewsets.ReadOnlyModelViewSet):
+class NewsViewSet(viewsets.ModelViewSet):
     queryset = News.objects.filter(is_deleted=False).order_by('-publish_date', '-id')
     serializer_class = NewsSerializer
     permission_classes = [IsAuthenticated, EnglishAccessPermission]
@@ -375,11 +375,13 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
+        
         category = self.request.query_params.get('category')
         difficulty = self.request.query_params.get('difficulty_level')
         date_from = self.request.query_params.get('date_from')
         date_to = self.request.query_params.get('date_to')
         q = self.request.query_params.get('q')
+        
         if category:
             qs = qs.filter(category=category)
         if difficulty:
@@ -404,9 +406,17 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=False, methods=['post'])
     def crawl(self, request):
-        source = request.data.get('source', 'bbc')
-        crawler_type = request.data.get('crawler', 'fundus')  # 默认使用Fundus爬虫
+        # 支持新的前端格式：sources数组
+        sources = request.data.get('sources', [])
+        if not sources:
+            # 兼容旧格式：单个source
+            source = request.data.get('source', 'bbc')
+            sources = [source]
+        
+        # 全部使用Fundus爬虫
+        crawler_type = 'fundus'
         max_articles = int(request.data.get('max_articles', 10))
+        timeout = int(request.data.get('timeout', 30))
 
         # 如果配置为同步执行（开发环境）或 Celery 不可用，则同步抓取并返回结果
         run_sync = (
@@ -423,14 +433,49 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
             try:
                 # 使用Django管理命令来抓取新闻
                 out = StringIO()
-                call_command(
-                    'crawl_news', 
-                    source=source, 
-                    crawler=crawler_type,
-                    max_articles=max_articles,
-                    verbosity=0,
-                    stdout=out
-                )
+                
+                # 全部使用Fundus爬虫
+                from .fundus_crawler import get_fundus_service, FundusNewsItem
+                service = get_fundus_service()
+                
+                total_found = 0
+                saved_count = 0
+                
+                for source in sources:
+                    try:
+                        # 为每个新闻源爬取指定数量的文章
+                        articles_per_source = max(1, max_articles // len(sources))
+                        articles = service.crawl_publisher(source, articles_per_source)
+                        total_found += len(articles)
+                        
+                        # 保存到数据库
+                        from .models import News
+                        # 使用FundusCrawlerService的save_news_to_db方法来处理图片下载
+                        fundus_service = get_fundus_service()
+                        
+                        # 将Fundus文章转换为FundusNewsItem
+                        fundus_items = []
+                        for article in articles:
+                            fundus_item = FundusNewsItem(
+                                title=article.title,
+                                content=article.content,
+                                url=article.url,
+                                source=source,
+                                published_at=article.published_at,
+                                summary=article.summary,
+                                image_url=article.image_url,
+                                image_alt=article.image_alt if hasattr(article, 'image_alt') else ''
+                            )
+                            fundus_items.append(fundus_item)
+                        
+                        # 使用save_news_to_db方法，它会自动处理图片下载
+                        items_saved = fundus_service.save_news_to_db(fundus_items)
+                        saved_count += items_saved
+                        out.write(f"新增新闻: {len(fundus_items)} 条，成功保存: {items_saved} 条\n")
+                    except Exception as e:
+                        out.write(f"爬取 {source} 失败: {str(e)}\n")
+                
+                out.write(f"抓取完成！共找到 {total_found} 条新闻，新增 {saved_count} 条新闻\n")
                 
                 # 解析输出获取统计信息
                 output = out.getvalue()
@@ -459,7 +504,7 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
                         "success": True,
                         "message": "Crawl finished",
                         "data": {
-                            "source": source,
+                            "sources": sources,
                             "crawler": crawler_type,
                             "mode": "sync",
                             "total_found": total_found,
@@ -475,15 +520,20 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
                     {
                         "success": False,
                         "message": f"Crawl failed: {e}",
-                        "data": {"source": source, "crawler": crawler_type, "mode": "sync"},
+                        "data": {"sources": sources, "crawler": crawler_type, "mode": "sync"},
                     },
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
 
         # 否则异步提交 Celery 任务
         try:
-            result = crawl_english_news.delay(source, crawler_type, max_articles)
-            task_id = getattr(result, 'id', None)
+            # 全部使用Fundus爬虫，提交多个任务
+            task_ids = []
+            for source in sources:
+                articles_per_source = max(1, max_articles // len(sources))
+                result = crawl_english_news.delay(source, 'fundus', articles_per_source)
+                task_ids.append(getattr(result, 'id', None))
+            task_id = task_ids
         except Exception:
             task_id = None
 
@@ -491,7 +541,7 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
             {
                 "success": True,
                 "message": "Crawl accepted",
-                "data": {"source": source, "crawler": crawler_type, "mode": "async", "task_id": task_id},
+                "data": {"sources": sources, "crawler": crawler_type, "mode": "async", "task_id": task_id},
             },
             status=status.HTTP_202_ACCEPTED,
         )
@@ -647,6 +697,48 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
             return Response({"success": True, "data": items}, status=200)
         except Exception as e:
             return Response({"success": False, "message": str(e)}, status=500)
+
+    @action(detail=False, methods=['get'])
+    def management_list(self, request):
+        """管理界面专用的新闻列表"""
+        try:
+            # 获取所有新闻
+            qs = News.objects.filter(is_deleted=False).order_by('-publish_date', '-id')
+            
+            # 应用其他筛选条件
+            category = request.query_params.get('category')
+            difficulty = request.query_params.get('difficulty_level')
+            date_from = request.query_params.get('date_from')
+            date_to = request.query_params.get('date_to')
+            q = request.query_params.get('q')
+            
+            if category:
+                qs = qs.filter(category=category)
+            if difficulty:
+                qs = qs.filter(difficulty_level=difficulty)
+            if date_from:
+                qs = qs.filter(publish_date__gte=date_from)
+            if date_to:
+                qs = qs.filter(publish_date__lte=date_to)
+            if q:
+                qs = qs.filter(Q(title__icontains=q) | Q(content__icontains=q) | Q(summary__icontains=q))
+            
+            # 分页
+            page = self.paginate_queryset(qs)
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
+            
+            serializer = self.get_serializer(qs, many=True)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取管理列表失败: {str(e)}"
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class LearningPlanViewSet(viewsets.ModelViewSet):

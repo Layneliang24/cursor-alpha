@@ -61,12 +61,32 @@ export const englishAPI = {
   getNewsList(params = {}) {
     return request.get('/english/news/', { params })
   },
+  getNewsManagementList(params = {}) {
+    return request.get('/english/news/management_list/', { params })
+  },
+  getNewsDetail(id) {
+    return request.get(`/english/news/${id}/`)
+  },
   getNews(id) {
     return request.get(`/english/news/${id}/`)
   },
-  triggerNewsCrawl(source = 'bbc', crawler = 'fundus', maxArticles = 10) {
+  triggerNewsCrawl(settings = {}) {
+    // 支持新的爬取设置格式
+    const { maxArticles = 3, timeout = 30, sources = [], autoCrawl = false } = settings
+    
+    // 如果没有选择新闻源，使用默认的BBC
+    const finalSources = sources.length > 0 ? sources : ['uk.BBC']
+    
+    const payload = {
+      sources: finalSources,
+      max_articles: maxArticles,
+      timeout,
+      auto_crawl: autoCrawl
+    }
+    
+    console.log('发送爬取请求:', payload)
     // 抓取可能耗时较长，提高超时时间到120秒
-    return request.post('/english/news/crawl/', { source, crawler, max_articles: maxArticles }, { timeout: 120000 })
+    return request.post('/english/news/crawl/', payload, { timeout: 120000 })
   },
   
   // 新闻管理API
@@ -80,6 +100,8 @@ export const englishAPI = {
   batchDeleteNews(newsIds) {
     return request.post('/english/news/batch_delete/', { news_ids: newsIds })
   },
+  
+
   
   getNewsCategories() {
     return request.get('/english/news/categories/')

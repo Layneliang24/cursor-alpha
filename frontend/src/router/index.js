@@ -12,7 +12,7 @@ const routes = [
   {
     path: '/english',
     name: 'English',
-    redirect: '/english/words',
+    redirect: '/english/news-dashboard',
     meta: { title: '英语学习' }
   },
   {
@@ -34,10 +34,16 @@ const routes = [
     meta: { title: '地道表达', requiresAuth: true }
   },
   {
+    path: '/english/news-dashboard',
+    name: 'EnglishNewsDashboard',
+    component: () => import('@/views/english/NewsDashboard.vue'),
+    meta: { title: '英语新闻仪表板', requiresAuth: true }
+  },
+  {
     path: '/english/news',
     name: 'EnglishNews',
     component: () => import('@/views/english/NewsList.vue'),
-    meta: { title: '英语新闻', requiresAuth: true }
+    meta: { title: '英语新闻列表', requiresAuth: true }
   },
   {
     path: '/english/news/:id',
