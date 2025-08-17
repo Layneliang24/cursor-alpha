@@ -183,6 +183,152 @@ onUnmounted(() => {
 
 ---
 
+##### 问题3：练习界面暂停按钮不起作用
+
+**问题描述**
+- 练习界面暂停按钮点击无反应
+- 计时器继续运行，不受暂停状态影响
+- 键盘输入在暂停状态下仍然有效
+- 暂停状态没有实际控制练习流程
+
+**问题分析**
+1. **暂停逻辑不完整**：`togglePause` 函数只是改变了状态变量，没有实际控制功能
+2. **计时器未受暂停状态影响**：store 中的计时器没有检查暂停状态
+3. **键盘输入未受暂停状态控制**：暂停状态下仍然可以输入字母
+4. **暂停状态管理缺失**：缺少暂停时间记录和状态同步
+5. **响应式更新问题**：组件中的 `sessionTime` 重复定义导致响应式更新失效
+
+**解决方案**
+
+1. **完善暂停功能实现**
+```javascript
+const togglePause = () => {
+  isPaused.value = !isPaused.value
+  // 同步store中的暂停状态
+  typingStore.isPaused = isPaused.value
+  
+  if (isPaused.value) {
+    console.log('练习暂停')
+    // 记录当前已用时间
+    const currentElapsed = typingStore.sessionTime
+    typingStore.pauseElapsedTime = currentElapsed
+    console.log('记录暂停时已用时间:', currentElapsed, '秒')
+    
+    // 暂停计时器 - 直接调用store的方法
+    typingStore.stopSessionTimer()
+    console.log('暂停后计时器状态:', typingStore.isTimerRunning())
+  } else {
+    console.log('练习继续')
+    // 继续计时器，从暂停的时间开始
+    if (typingStore.pauseElapsedTime !== null) {
+      // 设置新的开始时间，从暂停的时间开始计算
+      const newStartTime = Date.now() - (typingStore.pauseElapsedTime * 1000)
+      console.log('继续练习，从时间开始:', typingStore.pauseElapsedTime, '秒，新开始时间:', newStartTime)
+      
+      // 使用store的方法设置时间，确保状态同步
+      typingStore.setSessionStartTime(newStartTime)
+      typingStore.pauseElapsedTime = null
+      
+      // 使用setTimeout确保时间设置完成后再启动计时器
+      setTimeout(() => {
+        console.log('setTimeout后启动计时器，sessionStartTime:', typingStore.sessionStartTime)
+        typingStore.startSessionTimer()
+        console.log('继续后计时器状态:', typingStore.isTimerRunning())
+      }, 50) // 给50ms确保时间设置完成
+    } else {
+      // 如果没有暂停时间记录，直接启动计时器
+      typingStore.startSessionTimer()
+      console.log('继续后计时器状态:', typingStore.isTimerRunning())
+    }
+  }
+}
+```
+
+2. **添加暂停状态管理**
+```javascript
+// 在typing store中添加
+const isPaused = ref(false)
+const pauseStartTime = ref(null)
+const pauseElapsedTime = ref(null) // 暂停时已用时间
+
+// 导出状态
+return {
+  isPaused,
+  pauseStartTime,
+  pauseElapsedTime,
+  // ... 其他状态
+}
+```
+
+3. **修改计时器逻辑支持暂停**
+```javascript
+sessionTimer.value = setInterval(() => {
+  // 检查是否处于暂停状态
+  if (isPaused.value) {
+    console.log('计时器暂停中，跳过更新')
+    return // 暂停时不更新计时
+  }
+  
+  // 正常计时逻辑
+  if (sessionStartTime.value) {
+    const elapsed = Math.floor((Date.now() - sessionStartTime.value) / 1000)
+    sessionTime.value = elapsed
+  }
+}, 1000)
+```
+
+4. **暂停状态下禁用键盘输入**
+```javascript
+// 检查是否处于暂停状态
+if (isPaused.value) {
+  console.log('练习已暂停，不处理输入')
+  return
+}
+```
+
+5. **重置时清除暂停状态**
+```javascript
+const resetPractice = () => {
+  // 重置暂停状态
+  isPaused.value = false
+  typingStore.isPaused = false
+  typingStore.pauseStartTime = null
+  typingStore.pauseElapsedTime = null
+  
+  // 确保计时器停止
+  typingStore.stopSessionTimer()
+  
+  // 重置练习状态
+  typingStore.resetPractice()
+}
+```
+
+6. **修复响应式更新问题**
+```javascript
+// 在setup函数中使用computed确保响应式更新
+sessionTime: computed(() => {
+  const time = typingStore.sessionTime
+  console.log('sessionTime computed更新:', time)
+  return time
+}),
+```
+
+**经验总结**
+1. **状态管理完整性**：暂停功能需要完整的状态管理，包括计时器、输入控制等
+2. **功能逻辑完整性**：UI状态变化需要对应实际的功能控制
+3. **状态同步**：组件状态和store状态需要保持同步
+4. **用户体验**：暂停功能应该完全停止练习流程，包括计时和输入
+5. **响应式更新**：避免重复定义状态，使用computed确保响应式更新
+
+**相关文件**
+- `frontend/src/views/english/TypingPractice.vue`：主要修改文件，完善暂停功能
+- `frontend/src/stores/typing.js`：状态管理，添加暂停状态控制
+- `docs/FAQ.md`：问题记录文档
+
+**解决时间**：2025-01-17
+
+---
+
 ## 🔧 技术问题分类
 
 ### Vue.js 相关问题
