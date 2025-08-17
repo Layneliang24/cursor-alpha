@@ -33,7 +33,7 @@
           <el-carousel-item v-for="news in featuredNews" :key="news.id">
             <div class="carousel-news" @click="viewNewsDetail(news)">
               <div class="carousel-image">
-                <img :src="getImageUrl(news.image_url) || '/default-news.jpg'" :alt="news.title">
+                <img :src="news.image_url || '/default-news.jpg'" :alt="news.title">
               </div>
               <div class="carousel-content">
                 <h3 class="carousel-title">{{ news.title }}</h3>
@@ -64,7 +64,7 @@
               @click="viewNewsDetail(news)"
             >
               <div class="news-image">
-                <img :src="getImageUrl(news.image_url) || '/default-news.jpg'" :alt="news.title">
+                <img :src="news.image_url || '/default-news.jpg'" :alt="news.title">
               </div>
                              <div class="news-info">
                  <h4 class="news-title">{{ news.title }}</h4>
@@ -89,7 +89,7 @@
               @click="viewNewsDetail(news)"
             >
               <div class="news-thumbnail">
-                <img :src="getImageUrl(news.image_url) || '/default-news.jpg'" :alt="news.title">
+                <img :src="news.image_url || '/default-news.jpg'" :alt="news.title">
               </div>
                              <div class="news-content">
                  <h4 class="news-title">{{ news.title }}</h4>
@@ -272,9 +272,9 @@
             {{ scope.row.word_count || 0 }}
           </template>
         </el-table-column>
-        <el-table-column prop="publish_date" label="发布时间" width="150">
+        <el-table-column prop="published_at" label="发布时间" width="150">
           <template #default="scope">
-            {{ formatDate(scope.row.publish_date) }}
+            {{ formatDate(scope.row.published_at) }}
           </template>
         </el-table-column>
 
@@ -348,7 +348,7 @@ const latestNews = computed(() => {
 })
 
 const filteredNews = computed(() => {
-  let filtered = newsStore.news || []
+  let filtered = newsStore.managementNews || []
 
   if (searchKeyword.value) {
     filtered = filtered.filter(news =>
@@ -377,30 +377,14 @@ const formatDate = (dateString) => {
     return date.toLocaleDateString('zh-CN', {
       year: 'numeric',
       month: '2-digit',
-      day: '2-digit'
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
     })
   } catch (error) {
     console.error('日期格式化错误:', error, dateString)
     return '日期错误'
   }
-}
-
-const getImageUrl = (imageUrl) => {
-  if (!imageUrl) return ''
-  
-  // 如果是本地保存的图片路径（以news_images/开头）
-  if (imageUrl.startsWith('news_images/')) {
-    // 使用代理配置，通过/api前缀访问后端
-    return `/api/media/${imageUrl}`
-  }
-  
-  // 如果是完整的URL，直接返回
-  if (imageUrl.startsWith('http')) {
-    return imageUrl
-  }
-  
-  // 其他情况，尝试作为相对路径处理
-  return imageUrl
 }
 
 const truncateText = (text, maxLength) => {
@@ -410,20 +394,10 @@ const truncateText = (text, maxLength) => {
 
 const crawlNews = async () => {
   try {
-    console.log('开始爬取新闻，设置:', crawlSettings.value)
-    
-    // 检查是否选择了新闻源
-    if (crawlSettings.value.sources.length === 0) {
-      ElMessage.warning('请先在爬取设置中选择新闻源')
-      showCrawlSettings.value = true
-      return
-    }
-    
     ElMessage.info('开始爬取新闻...')
     await newsStore.crawlNews(crawlSettings.value)
     ElMessage.success('新闻爬取完成！')
   } catch (error) {
-    console.error('爬取失败:', error)
     ElMessage.error('新闻爬取失败：' + error.message)
   }
 }
@@ -516,7 +490,7 @@ const openNewsManagement = async () => {
   showNewsManagement.value = true
   // 加载管理界面的新闻列表
   try {
-    await newsStore.fetchNews()
+    await newsStore.fetchManagementNews()
   } catch (error) {
     ElMessage.error('加载新闻列表失败：' + error.message)
   }

@@ -401,3 +401,111 @@ class LearningStats(TimeStampedModel):
 
     def __str__(self):
         return f"{self.user.username} - {self.date}"
+
+
+class Dictionary(TimeStampedModel, SoftDeleteModel):
+    """词库模型"""
+    name = models.CharField(max_length=100, verbose_name="词库名称")
+    description = models.TextField(blank=True, verbose_name="词库描述")
+    category = models.CharField(max_length=50, verbose_name="词库分类")  # 中国考试、国际考试、编程等
+    language = models.CharField(max_length=10, default='en', verbose_name="语言")
+    total_words = models.IntegerField(default=0, verbose_name="总单词数")
+    chapter_count = models.IntegerField(default=1, verbose_name="章节数")
+    is_active = models.BooleanField(default=True, verbose_name="是否启用")
+    source_file = models.CharField(max_length=200, blank=True, verbose_name="源文件")
+    
+    class Meta:
+        verbose_name = "词库"
+        verbose_name_plural = "词库"
+        db_table = 'english_dictionary'
+        indexes = [
+            models.Index(fields=['category']),
+            models.Index(fields=['is_active']),
+        ]
+
+    def __str__(self):
+        return f"{self.name} ({self.category})"
+
+
+class TypingWord(models.Model):
+    """打字练习专用单词模型"""
+    word = models.CharField(max_length=100, verbose_name="单词")
+    translation = models.CharField(max_length=200, verbose_name="翻译")
+    phonetic = models.CharField(max_length=100, blank=True, verbose_name="音标")
+    difficulty = models.CharField(
+        max_length=20, 
+        choices=[
+            ('beginner', '初级'),
+            ('intermediate', '中级'),
+            ('advanced', '高级')
+        ],
+        default='intermediate',
+        verbose_name="难度"
+    )
+    dictionary = models.ForeignKey(Dictionary, on_delete=models.CASCADE, verbose_name="所属词库", null=True, blank=True)
+    chapter = models.IntegerField(default=1, verbose_name="章节")
+    frequency = models.IntegerField(default=0, verbose_name="词频")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+
+    class Meta:
+        verbose_name = "打字练习单词"
+        verbose_name_plural = "打字练习单词"
+        db_table = 'english_typing_word'
+        indexes = [
+            models.Index(fields=['dictionary', 'chapter']),
+            models.Index(fields=['word']),
+            models.Index(fields=['difficulty']),
+        ]
+        unique_together = [('word', 'dictionary')]
+
+    def __str__(self):
+        return f"{self.word} ({self.dictionary.name})"
+
+
+class TypingSession(models.Model):
+    """打字练习会话记录"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    word = models.ForeignKey(TypingWord, on_delete=models.CASCADE, verbose_name="单词")
+    is_correct = models.BooleanField(verbose_name="是否正确")
+    typing_speed = models.FloatField(default=0.0, verbose_name="打字速度(WPM)")
+    response_time = models.FloatField(default=0.0, verbose_name="响应时间(秒)")
+    session_date = models.DateField(auto_now_add=True, verbose_name="练习日期")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+
+    class Meta:
+        verbose_name = "打字练习记录"
+        verbose_name_plural = "打字练习记录"
+        db_table = 'english_typing_session'
+        indexes = [
+            models.Index(fields=['user', 'session_date']),
+            models.Index(fields=['word', 'is_correct']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.word.word} ({'正确' if self.is_correct else '错误'})"
+
+
+class UserTypingStats(models.Model):
+    """用户打字统计"""
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    total_words_practiced = models.IntegerField(default=0, verbose_name="总练习单词数")
+    total_correct_words = models.IntegerField(default=0, verbose_name="总正确单词数")
+    average_wpm = models.FloatField(default=0.0, verbose_name="平均WPM")
+    total_practice_time = models.IntegerField(default=0, verbose_name="总练习时长(分钟)")
+    last_practice_date = models.DateField(null=True, blank=True, verbose_name="最后练习日期")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    class Meta:
+        verbose_name = "用户打字统计"
+        verbose_name_plural = "用户打字统计"
+        db_table = 'english_user_typing_stats'
+
+    def __str__(self):
+        return f"{self.user.username} - 统计"
+
+    @property
+    def accuracy(self):
+        """计算准确率"""
+        if self.total_words_practiced == 0:
+            return 0.0
+        return round((self.total_correct_words / self.total_words_practiced) * 100, 2)

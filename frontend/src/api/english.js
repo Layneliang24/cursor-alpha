@@ -97,6 +97,14 @@ export const englishAPI = {
     return request.delete(`/english/news/${id}/delete_news/`)
   },
   
+  // 词库和章节API
+  getDictionaries() {
+    return request.get('/english/dictionaries/')
+  },
+  getTypingWordsByDictionary(params) {
+    return request.get('/english/typing-words/by_dictionary/', { params })
+  },
+  
   batchDeleteNews(newsIds) {
     return request.post('/english/news/batch_delete/', { news_ids: newsIds })
   },
@@ -186,6 +194,20 @@ export const englishAPI = {
         return request.get('/english/dictionary/search/', {
             params: { word, source }
         })
+    },
+
+    // Typing Practice API
+    getTypingWords(params = {}) {
+        return request.get('/english/typing-practice/words/', { params })
+    },
+    submitTypingPractice(data) {
+        return request.post('/english/typing-practice/submit/', data)
+    },
+    getTypingStats() {
+        return request.get('/english/typing-practice/statistics/')
+    },
+    getTypingDailyProgress(params = {}) {
+        return request.get('/english/typing-practice/daily_progress/', { params })
     }
 }
 

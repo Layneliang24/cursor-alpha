@@ -64,6 +64,12 @@ const routes = [
             meta: { title: '英语练习', requiresAuth: true }
         },
         {
+            path: '/english/typing-practice',
+            name: 'EnglishTypingPractice',
+            component: () => import('@/views/english/TypingPractice.vue'),
+            meta: { title: '智能打字练习', requiresAuth: true }
+        },
+        {
             path: '/english/pronunciation',
             name: 'EnglishPronunciation',
             component: () => import('@/views/english/Pronunciation.vue'),

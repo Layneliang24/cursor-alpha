@@ -9,10 +9,15 @@ from .models import (
     PracticeRecord,
     PronunciationRecord,
     LearningStats,
+    TypingSession,
+    UserTypingStats,
+    TypingWord,
 )
 
 
 class WordSerializer(serializers.ModelSerializer):
+    """单词序列化器"""
+    
     class Meta:
         model = Word
         fields = [
@@ -29,6 +34,14 @@ class WordSerializer(serializers.ModelSerializer):
         if value and value not in allowed:
             raise serializers.ValidationError('Invalid difficulty_level')
         return value
+
+
+class TypingWordSerializer(serializers.ModelSerializer):
+    """打字练习单词序列化器"""
+    
+    class Meta:
+        model = TypingWord
+        fields = ['id', 'word', 'translation', 'phonetic', 'difficulty', 'category', 'frequency']
 
 
 class UserWordProgressSerializer(serializers.ModelSerializer):
@@ -109,28 +122,14 @@ class LearningPlanSerializer(serializers.ModelSerializer):
 
 class PracticeRecordSerializer(serializers.ModelSerializer):
     """练习记录序列化器"""
-    practice_type_display = serializers.CharField(source='get_practice_type_display', read_only=True)
-    content_type_display = serializers.CharField(source='get_content_type_display', read_only=True)
-    
     class Meta:
         model = PracticeRecord
         fields = [
-            'id', 'user', 'practice_type', 'practice_type_display',
-            'content_id', 'content_type', 'content_type_display',
+            'id', 'user', 'content_id', 'content_type', 'practice_type', 
             'question', 'user_answer', 'correct_answer', 'is_correct',
             'score', 'time_spent', 'created_at'
         ]
         read_only_fields = ['id', 'user', 'created_at']
-
-    def validate_score(self, value):
-        if value < 0 or value > 100:
-            raise serializers.ValidationError('得分应在0-100之间')
-        return value
-
-    def validate_time_spent(self, value):
-        if value < 0:
-            raise serializers.ValidationError('用时不能为负数')
-        return value
 
 
 class PronunciationRecordSerializer(serializers.ModelSerializer):
@@ -138,25 +137,10 @@ class PronunciationRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = PronunciationRecord
         fields = [
-            'id', 'user', 'word_id', 'audio_file', 'pronunciation_score',
+            'id', 'user', 'word_id', 'audio_file', 'pronunciation_score', 
             'accuracy_score', 'fluency_score', 'feedback', 'created_at'
         ]
         read_only_fields = ['id', 'user', 'created_at']
-
-    def validate_pronunciation_score(self, value):
-        if value is not None and (value < 0 or value > 100):
-            raise serializers.ValidationError('发音得分应在0-100之间')
-        return value
-
-    def validate_accuracy_score(self, value):
-        if value is not None and (value < 0 or value > 100):
-            raise serializers.ValidationError('准确度得分应在0-100之间')
-        return value
-
-    def validate_fluency_score(self, value):
-        if value is not None and (value < 0 or value > 100):
-            raise serializers.ValidationError('流利度得分应在0-100之间')
-        return value
 
 
 class LearningStatsSerializer(serializers.ModelSerializer):
@@ -165,61 +149,63 @@ class LearningStatsSerializer(serializers.ModelSerializer):
         model = LearningStats
         fields = [
             'id', 'user', 'date', 'words_learned', 'words_reviewed',
-            'expressions_learned', 'news_read', 'practice_count',
+            'expressions_learned', 'news_read', 'practice_count', 
             'study_time_minutes', 'accuracy_rate', 'created_at'
         ]
         read_only_fields = ['id', 'user', 'created_at']
 
-    def validate_accuracy_rate(self, value):
-        if value < 0 or value > 100:
-            raise serializers.ValidationError('正确率应在0-100之间')
-        return value
+
+class WordExampleSerializer(serializers.ModelSerializer):
+    """单词例句序列化器"""
+    class Meta:
+        model = WordExample
+        fields = [
+            'id', 'word', 'example', 'translation', 'source',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
 
-class WordProgressReviewSerializer(serializers.Serializer):
-    """单词复习提交序列化器"""
+class ReviewQuestionSerializer(serializers.ModelSerializer):
+    """复习题目序列化器"""
+    class Meta:
+        model = PracticeRecord
+        fields = [
+            'id', 'user', 'content_id', 'content_type', 'practice_type', 
+            'question', 'user_answer', 'correct_answer', 'is_correct',
+            'score', 'time_spent', 'created_at'
+        ]
+        read_only_fields = ['id', 'user', 'created_at']
+
+
+class ReviewAnswerSerializer(serializers.Serializer):
+    """复习答案序列化器"""
     word_id = serializers.IntegerField()
-    quality = serializers.IntegerField(min_value=0, max_value=5)
-    time_spent = serializers.IntegerField(min_value=0)
-
-    def validate_quality(self, value):
-        """
-        验证质量评分
-        0: 完全不记得
-        1: 错误答案，正确答案似乎很陌生
-        2: 错误答案，但正确答案容易记起
-        3: 正确答案，但需要努力回忆
-        4: 正确答案，经过犹豫后回忆起
-        5: 完美答案
-        """
-        if value not in range(6):
-            raise serializers.ValidationError('质量评分必须在0-5之间')
-        return value
-
-
-class LearningOverviewSerializer(serializers.Serializer):
-    """学习概览序列化器"""
-    period = serializers.CharField()
-    total_stats = serializers.DictField()
-    mastery_stats = serializers.DictField()
-    daily_data = serializers.ListField()
-
-
-class PracticeQuestionSerializer(serializers.Serializer):
-    """练习题目序列化器"""
-    type = serializers.CharField()
-    question = serializers.CharField()
-    correct_answer = serializers.CharField()
-    word_id = serializers.IntegerField(required=False)
-    options = serializers.ListField(required=False)
-
-
-class PracticeSubmissionSerializer(serializers.Serializer):
-    """练习提交序列化器"""
     practice_type = serializers.CharField()
-    content_id = serializers.IntegerField()
-    content_type = serializers.CharField()
-    question = serializers.CharField()
-    user_answer = serializers.CharField()
+    is_correct = serializers.BooleanField()
     correct_answer = serializers.CharField()
     time_spent = serializers.IntegerField(min_value=0)
+
+
+class TypingSessionSerializer(serializers.ModelSerializer):
+    """打字练习会话序列化器"""
+    word = TypingWordSerializer(read_only=True)
+    word_id = serializers.IntegerField(write_only=True)
+    
+    class Meta:
+        model = TypingSession
+        fields = ['id', 'word', 'word_id', 'is_correct', 'typing_speed', 'response_time', 'session_date', 'created_at']
+        read_only_fields = ['session_date', 'created_at']
+
+
+class UserTypingStatsSerializer(serializers.ModelSerializer):
+    """用户打字统计序列化器"""
+    accuracy = serializers.ReadOnlyField()
+    
+    class Meta:
+        model = UserTypingStats
+        fields = [
+            'total_words_practiced', 'total_correct_words', 'average_wpm', 
+            'total_practice_time', 'last_practice_date', 'accuracy'
+        ]
+        read_only_fields = fields
