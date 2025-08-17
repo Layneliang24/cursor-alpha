@@ -6,8 +6,12 @@ import { ElMessage } from 'element-plus'
 export const useTypingStore = defineStore('typing', () => {
   // 状态
   const loading = ref(false)
+  // 练习状态
   const practiceStarted = ref(false)
   const practiceCompleted = ref(false)
+  const isPaused = ref(false)
+  const pauseStartTime = ref(null)
+  const pauseElapsedTime = ref(null) // 暂停时已用时间
   
   const words = ref([])
   const currentWordIndex = ref(0)
@@ -34,7 +38,9 @@ export const useTypingStore = defineStore('typing', () => {
   const isTyping = ref(false)
   const feedbackMessage = ref('')
   
+  // 计时器相关
   const sessionStartTime = ref(null)
+  const sessionTimer = ref(null)
   const sessionTime = ref(0)
   const correctCount = ref(0)
   const answeredCount = ref(0)
@@ -65,7 +71,6 @@ export const useTypingStore = defineStore('typing', () => {
   const selectedChapter = ref(1)
   
   const dailyProgress = ref([])
-  const sessionTimer = ref(null)
   const wordComponentKey = ref(0) // 强制重新渲染的key
 
   // 计算属性
@@ -289,13 +294,50 @@ export const useTypingStore = defineStore('typing', () => {
     }
   }
   
+  // 设置会话开始时间
+  const setSessionStartTime = (time) => {
+    console.log('设置sessionStartTime:', time, '当前时间:', Date.now())
+    sessionStartTime.value = time
+    // 立即更新sessionTime以反映新时间
+    if (time) {
+      const elapsed = Math.floor((Date.now() - time) / 1000)
+      sessionTime.value = elapsed
+      console.log('时间设置后立即更新，已用时间:', elapsed, '秒')
+      
+      // 强制触发响应式更新
+      nextTick(() => {
+        console.log('nextTick后确认时间更新，sessionTime:', sessionTime.value)
+      })
+    }
+  }
+  
+  // 启动计时器
   const startSessionTimer = () => {
-    console.log('启动计时器，sessionStartTime:', sessionStartTime.value)
+    console.log('启动计时器，sessionStartTime:', sessionStartTime.value, '暂停状态:', isPaused.value)
+    
+    // 验证时间设置是否正确
+    if (sessionStartTime.value) {
+      const currentTime = Date.now()
+      const expectedElapsed = Math.floor((currentTime - sessionStartTime.value) / 1000)
+      console.log('时间验证 - 当前时间:', currentTime, '开始时间:', sessionStartTime.value, '预期已用时间:', expectedElapsed, '秒')
+      
+      // 立即更新sessionTime以匹配预期时间
+      sessionTime.value = expectedElapsed
+      console.log('计时器启动时立即更新时间，sessionTime:', sessionTime.value)
+    }
+    
     if (sessionTimer.value) {
       clearInterval(sessionTimer.value)
+      console.log('清除旧计时器')
     }
     
     sessionTimer.value = setInterval(() => {
+      // 检查是否处于暂停状态
+      if (isPaused.value) {
+        console.log('计时器暂停中，跳过更新')
+        return // 暂停时不更新计时
+      }
+      
       if (sessionStartTime.value) {
         const elapsed = Math.floor((Date.now() - sessionStartTime.value) / 1000)
         sessionTime.value = elapsed
@@ -307,13 +349,23 @@ export const useTypingStore = defineStore('typing', () => {
         console.log('sessionStartTime未设置，无法计时')
       }
     }, 1000)
+    console.log('新计时器已启动，ID:', sessionTimer.value)
   }
   
   const stopSessionTimer = () => {
+    console.log('停止计时器，当前计时器ID:', sessionTimer.value)
     if (sessionTimer.value) {
       clearInterval(sessionTimer.value)
       sessionTimer.value = null
+      console.log('计时器已停止')
+    } else {
+      console.log('计时器已经是null状态')
     }
+  }
+  
+  // 检查计时器状态
+  const isTimerRunning = () => {
+    return sessionTimer.value !== null
   }
   
   // 初始化单词状态
@@ -555,7 +607,17 @@ export const useTypingStore = defineStore('typing', () => {
   }
   
   const resetPractice = () => {
-    console.log('Resetting practice...')
+    console.log('=== resetPractice 开始 ===')
+    
+    // 重置暂停状态
+    isPaused.value = false
+    pauseStartTime.value = null
+    pauseElapsedTime.value = null
+    
+    // 停止计时器
+    stopSessionTimer()
+    
+    // 重置练习状态
     practiceStarted.value = false
     practiceCompleted.value = false
     words.value = []
@@ -628,6 +690,9 @@ export const useTypingStore = defineStore('typing', () => {
     loading,
     practiceStarted,
     practiceCompleted,
+    isPaused,
+    pauseStartTime,
+    pauseElapsedTime,
     words,
     currentWordIndex,
     userInput,
@@ -682,6 +747,8 @@ export const useTypingStore = defineStore('typing', () => {
     initWordState,
     handleKeyInput,
     resetWordState,
-    wordComponentKey
+    wordComponentKey,
+    isTimerRunning,
+    setSessionStartTime
   }
 })

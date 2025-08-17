@@ -520,9 +520,24 @@ export default {
     }
 
     const resetPractice = () => {
+      console.log('重置练习')
+      // 重置暂停状态
+      isPaused.value = false
+      typingStore.isPaused = false
+      typingStore.pauseStartTime = null
+      typingStore.pauseElapsedTime = null // 重置暂停已用时间
+      
+      // 确保计时器停止
+      typingStore.stopSessionTimer()
+      
+      // 重置练习状态
       typingStore.resetPractice()
-      // isTyping.value = false // No longer needed
-      wordComponentKey.value = 0 // No longer needed
+      
+      // 重置组件状态
+      wordComponentKey.value = 0
+      
+      // 重新开始练习
+      startPracticeWithSelection()
     }
 
     const finishPractice = () => {
@@ -539,14 +554,59 @@ export default {
     }
     
     const togglePause = () => {
+      console.log('=== togglePause 开始 ===')
+      console.log('当前暂停状态:', isPaused.value)
+      console.log('当前计时器状态:', typingStore.isTimerRunning())
+      console.log('当前已用时间:', typingStore.sessionTime, '秒')
+      console.log('当前sessionStartTime:', typingStore.sessionStartTime)
+      
       isPaused.value = !isPaused.value
+      // 同步store中的暂停状态
+      typingStore.isPaused = isPaused.value
+      
       if (isPaused.value) {
         console.log('练习暂停')
-        // 可以在这里添加暂停逻辑，比如停止计时器等
+        // 记录当前已用时间
+        const currentElapsed = typingStore.sessionTime
+        typingStore.pauseElapsedTime = currentElapsed
+        console.log('记录暂停时已用时间:', currentElapsed, '秒')
+        
+        // 暂停计时器 - 直接调用store的方法
+        typingStore.stopSessionTimer()
+        console.log('暂停后计时器状态:', typingStore.isTimerRunning())
       } else {
         console.log('练习继续')
-        // 可以在这里添加继续逻辑
+        // 继续计时器，从暂停的时间开始
+        if (typingStore.pauseElapsedTime !== null) {
+          // 设置新的开始时间，从暂停的时间开始计算
+          const newStartTime = Date.now() - (typingStore.pauseElapsedTime * 1000)
+          console.log('继续练习，从时间开始:', typingStore.pauseElapsedTime, '秒，新开始时间:', newStartTime)
+          console.log('时间计算验证 - 当前时间:', Date.now(), '暂停时间:', typingStore.pauseElapsedTime, '新开始时间:', newStartTime)
+          
+          // 使用store的方法设置时间，确保状态同步
+          typingStore.setSessionStartTime(newStartTime)
+          typingStore.pauseElapsedTime = null
+          
+          // 使用setTimeout确保时间设置完成后再启动计时器
+          setTimeout(() => {
+            console.log('setTimeout后启动计时器，sessionStartTime:', typingStore.sessionStartTime)
+            console.log('setTimeout后sessionTime:', typingStore.sessionTime)
+            typingStore.startSessionTimer()
+            console.log('继续后计时器状态:', typingStore.isTimerRunning())
+            
+            // 验证计时器是否正常工作
+            setTimeout(() => {
+              console.log('验证计时器 - 1秒后sessionTime:', typingStore.sessionTime)
+            }, 1000)
+          }, 50) // 给50ms确保时间设置完成
+        } else {
+          // 如果没有暂停时间记录，直接启动计时器
+          typingStore.startSessionTimer()
+          console.log('继续后计时器状态:', typingStore.isTimerRunning())
+        }
       }
+      
+      console.log('=== togglePause 结束 ===')
     }
     
     // 键盘事件处理
@@ -568,6 +628,12 @@ export default {
       
       // 如果练习已开始但还没完成，处理输入
       if (typingStore.practiceStarted && !typingStore.practiceCompleted) {
+        // 检查是否处于暂停状态
+        if (isPaused.value) {
+          console.log('练习已暂停，不处理输入')
+          return
+        }
+        
         // 处理特殊按键
         if (event.key === 'Escape') {
           event.preventDefault()
@@ -730,21 +796,17 @@ export default {
     
     // 返回响应式数据
     return {
-      // Store数据
+      // 从store获取的状态
       loading: typingStore.loading,
       practiceCompleted: typingStore.practiceCompleted,
       words: typingStore.words,
       currentWordIndex: typingStore.currentWordIndex,
       wordState: typingStore.wordState,
-      sessionTime: typingStore.sessionTime,
       correctRate: typingStore.correctRate, // This is now accuracy
       progressPercentage: typingStore.progressPercentage,
       typingStats: typingStore.typingStats,
       practiceSettings: typingStore.practiceSettings,
       averageWPM: typingStore.averageWPM,
-      correctCount: typingStore.correctCount,
-      answeredCount: typingStore.answeredCount,
-      wpm: typingStore.wpm,
       
       // 本地状态
       practiceStarted: computed(() => typingStore.practiceStarted),
@@ -768,17 +830,18 @@ export default {
         return `${mins}:${secs.toString().padStart(2, '0')}`
       },
 
-      // 计算属性
+      // 计算属性 - 使用computed确保响应式更新
       accuracy: computed(() => typingStore.correctRate),
       correctCount: computed(() => typingStore.correctCount),
-      words: computed(() => typingStore.words),
-      currentWordIndex: computed(() => typingStore.currentWordIndex),
-      wordState: computed(() => typingStore.wordState),
-      sessionTime: computed(() => typingStore.sessionTime),
+      answeredCount: computed(() => typingStore.answeredCount),
+      sessionTime: computed(() => {
+        const time = typingStore.sessionTime
+        console.log('sessionTime computed更新:', time)
+        return time
+      }),
       practiceStarted: computed(() => typingStore.practiceStarted),
       practiceCompleted: computed(() => typingStore.practiceCompleted),
       currentWord: computed(() => typingStore.currentWord),
-      answeredCount: computed(() => typingStore.answeredCount),
       wpm: computed(() => {
         const currentSessionTime = typingStore.sessionTime
         const currentCorrectCount = typingStore.correctCount
@@ -862,6 +925,20 @@ export default {
             }, 100)
           }
         }, 100)
+      },
+
+      // 测试时间更新
+      testTimeUpdate: () => {
+        console.log('=== 测试时间更新 ===')
+        console.log('当前sessionTime:', typingStore.sessionTime)
+        console.log('当前sessionStartTime:', typingStore.sessionStartTime)
+        
+        // 手动更新一次时间
+        if (typingStore.sessionStartTime) {
+          const elapsed = Math.floor((Date.now() - typingStore.sessionStartTime) / 1000)
+          typingStore.sessionTime = elapsed
+          console.log('手动更新时间后，sessionTime:', typingStore.sessionTime)
+        }
       }
     }
   }
