@@ -101,114 +101,85 @@ export const englishAPI = {
   getDictionaries() {
     return request.get('/english/dictionaries/')
   },
-  getTypingWordsByDictionary(params) {
-    return request.get('/english/typing-words/by_dictionary/', { params })
+  getChapters(dictionaryId) {
+    return request.get(`/english/dictionaries/${dictionaryId}/chapters/`)
   },
-  
-  batchDeleteNews(newsIds) {
-    return request.post('/english/news/batch_delete/', { news_ids: newsIds })
+  getWordsForPractice(params = {}) {
+    return request.get('/english/typing-practice/words/', { params })
   },
-  
-
-  
-  getNewsCategories() {
-    return request.get('/english/news/categories/')
+  getTypingWordsByDictionary(params = {}) {
+    return request.get('/english/typing-practice/words/', { 
+      params: { 
+        category: params.category, 
+        chapter: params.chapter,
+        difficulty: params.difficulty || 'intermediate'
+      } 
+    })
   },
-  
-  filterNewsByCategory(params) {
-    return request.get('/english/news/filter_by_category/', { params })
+  // 打字练习相关API
+  getTypingWords(params = {}) {
+    return request.get('/english/typing-practice/words/', { params })
   },
-
-  // Learning Plans
-  getLearningPlans(params = {}) {
-    return request.get('/english/plans/', { params })
+  getTypingStats() {
+    return request.get('/english/typing-practice/statistics/')
   },
-  createLearningPlan(data) {
-    return request.post('/english/plans/', data)
+  getTypingDailyProgress(params = {}) {
+    return request.get('/english/typing-practice/daily-progress/', { params })
   },
-  updateLearningPlan(id, data) {
-    return request.put(`/english/plans/${id}/`, data)
+  submitTypingPractice(data) {
+    return request.post('/english/typing-practice/submit/', data)
   },
-  deleteLearningPlan(id) {
-    return request.delete(`/english/plans/${id}/`)
+  submitTypingResult(data) {
+    return request.post('/english/typing-practice/submit/', data)
   },
-  getDailyWords(planId) {
-    return request.get(`/english/plans/${planId}/daily_words/`)
+  getTypingStatistics() {
+    return request.get('/english/typing-practice/statistics/')
   },
-  getDailyExpressions(planId) {
-    return request.get(`/english/plans/${planId}/daily_expressions/`)
-  },
-
-  // Practice System
-  getPracticeRecords(params = {}) {
-    return request.get('/english/practice/', { params })
-  },
-  generateQuestions(type = 'word_spelling', count = 5) {
-    return request.get(`/english/practice/generate_questions/?type=${type}&count=${count}`)
-  },
-  submitPractice(data) {
-    return request.post('/english/practice/submit_practice/', data)
+  getDailyProgress(params = {}) {
+    return request.get('/english/typing-practice/daily-progress/', { params })
   },
 
-  // Pronunciation
-  getPronunciationRecords(params = {}) {
-    return request.get('/english/pronunciation/', { params })
+  // 数据分析API
+  getDataOverview(params = {}) {
+    return request.get('/english/data-analysis/overview/', { params })
   },
-  createPronunciationRecord(data) {
-    return request.post('/english/pronunciation/', data)
+  getExerciseHeatmap(params = {}) {
+    return request.get('/english/data-analysis/exercise_heatmap/', { params })
   },
+  getWordHeatmap(params = {}) {
+    return request.get('/english/data-analysis/word_heatmap/', { params })
+  },
+  getWpmTrend(params = {}) {
+    return request.get('/english/data-analysis/wpm_trend/', { params })
+  },
+  getAccuracyTrend(params = {}) {
+    return request.get('/english/data-analysis/accuracy_trend/', { params })
+  },
+  getKeyErrorStats() {
+    return request.get('/english/data-analysis/key_error_stats/')
+  }
+}
 
-      // Learning Statistics
-    getLearningStats(params = {}) {
-        return request.get('/english/stats/', { params })
-    },
-    updateTodayStats() {
-        return request.post('/english/stats/update_today/')
-    },
-
-    // Pronunciation Practice
-    submitPronunciation(formData) {
-        return request.post('/english/pronunciation/submit/', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-    },
-    generateTTS(text, language = 'en-US') {
-        return request.post('/english/tts/generate/', {
-            text,
-            language
-        })
-    },
-
-    // External API Integration
-    enrichWordDefinition(wordId) {
-        return request.post(`/english/words/${wordId}/enrich_definition/`)
-    },
-    generateWordAudio(wordId) {
-        return request.post(`/english/words/${wordId}/generate_audio/`)
-    },
-    
-    // Dictionary API
-    searchDictionary(word, source = 'auto') {
-        return request.get('/english/dictionary/search/', {
-            params: { word, source }
-        })
-    },
-
-    // Typing Practice API
-    getTypingWords(params = {}) {
-        return request.get('/english/typing-practice/words/', { params })
-    },
-    submitTypingPractice(data) {
-        return request.post('/english/typing-practice/submit/', data)
-    },
-    getTypingStats() {
-        return request.get('/english/typing-practice/statistics/')
-    },
-    getTypingDailyProgress(params = {}) {
-        return request.get('/english/typing-practice/daily_progress/', { params })
-    }
+// 数据分析专用API对象
+export const dataAnalysisAPI = {
+  getOverview(params = {}) {
+    return request.get('/english/data-analysis/overview/', { params })
+  },
+  getExerciseHeatmap(params = {}) {
+    return request.get('/english/data-analysis/exercise_heatmap/', { params })
+  },
+  getWordHeatmap(params = {}) {
+    return request.get('/english/data-analysis/word_heatmap/', { params })
+  },
+  getWpmTrend(params = {}) {
+    return request.get('/english/data-analysis/wpm_trend/', { params })
+  },
+  getAccuracyTrend(params = {}) {
+    return request.get('/english/data-analysis/accuracy_trend/', { params })
+  },
+  getKeyErrorStats() {
+    return request.get('/english/data-analysis/key_error_stats/')
+  }
 }
 
 

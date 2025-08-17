@@ -1,0 +1,149 @@
+{
+  "words": [
+    {
+      "word": "hello",
+      "translation": "你好",
+      "pronunciation": "/həˈloʊ/",
+      "definition": "Used as a greeting or to begin a phone conversation.",
+      "difficulty": "easy",
+      "category": "greeting",
+      "examples": [
+        "Hello, how are you?",
+        "Hello, this is John speaking."
+      ]
+    },
+    {
+      "word": "world",
+      "translation": "世界",
+      "pronunciation": "/wɜːrld/",
+      "definition": "The earth, together with all of its countries, peoples, and natural features.",
+      "difficulty": "easy",
+      "category": "noun",
+      "examples": [
+        "The world is a beautiful place.",
+        "People from all over the world came to the event."
+      ]
+    },
+    {
+      "word": "computer",
+      "translation": "计算机",
+      "pronunciation": "/kəmˈpjuːtər/",
+      "definition": "An electronic device for processing and storing data.",
+      "difficulty": "medium",
+      "category": "technology",
+      "examples": [
+        "I use my computer to work from home.",
+        "The computer crashed and I lost all my files."
+      ]
+    },
+    {
+      "word": "beautiful",
+      "translation": "美丽的",
+      "pronunciation": "/ˈbjuːtɪfʊl/",
+      "definition": "Pleasing the senses or mind aesthetically.",
+      "difficulty": "medium",
+      "category": "adjective",
+      "examples": [
+        "She is a beautiful person inside and out.",
+        "The sunset was absolutely beautiful."
+      ]
+    },
+    {
+      "word": "knowledge",
+      "translation": "知识",
+      "pronunciation": "/ˈnɒlɪdʒ/",
+      "definition": "Facts, information, and skills acquired through experience or education.",
+      "difficulty": "hard",
+      "category": "noun",
+      "examples": [
+        "Knowledge is power.",
+        "He has extensive knowledge of ancient history."
+      ]
+    }
+  ],
+  "categories": [
+    "greeting",
+    "noun", 
+    "technology",
+    "adjective"
+  ],
+  "difficulties": [
+    "easy",
+    "medium", 
+    "hard"
+  ]
+}
+  "words": [
+    {
+      "word": "hello",
+      "translation": "你好",
+      "pronunciation": "/həˈloʊ/",
+      "definition": "Used as a greeting or to begin a phone conversation.",
+      "difficulty": "easy",
+      "category": "greeting",
+      "examples": [
+        "Hello, how are you?",
+        "Hello, this is John speaking."
+      ]
+    },
+    {
+      "word": "world",
+      "translation": "世界",
+      "pronunciation": "/wɜːrld/",
+      "definition": "The earth, together with all of its countries, peoples, and natural features.",
+      "difficulty": "easy",
+      "category": "noun",
+      "examples": [
+        "The world is a beautiful place.",
+        "People from all over the world came to the event."
+      ]
+    },
+    {
+      "word": "computer",
+      "translation": "计算机",
+      "pronunciation": "/kəmˈpjuːtər/",
+      "definition": "An electronic device for processing and storing data.",
+      "difficulty": "medium",
+      "category": "technology",
+      "examples": [
+        "I use my computer to work from home.",
+        "The computer crashed and I lost all my files."
+      ]
+    },
+    {
+      "word": "beautiful",
+      "translation": "美丽的",
+      "pronunciation": "/ˈbjuːtɪfʊl/",
+      "definition": "Pleasing the senses or mind aesthetically.",
+      "difficulty": "medium",
+      "category": "adjective",
+      "examples": [
+        "She is a beautiful person inside and out.",
+        "The sunset was absolutely beautiful."
+      ]
+    },
+    {
+      "word": "knowledge",
+      "translation": "知识",
+      "pronunciation": "/ˈnɒlɪdʒ/",
+      "definition": "Facts, information, and skills acquired through experience or education.",
+      "difficulty": "hard",
+      "category": "noun",
+      "examples": [
+        "Knowledge is power.",
+        "He has extensive knowledge of ancient history."
+      ]
+    }
+  ],
+  "categories": [
+    "greeting",
+    "noun", 
+    "technology",
+    "adjective"
+  ],
+  "difficulties": [
+    "easy",
+    "medium", 
+    "hard"
+  ]
+}

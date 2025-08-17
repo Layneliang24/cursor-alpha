@@ -377,9 +377,7 @@ const formatDate = (dateString) => {
     return date.toLocaleDateString('zh-CN', {
       year: 'numeric',
       month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
+      day: '2-digit'
     })
   } catch (error) {
     console.error('日期格式化错误:', error, dateString)
@@ -477,8 +475,8 @@ const deleteNews = async (news) => {
     await newsStore.deleteNews(news.id)
     ElMessage.success('新闻删除成功！')
     
-    // 删除后立即刷新新闻列表
-    await newsStore.fetchNews()
+    // 删除后立即刷新管理界面的新闻列表
+    await newsStore.fetchManagementNews()
   } catch (error) {
     if (error !== 'cancel') {
       ElMessage.error('新闻删除失败：' + error.message)
@@ -512,6 +510,9 @@ const batchDelete = async () => {
     await Promise.all(deletePromises)
     ElMessage.success('批量删除成功！')
     selectedNews.value = []
+    
+    // 批量删除后刷新管理界面的新闻列表
+    await newsStore.fetchManagementNews()
   } catch (error) {
     if (error !== 'cancel') {
       ElMessage.error('批量删除失败：' + error.message)
@@ -980,3 +981,4 @@ watch(() => crawlSettings.value.sources, (newSources, oldSources) => {
   }
 }
 </style>
+

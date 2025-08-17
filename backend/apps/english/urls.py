@@ -2,7 +2,9 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     WordViewSet, UserWordProgressViewSet, ExpressionViewSet, NewsViewSet,
     LearningPlanViewSet, PracticeRecordViewSet, PronunciationRecordViewSet,
-    LearningStatsViewSet, TypingPracticeViewSet, DictionaryViewSet, TypingWordViewSet
+    LearningStatsViewSet, 
+    TypingPracticeViewSet, DictionaryViewSet, TypingWordViewSet,
+    DataAnalysisViewSet
 )
 
 router = DefaultRouter()
@@ -17,5 +19,9 @@ router.register(r'english/stats', LearningStatsViewSet, basename='english-stats'
 router.register(r'english/typing-practice', TypingPracticeViewSet, basename='typing-practice')
 router.register(r'english/dictionaries', DictionaryViewSet, basename='english-dictionaries')
 router.register(r'english/typing-words', TypingWordViewSet, basename='english-typing-words')
+router.register(r'english/data-analysis', DataAnalysisViewSet, basename='english-data-analysis')
+
+urlpatterns = router.urls
+
 
 urlpatterns = router.urls

@@ -26,6 +26,9 @@ export const useNewsStore = defineStore('news', {
     currentNews: null,
     newsDetailLoading: false,
     
+    // 管理界面新闻列表
+    managementNews: [],
+    managementNewsLoading: false,
 
   }),
 
@@ -186,7 +189,22 @@ export const useNewsStore = defineStore('news', {
     },
 
     // 获取管理界面新闻列表
-
+    async fetchManagementNews(params = {}) {
+      this.managementNewsLoading = true
+      try {
+        const query = {
+          page: 1,
+          page_size: 100, // 管理界面显示更多新闻
+          ...params
+        }
+        const resp = await englishAPI.getNewsList(query)
+        const data = resp?.data || resp?.results || resp?.items || []
+        this.managementNews = data
+        return data
+      } finally {
+        this.managementNewsLoading = false
+      }
+    },
 
     // 重置状态
     resetState() {
@@ -248,6 +266,24 @@ export const useNewsStore = defineStore('news', {
 
     // 获取新闻统计
     newsStats: (state) => {
+      const total = state.news.length
+      const bySource = {}
+      const visible = state.news.filter(news => news.is_visible !== false).length
+      
+      state.news.forEach(news => {
+        bySource[news.source] = (bySource[news.source] || 0) + 1
+      })
+      
+      return {
+        total,
+        visible,
+        hidden: total - visible,
+        bySource
+      }
+    }
+  }
+})
+
       const total = state.news.length
       const bySource = {}
       const visible = state.news.filter(news => news.is_visible !== false).length

@@ -64,10 +64,12 @@
       <div class="settings-bar">
         <span class="setting-item">美音 🔊</span>
         
-        <!-- 测试发音按钮 -->
-        <button @click="testPronunciation" class="test-btn">
-          测试发音
+        <!-- 数据分析入口 -->
+        <button @click="goToDataAnalysis" class="analysis-btn" title="数据分析">
+          📊
         </button>
+        
+
         
         <!-- 练习控制按钮 -->
         <div class="practice-controls" v-if="practiceStarted && !practiceCompleted">
@@ -342,7 +344,7 @@ export default {
       
       try {
         const success = await typingStore.startPracticeWithDictionary(
-          selectedDictionary.value.id,
+          selectedDictionary.value.name,
           selectedChapter.value
         )
         if (success) {
@@ -839,7 +841,6 @@ export default {
         console.log('sessionTime computed更新:', time)
         return time
       }),
-      practiceStarted: computed(() => typingStore.practiceStarted),
       practiceCompleted: computed(() => typingStore.practiceCompleted),
       currentWord: computed(() => typingStore.currentWord),
       wpm: computed(() => {
@@ -888,57 +889,10 @@ export default {
       // 练习开始方法
       startPracticeWithSelection,
       handleStartPractice,
-      playCurrentWordPronunciation: () => {
-        // This function is now handled by WordPronunciationIcon
-        // if (playPronunciation && typeof playPronunciation === 'function') { // No longer needed
-        //   playPronunciation()
-        // } else {
-        //   console.log('playPronunciation函数不存在或不是函数')
-        // }
-      },
-
-      // 测试发音方法
-      testPronunciation: () => {
-        setTimeout(() => {
-          let componentRef = wordPronunciationRef.value
-          if (!componentRef && instance) {
-            componentRef = instance.refs?.wordPronunciationRef
-          }
-          
-          if (componentRef) {
-            debouncedPlayPronunciation(componentRef)
-          } else {
-            console.log('组件不可用，延迟重试...')
-            // 如果组件还没准备好，延迟一点再试
-            setTimeout(() => {
-              componentRef = wordPronunciationRef.value
-              if (!componentRef && instance) {
-                componentRef = instance.refs?.wordPronunciationRef
-              }
-              
-              if (componentRef) {
-                debouncedPlayPronunciation(componentRef)
-              } else {
-                console.log('重试失败')
-                ElMessage.warning('发音组件不可用，无法测试发音。')
-              }
-            }, 100)
-          }
-        }, 100)
-      },
-
-      // 测试时间更新
-      testTimeUpdate: () => {
-        console.log('=== 测试时间更新 ===')
-        console.log('当前sessionTime:', typingStore.sessionTime)
-        console.log('当前sessionStartTime:', typingStore.sessionStartTime)
-        
-        // 手动更新一次时间
-        if (typingStore.sessionStartTime) {
-          const elapsed = Math.floor((Date.now() - typingStore.sessionStartTime) / 1000)
-          typingStore.sessionTime = elapsed
-          console.log('手动更新时间后，sessionTime:', typingStore.sessionTime)
-        }
+      
+      // 跳转到数据分析页面
+      goToDataAnalysis: () => {
+        router.push('/english/data-analysis')
       }
     }
   }
@@ -1187,6 +1141,35 @@ export default {
 .test-btn:hover {
   border-color: #cbd5e1;
   background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.analysis-btn {
+  padding: 8px 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #1e293b;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-right: 8px;
+}
+
+.analysis-btn:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.analysis-btn:hover {
+  border-color: #10b981;
+  background: #f0fdf4;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

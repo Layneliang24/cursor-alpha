@@ -71,3 +71,4 @@ const url = `https://dict.youdao.com/dictvoice?audio=${word}&type=2`
 3. **兼容性**: MP3格式在几乎所有浏览器中都支持
 4. **版权**: 确保音频文件的版权合规性
 
+
