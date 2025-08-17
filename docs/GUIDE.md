@@ -58,36 +58,170 @@
 
 ---
 
-## 🧪 本地测试指南
+## 🧪 测试系统使用指南
 
-### 自动化测试
+### 一键测试执行
+
+#### 完整测试套件
 ```bash
-# Windows
-run_tests.bat
+# 运行所有测试
+python tests/run_tests.py --mode=full
 
-# PowerShell
-.\run_tests.ps1
+# 运行回归测试
+python tests/run_tests.py --mode=regression
 
-# 手动运行
-cd backend
-python -m pytest ../tests/ -v
+# 运行指定模块测试
+python tests/run_tests.py --module=english
+python tests/run_tests.py --module=auth
 ```
 
-### 测试类型
-1. **单元测试** (`tests/unit/`)
-   - 基础功能测试：数据库连接、用户创建、管理命令
-   - 模型测试：所有数据模型的CRUD操作
-   - MySQL连接测试：数据库配置验证
+#### 测试报告查看
+```bash
+# 测试报告位置
+tests/reports/html/
+├── full_report.html          # 完整测试报告
+├── regression_report.html    # 回归测试报告
+├── auth_report.html          # 认证模块报告
+├── english_report.html       # 英语模块报告
+└── test_summary.html         # 测试总结报告
+```
 
-2. **集成测试** (`tests/integration/`)
-   - API端点测试：认证、文章、英语学习、新闻
-   - 权限测试：用户权限验证
-   - 数据库集成测试
+### 测试目录结构
+```
+tests/
+├── regression/              # 回归测试
+│   ├── english/            # 英语学习模块测试
+│   │   ├── test_data_analysis.py    # 数据分析测试
+│   │   ├── test_pause_resume.py     # 暂停/继续测试
+│   │   └── test_pronunciation.py    # 发音功能测试
+│   └── auth/               # 认证模块测试
+│       ├── test_user_authentication.py  # 用户认证测试
+│       └── test_permissions.py          # 权限管理测试
+├── new_features/           # 新功能测试
+├── unit/                  # 单元测试
+├── integration/           # 集成测试
+├── resources/             # 测试资源
+├── reports/               # 测试报告
+│   ├── html/             # HTML报告
+│   └── json/             # JSON报告
+├── run_tests.py          # 一键测试脚本
+├── pytest.ini           # pytest配置
+└── test_settings_mysql.py # MySQL测试配置
+```
 
-3. **测试覆盖率**
-   - 目标覆盖率：> 80%
-   - 生成HTML报告：`htmlcov/index.html`
-   - 命令行报告：显示未覆盖代码行
+### 测试类型说明
+
+#### 1. 回归测试 (`tests/regression/`)
+- **目的**：确保新功能不会破坏现有功能
+- **覆盖范围**：核心业务功能
+- **执行频率**：每次代码提交前
+
+#### 2. 新功能测试 (`tests/new_features/`)
+- **目的**：验证新开发功能的正确性
+- **覆盖范围**：新功能的所有特性
+- **执行频率**：新功能开发完成后
+
+#### 3. 单元测试 (`tests/unit/`)
+- **目的**：测试独立的代码单元
+- **覆盖范围**：函数、方法、类
+- **执行频率**：代码修改时
+
+#### 4. 集成测试 (`tests/integration/`)
+- **目的**：测试组件间的交互
+- **覆盖范围**：API接口、数据库操作
+- **执行频率**：接口变更时
+
+### 测试覆盖统计
+
+#### 当前覆盖情况
+- **总功能数**: 89个
+- **已有测试**: 16个 ✅
+- **总体覆盖率**: 18.0%
+- **高优先级功能覆盖率**: 50.0%
+
+#### 模块覆盖情况
+- **英语学习模块**: 15.4% ✅ (8/52个功能)
+- **用户认证模块**: 100% ✅ (8/8个功能)
+- **个人主页模块**: 0% ❌ (0/20个功能)
+- **文章管理模块**: 0% ❌ (0/8个功能)
+- **分类管理模块**: 0% ❌ (0/6个功能)
+
+### 测试编写规范
+
+#### 测试文件命名
+```python
+# 格式：test_功能名.py
+test_data_analysis.py      # 数据分析测试
+test_user_authentication.py # 用户认证测试
+test_permissions.py        # 权限管理测试
+```
+
+#### 测试类命名
+```python
+# 格式：Test功能名类型
+class TestDataAnalysisAPI(TestCase):      # API测试
+class TestDataAnalysisService(TestCase):  # 服务层测试
+class TestDataAnalysisUnit(TestCase):     # 单元测试
+class TestDataAnalysisIntegration(TestCase): # 集成测试
+```
+
+#### 测试方法命名
+```python
+# 格式：test_具体测试场景
+def test_data_overview_api(self):         # API接口测试
+def test_accuracy_trend_data_generation(self): # 数据生成测试
+def test_date_range_validation(self):     # 数据验证测试
+```
+
+### 测试环境配置
+
+#### MySQL测试数据库
+```python
+# tests/test_settings_mysql.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'test_alpha_db',
+        'USER': 'root',
+        'PASSWORD': 'meimei520',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+```
+
+#### pytest配置
+```ini
+# tests/pytest.ini
+[tool:pytest]
+DJANGO_SETTINGS_MODULE = tests.test_settings_mysql
+pythonpath = backend
+addopts = -v --tb=short
+markers =
+    slow: marks tests as slow
+    integration: marks tests as integration tests
+    api: marks tests as API tests
+```
+
+### 故障排除
+
+#### 常见问题
+1. **ImportError**: 检查Python路径和模块导入
+2. **数据库连接失败**: 确认MySQL服务运行和配置正确
+3. **权限错误**: 检查文件权限和数据库用户权限
+4. **测试失败**: 查看详细错误信息和测试报告
+
+#### 调试技巧
+```bash
+# 运行单个测试文件
+python -m pytest tests/regression/english/test_data_analysis.py -v
+
+# 运行单个测试方法
+python -m pytest tests/regression/english/test_data_analysis.py::TestDataAnalysisAPI::test_data_overview_api -v
+
+# 显示详细错误信息
+python -m pytest tests/regression/ -v --tb=long
+```
 
 ### 功能测试
 1. **导航测试**
@@ -333,6 +467,150 @@ python manage.py flush --noinput
    # 重置测试数据库
    python manage.py test --keepdb
    ```
+
+---
+
+*最后更新：2025-01-17*
+*更新内容：新增测试系统使用指南，包含一键测试执行、测试覆盖统计、测试编写规范等*
+
+3. **前端测试环境**
+   ```bash
+   # 确保Node.js版本兼容
+   node --version  # 需要 16+
+   ```
+
+### 文档规范
+- API文档：使用 OpenAPI 3.0
+- 代码注释：使用 docstring
+- 更新日志：记录所有变更
+
+---
+
+## 📞 支持
+
+如有问题，请：
+1. 查看本文档的故障排除部分
+2. 检查项目 Issues
+3. 联系开发团队
+
+---
+
+## 📚 相关文档
+
+- **项目概述**: `README.md`
+- **开发规范**: `docs/DOCUMENTATION_STANDARDS.md`
+- **测试规范**: `docs/TESTING_STANDARDS.md`
+- **待办事项**: `docs/TODO.md`
+- **Fundus集成**: `docs/FUNDUS_INTEGRATION.md`
+- **新闻爬虫总结**: `docs/新闻爬虫功能完成总结.md`
+- **爬虫架构设计**: `docs/新闻爬虫架构设计文档.md`
+- **Qwerty Learn集成**: `docs/QWERTY_LEARN_INTEGRATION_PLAN.md`
+
+---
+
+*最后更新：2024年12月*
+
+   cd backend
+   pip install -r requirements.txt
+   python manage.py migrate
+   ```
+
+5. **新闻爬虫网络问题**
+   - **问题**: 网络代理或防火墙导致无法访问外部新闻源
+   - **解决方案**: 
+     - 检查网络代理设置
+     - 使用本地测试源：`python manage.py crawl_news --source local_test --crawler traditional`
+     - 传统爬虫支持生成高质量新闻，可作为备选方案
+   - **测试命令**:
+     ```bash
+     # 测试传统爬虫（推荐）
+     python manage.py crawl_news --source local_test --crawler traditional --dry-run
+     
+     # 测试Fundus爬虫（需要网络访问）
+     python manage.py crawl_news --source bbc --crawler fundus --dry-run
+     ```
+
+### 日志查看
+```bash
+# 查看所有服务日志
+docker-compose logs -f
+
+# 查看特定服务日志
+docker-compose logs -f backend
+docker-compose logs -f frontend
+```
+
+---
+
+## 📝 开发规范
+
+### 代码规范
+- 后端：遵循 PEP 8 规范
+- 前端：使用 ESLint + Prettier
+- 提交信息：使用 Conventional Commits
+
+### 测试规范
+- 单元测试覆盖率 > 80%
+- 集成测试覆盖关键路径
+- E2E测试覆盖用户流程
+
+## 🧪 测试指南
+
+### 测试环境搭建
+```bash
+# 安装测试依赖
+cd backend
+pip install pytest pytest-django pytest-cov factory-boy faker
+
+cd frontend
+npm install --save-dev vitest @vue/test-utils jsdom
+```
+
+### 运行测试
+```bash
+# 后端测试
+cd tests
+pytest                           # 运行所有测试
+pytest unit/                     # 运行单元测试
+pytest integration/              # 运行集成测试
+pytest --cov=backend --cov-report=html  # 生成覆盖率报告
+
+# 前端测试
+cd frontend
+npm run test:unit               # 运行单元测试
+npm run test:coverage           # 生成覆盖率报告
+```
+
+### 测试报告
+- **后端覆盖率报告**: `tests/htmlcov/index.html`
+- **前端覆盖率报告**: `frontend/coverage/index.html`
+
+### 测试数据管理
+```bash
+# 创建测试数据
+python manage.py create_test_data
+
+# 清理测试数据
+python manage.py flush --noinput
+```
+
+### 常见测试问题
+1. **数据库连接问题**
+   ```bash
+   # 使用测试数据库
+   export DJANGO_SETTINGS_MODULE=alpha.test_settings
+   ```
+
+2. **测试数据冲突**
+   ```bash
+   # 重置测试数据库
+   python manage.py test --keepdb
+   ```
+
+---
+
+*最后更新：2025-01-17*
+*更新内容：新增测试系统使用指南，包含一键测试执行、测试覆盖统计、测试编写规范等*
 
 3. **前端测试环境**
    ```bash

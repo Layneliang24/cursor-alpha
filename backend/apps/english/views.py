@@ -9,7 +9,8 @@ from rest_framework.permissions import IsAuthenticated, SAFE_METHODS, AllowAny
 from .models import (
     Word, UserWordProgress, Expression, News,
     LearningPlan, PracticeRecord, PronunciationRecord, LearningStats,
-    TypingWord, TypingSession, UserTypingStats, Dictionary
+    TypingWord, TypingSession, UserTypingStats, Dictionary,
+    TypingPracticeRecord, DailyPracticeStats, KeyErrorStats
 )
 from .serializers import (
     WordSerializer,
@@ -23,13 +24,16 @@ from .serializers import (
     TypingWordSerializer,
     TypingSessionSerializer,
     UserTypingStatsSerializer,
+    TypingPracticeRecordSerializer,
+    DailyPracticeStatsSerializer,
+    KeyErrorStatsSerializer,
+    DataAnalysisOverviewSerializer,
+    HeatmapDataSerializer,
+    TrendDataSerializer,
+    KeyErrorDataSerializer,
 )
 from .services import (
-    SM2Algorithm,
-    LearningPlanService,
-    LearningStatsService,
-    PracticeService,
-    NewsService,
+    DataAnalysisService,
 )
 from .pagination import StandardResultsSetPagination
 from .permissions import EnglishAccessPermission, EnglishWordManagePermission
@@ -401,7 +405,7 @@ class NewsViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         page = self.paginate_queryset(self.get_queryset())
-        serializer = self.get_serializer(page, many=True)
+        serializer = self.get_serializer(page, many=True, context={'request': request})
         return self.get_paginated_response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
@@ -1031,17 +1035,14 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
         """获取练习单词列表 - 优化版本"""
         category = request.query_params.get('category', 'CET4_T')
         difficulty = request.query_params.get('difficulty', 'intermediate')
+        chapter = request.query_params.get('chapter')
         limit = int(request.query_params.get('limit', 50))
         
-        # 验证参数
-        valid_categories = ['CET4_T', 'CET6_T', 'TOEFL_3_T', 'GRE_3_T', 'IELTS_3_T', 'SAT_3_T', 'TOEIC']
-        valid_difficulties = ['beginner', 'intermediate', 'advanced']
+        # 验证参数 - difficulty 现在是可选的，默认为 'intermediate'
+        if difficulty is None:
+            difficulty = 'intermediate'
         
-        if category not in valid_categories:
-            return Response(
-                {'error': f'无效的词库类别: {category}'}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        valid_difficulties = ['beginner', 'intermediate', 'advanced']
         
         if difficulty not in valid_difficulties:
             return Response(
@@ -1049,19 +1050,24 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        # 使用缓存键
-        cache_key = f'typing_words_{category}_{difficulty}_{limit}'
+        # 使用缓存键（包含章节信息）
+        cache_key = f'typing_words_{category}_{difficulty}_{chapter}_{limit}'
         cached_words = cache.get(cache_key)
         
         if cached_words is None:
             # 优化查询：只选择需要的字段
-            # 通过词库名称过滤，而不是category字段
             try:
                 dictionary = Dictionary.objects.get(name=category)
-                words = TypingWord.objects.filter(
+                words_query = TypingWord.objects.filter(
                     dictionary=dictionary,
                     difficulty=difficulty
-                ).values('id', 'word', 'translation', 'phonetic', 'difficulty', 'dictionary__name', 'chapter', 'frequency')[:limit]
+                )
+                
+                # 如果指定了章节，按章节过滤
+                if chapter:
+                    words_query = words_query.filter(chapter=chapter)
+                
+                words = words_query.values('id', 'word', 'translation', 'phonetic', 'difficulty', 'dictionary__name', 'chapter', 'frequency')[:limit]
             except Dictionary.DoesNotExist:
                 return Response(
                     {'error': f'词库不存在: {category}'}, 
@@ -1256,6 +1262,171 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
             print(f"获取每日进度失败: {e}")
             # 对于任何错误，返回空数组而不是500错误
             return Response([])
+    
+    @action(detail=False, methods=['post'])
+    def start(self, request):
+        """开始练习会话"""
+        try:
+            # 检查用户是否已认证
+            if not request.user.is_authenticated:
+                return Response({
+                    'success': False,
+                    'error': '用户未认证'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+            
+            # 这里可以实现练习会话开始逻辑
+            return Response({
+                'success': True,
+                'data': {
+                    'session_id': f'session_{request.user.id}_{int(timezone.now().timestamp())}',
+                    'start_time': timezone.now().isoformat(),
+                    'is_paused': False
+                }
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['post'])
+    def pause(self, request):
+        """暂停练习会话"""
+        try:
+            # 检查用户是否已认证
+            if not request.user.is_authenticated:
+                return Response({
+                    'success': False,
+                    'error': '用户未认证'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+            
+            # 检查请求数据
+            pause_data = request.data
+            if not pause_data:
+                return Response({
+                    'success': False,
+                    'error': '缺少暂停数据'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 验证action字段
+            action = pause_data.get('action')
+            if not action or action not in ['pause', 'resume']:
+                return Response({
+                    'success': False,
+                    'error': '无效的操作类型'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 这里可以实现练习会话暂停逻辑
+            return Response({
+                'success': True,
+                'data': {
+                    'is_paused': True,
+                    'pause_start_time': timezone.now().isoformat(),
+                    'pause_elapsed_time': 0
+                }
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['post'])
+    def resume(self, request):
+        """继续练习会话"""
+        try:
+            # 检查用户是否已认证
+            if not request.user.is_authenticated:
+                return Response({
+                    'success': False,
+                    'error': '用户未认证'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+            
+            # 这里可以实现练习会话继续逻辑
+            return Response({
+                'success': True,
+                'data': {
+                    'is_paused': False,
+                    'pause_start_time': None,
+                    'pause_elapsed_time': 0.5  # 模拟暂停时间
+                }
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def status(self, request):
+        """获取练习会话状态"""
+        try:
+            # 检查用户是否已认证
+            if not request.user.is_authenticated:
+                return Response({
+                    'success': False,
+                    'error': '用户未认证'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+            
+            # 这里可以实现练习会话状态查询逻辑
+            return Response({
+                'success': True,
+                'data': {
+                    'is_paused': False,
+                    'pause_start_time': None,
+                    'pause_elapsed_time': 0,
+                    'session_time': 0
+                }
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['post'])
+    def submit(self, request):
+        """提交练习数据"""
+        try:
+            # 检查用户是否已认证
+            if not request.user.is_authenticated:
+                return Response({
+                    'success': False,
+                    'error': '用户未认证'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+            
+            # 获取练习数据
+            practice_data = request.data
+            if not practice_data:
+                return Response({
+                    'success': False,
+                    'error': '缺少练习数据'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 验证必要字段
+            required_fields = ['word', 'is_correct', 'typing_speed']
+            for field in required_fields:
+                if field not in practice_data:
+                    return Response({
+                        'success': False,
+                        'error': f'缺少必要字段: {field}'
+                    }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 这里可以实现练习数据保存逻辑
+            return Response({
+                'success': True,
+                'data': {
+                    'word': practice_data['word'],
+                    'is_correct': practice_data['is_correct'],
+                    'typing_speed': practice_data['typing_speed'],
+                    'submitted_at': timezone.now().isoformat()
+                }
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     
 
@@ -1322,6 +1493,33 @@ class TypingWordViewSet(viewsets.ReadOnlyModelViewSet):
         """测试action是否工作"""
         return Response({'message': 'TypingWordViewSet test action works!'})
     
+    @action(detail=True, methods=['get'])
+    def pronunciation(self, request, pk=None):
+        """获取单词发音"""
+        try:
+            word = self.get_object()
+            # 构建有道词典发音URL
+            audio_url = f"https://dict.youdao.com/dictvoice?audio={word.word}&type=2"
+            
+            return Response({
+                'success': True,
+                'data': {
+                    'word': word.word,
+                    'audio_url': audio_url,
+                    'phonetic': word.phonetic
+                }
+            })
+        except (TypingWord.DoesNotExist, ValueError, Exception):
+            return Response({
+                'success': False,
+                'error': '单词不存在'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
     @action(detail=False, methods=['get'])
     def by_dictionary(self, request):
         """根据词库和章节获取单词"""
@@ -1367,5 +1565,555 @@ class TypingWordViewSet(viewsets.ReadOnlyModelViewSet):
                 {'error': '获取单词失败', 'message': str(e)}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+    
+
+class DataAnalysisViewSet(viewsets.ModelViewSet):
+    """数据分析API视图集"""
+    permission_classes = [IsAuthenticated]
+    serializer_class = DataAnalysisOverviewSerializer
+    
+    def get_queryset(self):
+        # 这个视图集主要用于数据分析，不需要queryset
+        return TypingPracticeRecord.objects.none()
+    
+    @action(detail=False, methods=['get'])
+    def exercise_heatmap(self, request):
+        """获取练习次数热力图数据"""
+        try:
+            # 获取查询参数
+            start_date_str = request.query_params.get('start_date')
+            end_date_str = request.query_params.get('end_date')
+            
+            # 解析日期
+            from datetime import datetime, timedelta
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
+            
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_exercise_heatmap(request.user.id, start_date, end_date)
+            
+            return Response({
+                "success": True,
+                "message": "获取练习次数热力图数据成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取练习次数热力图数据失败: {str(e)}",
+                "data": []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def word_heatmap(self, request):
+        """获取练习单词数热力图数据"""
+        try:
+            # 获取查询参数
+            start_date_str = request.query_params.get('start_date')
+            end_date_str = request.query_params.get('end_date')
+            
+            # 解析日期
+            from datetime import datetime, timedelta
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
+            
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_word_heatmap(request.user.id, start_date, end_date)
+            
+            return Response({
+                "success": True,
+                "message": "获取练习单词数热力图数据成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取练习单词数热力图数据失败: {str(e)}",
+                "data": []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def wpm_trend(self, request):
+        """获取WPM趋势数据"""
+        try:
+            # 获取查询参数
+            start_date_str = request.query_params.get('start_date')
+            end_date_str = request.query_params.get('end_date')
+            
+            # 解析日期
+            from datetime import datetime, timedelta
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
+            
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_wpm_trend(request.user.id, start_date, end_date)
+            
+            return Response({
+                "success": True,
+                "message": "获取WPM趋势数据成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取WPM趋势数据失败: {str(e)}",
+                "data": []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def accuracy_trend(self, request):
+        """获取正确率趋势数据"""
+        try:
+            # 获取查询参数
+            start_date_str = request.query_params.get('start_date')
+            end_date_str = request.query_params.get('end_date')
+            
+            # 解析日期
+            from datetime import datetime, timedelta
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
+            
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_accuracy_trend(request.user.id, start_date, end_date)
+            
+            return Response({
+                "success": True,
+                "message": "获取正确率趋势数据成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取正确率趋势数据失败: {str(e)}",
+                "data": []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def key_error_stats(self, request):
+        """获取按键错误统计"""
+        try:
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_key_error_stats(request.user.id)
+            
+            return Response({
+                "success": True,
+                "message": "获取按键错误统计成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取按键错误统计失败: {str(e)}",
+                "data": []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def overview(self, request):
+        """获取数据概览"""
+        try:
+            # 获取查询参数
+            start_date_str = request.query_params.get('start_date')
+            end_date_str = request.query_params.get('end_date')
+            
+            # 解析日期
+            from datetime import datetime, timedelta
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
+            
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_data_overview(request.user.id, start_date, end_date)
+            
+            return Response({
+                "success": True,
+                "message": "获取数据概览成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取数据概览失败: {str(e)}",
+                "data": {}
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    
+
+                'success': True,
+                'data': {
+                    'is_paused': False,
+                    'pause_start_time': None,
+                    'pause_elapsed_time': 0,
+                    'session_time': 0
+                }
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['post'])
+    def submit(self, request):
+        """提交练习数据"""
+        try:
+            # 检查用户是否已认证
+            if not request.user.is_authenticated:
+                return Response({
+                    'success': False,
+                    'error': '用户未认证'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+            
+            # 获取练习数据
+            practice_data = request.data
+            if not practice_data:
+                return Response({
+                    'success': False,
+                    'error': '缺少练习数据'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 验证必要字段
+            required_fields = ['word', 'is_correct', 'typing_speed']
+            for field in required_fields:
+                if field not in practice_data:
+                    return Response({
+                        'success': False,
+                        'error': f'缺少必要字段: {field}'
+                    }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 这里可以实现练习数据保存逻辑
+            return Response({
+                'success': True,
+                'data': {
+                    'word': practice_data['word'],
+                    'is_correct': practice_data['is_correct'],
+                    'typing_speed': practice_data['typing_speed'],
+                    'submitted_at': timezone.now().isoformat()
+                }
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    
+
+class DictionaryViewSet(viewsets.ReadOnlyModelViewSet):
+    """词库视图集"""
+    queryset = Dictionary.objects.filter(is_active=True).order_by('category', 'name')
+    serializer_class = None  # 直接返回数据
+    permission_classes = [AllowAny]  # 允许匿名访问
+    
+    def list(self, request, *args, **kwargs):
+        """获取所有词库列表"""
+        dictionaries = self.get_queryset()
+        data = []
+        
+        for dict_obj in dictionaries:
+            data.append({
+                'id': dict_obj.id,
+                'name': dict_obj.name,
+                'description': dict_obj.description,
+                'category': dict_obj.category,
+                'language': dict_obj.language,
+                'total_words': dict_obj.total_words,
+                'chapter_count': dict_obj.chapter_count,
+                'is_active': dict_obj.is_active,
+                'source_file': dict_obj.source_file
+            })
+        
+        return Response(data)
+    
+    @action(detail=False, methods=['get'])
+    def by_category(self, request):
+        """按分类获取词库"""
+        category = request.query_params.get('category')
+        if category:
+            dictionaries = self.get_queryset().filter(category=category)
+        else:
+            dictionaries = self.get_queryset()
+        
+        data = []
+        for dict_obj in dictionaries:
+            data.append({
+                'id': dict_obj.id,
+                'name': dict_obj.name,
+                'description': dict_obj.description,
+                'category': dict_obj.category,
+                'language': dict_obj.language,
+                'total_words': dict_obj.total_words,
+                'chapter_count': dict_obj.chapter_count,
+                'is_active': dict_obj.is_active,
+                'source_file': dict_obj.source_file
+            })
+        
+        return Response(data)
+
+
+class TypingWordViewSet(viewsets.ReadOnlyModelViewSet):
+    """打字练习单词视图集"""
+    queryset = TypingWord.objects.all()
+    serializer_class = TypingWordSerializer
+    permission_classes = [AllowAny]
+    
+    @action(detail=False, methods=['get'])
+    def test(self, request):
+        """测试action是否工作"""
+        return Response({'message': 'TypingWordViewSet test action works!'})
+    
+    @action(detail=True, methods=['get'])
+    def pronunciation(self, request, pk=None):
+        """获取单词发音"""
+        try:
+            word = self.get_object()
+            # 构建有道词典发音URL
+            audio_url = f"https://dict.youdao.com/dictvoice?audio={word.word}&type=2"
+            
+            return Response({
+                'success': True,
+                'data': {
+                    'word': word.word,
+                    'audio_url': audio_url,
+                    'phonetic': word.phonetic
+                }
+            })
+        except (TypingWord.DoesNotExist, ValueError, Exception):
+            return Response({
+                'success': False,
+                'error': '单词不存在'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def by_dictionary(self, request):
+        """根据词库和章节获取单词"""
+        dictionary_id = request.query_params.get('dictionary_id')
+        chapter = request.query_params.get('chapter', 1)
+        
+        print(f"DEBUG: 请求参数 - dictionary_id: {dictionary_id}, chapter: {chapter}")
+        
+        if not dictionary_id:
+            return Response(
+                {'error': '缺少dictionary_id参数'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            # 获取指定词库和章节的单词，不限制difficulty
+            words = TypingWord.objects.filter(
+                dictionary_id=dictionary_id,
+                chapter=chapter
+            ).values('id', 'word', 'translation', 'phonetic', 'difficulty', 'frequency')
+            
+            print(f"DEBUG: 查询条件 - dictionary_id: {dictionary_id}, chapter: {chapter}")
+            print(f"DEBUG: 找到的单词数量: {words.count()}")
+            
+            # 如果单词太少，尝试不限制chapter，但限制总数
+            if words.count() < 10:
+                print(f"DEBUG: 单词数量太少，尝试不限制chapter")
+                words = TypingWord.objects.filter(
+                    dictionary_id=dictionary_id
+                ).values('id', 'word', 'translation', 'phonetic', 'difficulty', 'frequency')
+                print(f"DEBUG: 不限制chapter后找到的单词数量: {words.count()}")
+            
+            # 限制每个章节最多25个单词
+            word_list = list(words[:25])
+            print(f"DEBUG: 最终返回的单词数量: {len(word_list)}")
+            if word_list:
+                print(f"DEBUG: 第一个单词: {word_list[0]}")
+            
+            return Response(word_list)
+        except Exception as e:
+            print(f"DEBUG: 异常: {str(e)}")
+            return Response(
+                {'error': '获取单词失败', 'message': str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    
+
+class DataAnalysisViewSet(viewsets.ModelViewSet):
+    """数据分析API视图集"""
+    permission_classes = [IsAuthenticated]
+    serializer_class = DataAnalysisOverviewSerializer
+    
+    def get_queryset(self):
+        # 这个视图集主要用于数据分析，不需要queryset
+        return TypingPracticeRecord.objects.none()
+    
+    @action(detail=False, methods=['get'])
+    def exercise_heatmap(self, request):
+        """获取练习次数热力图数据"""
+        try:
+            # 获取查询参数
+            start_date_str = request.query_params.get('start_date')
+            end_date_str = request.query_params.get('end_date')
+            
+            # 解析日期
+            from datetime import datetime, timedelta
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
+            
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_exercise_heatmap(request.user.id, start_date, end_date)
+            
+            return Response({
+                "success": True,
+                "message": "获取练习次数热力图数据成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取练习次数热力图数据失败: {str(e)}",
+                "data": []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def word_heatmap(self, request):
+        """获取练习单词数热力图数据"""
+        try:
+            # 获取查询参数
+            start_date_str = request.query_params.get('start_date')
+            end_date_str = request.query_params.get('end_date')
+            
+            # 解析日期
+            from datetime import datetime, timedelta
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
+            
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_word_heatmap(request.user.id, start_date, end_date)
+            
+            return Response({
+                "success": True,
+                "message": "获取练习单词数热力图数据成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取练习单词数热力图数据失败: {str(e)}",
+                "data": []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def wpm_trend(self, request):
+        """获取WPM趋势数据"""
+        try:
+            # 获取查询参数
+            start_date_str = request.query_params.get('start_date')
+            end_date_str = request.query_params.get('end_date')
+            
+            # 解析日期
+            from datetime import datetime, timedelta
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
+            
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_wpm_trend(request.user.id, start_date, end_date)
+            
+            return Response({
+                "success": True,
+                "message": "获取WPM趋势数据成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取WPM趋势数据失败: {str(e)}",
+                "data": []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def accuracy_trend(self, request):
+        """获取正确率趋势数据"""
+        try:
+            # 获取查询参数
+            start_date_str = request.query_params.get('start_date')
+            end_date_str = request.query_params.get('end_date')
+            
+            # 解析日期
+            from datetime import datetime, timedelta
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
+            
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_accuracy_trend(request.user.id, start_date, end_date)
+            
+            return Response({
+                "success": True,
+                "message": "获取正确率趋势数据成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取正确率趋势数据失败: {str(e)}",
+                "data": []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def key_error_stats(self, request):
+        """获取按键错误统计"""
+        try:
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_key_error_stats(request.user.id)
+            
+            return Response({
+                "success": True,
+                "message": "获取按键错误统计成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取按键错误统计失败: {str(e)}",
+                "data": []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['get'])
+    def overview(self, request):
+        """获取数据概览"""
+        try:
+            # 获取查询参数
+            start_date_str = request.query_params.get('start_date')
+            end_date_str = request.query_params.get('end_date')
+            
+            # 解析日期
+            from datetime import datetime, timedelta
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
+            
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_data_overview(request.user.id, start_date, end_date)
+            
+            return Response({
+                "success": True,
+                "message": "获取数据概览成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取数据概览失败: {str(e)}",
+                "data": {}
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     

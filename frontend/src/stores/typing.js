@@ -238,13 +238,13 @@ export const useTypingStore = defineStore('typing', () => {
   const startPracticeWithDictionary = async (dictionaryId, chapter) => {
     try {
       console.log('=== startPracticeWithDictionary 开始 ===')
-      console.log('词库ID:', dictionaryId, '章节:', chapter)
+      console.log('词库名称:', dictionaryId, '章节:', chapter)
       loading.value = true
       clearError()
       
       console.log('调用API获取指定词库和章节的单词...')
       const response = await englishAPI.getTypingWordsByDictionary({
-        dictionary_id: dictionaryId,
+        category: dictionaryId,
         chapter: chapter
       })
       

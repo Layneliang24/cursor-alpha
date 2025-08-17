@@ -485,6 +485,152 @@ class TypingSession(models.Model):
         return f"{self.user.username} - {self.word.word} ({'正确' if self.is_correct else '错误'})"
 
 
+class TypingPracticeRecord(models.Model):
+    """打字练习详细记录"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    word = models.CharField(max_length=100, verbose_name="单词")
+    is_correct = models.BooleanField(verbose_name="是否正确")
+    typing_speed = models.FloatField(verbose_name="打字速度(WPM)")
+    response_time = models.FloatField(verbose_name="响应时间(秒)")
+    total_time = models.FloatField(verbose_name="总用时(毫秒)")
+    wrong_count = models.IntegerField(default=0, verbose_name="错误次数")
+    mistakes = models.JSONField(default=dict, verbose_name="按键错误详情")
+    timing = models.JSONField(default=list, verbose_name="每个字符的输入时间")
+    session_date = models.DateField(auto_now_add=True, verbose_name="练习日期")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+
+    class Meta:
+        verbose_name = "打字练习详细记录"
+        verbose_name_plural = "打字练习详细记录"
+        db_table = 'english_typing_practice_records'
+        indexes = [
+            models.Index(fields=['user', 'session_date']),
+            models.Index(fields=['user', 'created_at']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.word} ({'正确' if self.is_correct else '错误'})"
+
+
+class DailyPracticeStats(models.Model):
+    """每日练习统计"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    date = models.DateField(verbose_name="统计日期")
+    exercise_count = models.IntegerField(default=0, verbose_name="练习次数")
+    word_count = models.IntegerField(default=0, verbose_name="练习单词数")
+    total_time = models.FloatField(default=0, verbose_name="总用时(毫秒)")
+    wrong_count = models.IntegerField(default=0, verbose_name="总错误次数")
+    wrong_keys = models.JSONField(default=list, verbose_name="错误按键列表")
+    avg_wpm = models.FloatField(default=0, verbose_name="平均WPM")
+    accuracy_rate = models.FloatField(default=0, verbose_name="正确率")
+
+    class Meta:
+        verbose_name = "每日练习统计"
+        verbose_name_plural = "每日练习统计"
+        db_table = 'english_daily_practice_stats'
+        unique_together = [('user', 'date')]
+        indexes = [
+            models.Index(fields=['user', 'date']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date}"
+
+
+class KeyErrorStats(models.Model):
+    """按键错误统计"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    key = models.CharField(max_length=10, verbose_name="按键")
+    error_count = models.IntegerField(default=0, verbose_name="错误次数")
+    last_error_date = models.DateField(auto_now=True, verbose_name="最后错误日期")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+
+    class Meta:
+        verbose_name = "按键错误统计"
+        verbose_name_plural = "按键错误统计"
+        db_table = 'english_key_error_stats'
+        unique_together = [('user', 'key')]
+        indexes = [
+            models.Index(fields=['user', 'error_count']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.key} ({self.error_count}次)"
+
+
+class UserTypingStats(models.Model):
+    """用户打字统计"""
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    total_words_practiced = models.IntegerField(default=0, verbose_name="总练习单词数")
+    total_correct_words = models.IntegerField(default=0, verbose_name="总正确单词数")
+    average_wpm = models.FloatField(default=0.0, verbose_name="平均WPM")
+    total_practice_time = models.IntegerField(default=0, verbose_name="总练习时长(分钟)")
+    last_practice_date = models.DateField(null=True, blank=True, verbose_name="最后练习日期")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    class Meta:
+        verbose_name = "用户打字统计"
+        verbose_name_plural = "用户打字统计"
+        db_table = 'english_user_typing_stats'
+
+    def __str__(self):
+        return f"{self.user.username} - 统计"
+
+    @property
+    def accuracy(self):
+        """计算准确率"""
+        if self.total_words_practiced == 0:
+            return 0.0
+        return round((self.total_correct_words / self.total_words_practiced) * 100, 2)
+
+
+
+class DailyPracticeStats(models.Model):
+    """每日练习统计"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    date = models.DateField(verbose_name="统计日期")
+    exercise_count = models.IntegerField(default=0, verbose_name="练习次数")
+    word_count = models.IntegerField(default=0, verbose_name="练习单词数")
+    total_time = models.FloatField(default=0, verbose_name="总用时(毫秒)")
+    wrong_count = models.IntegerField(default=0, verbose_name="总错误次数")
+    wrong_keys = models.JSONField(default=list, verbose_name="错误按键列表")
+    avg_wpm = models.FloatField(default=0, verbose_name="平均WPM")
+    accuracy_rate = models.FloatField(default=0, verbose_name="正确率")
+
+    class Meta:
+        verbose_name = "每日练习统计"
+        verbose_name_plural = "每日练习统计"
+        db_table = 'english_daily_practice_stats'
+        unique_together = [('user', 'date')]
+        indexes = [
+            models.Index(fields=['user', 'date']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date}"
+
+
+class KeyErrorStats(models.Model):
+    """按键错误统计"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    key = models.CharField(max_length=10, verbose_name="按键")
+    error_count = models.IntegerField(default=0, verbose_name="错误次数")
+    last_error_date = models.DateField(auto_now=True, verbose_name="最后错误日期")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+
+    class Meta:
+        verbose_name = "按键错误统计"
+        verbose_name_plural = "按键错误统计"
+        db_table = 'english_key_error_stats'
+        unique_together = [('user', 'key')]
+        indexes = [
+            models.Index(fields=['user', 'error_count']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.key} ({self.error_count}次)"
+
+
 class UserTypingStats(models.Model):
     """用户打字统计"""
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")

@@ -12,6 +12,9 @@ from .models import (
     TypingSession,
     UserTypingStats,
     TypingWord,
+    TypingPracticeRecord,
+    DailyPracticeStats,
+    KeyErrorStats,
 )
 
 
@@ -86,6 +89,13 @@ class NewsSerializer(serializers.ModelSerializer):
     # 格式化发布日期，只显示日期不显示时间
     publish_date = serializers.DateField(format='%Y-%m-%d', read_only=True)
     
+    # 格式化时间字段，只显示日期不显示时间（DateTimeField需要DateTimeField）
+    created_at = serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
+    updated_at = serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
+    
+    # 构建完整的图片URL
+    image_url = serializers.SerializerMethodField()
+    
     class Meta:
         model = News
         fields = [
@@ -96,6 +106,24 @@ class NewsSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
+    
+    def get_image_url(self, obj):
+        """构建完整的图片URL"""
+        if not obj.image_url:
+            return None
+        
+        # 如果是相对路径（本地图片），构建完整URL
+        if obj.image_url.startswith('news_images/'):
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(f'/media/{obj.image_url}')
+            else:
+                # 如果没有request上下文，使用默认域名
+                from django.conf import settings
+                return f"{settings.BASE_URL}/media/{obj.image_url}" if hasattr(settings, 'BASE_URL') else f"/media/{obj.image_url}"
+        
+        # 如果是完整URL，直接返回
+        return obj.image_url
 
 
 class LearningPlanSerializer(serializers.ModelSerializer):
@@ -200,12 +228,172 @@ class TypingSessionSerializer(serializers.ModelSerializer):
 
 class UserTypingStatsSerializer(serializers.ModelSerializer):
     """用户打字统计序列化器"""
-    accuracy = serializers.ReadOnlyField()
     
     class Meta:
         model = UserTypingStats
         fields = [
-            'total_words_practiced', 'total_correct_words', 'average_wpm', 
-            'total_practice_time', 'last_practice_date', 'accuracy'
+            'id', 'user', 'total_words_practiced', 'total_correct_words',
+            'average_wpm', 'total_practice_time', 'last_practice_date',
+            'updated_at'
         ]
-        read_only_fields = fields
+        read_only_fields = ['id', 'user', 'updated_at']
+
+
+class TypingPracticeRecordSerializer(serializers.ModelSerializer):
+    """打字练习详细记录序列化器"""
+    
+    class Meta:
+        model = TypingPracticeRecord
+        fields = [
+            'id', 'user', 'word', 'is_correct', 'typing_speed',
+            'response_time', 'total_time', 'wrong_count', 'mistakes',
+            'timing', 'session_date', 'created_at'
+        ]
+        read_only_fields = ['id', 'user', 'session_date', 'created_at']
+
+
+class DailyPracticeStatsSerializer(serializers.ModelSerializer):
+    """每日练习统计序列化器"""
+    
+    class Meta:
+        model = DailyPracticeStats
+        fields = [
+            'id', 'user', 'date', 'exercise_count', 'word_count',
+            'total_time', 'wrong_count', 'wrong_keys', 'avg_wpm',
+            'accuracy_rate'
+        ]
+        read_only_fields = ['id', 'user']
+
+
+class KeyErrorStatsSerializer(serializers.ModelSerializer):
+    """按键错误统计序列化器"""
+    
+    class Meta:
+        model = KeyErrorStats
+        fields = [
+            'id', 'user', 'key', 'error_count', 'last_error_date',
+            'created_at'
+        ]
+        read_only_fields = ['id', 'user', 'created_at']
+
+
+class DataAnalysisOverviewSerializer(serializers.Serializer):
+    """数据分析概览序列化器"""
+    total_exercises = serializers.IntegerField()
+    total_words = serializers.IntegerField()
+    avg_wpm = serializers.FloatField()
+    avg_accuracy = serializers.FloatField()
+    date_range = serializers.ListField(child=serializers.DateField())
+
+
+class HeatmapDataSerializer(serializers.Serializer):
+    """热力图数据序列化器"""
+    date = serializers.DateField()
+    count = serializers.IntegerField()
+    level = serializers.IntegerField()
+
+
+class TrendDataSerializer(serializers.Serializer):
+    """趋势图数据序列化器"""
+    date = serializers.DateField()
+    value = serializers.FloatField()
+
+
+class KeyErrorDataSerializer(serializers.Serializer):
+    """按键错误数据序列化器"""
+    name = serializers.CharField()
+    value = serializers.IntegerField()
+
+    is_correct = serializers.BooleanField()
+    correct_answer = serializers.CharField()
+    time_spent = serializers.IntegerField(min_value=0)
+
+
+class TypingSessionSerializer(serializers.ModelSerializer):
+    """打字练习会话序列化器"""
+    word = TypingWordSerializer(read_only=True)
+    word_id = serializers.IntegerField(write_only=True)
+    
+    class Meta:
+        model = TypingSession
+        fields = ['id', 'word', 'word_id', 'is_correct', 'typing_speed', 'response_time', 'session_date', 'created_at']
+        read_only_fields = ['session_date', 'created_at']
+
+
+class UserTypingStatsSerializer(serializers.ModelSerializer):
+    """用户打字统计序列化器"""
+    
+    class Meta:
+        model = UserTypingStats
+        fields = [
+            'id', 'user', 'total_words_practiced', 'total_correct_words',
+            'average_wpm', 'total_practice_time', 'last_practice_date',
+            'updated_at'
+        ]
+        read_only_fields = ['id', 'user', 'updated_at']
+
+
+class TypingPracticeRecordSerializer(serializers.ModelSerializer):
+    """打字练习详细记录序列化器"""
+    
+    class Meta:
+        model = TypingPracticeRecord
+        fields = [
+            'id', 'user', 'word', 'is_correct', 'typing_speed',
+            'response_time', 'total_time', 'wrong_count', 'mistakes',
+            'timing', 'session_date', 'created_at'
+        ]
+        read_only_fields = ['id', 'user', 'session_date', 'created_at']
+
+
+class DailyPracticeStatsSerializer(serializers.ModelSerializer):
+    """每日练习统计序列化器"""
+    
+    class Meta:
+        model = DailyPracticeStats
+        fields = [
+            'id', 'user', 'date', 'exercise_count', 'word_count',
+            'total_time', 'wrong_count', 'wrong_keys', 'avg_wpm',
+            'accuracy_rate'
+        ]
+        read_only_fields = ['id', 'user']
+
+
+class KeyErrorStatsSerializer(serializers.ModelSerializer):
+    """按键错误统计序列化器"""
+    
+    class Meta:
+        model = KeyErrorStats
+        fields = [
+            'id', 'user', 'key', 'error_count', 'last_error_date',
+            'created_at'
+        ]
+        read_only_fields = ['id', 'user', 'created_at']
+
+
+class DataAnalysisOverviewSerializer(serializers.Serializer):
+    """数据分析概览序列化器"""
+    total_exercises = serializers.IntegerField()
+    total_words = serializers.IntegerField()
+    avg_wpm = serializers.FloatField()
+    avg_accuracy = serializers.FloatField()
+    date_range = serializers.ListField(child=serializers.DateField())
+
+
+class HeatmapDataSerializer(serializers.Serializer):
+    """热力图数据序列化器"""
+    date = serializers.DateField()
+    count = serializers.IntegerField()
+    level = serializers.IntegerField()
+
+
+class TrendDataSerializer(serializers.Serializer):
+    """趋势图数据序列化器"""
+    date = serializers.DateField()
+    value = serializers.FloatField()
+
+
+class KeyErrorDataSerializer(serializers.Serializer):
+    """按键错误数据序列化器"""
+    name = serializers.CharField()
+    value = serializers.IntegerField()

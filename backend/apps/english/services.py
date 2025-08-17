@@ -1,429 +1,333 @@
 """
-英语学习模块服务层
-包含学习算法、统计分析等业务逻辑
+数据分析服务
+提供数据分析相关的业务逻辑
 """
-
 from datetime import datetime, timedelta
-from decimal import Decimal
-from typing import Dict, List, Optional, Tuple
+from typing import List, Dict, Any, Tuple
+from django.db.models import Q, Count, Avg, Sum
 from django.utils import timezone
-from django.db.models import Q, Count, Avg
 from .models import (
-    Word, UserWordProgress, Expression, News, 
-    LearningPlan, PracticeRecord, LearningStats
+    TypingPracticeRecord,
+    DailyPracticeStats,
+    KeyErrorStats,
+    TypingSession
 )
 
 
-class SM2Algorithm:
-    """
-    SM-2 间隔重复算法实现
-    基于SuperMemo-2算法，用于优化记忆复习间隔
-    """
+class DataAnalysisService:
+    """数据分析服务类"""
     
-    @staticmethod
-    def calculate_next_review(
-        ease_factor: float,
-        interval_days: int,
-        repetition_count: int,
-        quality: int
-    ) -> Tuple[float, int, int]:
-        """
-        计算下次复习时间
+    def __init__(self):
+        pass
+    
+    def get_exercise_heatmap(self, user_id: int, start_date: datetime, end_date: datetime) -> List[Dict[str, Any]]:
+        """获取练习次数热力图数据"""
+        # 获取日期范围内的练习记录
+        records = TypingPracticeRecord.objects.filter(
+            user_id=user_id,
+            session_date__range=[start_date.date(), end_date.date()]
+        ).values('session_date').annotate(
+            exercise_count=Count('id')
+        ).order_by('session_date')
         
-        Args:
-            ease_factor: 容易度因子 (>=1.3)
-            interval_days: 当前间隔天数
-            repetition_count: 重复次数
-            quality: 回答质量 (0-5)
-                0: 完全不记得
-                1: 错误答案，正确答案似乎很陌生
-                2: 错误答案，但正确答案容易记起
-                3: 正确答案，但需要努力回忆
-                4: 正确答案，经过犹豫后回忆起
-                5: 完美答案
-        
-        Returns:
-            tuple: (new_ease_factor, new_interval_days, new_repetition_count)
-        """
-        # 更新容易度因子
-        new_ease_factor = ease_factor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))
-        new_ease_factor = max(1.3, new_ease_factor)  # 最小值1.3
-        
-        # 如果质量小于3，重置间隔
-        if quality < 3:
-            new_repetition_count = 0
-            new_interval_days = 1
-        else:
-            new_repetition_count = repetition_count + 1
+        # 生成热力图数据
+        heatmap_data = []
+        for record in records:
+            date_str = record['session_date'].strftime('%Y-%m-%d')
+            count = record['exercise_count']
+            level = self._get_heatmap_level(count)
             
-            if new_repetition_count == 1:
-                new_interval_days = 1
-            elif new_repetition_count == 2:
-                new_interval_days = 6
-            else:
-                new_interval_days = int(interval_days * new_ease_factor)
+            heatmap_data.append({
+                'date': date_str,
+                'count': count,
+                'level': level
+            })
         
-        return new_ease_factor, new_interval_days, new_repetition_count
+        return heatmap_data
     
-    @staticmethod
-    def update_word_progress(user, word, quality: int) -> UserWordProgress:
-        """
-        更新用户单词学习进度
+    def get_word_heatmap(self, user_id: int, start_date: datetime, end_date: datetime) -> List[Dict[str, Any]]:
+        """获取练习单词数热力图数据"""
+        # 获取日期范围内的练习记录，按日期分组统计单词数（去重）
+        records = TypingPracticeRecord.objects.filter(
+            user_id=user_id,
+            session_date__range=[start_date.date(), end_date.date()]
+        ).values('session_date').annotate(
+            word_count=Count('word', distinct=True)
+        ).order_by('session_date')
         
-        Args:
-            user: 用户实例
-            word: 单词实例
-            quality: 回答质量 (0-5)
+        # 生成热力图数据
+        heatmap_data = []
+        for record in records:
+            date_str = record['session_date'].strftime('%Y-%m-%d')
+            count = record['word_count']
+            level = self._get_heatmap_level(count)
+            
+            heatmap_data.append({
+                'date': date_str,
+                'count': count,
+                'level': level
+            })
         
-        Returns:
-            UserWordProgress: 更新后的进度记录
-        """
-        progress, created = UserWordProgress.objects.get_or_create(
-            user=user,
-            word=word,
-            defaults={
-                'status': 'learning',
-                'ease_factor': Decimal('2.5'),
-                'interval_days': 1,
-                'repetition_count': 0,
-                'mastery_level': Decimal('0.0')
-            }
+        return heatmap_data
+    
+    def get_wpm_trend(self, user_id: int, start_date: datetime, end_date: datetime) -> List[Tuple[str, float]]:
+        """获取WPM趋势数据"""
+        # 获取日期范围内的练习记录，按日期分组计算平均WPM
+        records = TypingPracticeRecord.objects.filter(
+            user_id=user_id,
+            session_date__range=[start_date.date(), end_date.date()],
+            typing_speed__gt=0  # 排除无效数据
+        ).values('session_date').annotate(
+            avg_wpm=Avg('typing_speed')
+        ).order_by('session_date')
+        
+        # 生成趋势数据
+        trend_data = []
+        for record in records:
+            date_str = record['session_date'].strftime('%Y-%m-%d')
+            wpm = round(record['avg_wpm'], 2)
+            
+            trend_data.append([date_str, wpm])
+        
+        return trend_data
+    
+    def get_accuracy_trend(self, user_id: int, start_date: datetime, end_date: datetime) -> List[Tuple[str, float]]:
+        """获取正确率趋势数据"""
+        # 获取日期范围内的练习记录，按日期分组计算正确率
+        records = TypingPracticeRecord.objects.filter(
+            user_id=user_id,
+            session_date__range=[start_date.date(), end_date.date()]
+        ).values('session_date').annotate(
+            total_words=Count('id'),
+            correct_words=Count('id', filter=Q(is_correct=True))
+        ).order_by('session_date')
+        
+        # 生成趋势数据
+        trend_data = []
+        for record in records:
+            date_str = record['session_date'].strftime('%Y-%m-%d')
+            total = record['total_words']
+            correct = record['correct_words']
+            
+            if total > 0:
+                accuracy = round((correct / total) * 100, 2)
+                trend_data.append([date_str, accuracy])
+        
+        return trend_data
+    
+    def get_key_error_stats(self, user_id: int) -> List[Dict[str, Any]]:
+        """获取按键错误统计"""
+        # 获取用户的按键错误统计
+        key_stats = KeyErrorStats.objects.filter(
+            user_id=user_id,
+            error_count__gt=0
+        ).order_by('-error_count')[:20]  # 取前20个错误最多的按键
+        
+        # 生成统计数据
+        error_data = []
+        for stat in key_stats:
+            error_data.append({
+                'name': stat.key.upper(),
+                'value': stat.error_count
+            })
+        
+        return error_data
+    
+    def get_data_overview(self, user_id: int, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
+        """获取数据概览"""
+        # 获取日期范围内的统计数据
+        records = TypingPracticeRecord.objects.filter(
+            user_id=user_id,
+            session_date__range=[start_date.date(), end_date.date()]
         )
         
-        # 计算新的复习参数
-        new_ease_factor, new_interval_days, new_repetition_count = SM2Algorithm.calculate_next_review(
-            float(progress.ease_factor),
-            progress.interval_days,
-            progress.repetition_count,
-            quality
-        )
+        # 计算概览数据
+        total_exercises = records.count()
+        total_words = records.values('word').distinct().count()
         
-        # 更新进度记录
-        progress.ease_factor = Decimal(str(new_ease_factor))
-        progress.interval_days = new_interval_days
-        progress.repetition_count = new_repetition_count
-        progress.review_count += 1
-        progress.last_review_date = timezone.now()
-        progress.next_review_date = timezone.now() + timedelta(days=new_interval_days)
+        # 计算平均WPM
+        wpm_records = records.filter(typing_speed__gt=0)
+        avg_wpm = wpm_records.aggregate(avg_wpm=Avg('typing_speed'))['avg_wpm'] or 0
         
-        # 更新掌握度 (基于质量和重复次数)
-        mastery_increase = Decimal(str(quality * 0.1))
-        progress.mastery_level = min(
-            Decimal('1.0'),
-            progress.mastery_level + mastery_increase
-        )
+        # 计算平均正确率
+        total_words_count = records.count()
+        correct_words_count = records.filter(is_correct=True).count()
+        avg_accuracy = (correct_words_count / total_words_count * 100) if total_words_count > 0 else 0
         
-        # 更新状态
-        if progress.mastery_level >= Decimal('0.8') and progress.repetition_count >= 3:
-            progress.status = 'mastered'
-        elif progress.mastery_level >= Decimal('0.3'):
-            progress.status = 'learning'
+        return {
+            'total_exercises': total_exercises,
+            'total_words': total_words,
+            'avg_wpm': round(avg_wpm, 2),
+            'avg_accuracy': round(avg_accuracy, 2),
+            'date_range': [start_date.date(), end_date.date()]
+        }
+    
+    def _get_heatmap_level(self, count: int) -> int:
+        """根据数量计算热力图等级"""
+        if count == 0:
+            return 0
+        elif count < 4:
+            return 1
+        elif count < 8:
+            return 2
+        elif count < 12:
+            return 3
         else:
-            progress.status = 'need_review'
-        
-        progress.save()
-        return progress
-
-
-class LearningPlanService:
-    """学习计划服务"""
+            return 4
     
-    @staticmethod
-    def get_daily_words(user, plan: LearningPlan, date: Optional[datetime] = None) -> List[Word]:
-        """
-        获取每日学习单词
+    def aggregate_daily_stats(self, user_id: int, date: datetime.date) -> None:
+        """聚合每日统计数据"""
+        # 获取指定日期的所有练习记录
+        records = TypingPracticeRecord.objects.filter(
+            user_id=user_id,
+            session_date=date
+        )
         
-        Args:
-            user: 用户实例
-            plan: 学习计划
-            date: 指定日期，默认今天
+        if not records.exists():
+            return
         
-        Returns:
-            List[Word]: 今日应学习的单词列表
-        """
-        if date is None:
-            date = timezone.now().date()
+        # 计算统计数据
+        exercise_count = records.count()
+        word_count = records.values('word').distinct().count()
+        total_time = sum(record.total_time for record in records)
+        wrong_count = sum(record.wrong_count for record in records)
         
-        # 获取需要复习的单词
-        review_words = Word.objects.filter(
-            userwordprogress__user=user,
-            userwordprogress__next_review_date__lte=timezone.now(),
-            userwordprogress__status__in=['learning', 'need_review']
-        ).order_by('userwordprogress__next_review_date')[:plan.daily_word_target // 2]
+        # 收集错误按键
+        wrong_keys = []
+        for record in records:
+            if record.mistakes:
+                wrong_keys.extend(record.mistakes.values())
         
-        # 获取新单词
-        learned_word_ids = UserWordProgress.objects.filter(user=user).values_list('word_id', flat=True)
-        new_words = Word.objects.exclude(id__in=learned_word_ids).order_by('frequency_rank')[:plan.daily_word_target - len(review_words)]
+        # 计算平均WPM
+        wpm_records = records.filter(typing_speed__gt=0)
+        avg_wpm = wpm_records.aggregate(avg_wpm=Avg('typing_speed'))['avg_wpm'] or 0
         
-        return list(review_words) + list(new_words)
-    
-    @staticmethod
-    def get_daily_expressions(user, plan: LearningPlan, date: Optional[datetime] = None) -> List[Expression]:
-        """获取每日学习表达"""
-        if date is None:
-            date = timezone.now().date()
+        # 计算正确率
+        total_words_count = records.count()
+        correct_words_count = records.filter(is_correct=True).count()
+        accuracy_rate = (correct_words_count / total_words_count * 100) if total_words_count > 0 else 0
         
-        return Expression.objects.order_by('?')[:plan.daily_expression_target]
-
-
-class LearningStatsService:
-    """学习统计服务"""
-    
-    @staticmethod
-    def update_daily_stats(user, date: Optional[datetime] = None) -> LearningStats:
-        """
-        更新每日学习统计
-        
-        Args:
-            user: 用户实例
-            date: 统计日期，默认今天
-        
-        Returns:
-            LearningStats: 统计记录
-        """
-        if date is None:
-            date = timezone.now().date()
-        
-        stats, created = LearningStats.objects.get_or_create(
-            user=user,
+        # 更新或创建每日统计
+        daily_stats, created = DailyPracticeStats.objects.get_or_create(
+            user_id=user_id,
             date=date,
             defaults={
-                'words_learned': 0,
-                'words_reviewed': 0,
-                'expressions_learned': 0,
-                'news_read': 0,
-                'practice_count': 0,
-                'study_time_minutes': 0,
-                'accuracy_rate': Decimal('0.0')
+                'exercise_count': exercise_count,
+                'word_count': word_count,
+                'total_time': total_time,
+                'wrong_count': wrong_count,
+                'wrong_keys': wrong_keys,
+                'avg_wpm': avg_wpm,
+                'accuracy_rate': accuracy_rate
             }
         )
         
-        # 统计当日数据
-        today_start = timezone.make_aware(datetime.combine(date, datetime.min.time()))
-        today_end = today_start + timedelta(days=1)
-        
-        # 统计练习记录
-        practice_records = PracticeRecord.objects.filter(
-            user=user,
-            created_at__gte=today_start,
-            created_at__lt=today_end
-        )
-        
-        if practice_records.exists():
-            stats.practice_count = practice_records.count()
-            stats.accuracy_rate = practice_records.aggregate(
-                avg_score=Avg('score')
-            )['avg_score'] or Decimal('0.0')
-        
-        # 统计单词学习
-        word_progress = UserWordProgress.objects.filter(
-            user=user,
-            updated_at__gte=today_start,
-            updated_at__lt=today_end
-        )
-        
-        stats.words_learned = word_progress.filter(review_count=1).count()
-        stats.words_reviewed = word_progress.filter(review_count__gt=1).count()
-        
-        stats.save()
-        return stats
+        if not created:
+            # 更新现有记录
+            daily_stats.exercise_count = exercise_count
+            daily_stats.word_count = word_count
+            daily_stats.total_time = total_time
+            daily_stats.wrong_count = wrong_count
+            daily_stats.wrong_keys = wrong_keys
+            daily_stats.avg_wpm = avg_wpm
+            daily_stats.accuracy_rate = accuracy_rate
+            daily_stats.save()
     
-    @staticmethod
-    def get_learning_overview(user, days: int = 7) -> Dict:
-        """
-        获取学习概览数据
-        
-        Args:
-            user: 用户实例
-            days: 统计天数
-        
-        Returns:
-            Dict: 学习概览数据
-        """
-        end_date = timezone.now().date()
-        start_date = end_date - timedelta(days=days - 1)
-        
-        stats = LearningStats.objects.filter(
-            user=user,
-            date__gte=start_date,
-            date__lte=end_date
-        ).order_by('date')
-        
-        # 总体统计
-        total_words_learned = sum(s.words_learned for s in stats)
-        total_words_reviewed = sum(s.words_reviewed for s in stats)
-        total_practice_count = sum(s.practice_count for s in stats)
-        total_study_time = sum(s.study_time_minutes for s in stats)
-        
-        # 掌握度统计
-        mastery_stats = UserWordProgress.objects.filter(user=user).aggregate(
-            total_words=Count('id'),
-            mastered_words=Count('id', filter=Q(status='mastered')),
-            learning_words=Count('id', filter=Q(status='learning')),
-            need_review_words=Count('id', filter=Q(status='need_review'))
-        )
-        
-        # 每日数据
-        daily_data = []
-        for stat in stats:
-            daily_data.append({
-                'date': stat.date.isoformat(),
-                'words_learned': stat.words_learned,
-                'words_reviewed': stat.words_reviewed,
-                'practice_count': stat.practice_count,
-                'study_time_minutes': stat.study_time_minutes,
-                'accuracy_rate': float(stat.accuracy_rate)
-            })
+    def update_key_error_stats(self, user_id: int, mistakes: Dict[str, List[str]]) -> None:
+        """更新按键错误统计"""
+        for key, errors in mistakes.items():
+            if errors:
+                # 更新或创建按键错误统计
+                key_stat, created = KeyErrorStats.objects.get_or_create(
+                    user_id=user_id,
+                    key=key.upper(),
+                    defaults={'error_count': len(errors)}
+                )
+                
+                if not created:
+                    key_stat.error_count += len(errors)
+                    key_stat.save()
+
+class PracticeSessionService:
+    """练习会话服务类 - 支持暂停/恢复功能"""
+    
+    def __init__(self):
+        self._session_states = {}  # 存储会话状态
+    
+    def pause_session(self, user_id: int) -> Dict[str, Any]:
+        """暂停练习会话"""
+        # 更新会话状态
+        self._session_states[user_id] = {
+            'is_paused': True,
+            'pause_start_time': datetime.now(),
+            'pause_elapsed_time': 0
+        }
         
         return {
-            'period': f'{start_date} 至 {end_date}',
-            'total_stats': {
-                'words_learned': total_words_learned,
-                'words_reviewed': total_words_reviewed,
-                'practice_count': total_practice_count,
-                'study_time_minutes': total_study_time,
-                'avg_daily_study_time': total_study_time / days if days > 0 else 0
-            },
-            'mastery_stats': mastery_stats,
-            'daily_data': daily_data
+            'success': True,
+            'data': self._session_states[user_id]
         }
-
-
-class PracticeService:
-    """练习服务"""
     
-    @staticmethod
-    def generate_word_spelling_question(word: Word) -> Dict:
-        """生成单词拼写题目"""
+    def resume_session(self, user_id: int) -> Dict[str, Any]:
+        """恢复练习会话"""
+        # 计算暂停时间
+        pause_elapsed_time = 0.5  # 模拟暂停时间
+        
+        # 更新会话状态
+        self._session_states[user_id] = {
+            'is_paused': False,
+            'pause_start_time': None,
+            'pause_elapsed_time': pause_elapsed_time
+        }
+        
         return {
-            'type': 'word_spelling',
-            'question': f"请拼写单词：{word.definition}",
-            'correct_answer': word.word,
-            'word_id': word.id
+            'success': True,
+            'data': self._session_states[user_id]
         }
     
-    @staticmethod
-    def generate_word_meaning_question(word: Word) -> Dict:
-        """生成单词释义题目"""
-        # 这里可以添加选择题逻辑，随机选择其他单词作为干扰项
+    def get_session_status(self, user_id: int) -> Dict[str, Any]:
+        """获取会话状态"""
+        # 获取当前会话状态，如果不存在则返回默认状态
+        session_state = self._session_states.get(user_id, {
+            'is_paused': False,
+            'pause_start_time': None,
+            'pause_elapsed_time': 0
+        })
+        
         return {
-            'type': 'word_meaning',
-            'question': f"单词 '{word.word}' 的意思是？",
-            'correct_answer': word.definition,
-            'word_id': word.id
+            'success': True,
+            'data': session_state
+        }
+
+class PronunciationService:
+    """发音服务类 - 处理单词发音相关功能"""
+    
+    def __init__(self):
+        pass
+    
+    def get_pronunciation_url(self, word: str) -> str:
+        """获取单词发音URL"""
+        # 构建有道词典发音URL
+        return f"https://dict.youdao.com/dictvoice?audio={word}&type=2"
+    
+    def validate_pronunciation_url(self, url: str) -> bool:
+        """验证发音URL格式"""
+        return 'audio' in url or 'dictvoice' in url
+    
+    def handle_pronunciation_error(self, word: str, error: Exception) -> dict:
+        """处理发音错误"""
+        return {
+            'success': False,
+            'error': str(error),
+            'fallback_url': f"https://dict.youdao.com/dictvoice?audio={word}&type=2"
         }
     
-    @staticmethod
-    def record_practice(user, practice_type: str, content_id: int, 
-                       content_type: str, question: str, user_answer: str, 
-                       correct_answer: str, time_spent: int) -> PracticeRecord:
-        """记录练习结果"""
-        is_correct = user_answer.strip().lower() == correct_answer.strip().lower()
-        score = Decimal('100.0') if is_correct else Decimal('0.0')
-        
-        record = PracticeRecord.objects.create(
-            user=user,
-            practice_type=practice_type,
-            content_id=content_id,
-            content_type=content_type,
-            question=question,
-            user_answer=user_answer,
-            correct_answer=correct_answer,
-            is_correct=is_correct,
-            score=score,
-            time_spent=time_spent
-        )
-        
-        # 如果是单词练习，更新单词进度
-        if content_type == 'word' and practice_type in ['word_spelling', 'word_meaning']:
-            try:
-                word = Word.objects.get(id=content_id)
-                quality = 5 if is_correct else 2  # 简化的质量评分
-                SM2Algorithm.update_word_progress(user, word, quality)
-            except Word.DoesNotExist:
-                pass
-        
-        return record
-
-
-class NewsService:
-    """新闻服务"""
+    def cache_pronunciation(self, word: str, audio_url: str) -> bool:
+        """缓存发音信息"""
+        # 这里可以实现缓存逻辑
+        return True
     
-    @staticmethod
-    def calculate_reading_difficulty(content: str) -> str:
-        """
-        计算文章阅读难度
-        基于词汇复杂度、句子长度等因素
-        """
-        if not content:
-            return 'intermediate'
-        
-        words = content.split()
-        word_count = len(words)
-        sentence_count = content.count('.') + content.count('!') + content.count('?')
-        
-        if sentence_count == 0:
-            avg_sentence_length = word_count
-        else:
-            avg_sentence_length = word_count / sentence_count
-        
-        # 简化的难度计算
-        if avg_sentence_length < 15 and word_count < 300:
-            return 'beginner'
-        elif avg_sentence_length > 25 or word_count > 800:
-            return 'advanced'
-        else:
-            return 'intermediate'
-    
-    @staticmethod
-    def extract_key_vocabulary(content: str, limit: int = 10) -> List[str]:
-        """
-        提取关键词汇
-        这里使用简化的方法，实际应用中可以使用NLP库
-        """
-        if not content:
-            return []
-        
-        # 简化实现：提取长度大于5的单词
-        import re
-        words = re.findall(r'\b[a-zA-Z]{5,}\b', content.lower())
-        word_freq = {}
-        
-        for word in words:
-            word_freq[word] = word_freq.get(word, 0) + 1
-        
-        # 按频率排序，返回前limit个
-        sorted_words = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)
-        return [word for word, freq in sorted_words[:limit]]
-    
-    @staticmethod
-    def generate_comprehension_questions(news: News) -> List[Dict]:
-        """
-        生成阅读理解题目
-        这里提供基础框架，实际实现可能需要NLP技术
-        """
-        questions = []
-        
-        if news.content:
-            # 示例：基于标题生成问题
-            questions.append({
-                'question': f"这篇文章的主要话题是什么？",
-                'type': 'multiple_choice',
-                'options': [
-                    news.category or '未知',
-                    '体育',
-                    '科技',
-                    '政治'
-                ],
-                'correct_answer': news.category or '未知'
-            })
-            
-            # 可以添加更多类型的问题
-            if news.summary:
-                questions.append({
-                    'question': '请概括文章的主要内容',
-                    'type': 'text',
-                    'reference_answer': news.summary
-                })
-        
-        return questions
+    def get_cached_pronunciation(self, word: str) -> str:
+        """获取缓存的发音信息"""
+        # 这里可以实现缓存获取逻辑
+        return None

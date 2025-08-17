@@ -150,8 +150,8 @@ export default {
     const loadWords = async () => {
       isLoading.value = true
       try {
-        const response = await englishStore.fetchWords({ limit: 20 })
-        words.value = response.results || []
+        await englishStore.fetchWords({ limit: 20 })
+        words.value = englishStore.words || []
       } catch (error) {
         console.error('加载单词失败:', error)
         // 使用示例数据

@@ -1,0 +1,127 @@
+{
+  "news": [
+    {
+      "id": 1,
+      "title": "New Technology Breakthrough in AI",
+      "summary": "Scientists have made a significant breakthrough in artificial intelligence technology that could revolutionize the industry.",
+      "content": "A team of researchers from leading universities has developed a new AI algorithm that shows unprecedented accuracy in natural language processing. This breakthrough could have far-reaching implications for various industries including healthcare, education, and customer service.",
+      "source": "TechNews",
+      "category": "technology",
+      "word_count": 45,
+      "difficulty_level": "intermediate",
+      "publish_date": "2025-01-17",
+      "image_url": "https://example.com/images/ai-breakthrough.jpg",
+      "image_alt": "AI Technology Breakthrough"
+    },
+    {
+      "id": 2,
+      "title": "Global Climate Summit Results",
+      "summary": "World leaders reach historic agreement on climate change measures during the annual summit.",
+      "content": "The annual Global Climate Summit concluded with a historic agreement among participating nations. The agreement includes ambitious targets for reducing carbon emissions and increasing renewable energy usage over the next decade.",
+      "source": "WorldNews",
+      "category": "environment",
+      "word_count": 38,
+      "difficulty_level": "intermediate",
+      "publish_date": "2025-01-16",
+      "image_url": "https://example.com/images/climate-summit.jpg",
+      "image_alt": "Global Climate Summit"
+    },
+    {
+      "id": 3,
+      "title": "Breakthrough in Medical Research",
+      "summary": "Medical researchers discover new treatment method for chronic diseases.",
+      "content": "A groundbreaking discovery in medical research has led to the development of a new treatment method for chronic diseases. This innovative approach has shown promising results in early clinical trials and could provide hope for millions of patients worldwide.",
+      "source": "HealthNews",
+      "category": "health",
+      "word_count": 42,
+      "difficulty_level": "advanced",
+      "publish_date": "2025-01-15",
+      "image_url": "https://example.com/images/medical-research.jpg",
+      "image_alt": "Medical Research Breakthrough"
+    }
+  ],
+  "sources": [
+    "TechNews",
+    "WorldNews", 
+    "HealthNews",
+    "BBC",
+    "CNN",
+    "Reuters"
+  ],
+  "categories": [
+    "technology",
+    "environment",
+    "health",
+    "business",
+    "sports",
+    "entertainment"
+  ],
+  "difficulty_levels": [
+    "beginner",
+    "intermediate",
+    "advanced"
+  ]
+}
+  "news": [
+    {
+      "id": 1,
+      "title": "New Technology Breakthrough in AI",
+      "summary": "Scientists have made a significant breakthrough in artificial intelligence technology that could revolutionize the industry.",
+      "content": "A team of researchers from leading universities has developed a new AI algorithm that shows unprecedented accuracy in natural language processing. This breakthrough could have far-reaching implications for various industries including healthcare, education, and customer service.",
+      "source": "TechNews",
+      "category": "technology",
+      "word_count": 45,
+      "difficulty_level": "intermediate",
+      "publish_date": "2025-01-17",
+      "image_url": "https://example.com/images/ai-breakthrough.jpg",
+      "image_alt": "AI Technology Breakthrough"
+    },
+    {
+      "id": 2,
+      "title": "Global Climate Summit Results",
+      "summary": "World leaders reach historic agreement on climate change measures during the annual summit.",
+      "content": "The annual Global Climate Summit concluded with a historic agreement among participating nations. The agreement includes ambitious targets for reducing carbon emissions and increasing renewable energy usage over the next decade.",
+      "source": "WorldNews",
+      "category": "environment",
+      "word_count": 38,
+      "difficulty_level": "intermediate",
+      "publish_date": "2025-01-16",
+      "image_url": "https://example.com/images/climate-summit.jpg",
+      "image_alt": "Global Climate Summit"
+    },
+    {
+      "id": 3,
+      "title": "Breakthrough in Medical Research",
+      "summary": "Medical researchers discover new treatment method for chronic diseases.",
+      "content": "A groundbreaking discovery in medical research has led to the development of a new treatment method for chronic diseases. This innovative approach has shown promising results in early clinical trials and could provide hope for millions of patients worldwide.",
+      "source": "HealthNews",
+      "category": "health",
+      "word_count": 42,
+      "difficulty_level": "advanced",
+      "publish_date": "2025-01-15",
+      "image_url": "https://example.com/images/medical-research.jpg",
+      "image_alt": "Medical Research Breakthrough"
+    }
+  ],
+  "sources": [
+    "TechNews",
+    "WorldNews", 
+    "HealthNews",
+    "BBC",
+    "CNN",
+    "Reuters"
+  ],
+  "categories": [
+    "technology",
+    "environment",
+    "health",
+    "business",
+    "sports",
+    "entertainment"
+  ],
+  "difficulty_levels": [
+    "beginner",
+    "intermediate",
+    "advanced"
+  ]
+}

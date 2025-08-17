@@ -11,12 +11,14 @@
 - **数据统计**: WPM速度、准确率、学习进度、学习时长
 - **词库管理**: 支持多种词库（CET4/6、TOEFL、GRE等）
 - **个性化学习**: 根据用户水平推荐词库和练习内容
+- **数据分析**: 学习数据可视化分析，包括热力图、趋势图等
 
 ### 2. **技术特性**
 - **实时反馈**: 输入时即时验证拼写正确性
 - **进度保存**: 学习记录持久化存储
 - **数据可视化**: 学习进度图表展示
 - **响应式设计**: 支持桌面端和移动端
+- **数据分析**: 基于历史数据的深度分析
 
 ## 🏗 **系统架构设计**
 
@@ -57,185 +59,217 @@ class UserTypingStats(models.Model):
     total_practice_time = models.IntegerField(default=0)  # 分钟
     last_practice_date = models.DateField(null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+# 新增数据分析相关模型
+class TypingPracticeRecord(models.Model):
+    """打字练习详细记录"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    word = models.CharField(max_length=100)
+    is_correct = models.BooleanField()
+    typing_speed = models.FloatField()  # WPM
+    response_time = models.FloatField()  # 响应时间(秒)
+    total_time = models.FloatField()  # 总用时(毫秒)
+    wrong_count = models.IntegerField(default=0)  # 错误次数
+    mistakes = models.JSONField(default=dict)  # 按键错误详情
+    timing = models.JSONField(default=list)  # 每个字符的输入时间
+    session_date = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'english_typing_practice_records'
+        indexes = [
+            models.Index(fields=['user', 'session_date']),
+            models.Index(fields=['user', 'created_at']),
+        ]
+
+class DailyPracticeStats(models.Model):
+    """每日练习统计"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    exercise_count = models.IntegerField(default=0)  # 练习次数
+    word_count = models.IntegerField(default=0)  # 练习单词数
+    total_time = models.FloatField(default=0)  # 总用时(毫秒)
+    wrong_count = models.IntegerField(default=0)  # 总错误次数
+    wrong_keys = models.JSONField(default=list)  # 错误按键列表
+    avg_wpm = models.FloatField(default=0)  # 平均WPM
+    accuracy_rate = models.FloatField(default=0)  # 正确率
+
+    class Meta:
+        db_table = 'english_daily_practice_stats'
+        unique_together = [('user', 'date')]
+        indexes = [
+            models.Index(fields=['user', 'date']),
+        ]
+
+class KeyErrorStats(models.Model):
+    """按键错误统计"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    key = models.CharField(max_length=10)  # 按键
+    error_count = models.IntegerField(default=0)  # 错误次数
+    last_error_date = models.DateField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'english_key_error_stats'
+        unique_together = [('user', 'key')]
+        indexes = [
+            models.Index(fields=['user', 'error_count']),
+        ]
+```
+
+### **数据分析功能设计**
+
+#### 1. 数据分析页面结构
+```
+数据分析页面
+├── 页面头部
+│   ├── 返回按钮
+│   ├── 页面标题
+│   └── 时间范围选择
+├── 数据概览
+│   ├── 总练习次数
+│   ├── 总练习单词数
+│   ├── 平均WPM
+│   └── 平均正确率
+└── 图表区域
+    ├── 练习次数热力图
+    ├── 练习单词数热力图
+    ├── WPM趋势图
+    ├── 正确率趋势图
+    └── 按键错误分析图
+```
+
+#### 2. 数据可视化组件
+- **热力图组件**：使用react-activity-calendar
+- **趋势图组件**：使用ECharts或Chart.js
+- **键盘错误图组件**：自定义键盘布局组件
+
+#### 3. 数据聚合逻辑
+```python
+# 数据聚合服务
+class DataAnalysisService:
+    def get_exercise_heatmap(self, user_id, start_date, end_date):
+        """获取练习次数热力图数据"""
+        pass
+    
+    def get_word_heatmap(self, user_id, start_date, end_date):
+        """获取练习单词数热力图数据"""
+        pass
+    
+    def get_wpm_trend(self, user_id, start_date, end_date):
+        """获取WPM趋势数据"""
+        pass
+    
+    def get_accuracy_trend(self, user_id, start_date, end_date):
+        """获取正确率趋势数据"""
+        pass
+    
+    def get_key_error_stats(self, user_id):
+        """获取按键错误统计"""
+        pass
 ```
 
 ### **API接口设计**
 
 ```python
 # 新增API端点
-class TypingPracticeViewSet(viewsets.ModelViewSet):
-    """打字练习API"""
+class DataAnalysisViewSet(viewsets.ModelViewSet):
+    """数据分析API"""
     
     @action(detail=False, methods=['get'])
-    def get_word_list(self, request):
-        """获取练习单词列表"""
-        category = request.query_params.get('category', 'CET4')
-        difficulty = request.query_params.get('difficulty', 'intermediate')
-        limit = int(request.query_params.get('limit', 50))
+    def exercise_heatmap(self, request):
+        """获取练习次数热力图数据"""
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
         
-        words = Word.objects.filter(
-            category=category,
-            difficulty=difficulty
-        ).order_by('?')[:limit]
-        
-        return Response(WordSerializer(words, many=True).data)
-    
-    @action(detail=False, methods=['post'])
-    def submit_result(self, request):
-        """提交练习结果"""
-        word_id = request.data.get('word_id')
-        is_correct = request.data.get('is_correct')
-        typing_speed = request.data.get('typing_speed', 0)
-        response_time = request.data.get('response_time', 0)
-        
-        # 保存练习记录
-        TypingSession.objects.create(
-            user=request.user,
-            word_id=word_id,
-            is_correct=is_correct,
-            typing_speed=typing_speed,
-            response_time=response_time
+        data = DataAnalysisService().get_exercise_heatmap(
+            request.user.id, start_date, end_date
         )
-        
-        # 更新用户统计
-        self.update_user_stats(request.user, is_correct, typing_speed)
-        
-        return Response({'status': 'success'})
+        return Response(data)
     
     @action(detail=False, methods=['get'])
-    def get_statistics(self, request):
-        """获取用户统计信息"""
-        stats = UserTypingStats.objects.get_or_create(user=request.user)[0]
-        return Response(UserTypingStatsSerializer(stats).data)
+    def word_heatmap(self, request):
+        """获取练习单词数热力图数据"""
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
+        
+        data = DataAnalysisService().get_word_heatmap(
+            request.user.id, start_date, end_date
+        )
+        return Response(data)
     
     @action(detail=False, methods=['get'])
-    def get_daily_progress(self, request):
-        """获取每日学习进度"""
-        days = int(request.query_params.get('days', 7))
-        end_date = timezone.now().date()
-        start_date = end_date - timedelta(days=days)
+    def wpm_trend(self, request):
+        """获取WPM趋势数据"""
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
         
-        daily_stats = TypingSession.objects.filter(
-            user=request.user,
-            session_date__range=[start_date, end_date]
-        ).values('session_date').annotate(
-            total_words=Count('id'),
-            correct_words=Count('id', filter=Q(is_correct=True)),
-            avg_wpm=Avg('typing_speed')
-        ).order_by('session_date')
+        data = DataAnalysisService().get_wpm_trend(
+            request.user.id, start_date, end_date
+        )
+        return Response(data)
+    
+    @action(detail=False, methods=['get'])
+    def accuracy_trend(self, request):
+        """获取正确率趋势数据"""
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
         
-        return Response(daily_stats)
+        data = DataAnalysisService().get_accuracy_trend(
+            request.user.id, start_date, end_date
+        )
+        return Response(data)
+    
+    @action(detail=False, methods=['get'])
+    def key_error_stats(self, request):
+        """获取按键错误统计"""
+        data = DataAnalysisService().get_key_error_stats(request.user.id)
+        return Response(data)
 ```
 
-## 🔄 **数据导入流程**
-
-### **1. 词库导入脚本**
-
-```python
-# backend/apps/english/management/commands/import_qwerty_dicts.py
-from django.core.management.base import BaseCommand
-import json
-import os
-from apps.english.models import Word
-
-class Command(BaseCommand):
-    help = '从Qwerty Learner项目导入词库数据'
-    
-    def add_arguments(self, parser):
-        parser.add_argument(
-            '--dicts-path',
-            type=str,
-            default='../qwerty-learner/public/dicts',
-            help='Qwerty Learner词库文件路径'
-        )
-        parser.add_argument(
-            '--categories',
-            nargs='+',
-            default=['CET4', 'CET6', 'TOEFL', 'GRE', 'IELTS'],
-            help='要导入的词库类别'
-        )
-    
-    def handle(self, *args, **options):
-        dicts_path = options['dicts_path']
-        categories = options['categories']
-        
-        for category in categories:
-            dict_file = os.path.join(dicts_path, f'{category}.json')
-            if os.path.exists(dict_file):
-                self.import_dict_file(dict_file, category)
-            else:
-                self.stdout.write(
-                    self.style.WARNING(f'词库文件不存在: {dict_file}')
-                )
-    
-    def import_dict_file(self, file_path, category):
-        """导入单个词库文件"""
-        with open(file_path, 'r', encoding='utf-8') as f:
-            words_data = json.load(f)
-        
-        imported_count = 0
-        for word_data in words_data:
-            word, created = Word.objects.get_or_create(
-                word=word_data['word'],
-                defaults={
-                    'translation': word_data.get('trans', ''),
-                    'phonetic': word_data.get('phonetic', ''),
-                    'category': category,
-                    'difficulty': self.determine_difficulty(word_data),
-                    'frequency': word_data.get('frequency', 0)
-                }
-            )
-            if created:
-                imported_count += 1
-        
-        self.stdout.write(
-            self.style.SUCCESS(
-                f'成功导入 {category} 词库: {imported_count} 个新单词'
-            )
-        )
-    
-    def determine_difficulty(self, word_data):
-        """根据单词特征确定难度"""
-        word = word_data['word']
-        frequency = word_data.get('frequency', 0)
-        
-        if len(word) <= 4 or frequency > 1000:
-            return 'beginner'
-        elif len(word) <= 8 or frequency > 500:
-            return 'intermediate'
-        else:
-            return 'advanced'
-```
-
-### **2. 前端组件设计**
+### **前端组件设计**
 
 ```vue
-<!-- frontend/src/views/english/TypingPractice.vue -->
+<!-- frontend/src/views/english/DataAnalysis.vue -->
 <template>
-  <div class="typing-practice">
-    <!-- 顶部统计栏 -->
-    <div class="stats-header">
+  <div class="data-analysis">
+    <!-- 页面头部 -->
+    <div class="page-header">
+      <el-button @click="goBack" icon="ArrowLeft">返回</el-button>
+      <h1>数据分析</h1>
+      <el-date-picker
+        v-model="dateRange"
+        type="daterange"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        @change="handleDateChange"
+      />
+    </div>
+    
+    <!-- 数据概览 -->
+    <div class="data-overview">
       <el-row :gutter="20">
         <el-col :span="6">
           <el-card>
             <div class="stat-item">
-              <div class="stat-value">{{ stats.totalWords }}</div>
-              <div class="stat-label">总练习单词</div>
+              <div class="stat-value">{{ overview.totalExercises }}</div>
+              <div class="stat-label">总练习次数</div>
             </div>
           </el-card>
         </el-col>
         <el-col :span="6">
           <el-card>
             <div class="stat-item">
-              <div class="stat-value">{{ stats.accuracy }}%</div>
-              <div class="stat-label">准确率</div>
+              <div class="stat-value">{{ overview.totalWords }}</div>
+              <div class="stat-label">总练习单词数</div>
             </div>
           </el-card>
         </el-col>
         <el-col :span="6">
           <el-card>
             <div class="stat-item">
-              <div class="stat-value">{{ stats.avgWpm }}</div>
+              <div class="stat-value">{{ overview.avgWpm }}</div>
               <div class="stat-label">平均WPM</div>
             </div>
           </el-card>
@@ -243,455 +277,203 @@ class Command(BaseCommand):
         <el-col :span="6">
           <el-card>
             <div class="stat-item">
-              <div class="stat-value">{{ stats.practiceTime }}分钟</div>
-              <div class="stat-label">练习时长</div>
+              <div class="stat-value">{{ overview.avgAccuracy }}%</div>
+              <div class="stat-label">平均正确率</div>
             </div>
           </el-card>
         </el-col>
       </el-row>
     </div>
     
-    <!-- 练习区域 -->
-    <div class="practice-area">
-      <el-card>
-        <div class="word-display">
-          <h2 class="word-text">{{ currentWord.word }}</h2>
-          <p class="word-phonetic">[{{ currentWord.phonetic }}]</p>
-          <p class="word-translation">{{ currentWord.translation }}</p>
-        </div>
-        
-        <div class="input-section">
-          <el-input
-            v-model="userInput"
-            placeholder="请输入单词..."
-            @input="handleInput"
-            @keydown.enter="submitAnswer"
-            :class="inputClass"
-            size="large"
-            ref="wordInput"
-          />
-        </div>
-        
-        <div class="feedback-section" v-if="showFeedback">
-          <el-alert
-            :title="feedbackMessage"
-            :type="feedbackType"
-            show-icon
-          />
-        </div>
+    <!-- 图表区域 -->
+    <div class="charts-container">
+      <!-- 练习次数热力图 -->
+      <el-card class="chart-card">
+        <template #header>
+          <span>过去一年练习次数热力图</span>
+        </template>
+        <HeatmapChart :data="exerciseHeatmap" />
       </el-card>
-    </div>
-    
-    <!-- 控制面板 -->
-    <div class="control-panel">
-      <el-row :gutter="20">
-        <el-col :span="8">
-          <el-select v-model="selectedCategory" placeholder="选择词库">
-            <el-option label="CET4" value="CET4" />
-            <el-option label="CET6" value="CET6" />
-            <el-option label="TOEFL" value="TOEFL" />
-            <el-option label="GRE" value="GRE" />
-            <el-option label="IELTS" value="IELTS" />
-          </el-select>
-        </el-col>
-        <el-col :span="8">
-          <el-select v-model="selectedDifficulty" placeholder="选择难度">
-            <el-option label="初级" value="beginner" />
-            <el-option label="中级" value="intermediate" />
-            <el-option label="高级" value="advanced" />
-          </el-select>
-        </el-col>
-        <el-col :span="8">
-          <el-button type="primary" @click="startPractice">开始练习</el-button>
-          <el-button @click="pausePractice">暂停</el-button>
-        </el-col>
-      </el-row>
-    </div>
-    
-    <!-- 进度图表 -->
-    <div class="charts-section">
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-card>
-            <div class="chart-title">每日学习进度</div>
-            <div ref="dailyChart" style="height: 300px;"></div>
-          </el-card>
-        </el-col>
-        <el-col :span="12">
-          <el-card>
-            <div class="chart-title">WPM趋势</div>
-            <div ref="wpmChart" style="height: 300px;"></div>
-          </el-card>
-        </el-col>
-      </el-row>
+      
+      <!-- 练习单词数热力图 -->
+      <el-card class="chart-card">
+        <template #header>
+          <span>过去一年练习单词数热力图</span>
+        </template>
+        <HeatmapChart :data="wordHeatmap" />
+      </el-card>
+      
+      <!-- WPM趋势图 -->
+      <el-card class="chart-card">
+        <template #header>
+          <span>过去一年WPM趋势图</span>
+        </template>
+        <LineChart :data="wpmTrend" title="WPM" />
+      </el-card>
+      
+      <!-- 正确率趋势图 -->
+      <el-card class="chart-card">
+        <template #header>
+          <span>过去一年正确率趋势图</span>
+        </template>
+        <LineChart :data="accuracyTrend" title="正确率(%)" suffix="%" />
+      </el-card>
+      
+      <!-- 按键错误分析 -->
+      <el-card class="chart-card">
+        <template #header>
+          <span>按键错误次数排行</span>
+        </template>
+        <KeyboardErrorChart :data="keyErrorStats" />
+      </el-card>
     </div>
   </div>
 </template>
 
-<script setup>
+<script>
 import { ref, onMounted, computed } from 'vue'
-import { useTypingStore } from '@/stores/typing'
-import * as echarts from 'echarts'
+import { useRouter } from 'vue-router'
+import HeatmapChart from '@/components/charts/HeatmapChart.vue'
+import LineChart from '@/components/charts/LineChart.vue'
+import KeyboardErrorChart from '@/components/charts/KeyboardErrorChart.vue'
+import { dataAnalysisAPI } from '@/api/english'
 
-// 状态管理
-const typingStore = useTypingStore()
-const userInput = ref('')
-const currentWord = ref({})
-const showFeedback = ref(false)
-const feedbackMessage = ref('')
-const feedbackType = ref('info')
-const selectedCategory = ref('CET4')
-const selectedDifficulty = ref('intermediate')
-
-// 计算属性
-const inputClass = computed(() => {
-  if (!showFeedback.value) return ''
-  return feedbackType.value === 'success' ? 'correct-input' : 'incorrect-input'
-})
-
-const stats = computed(() => typingStore.userStats)
-
-// 方法
-const handleInput = () => {
-  showFeedback.value = false
-}
-
-const submitAnswer = async () => {
-  const isCorrect = userInput.value.toLowerCase() === currentWord.value.word.toLowerCase()
-  const responseTime = typingStore.getResponseTime()
-  
-  // 更新反馈
-  showFeedback.value = true
-  feedbackType.value = isCorrect ? 'success' : 'error'
-  feedbackMessage.value = isCorrect ? '拼写正确！' : `正确答案: ${currentWord.value.word}`
-  
-  // 提交结果
-  await typingStore.submitResult({
-    word_id: currentWord.value.id,
-    is_correct: isCorrect,
-    response_time: responseTime
-  })
-  
-  // 清空输入
-  userInput.value = ''
-  
-  // 延迟后进入下一题
-  setTimeout(() => {
-    nextWord()
-  }, 1500)
-}
-
-const nextWord = async () => {
-  showFeedback.value = false
-  currentWord.value = await typingStore.getNextWord()
-  typingStore.startTimer()
-  // 聚焦输入框
-  nextTick(() => {
-    document.querySelector('.word-input').focus()
-  })
-}
-
-const startPractice = async () => {
-  await typingStore.startSession({
-    category: selectedCategory.value,
-    difficulty: selectedDifficulty.value
-  })
-  nextWord()
-}
-
-// 图表初始化
-onMounted(() => {
-  initCharts()
-})
-
-const initCharts = () => {
-  // 初始化ECharts图表
-  const dailyChart = echarts.init(document.querySelector('#dailyChart'))
-  const wpmChart = echarts.init(document.querySelector('#wpmChart'))
-  
-  // 配置图表选项...
+export default {
+  name: 'DataAnalysis',
+  components: {
+    HeatmapChart,
+    LineChart,
+    KeyboardErrorChart
+  },
+  setup() {
+    const router = useRouter()
+    const dateRange = ref([])
+    const overview = ref({})
+    const exerciseHeatmap = ref([])
+    const wordHeatmap = ref([])
+    const wpmTrend = ref([])
+    const accuracyTrend = ref([])
+    const keyErrorStats = ref([])
+    
+    const goBack = () => {
+      router.push('/english/typing-practice')
+    }
+    
+    const loadData = async () => {
+      try {
+        const [startDate, endDate] = dateRange.value || [
+          new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
+          new Date()
+        ]
+        
+        const [
+          exerciseData,
+          wordData,
+          wpmData,
+          accuracyData,
+          keyErrorData
+        ] = await Promise.all([
+          dataAnalysisAPI.getExerciseHeatmap(startDate, endDate),
+          dataAnalysisAPI.getWordHeatmap(startDate, endDate),
+          dataAnalysisAPI.getWpmTrend(startDate, endDate),
+          dataAnalysisAPI.getAccuracyTrend(startDate, endDate),
+          dataAnalysisAPI.getKeyErrorStats()
+        ])
+        
+        exerciseHeatmap.value = exerciseData
+        wordHeatmap.value = wordData
+        wpmTrend.value = wpmData
+        accuracyTrend.value = accuracyData
+        keyErrorStats.value = keyErrorData
+      } catch (error) {
+        console.error('加载数据失败:', error)
+      }
+    }
+    
+    const handleDateChange = () => {
+      loadData()
+    }
+    
+    onMounted(() => {
+      loadData()
+    })
+    
+    return {
+      dateRange,
+      overview,
+      exerciseHeatmap,
+      wordHeatmap,
+      wpmTrend,
+      accuracyTrend,
+      keyErrorStats,
+      goBack,
+      handleDateChange
+    }
+  }
 }
 </script>
-
-<style scoped>
-.typing-practice {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.stats-header {
-  margin-bottom: 30px;
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-value {
-  font-size: 24px;
-  font-weight: bold;
-  color: #409eff;
-}
-
-.stat-label {
-  font-size: 14px;
-  color: #666;
-  margin-top: 5px;
-}
-
-.practice-area {
-  margin-bottom: 30px;
-}
-
-.word-display {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.word-text {
-  font-size: 48px;
-  font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 10px;
-}
-
-.word-phonetic {
-  font-size: 18px;
-  color: #666;
-  margin-bottom: 10px;
-}
-
-.word-translation {
-  font-size: 16px;
-  color: #999;
-}
-
-.input-section {
-  margin-bottom: 20px;
-}
-
-.correct-input {
-  border-color: #67c23a;
-}
-
-.incorrect-input {
-  border-color: #f56c6c;
-}
-
-.control-panel {
-  margin-bottom: 30px;
-}
-
-.charts-section {
-  margin-top: 30px;
-}
-
-.chart-title {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-</style>
 ```
 
-## 📊 **状态管理设计**
+## 🔧 **技术实现方案**
 
-```javascript
-// frontend/src/stores/typing.js
-import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
-import { api } from '@/api/english'
+### 1. **数据收集策略**
+- **实时记录**：每次练习时记录详细数据
+- **批量聚合**：每日定时聚合统计数据
+- **增量更新**：支持增量数据更新
 
-export const useTypingStore = defineStore('typing', () => {
-  // 状态
-  const currentSession = ref(null)
-  const wordList = ref([])
-  const currentIndex = ref(0)
-  const sessionStartTime = ref(null)
-  const userStats = ref({
-    totalWords: 0,
-    correctWords: 0,
-    accuracy: 0,
-    avgWpm: 0,
-    practiceTime: 0
-  })
-  
-  // 计算属性
-  const currentWord = computed(() => {
-    return wordList.value[currentIndex.value] || {}
-  })
-  
-  const progress = computed(() => {
-    return wordList.value.length > 0 
-      ? Math.round((currentIndex.value / wordList.value.length) * 100)
-      : 0
-  })
-  
-  // 方法
-  const startSession = async (params) => {
-    try {
-      const response = await api.getTypingWordList(params)
-      wordList.value = response.data
-      currentIndex.value = 0
-      sessionStartTime.value = Date.now()
-      
-      // 获取用户统计
-      await loadUserStats()
-    } catch (error) {
-      console.error('启动练习会话失败:', error)
-      throw error
-    }
-  }
-  
-  const getNextWord = async () => {
-    if (currentIndex.value >= wordList.value.length - 1) {
-      // 获取更多单词
-      await loadMoreWords()
-    }
-    
-    currentIndex.value++
-    return currentWord.value
-  }
-  
-  const submitResult = async (result) => {
-    try {
-      await api.submitTypingResult(result)
-      
-      // 更新本地统计
-      userStats.value.totalWords++
-      if (result.is_correct) {
-        userStats.value.correctWords++
-      }
-      userStats.value.accuracy = Math.round(
-        (userStats.value.correctWords / userStats.value.totalWords) * 100
-      )
-      
-      // 更新用户统计
-      await loadUserStats()
-    } catch (error) {
-      console.error('提交练习结果失败:', error)
-      throw error
-    }
-  }
-  
-  const loadUserStats = async () => {
-    try {
-      const response = await api.getTypingStatistics()
-      userStats.value = response.data
-    } catch (error) {
-      console.error('加载用户统计失败:', error)
-    }
-  }
-  
-  const loadMoreWords = async () => {
-    // 实现加载更多单词的逻辑
-  }
-  
-  const getResponseTime = () => {
-    if (!sessionStartTime.value) return 0
-    return (Date.now() - sessionStartTime.value) / 1000
-  }
-  
-  const startTimer = () => {
-    sessionStartTime.value = Date.now()
-  }
-  
-  return {
-    // 状态
-    currentSession,
-    wordList,
-    currentIndex,
-    userStats,
-    
-    // 计算属性
-    currentWord,
-    progress,
-    
-    // 方法
-    startSession,
-    getNextWord,
-    submitResult,
-    loadUserStats,
-    getResponseTime,
-    startTimer
-  }
-})
-```
+### 2. **性能优化**
+- **数据缓存**：缓存常用统计数据
+- **分页加载**：大数据量时分页加载
+- **异步处理**：数据聚合异步处理
 
-## 🔧 **API接口扩展**
+### 3. **用户体验**
+- **响应式设计**：适配不同屏幕尺寸
+- **交互友好**：图表支持缩放、筛选等交互
+- **加载状态**：显示数据加载进度
 
-```javascript
-// frontend/src/api/english.js
-// 在现有文件中添加打字练习相关API
+## 📈 **数据指标定义**
 
-// 获取打字练习单词列表
-export const getTypingWordList = (params) => {
-  return request.get('/api/v1/english/typing-practice/words/', { params })
-}
+### 1. **练习次数**
+- 定义：每日完成的练习会话数
+- 计算：按session_date分组统计
 
-// 提交打字练习结果
-export const submitTypingResult = (data) => {
-  return request.post('/api/v1/english/typing-practice/submit/', data)
-}
+### 2. **练习单词数**
+- 定义：每日练习的单词总数（去重）
+- 计算：按session_date分组，统计unique words
 
-// 获取用户打字统计
-export const getTypingStatistics = () => {
-  return request.get('/api/v1/english/typing-practice/statistics/')
-}
+### 3. **WPM (Words Per Minute)**
+- 定义：每分钟正确输入的单词数
+- 计算：正确单词数 / (总用时 / 60)
 
-// 获取每日学习进度
-export const getDailyProgress = (params) => {
-  return request.get('/api/v1/english/typing-practice/daily-progress/', { params })
-}
-```
+### 4. **正确率**
+- 定义：正确输入的字符数占总字符数的比例
+- 计算：(总字符数 - 错误字符数) / 总字符数 * 100%
 
-## 📈 **数据可视化**
+### 5. **按键错误**
+- 定义：每个按键的错误次数统计
+- 计算：按按键分组统计错误次数
 
-### **学习进度图表**
-- **每日练习单词数**: 柱状图显示每日练习的单词数量
-- **准确率趋势**: 折线图显示准确率变化趋势
-- **WPM速度**: 折线图显示打字速度提升情况
-- **学习时长**: 饼图显示不同词库的学习时间分布
+## 🚀 **开发计划**
 
-### **成就系统**
-- **连续练习天数**: 连续练习奖励
-- **速度里程碑**: WPM达到特定值时的成就
-- **词库完成度**: 完成特定词库的成就
-- **准确率提升**: 准确率提升的成就
-
-## 🎯 **集成优势**
-
-1. **无缝集成**: 利用现有的用户系统和认证
-2. **数据持久化**: 学习记录保存在数据库中
-3. **个性化推荐**: 根据用户水平推荐合适的词库
-4. **社交功能**: 可以添加排行榜和好友挑战
-5. **移动端适配**: 响应式设计支持手机端练习
-6. **不影响现有功能**: 独立模块，不影响新闻爬取等功能
-
-## 📋 **实施计划**
-
-### **第一阶段: 数据导入**
+### 第一阶段：数据模型和API
 1. 创建数据模型
-2. 编写词库导入脚本
-3. 导入Qwerty Learner词库数据
+2. 实现数据收集逻辑
+3. 开发API接口
 
-### **第二阶段: 后端开发**
-1. 实现API接口
-2. 编写数据统计逻辑
-3. 添加用户进度跟踪
+### 第二阶段：前端组件
+1. 创建图表组件
+2. 实现数据分析页面
+3. 添加数据入口
 
-### **第三阶段: 前端开发**
-1. 创建打字练习组件
-2. 实现状态管理
-3. 添加数据可视化
+### 第三阶段：优化和测试
+1. 性能优化
+2. 用户体验优化
+3. 功能测试
 
-### **第四阶段: 测试优化**
-1. 功能测试
-2. 性能优化
-3. 用户体验优化
+---
 
-这个设计方案可以充分利用Qwerty Learner的优秀功能，同时保持alpha项目的独立性和完整性。
+*最后更新：2025-01-17*
+*维护者：开发团队*
 
 
 

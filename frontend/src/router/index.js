@@ -70,6 +70,12 @@ const routes = [
             meta: { title: '智能打字练习', requiresAuth: true }
         },
         {
+            path: '/english/data-analysis',
+            name: 'EnglishDataAnalysis',
+            component: () => import('@/views/english/DataAnalysis.vue'),
+            meta: { title: '数据分析', requiresAuth: true }
+        },
+        {
             path: '/english/pronunciation',
             name: 'EnglishPronunciation',
             component: () => import('@/views/english/Pronunciation.vue'),
@@ -207,6 +213,12 @@ router.beforeEach(async (to, from, next) => {
   if (to.meta.guest && authStore.isAuthenticated) {
     next({ name: 'Home' })
     return
+  }
+  
+  next()
+})
+
+export default router
   }
   
   next()
