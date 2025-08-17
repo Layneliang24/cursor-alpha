@@ -8,7 +8,8 @@ from rest_framework.permissions import IsAuthenticated, SAFE_METHODS, AllowAny
 
 from .models import (
     Word, UserWordProgress, Expression, News,
-    LearningPlan, PracticeRecord, PronunciationRecord, LearningStats
+    LearningPlan, PracticeRecord, PronunciationRecord, LearningStats,
+    TypingWord, TypingSession, UserTypingStats, Dictionary
 )
 from .serializers import (
     WordSerializer,
@@ -19,10 +20,9 @@ from .serializers import (
     PracticeRecordSerializer,
     PronunciationRecordSerializer,
     LearningStatsSerializer,
-    WordProgressReviewSerializer,
-    LearningOverviewSerializer,
-    PracticeQuestionSerializer,
-    PracticeSubmissionSerializer,
+    TypingWordSerializer,
+    TypingSessionSerializer,
+    UserTypingStatsSerializer,
 )
 from .services import (
     SM2Algorithm,
@@ -43,6 +43,11 @@ except Exception:
             return None
 
     crawl_english_news = _DummyTask()
+
+from django.core.cache import cache
+from django.db.models import Prefetch, Count, Avg
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 
 class WordViewSet(viewsets.ModelViewSet):
@@ -1008,3 +1013,359 @@ class LearningStatsViewSet(viewsets.ReadOnlyModelViewSet):
             'message': '统计更新成功',
             'data': serializer.data
         })
+
+
+class TypingPracticeViewSet(viewsets.ModelViewSet):
+    """打字练习视图集"""
+    queryset = TypingWord.objects.all()
+    serializer_class = TypingWordSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """优化查询集"""
+        return TypingWord.objects.select_related().prefetch_related()
+    
+    @method_decorator(cache_page(60 * 5))  # 缓存5分钟
+    @action(detail=False, methods=['get'])
+    def words(self, request):
+        """获取练习单词列表 - 优化版本"""
+        category = request.query_params.get('category', 'CET4_T')
+        difficulty = request.query_params.get('difficulty', 'intermediate')
+        limit = int(request.query_params.get('limit', 50))
+        
+        # 验证参数
+        valid_categories = ['CET4_T', 'CET6_T', 'TOEFL_3_T', 'GRE_3_T', 'IELTS_3_T', 'SAT_3_T', 'TOEIC']
+        valid_difficulties = ['beginner', 'intermediate', 'advanced']
+        
+        if category not in valid_categories:
+            return Response(
+                {'error': f'无效的词库类别: {category}'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if difficulty not in valid_difficulties:
+            return Response(
+                {'error': f'无效的难度级别: {difficulty}'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 使用缓存键
+        cache_key = f'typing_words_{category}_{difficulty}_{limit}'
+        cached_words = cache.get(cache_key)
+        
+        if cached_words is None:
+            # 优化查询：只选择需要的字段
+            # 通过词库名称过滤，而不是category字段
+            try:
+                dictionary = Dictionary.objects.get(name=category)
+                words = TypingWord.objects.filter(
+                    dictionary=dictionary,
+                    difficulty=difficulty
+                ).values('id', 'word', 'translation', 'phonetic', 'difficulty', 'dictionary__name', 'chapter', 'frequency')[:limit]
+            except Dictionary.DoesNotExist:
+                return Response(
+                    {'error': f'词库不存在: {category}'}, 
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            
+            # 转换为列表并缓存
+            cached_words = list(words)
+            cache.set(cache_key, cached_words, 300)  # 缓存5分钟
+        
+        return Response(cached_words)
+    
+    @action(detail=False, methods=['post'])
+    def submit(self, request):
+        """提交打字练习结果 - 优化版本"""
+        word_id = request.data.get('word_id')
+        is_correct = request.data.get('is_correct')
+        typing_speed = request.data.get('typing_speed', 0)
+        response_time = request.data.get('response_time', 0)
+        
+        if word_id is None:
+            return Response(
+                {'error': '缺少word_id参数'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if is_correct is None:
+            return Response(
+                {'error': '缺少is_correct参数'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            word = TypingWord.objects.get(id=word_id)
+        except TypingWord.DoesNotExist:
+            return Response(
+                {'error': '单词不存在'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # 创建练习记录
+        session = TypingSession.objects.create(
+            user=request.user,
+            word=word,
+            is_correct=is_correct,
+            typing_speed=typing_speed,
+            response_time=response_time
+        )
+        
+        # 更新用户统计（异步处理）
+        self._update_user_stats_async(request.user)
+        
+        return Response({
+            'status': 'success',
+            'session_id': session.id
+        })
+    
+    def _update_user_stats_async(self, user):
+        """异步更新用户统计"""
+        try:
+            # 获取用户统计或创建新的
+            stats, created = UserTypingStats.objects.get_or_create(
+                user=user,
+                defaults={
+                    'total_words_practiced': 0,
+                    'total_correct_words': 0,
+                    'average_wpm': 0.0,
+                    'total_practice_time': 0
+                }
+            )
+            
+            # 计算最新统计
+            sessions = TypingSession.objects.filter(user=user)
+            total_practiced = sessions.count()
+            total_correct = sessions.filter(is_correct=True).count()
+            avg_wpm = sessions.aggregate(avg_wpm=Avg('typing_speed'))['avg_wpm'] or 0.0
+            total_time = sessions.aggregate(total_time=Avg('response_time'))['total_time'] or 0.0
+            
+            # 更新统计
+            stats.total_words_practiced = total_practiced
+            stats.total_correct_words = total_correct
+            stats.average_wpm = round(avg_wpm, 2)
+            stats.total_practice_time = round(total_time, 2)
+            stats.save()
+            
+            # 清除相关缓存
+            cache.delete(f'typing_stats_{user.id}')
+            
+        except Exception as e:
+            print(f"更新用户统计失败: {e}")
+    
+    @method_decorator(cache_page(60 * 2))  # 缓存2分钟
+    @action(detail=False, methods=['get'])
+    def statistics(self, request):
+        """获取打字统计信息 - 优化版本"""
+        user = request.user
+        
+        # 尝试从缓存获取
+        cache_key = f'typing_stats_{user.id}'
+        cached_stats = cache.get(cache_key)
+        
+        if cached_stats is None:
+            try:
+                stats = UserTypingStats.objects.get(user=user)
+                cached_stats = {
+                    'total_words_practiced': stats.total_words_practiced,
+                    'total_correct_words': stats.total_correct_words,
+                    'average_wpm': stats.average_wpm,
+                    'total_practice_time': stats.total_practice_time,
+                    'last_practice_date': stats.last_practice_date.isoformat() if stats.last_practice_date else None
+                }
+                cache.set(cache_key, cached_stats, 120)  # 缓存2分钟
+            except UserTypingStats.DoesNotExist:
+                cached_stats = {
+                    'total_words_practiced': 0,
+                    'total_correct_words': 0,
+                    'average_wpm': 0.0,
+                    'total_practice_time': 0,
+                    'last_practice_date': None
+                }
+        
+        return Response(cached_stats)
+    
+    @method_decorator(cache_page(60 * 10))  # 缓存10分钟
+    @action(detail=False, methods=['get'])
+    def daily_progress(self, request):
+        """获取每日学习进度 - 优化版本"""
+        try:
+            days = int(request.query_params.get('days', 7))
+            
+            # 检查用户是否已认证
+            if not request.user.is_authenticated:
+                # 对于匿名用户，返回空数据
+                return Response([])
+            
+            user = request.user
+            
+            # 使用缓存键
+            cache_key = f'daily_progress_{user.id}_{days}'
+            cached_progress = cache.get(cache_key)
+            
+            if cached_progress is None:
+                from django.utils import timezone
+                from datetime import timedelta
+                
+                end_date = timezone.now().date()
+                start_date = end_date - timedelta(days=days-1)
+                
+                # 优化查询：使用聚合查询
+                daily_data = TypingSession.objects.filter(
+                    user=user,
+                    session_date__range=[start_date, end_date]
+                ).values('session_date').annotate(
+                    words_practiced=Count('id'),
+                    correct_words=Count('id', filter=models.Q(is_correct=True)),
+                    avg_wpm=Avg('typing_speed')
+                ).order_by('session_date')
+                
+                # 格式化数据
+                progress_data = []
+                current_date = start_date
+                while current_date <= end_date:
+                    day_data = next(
+                        (item for item in daily_data if item['session_date'] == current_date), 
+                        None
+                    )
+                    
+                    if day_data:
+                        progress_data.append({
+                            'date': current_date.isoformat(),
+                            'words_practiced': day_data['words_practiced'],
+                            'correct_words': day_data['correct_words'],
+                            'accuracy': round((day_data['correct_words'] / day_data['words_practiced']) * 100, 2) if day_data['words_practiced'] > 0 else 0,
+                            'avg_wpm': round(day_data['avg_wpm'], 2) if day_data['avg_wpm'] else 0
+                        })
+                    else:
+                        progress_data.append({
+                            'date': current_date.isoformat(),
+                            'words_practiced': 0,
+                            'correct_words': 0,
+                            'accuracy': 0,
+                            'avg_wpm': 0
+                        })
+                    
+                    current_date += timedelta(days=1)
+                
+                cached_progress = progress_data
+                cache.set(cache_key, cached_progress, 600)  # 缓存10分钟
+            
+            return Response(cached_progress)
+        except Exception as e:
+            print(f"获取每日进度失败: {e}")
+            # 对于任何错误，返回空数组而不是500错误
+            return Response([])
+
+    
+
+class DictionaryViewSet(viewsets.ReadOnlyModelViewSet):
+    """词库视图集"""
+    queryset = Dictionary.objects.filter(is_active=True).order_by('category', 'name')
+    serializer_class = None  # 直接返回数据
+    permission_classes = [AllowAny]  # 允许匿名访问
+    
+    def list(self, request, *args, **kwargs):
+        """获取所有词库列表"""
+        dictionaries = self.get_queryset()
+        data = []
+        
+        for dict_obj in dictionaries:
+            data.append({
+                'id': dict_obj.id,
+                'name': dict_obj.name,
+                'description': dict_obj.description,
+                'category': dict_obj.category,
+                'language': dict_obj.language,
+                'total_words': dict_obj.total_words,
+                'chapter_count': dict_obj.chapter_count,
+                'is_active': dict_obj.is_active,
+                'source_file': dict_obj.source_file
+            })
+        
+        return Response(data)
+    
+    @action(detail=False, methods=['get'])
+    def by_category(self, request):
+        """按分类获取词库"""
+        category = request.query_params.get('category')
+        if category:
+            dictionaries = self.get_queryset().filter(category=category)
+        else:
+            dictionaries = self.get_queryset()
+        
+        data = []
+        for dict_obj in dictionaries:
+            data.append({
+                'id': dict_obj.id,
+                'name': dict_obj.name,
+                'description': dict_obj.description,
+                'category': dict_obj.category,
+                'language': dict_obj.language,
+                'total_words': dict_obj.total_words,
+                'chapter_count': dict_obj.chapter_count,
+                'is_active': dict_obj.is_active,
+                'source_file': dict_obj.source_file
+            })
+        
+        return Response(data)
+
+
+class TypingWordViewSet(viewsets.ReadOnlyModelViewSet):
+    """打字练习单词视图集"""
+    queryset = TypingWord.objects.all()
+    serializer_class = TypingWordSerializer
+    permission_classes = [AllowAny]
+    
+    @action(detail=False, methods=['get'])
+    def test(self, request):
+        """测试action是否工作"""
+        return Response({'message': 'TypingWordViewSet test action works!'})
+    
+    @action(detail=False, methods=['get'])
+    def by_dictionary(self, request):
+        """根据词库和章节获取单词"""
+        dictionary_id = request.query_params.get('dictionary_id')
+        chapter = request.query_params.get('chapter', 1)
+        
+        print(f"DEBUG: 请求参数 - dictionary_id: {dictionary_id}, chapter: {chapter}")
+        
+        if not dictionary_id:
+            return Response(
+                {'error': '缺少dictionary_id参数'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            # 获取指定词库和章节的单词，不限制difficulty
+            words = TypingWord.objects.filter(
+                dictionary_id=dictionary_id,
+                chapter=chapter
+            ).values('id', 'word', 'translation', 'phonetic', 'difficulty', 'frequency')
+            
+            print(f"DEBUG: 查询条件 - dictionary_id: {dictionary_id}, chapter: {chapter}")
+            print(f"DEBUG: 找到的单词数量: {words.count()}")
+            
+            # 如果单词太少，尝试不限制chapter，但限制总数
+            if words.count() < 10:
+                print(f"DEBUG: 单词数量太少，尝试不限制chapter")
+                words = TypingWord.objects.filter(
+                    dictionary_id=dictionary_id
+                ).values('id', 'word', 'translation', 'phonetic', 'difficulty', 'frequency')
+                print(f"DEBUG: 不限制chapter后找到的单词数量: {words.count()}")
+            
+            # 限制每个章节最多25个单词
+            word_list = list(words[:25])
+            print(f"DEBUG: 最终返回的单词数量: {len(word_list)}")
+            if word_list:
+                print(f"DEBUG: 第一个单词: {word_list[0]}")
+            
+            return Response(word_list)
+        except Exception as e:
+            print(f"DEBUG: 异常: {str(e)}")
+            return Response(
+                {'error': '获取单词失败', 'message': str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    

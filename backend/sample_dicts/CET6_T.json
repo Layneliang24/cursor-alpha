@@ -1,0 +1,52 @@
+[
+  {
+    "name": "abandon",
+    "trans": [
+      "放弃",
+      "遗弃"
+    ],
+    "usphone": "əˈbændən",
+    "ukphone": "əˈbændən",
+    "frequency": 55
+  },
+  {
+    "name": "brilliant",
+    "trans": [
+      "辉煌的",
+      "杰出的"
+    ],
+    "usphone": "ˈbrɪljənt",
+    "ukphone": "ˈbrɪljənt",
+    "frequency": 50
+  },
+  {
+    "name": "courage",
+    "trans": [
+      "勇气",
+      "勇敢"
+    ],
+    "usphone": "ˈkɜːrɪdʒ",
+    "ukphone": "ˈkʌrɪdʒ",
+    "frequency": 45
+  },
+  {
+    "name": "determine",
+    "trans": [
+      "决定",
+      "确定"
+    ],
+    "usphone": "dɪˈtɜːrmɪn",
+    "ukphone": "dɪˈtɜːmɪn",
+    "frequency": 40
+  },
+  {
+    "name": "elegant",
+    "trans": [
+      "优雅的",
+      "雅致的"
+    ],
+    "usphone": "ˈelɪɡənt",
+    "ukphone": "ˈelɪɡənt",
+    "frequency": 35
+  }
+]

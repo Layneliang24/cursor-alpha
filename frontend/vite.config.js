@@ -23,6 +23,18 @@ export default defineConfig({
           }
           return path
         }
+      },
+      '/pronunciation': {
+        target: 'https://dict.youdao.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace('/pronunciation', '/dictvoice'),
+        configure: (proxy, options) => {
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            // 添加必要的请求头
+            proxyReq.setHeader('Referer', 'https://dict.youdao.com')
+            proxyReq.setHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+          })
+        }
       }
     }
   },

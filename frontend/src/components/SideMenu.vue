@@ -35,7 +35,7 @@
           <router-link class="nav-link" to="/english/dashboard" :class="{ active: $route.path === '/english/dashboard' }">
             <el-icon class="me-2"><DataBoard /></el-icon>学习仪表板
           </router-link>
-          <router-link class="nav-link" to="/english/practice" :class="{ active: $route.path === '/english/practice' }">
+          <router-link class="nav-link" to="/english/typing-practice" :class="{ active: $route.path === '/english/typing-practice' }">
             <el-icon class="me-2"><Trophy /></el-icon>智能练习
           </router-link>
           <router-link class="nav-link" to="/english/pronunciation" :class="{ active: $route.path === '/english/pronunciation' }">

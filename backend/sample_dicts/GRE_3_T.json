@@ -1,0 +1,52 @@
+[
+  {
+    "name": "aberration",
+    "trans": [
+      "偏差",
+      "反常"
+    ],
+    "usphone": "ˌæbəˈreɪʃn",
+    "ukphone": "ˌæbəˈreɪʃn",
+    "frequency": 5
+  },
+  {
+    "name": "benevolent",
+    "trans": [
+      "仁慈的",
+      "慈善的"
+    ],
+    "usphone": "bəˈnevələnt",
+    "ukphone": "bɪˈnevələnt",
+    "frequency": 4
+  },
+  {
+    "name": "cacophony",
+    "trans": [
+      "刺耳的声音",
+      "不和谐音"
+    ],
+    "usphone": "kəˈkɑːfəni",
+    "ukphone": "kəˈkɒfəni",
+    "frequency": 3
+  },
+  {
+    "name": "dichotomy",
+    "trans": [
+      "二分法",
+      "两分"
+    ],
+    "usphone": "daɪˈkɑːtəmi",
+    "ukphone": "daɪˈkɒtəmi",
+    "frequency": 2
+  },
+  {
+    "name": "ephemeral",
+    "trans": [
+      "短暂的",
+      "瞬息的"
+    ],
+    "usphone": "ɪˈfemərəl",
+    "ukphone": "ɪˈfemərəl",
+    "frequency": 1
+  }
+]

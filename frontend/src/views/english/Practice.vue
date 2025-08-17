@@ -285,6 +285,14 @@ export default {
         icon: 'Document',
         difficulty: '简单',
         questionCount: '5-20题'
+      },
+      {
+        value: 'typing_practice',
+        name: '智能打字练习',
+        description: '实时打字练习，提升拼写速度和准确性',
+        icon: 'Trophy',
+        difficulty: '自适应',
+        questionCount: '10-50题'
       }
     ]
 
@@ -305,6 +313,14 @@ export default {
 
     const startPractice = async () => {
       try {
+        // 如果是打字练习，跳转到专门的打字练习页面
+        if (selectedType.value === 'typing_practice') {
+          // 设置标记，表示从Practice页面跳转过来
+          sessionStorage.setItem('from_typing_practice', 'true')
+          router.push('/english/typing-practice')
+          return
+        }
+        
         await englishStore.generatePracticeQuestions(selectedType.value, questionCount.value)
         if (currentQuestions.value.length === 0) {
           ElMessage.warning('没有找到合适的题目，请稍后再试')
@@ -411,7 +427,8 @@ export default {
     const getQuestionTypeTag = (type) => {
       const typeMap = {
         'word_spelling': 'primary',
-        'word_meaning': 'success'
+        'word_meaning': 'success',
+        'typing_practice': 'warning'
       }
       return typeMap[type] || 'info'
     }

@@ -3,7 +3,7 @@ from .models import (
     Word, UserWordProgress, Expression, News,
     LearningPlan, PracticeRecord, PronunciationRecord, LearningStats,
     WordCategory, WordCategoryLink, WordTag, WordTagLink,
-    WordExample, WordRelation, EntityVersion
+    WordExample, WordRelation, EntityVersion, TypingSession, UserTypingStats, TypingWord, Dictionary
 )
 
 
@@ -13,6 +13,7 @@ class WordAdmin(admin.ModelAdmin):
     list_filter = ['difficulty_level', 'part_of_speech', 'created_at']
     search_fields = ['word', 'definition', 'example']
     ordering = ['word']
+    list_per_page = 50
     readonly_fields = ['created_at', 'updated_at']
     
     fieldsets = (
@@ -171,6 +172,46 @@ class EntityVersionAdmin(admin.ModelAdmin):
     search_fields = ['entity_type', 'changed_by__username']
     ordering = ['-created_at']
     readonly_fields = ['created_at']
+
+
+@admin.register(Dictionary)
+class DictionaryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'category', 'language', 'total_words', 'chapter_count', 'is_active', 'created_at']
+    list_filter = ['category', 'language', 'is_active', 'created_at']
+    search_fields = ['name', 'description']
+    ordering = ['category', 'name']
+    list_per_page = 50
+
+
+@admin.register(TypingWord)
+class TypingWordAdmin(admin.ModelAdmin):
+    list_display = ['word', 'translation', 'dictionary', 'chapter', 'difficulty', 'frequency', 'created_at']
+    list_filter = ['dictionary', 'chapter', 'difficulty', 'created_at']
+    search_fields = ['word', 'translation']
+    ordering = ['word']
+    list_per_page = 50
+
+
+@admin.register(TypingSession)
+class TypingSessionAdmin(admin.ModelAdmin):
+    list_display = ['user', 'word', 'is_correct', 'typing_speed', 'response_time', 'session_date']
+    list_filter = ['is_correct', 'session_date', 'created_at']
+    search_fields = ['user__username', 'word__word']
+    ordering = ['-created_at']
+    list_per_page = 50
+
+
+@admin.register(UserTypingStats)
+class UserTypingStatsAdmin(admin.ModelAdmin):
+    list_display = ['user', 'total_words_practiced', 'total_correct_words', 'average_wpm', 'accuracy', 'last_practice_date']
+    list_filter = ['last_practice_date']
+    search_fields = ['user__username']
+    ordering = ['-total_words_practiced']
+    readonly_fields = ['accuracy']
+    
+    def accuracy(self, obj):
+        return f"{obj.accuracy}%"
+    accuracy.short_description = "准确率"
 
 
 # 内联管理

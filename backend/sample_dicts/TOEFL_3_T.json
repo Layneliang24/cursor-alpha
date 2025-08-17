@@ -1,0 +1,52 @@
+[
+  {
+    "name": "academic",
+    "trans": [
+      "学术的",
+      "理论的"
+    ],
+    "usphone": "ˌækəˈdemɪk",
+    "ukphone": "ˌækəˈdemɪk",
+    "frequency": 30
+  },
+  {
+    "name": "benevolent",
+    "trans": [
+      "仁慈的",
+      "慈善的"
+    ],
+    "usphone": "bəˈnevələnt",
+    "ukphone": "bɪˈnevələnt",
+    "frequency": 25
+  },
+  {
+    "name": "comprehensive",
+    "trans": [
+      "全面的",
+      "综合的"
+    ],
+    "usphone": "ˌkɑːmprɪˈhensɪv",
+    "ukphone": "ˌkɒmprɪˈhensɪv",
+    "frequency": 20
+  },
+  {
+    "name": "deliberate",
+    "trans": [
+      "故意的",
+      "深思熟虑的"
+    ],
+    "usphone": "dɪˈlɪbərət",
+    "ukphone": "dɪˈlɪbərət",
+    "frequency": 15
+  },
+  {
+    "name": "eloquent",
+    "trans": [
+      "雄辩的",
+      "有说服力的"
+    ],
+    "usphone": "ˈeləkwənt",
+    "ukphone": "ˈeləkwənt",
+    "frequency": 10
+  }
+]

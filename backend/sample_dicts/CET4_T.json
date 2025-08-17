@@ -1,0 +1,95 @@
+[
+  {
+    "name": "apple",
+    "trans": [
+      "苹果"
+    ],
+    "usphone": "ˈæpl",
+    "ukphone": "ˈæpl",
+    "frequency": 100
+  },
+  {
+    "name": "book",
+    "trans": [
+      "书",
+      "书籍"
+    ],
+    "usphone": "bʊk",
+    "ukphone": "bʊk",
+    "frequency": 95
+  },
+  {
+    "name": "cat",
+    "trans": [
+      "猫"
+    ],
+    "usphone": "kæt",
+    "ukphone": "kæt",
+    "frequency": 90
+  },
+  {
+    "name": "dog",
+    "trans": [
+      "狗"
+    ],
+    "usphone": "dɔːɡ",
+    "ukphone": "dɒɡ",
+    "frequency": 85
+  },
+  {
+    "name": "elephant",
+    "trans": [
+      "大象"
+    ],
+    "usphone": "ˈelɪfənt",
+    "ukphone": "ˈelɪfənt",
+    "frequency": 80
+  },
+  {
+    "name": "flower",
+    "trans": [
+      "花",
+      "花朵"
+    ],
+    "usphone": "ˈflaʊər",
+    "ukphone": "ˈflaʊə",
+    "frequency": 75
+  },
+  {
+    "name": "garden",
+    "trans": [
+      "花园"
+    ],
+    "usphone": "ˈɡɑːrdn",
+    "ukphone": "ˈɡɑːdn",
+    "frequency": 70
+  },
+  {
+    "name": "house",
+    "trans": [
+      "房子",
+      "房屋"
+    ],
+    "usphone": "haʊs",
+    "ukphone": "haʊs",
+    "frequency": 100
+  },
+  {
+    "name": "ice",
+    "trans": [
+      "冰"
+    ],
+    "usphone": "aɪs",
+    "ukphone": "aɪs",
+    "frequency": 65
+  },
+  {
+    "name": "juice",
+    "trans": [
+      "果汁"
+    ],
+    "usphone": "dʒuːs",
+    "ukphone": "dʒuːs",
+    "frequency": 60
+  }
+]
