@@ -138,9 +138,9 @@ Thumbs.db
 *.backup
 *.old
 
-# Test files
-test_*.py
-*test.py
+# Test files (excluding actual test files)
+# test_*.py
+# *test.py
 create_*.py
 debug_*.py
 
