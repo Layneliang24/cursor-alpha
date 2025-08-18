@@ -283,21 +283,3 @@ export const useNewsStore = defineStore('news', {
     }
   }
 })
-
-      const total = state.news.length
-      const bySource = {}
-      const visible = state.news.filter(news => news.is_visible !== false).length
-      
-      state.news.forEach(news => {
-        bySource[news.source] = (bySource[news.source] || 0) + 1
-      })
-      
-      return {
-        total,
-        visible,
-        hidden: total - visible,
-        bySource
-      }
-    }
-  }
-})

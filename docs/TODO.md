@@ -98,6 +98,112 @@
 - `backend/apps/english/views.py`：API接口
 - `frontend/src/views/english/DataAnalysis.vue`：数据分析页面
 - `frontend/src/components/charts/`：图表组件
+
+---
+
+### 🧪 测试系统完善
+
+#### 测试覆盖率和用例完善
+
+**任务描述**
+- 分析当前测试覆盖情况，完善测试用例
+- 修复现有测试中的问题，提高测试通过率
+- 建立完整的测试体系和质量保证机制
+
+**优先级**：高
+
+**预计工时**：2-3天
+
+**依赖关系**
+- 现有测试框架和配置
+- 项目功能模块
+
+**验收标准**
+1. 测试通过率达到95%以上
+2. 核心功能模块测试覆盖率85%以上
+3. 建立完整的测试文档和规范
+4. 自动化测试流程正常运行
+
+**修复进展**
+
+###### 第一阶段：模型字段修复 ✅ (已完成)
+- [x] 修复Word模型字段不匹配问题
+  - [x] `pronunciation` → `phonetic`
+  - [x] `example_sentence` → `example`
+- [x] 修复News模型字段不匹配问题
+  - [x] `url` → `source_url`
+  - [x] `published_date` → `publish_date`
+- [x] 修复TypingWord模型字段不匹配问题
+  - [x] `category` → `dictionary`外键关系
+- [x] 修复UserProfile模型字段问题
+  - [x] `avatar_url`默认值处理
+
+###### 第二阶段：数据库配置修复 ✅ (已完成)
+- [x] 修复MySQL连接测试的SQL语法兼容性
+- [x] 添加数据库访问权限标记`@pytest.mark.django_db`
+- [x] 支持SQLite和MySQL两种数据库引擎
+
+###### 第三阶段：API路由修复 ✅ (已完成)
+- [x] 修复健康检查URL: `/api/health/`
+- [x] 修复用户认证URL: `/api/v1/auth/login/`, `/api/v1/auth/register/`, `/api/v1/auth/logout/`
+- [x] 修复英语学习API URL: `/api/v1/english/words/`, `/api/v1/english/expressions/`, `/api/v1/english/news/`
+- [x] 删除不存在的功能测试文件
+
+###### 第四阶段：爬虫功能修复 ✅ (已完成)
+- [x] 修复BBC和TechCrunch爬虫的`source` → `source_name`属性
+- [x] 调整内容长度验证标准（从50词降低到30词）
+- [x] 修复爬虫初始化测试
+
+###### 第五阶段：核心功能测试用例补充 ✅ (已完成)
+- [x] 补充用户认证模块测试用例 (25个) - `tests/unit/test_user_auth.py`
+  - [x] 用户注册测试 (5个用例)
+  - [x] 用户登录测试 (5个用例)
+  - [x] 密码重置测试 (3个用例)
+  - [x] 权限验证测试 (5个用例)
+  - [x] 用户身份验证测试 (4个用例)
+  - [x] 用户登出测试 (2个用例)
+- [x] 补充英语学习核心功能测试用例 (32个) - `tests/unit/test_english_learning.py`
+  - [x] 单词学习测试 (8个用例)
+  - [x] 表达学习测试 (6个用例)
+  - [x] 新闻阅读测试 (8个用例)
+  - [x] 打字练习测试 (10个用例)
+- [x] 补充文章管理功能测试用例 (21个) - `tests/unit/test_article_management.py`
+  - [x] 文章创建测试 (5个用例)
+  - [x] 文章编辑测试 (5个用例)
+  - [x] 文章删除测试 (3个用例)
+  - [x] 文章搜索测试 (5个用例)
+  - [x] 文章详情测试 (3个用例)
+
+###### 第六阶段：高级功能测试用例补充 🔄 (进行中)
+ - [x] 补充数据分析功能测试用例 (22个) - ✅ 已完成
+   - 创建了 `tests/unit/test_data_analysis.py`
+   - 包含服务层测试、API测试、边界情况测试、性能测试
+   - 覆盖热力图、趋势图、错误统计、数据概览等功能
+ - [ ] 补充权限管理测试用例 (12个)
+ - [ ] 补充爬虫功能测试用例 (20个)
+ - [ ] 补充系统集成测试用例 (15个)
+
+###### 第七阶段：测试用例管理优化 🔄 (进行中)
+ - [x] 制定测试用例管理策略 - `tests/TEST_MANAGEMENT_STRATEGY.md`
+ - [x] 创建模块化测试示例 - `tests/unit/auth/test_registration.py`
+ - [x] 实现战略性测试执行脚本 - `tests/run_tests_strategic.py`
+ - [ ] 重构现有测试用例为模块化结构
+ - [ ] 实现测试工厂模式
+ - [ ] 建立测试监控和报告系统
+ - [ ] 配置持续集成测试流程
+
+**技术要点**
+1. 确保测试用例与实际模型字段一致
+2. 建立标准化的测试用例模板
+3. 优化测试执行性能
+4. 完善测试文档和规范
+
+**相关文件**
+- `tests/TEST_COVERAGE_ANALYSIS.md`：测试覆盖分析报告
+- `tests/TEST_IMPROVEMENT_PLAN.md`：测试改进计划
+- `tests/unit/`：单元测试文件
+- `tests/integration/`：集成测试文件
+- `tests/regression/`：回归测试文件
 - `docs/ENGLISH_TYPING_INTEGRATION_DESIGN.md`：产品设计文档
 
 ---
