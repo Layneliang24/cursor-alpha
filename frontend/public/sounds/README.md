@@ -72,3 +72,14 @@ const url = `https://dict.youdao.com/dictvoice?audio=${word}&type=2`
 4. **版权**: 确保音频文件的版权合规性
 
 
+
+
+
+
+
+
+
+
+
+
+
