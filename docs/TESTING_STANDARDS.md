@@ -193,6 +193,37 @@ run_simple_tests.bat
 python test_django_setup.py
 ```
 
+---
+
+## 🆕 新功能上线测试流程（合并自 NEW_FEATURE_TESTING.md）
+
+### 阶段与检查项（节选）
+- 新功能专项：单元/集成/前端测试均通过，覆盖率≥90%
+- 回归测试：既有回归用例100%通过；性能指标不降低
+- 端到端：核心业务流程可用，用户场景验证通过
+
+### 一键执行脚本（示例）
+```bash
+python -m pytest tests/new_features/ -v --html=reports/html/new_feature_report.html
+python -m pytest tests/regression/ -v --html=reports/html/regression_report.html
+python -m pytest tests/integration/ -v --html=reports/html/integration_report.html
+```
+
+---
+
+## 🐞 问题修复测试流程（合并自 BUG_FIX_TESTING.md）
+
+### 阶段与检查项（节选）
+- 重现→修复验证→边界验证→相关回归→全量验证→性能/体验回归
+- 通过标准：问题不再出现；相关功能正常；测试全部通过；性能稳定
+
+### 常用命令（示例）
+```bash
+python -m pytest tests/regression/ -k "问题关键词" -v
+python -m pytest tests/regression/ -k "修复功能" -v
+python -m pytest tests/ -v --html=reports/html/full_test_report.html
+```
+
 ### 测试类型说明
 1. **简化测试**：`run_simple_tests.bat/.ps1`
    - 避免复杂的pytest配置问题
@@ -265,4 +296,69 @@ python test_django_setup.py
 
 ---
 
-*最后更新：2024年12月*
+*最后更新：2025-01-17*
+
+## 附录：测试体系设计与建设总结（合并自 TESTING_SYSTEM.md / TESTING_SYSTEM_SUMMARY.md / TEST_FILE_REORGANIZATION.md）
+
+### 测试体系主干
+- 目录规范（标准化）：
+  - `tests/regression/`、`tests/new_features/`、`tests/unit/`、`tests/integration/`
+  - `tests/resources/{fixtures,mocks}/`、`tests/reports/{html,json}/`、`tests/utils/`
+- 覆盖目标与类型：与正文一致，强调“关键路径≥90%，总体≥80%”。
+- 一键执行：支持完整/回归/模块化执行与 HTML/JSON 报告产出。
+
+### MySQL 测试数据库（示例）
+```python
+# tests/test_settings_mysql.py（要点）
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'test_alpha_db',
+        'USER': 'root',
+        'PASSWORD': '***',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+
+# 可选：禁用迁移以加速测试
+# MIGRATION_MODULES = DisableMigrations()
+```
+
+### 一键测试运行器（要点）
+- 按模块运行：`python -m pytest tests/regression/{module}/ -v --html=tests/reports/html/{module}_report.html`
+- 回归套件：`python -m pytest tests/regression/ -v --html=tests/reports/html/regression_report.html`
+- 完整套件：见正文“测试执行”。
+
+### 测试资产与覆盖分析（摘要）
+- 统计维度：按模块/页面/功能四级、类型（单元/集成/API/前端）与优先级（高/中/低）。
+- 输出物：HTML/JSON 报告与趋势统计，纳入 CI/CD 审查门槛。
+
+### 测试文件重组（已完成要点）
+- 根因：历史测试分散、命名不规范、路径引用错误。
+- 调整：
+  - 单元与集成测试归位 `tests/unit/`、`tests/integration/`；
+  - 路径修复（如相对 `backend/` 的导入路径）；
+  - 新增 `run_news_tests.*` 脚本统一运行新闻相关测试；
+  - 目录与命名统一后，合并一次性记录文档。
+
+> 注：本附录用于沉淀“方法与过程”，日常以本文件为唯一真实来源（SSOT）维护测试规范。
+
+---
+
+## 附录：测试计划（合并自 05-开发计划/测试计划.md）
+
+### 目标与范围
+- 功能正确性、性能稳定性、安全合规性、兼容性与可用性；覆盖全站模块与关键技术面。
+
+### 策略与门禁
+- 左移测试、自动化优先、数据隔离；准入（OpenAPI/环境就绪）、准出（覆盖/性能/回滚）。
+
+### 环境与数据
+- 本地/测试/预发/生产环境分层；Seed/fixtures/Mock 数据。
+
+### 测试类型
+- 功能/接口/E2E/性能/安全/兼容/可访问性；P95<500ms；核心路径全覆盖。
+
+### CI/CD 集成
+- Lint/TypeCheck → 单测 → 覆盖率门禁 → 构建/集成/E2E → 安全/依赖扫描 → 可回滚部署。
