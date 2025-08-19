@@ -1,0 +1,42 @@
+version: 1
+policies:
+  external_api:
+    dictionaryapi_dev:
+      rate_limit_per_min: 60
+      burst: 10
+      timeout_ms: 5000
+      retry:
+        max_retries: 3
+        backoff: exponential
+        base_ms: 500
+      cache_ttl_seconds: 604800  # 7 days
+    forvo:
+      rate_limit_per_min: 30
+      burst: 5
+      timeout_ms: 8000
+      retry: { max_retries: 2, backoff: linear, base_ms: 1000 }
+      cache_ttl_seconds: 604800
+  crawler:
+    user_agent: "AlphaBot/1.0 (+https://example.com/bot-info)"
+    obey_robots_txt: true
+    request_delay_ms: 1500
+    max_concurrent: 2
+    retry: { max_retries: 3, backoff: exponential, base_ms: 1000 }
+    dedup:
+      strategy: content_hash+url
+      window_days: 14
+    storage_fields:
+      - source_url
+      - source_site
+      - crawl_policy_id
+      - fetched_at
+
+provenance:
+  storage_fields: [source_url, source_api, license, quality_score]
+  on_missing:
+    source_url: null
+    source_api: manual
+    license: unknown
+    quality_score: 0.0
+  audit:
+    log_fields: [endpoint, status, duration_ms, retried, cache_hit]

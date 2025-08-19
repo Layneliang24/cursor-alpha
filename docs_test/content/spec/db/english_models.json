@@ -1,0 +1,191 @@
+{
+  "version": 2,
+  "notes": "Avoid MySQL ENUM. Use varchar + allowed list (from docs/spec/enums.yaml). All tables use utf8mb4.",
+  "common_fields": {
+    "created_at": { "type": "DateTimeField", "auto_now_add": true },
+    "updated_at": { "type": "DateTimeField", "auto_now": true },
+    "is_deleted": { "type": "BooleanField", "default": false },
+    "deleted_at": { "type": "DateTimeField", "null": true }
+  },
+  "provenance_fields": {
+    "source_url": { "type": "CharField", "max_length": 500, "null": true },
+    "source_api": { "type": "CharField", "max_length": 100, "null": true },
+    "license": { "type": "CharField", "max_length": 100, "null": true },
+    "quality_score": { "type": "DecimalField", "max_digits": 3, "decimal_places": 2, "default": 0.0 }
+  },
+  "models": {
+    "Word": {
+      "table": "english_words",
+      "fields": {
+        "id": { "type": "BigAutoField", "primary_key": true },
+        "word": { "type": "CharField", "max_length": 128, "unique": true },
+        "phonetic": { "type": "CharField", "max_length": 128, "null": true },
+        "part_of_speech": { "type": "CharField", "max_length": 50, "null": true },
+        "definition": { "type": "TextField", "null": true },
+        "example": { "type": "TextField", "null": true },
+        "difficulty_level": { "type": "CharField", "max_length": 20, "allowed": ["beginner", "intermediate", "advanced"], "default": "beginner" },
+        "frequency_rank": { "type": "IntegerField", "default": 0 },
+        "category_hint": { "type": "CharField", "max_length": 100, "null": true },
+        "source_url": "@provenance_fields.source_url",
+        "source_api": "@provenance_fields.source_api",
+        "license": "@provenance_fields.license",
+        "quality_score": "@provenance_fields.quality_score",
+        "created_at": "@common_fields.created_at",
+        "updated_at": "@common_fields.updated_at",
+        "is_deleted": "@common_fields.is_deleted",
+        "deleted_at": "@common_fields.deleted_at"
+      },
+      "indexes": [["word"], ["difficulty_level"], ["frequency_rank"], ["quality_score"]]
+    },
+    "UserWordProgress": {
+      "table": "user_word_progress",
+      "fields": {
+        "id": { "type": "BigAutoField", "primary_key": true },
+        "user_id": { "type": "ForeignKey", "to": "users.id", "on_delete": "CASCADE" },
+        "word_id": { "type": "ForeignKey", "to": "english_words.id", "on_delete": "CASCADE" },
+        "status": { "type": "CharField", "max_length": 20, "allowed": ["not_learned", "learning", "mastered", "need_review"], "default": "not_learned" },
+        "review_count": { "type": "IntegerField", "default": 0 },
+        "last_review_date": { "type": "DateTimeField", "null": true },
+        "next_review_date": { "type": "DateTimeField", "null": true },
+        "mastery_level": { "type": "DecimalField", "max_digits": 3, "decimal_places": 2, "default": 0.0 },
+        "created_at": "@common_fields.created_at",
+        "updated_at": "@common_fields.updated_at",
+        "is_deleted": "@common_fields.is_deleted",
+        "deleted_at": "@common_fields.deleted_at"
+      },
+      "unique_together": [["user_id", "word_id"]],
+      "indexes": [["user_id", "next_review_date"], ["user_id", "status"]]
+    },
+    "Expression": {
+      "table": "english_expressions",
+      "fields": {
+        "id": { "type": "BigAutoField", "primary_key": true },
+        "expression": { "type": "CharField", "max_length": 500 },
+        "meaning": { "type": "TextField", "null": true },
+        "category": { "type": "CharField", "max_length": 100, "null": true },
+        "scenario": { "type": "CharField", "max_length": 100, "null": true },
+        "difficulty_level": { "type": "CharField", "max_length": 20, "allowed": ["beginner", "intermediate", "advanced"], "default": "beginner" },
+        "usage_frequency": { "type": "CharField", "max_length": 10, "allowed": ["high", "medium", "low"], "default": "medium" },
+        "cultural_background": { "type": "TextField", "null": true },
+        "source_url": "@provenance_fields.source_url",
+        "source_api": "@provenance_fields.source_api",
+        "license": "@provenance_fields.license",
+        "quality_score": "@provenance_fields.quality_score",
+        "created_at": "@common_fields.created_at",
+        "updated_at": "@common_fields.updated_at",
+        "is_deleted": "@common_fields.is_deleted",
+        "deleted_at": "@common_fields.deleted_at"
+      },
+      "unique_together": [["expression", "scenario"]],
+      "indexes": [["category"], ["scenario"], ["difficulty_level"], ["usage_frequency"]]
+    },
+    "WordCategory": {
+      "table": "english_word_categories",
+      "fields": {
+        "id": { "type": "BigAutoField", "primary_key": true },
+        "name": { "type": "CharField", "max_length": 100, "unique": true },
+        "parent_id": { "type": "ForeignKey", "to": "english_word_categories.id", "on_delete": "SET_NULL", "null": true },
+        "description": { "type": "TextField", "null": true },
+        "created_at": "@common_fields.created_at",
+        "updated_at": "@common_fields.updated_at",
+        "is_deleted": "@common_fields.is_deleted",
+        "deleted_at": "@common_fields.deleted_at"
+      },
+      "indexes": [["name"], ["parent_id"]]
+    },
+    "WordCategoryLink": {
+      "table": "english_word_category_links",
+      "fields": {
+        "word_id": { "type": "ForeignKey", "to": "english_words.id", "on_delete": "CASCADE" },
+        "category_id": { "type": "ForeignKey", "to": "english_word_categories.id", "on_delete": "CASCADE" }
+      },
+      "unique_together": [["word_id", "category_id"]],
+      "indexes": [["word_id"], ["category_id"]]
+    },
+    "WordTag": {
+      "table": "english_word_tags",
+      "fields": {
+        "id": { "type": "BigAutoField", "primary_key": true },
+        "name": { "type": "CharField", "max_length": 100, "unique": true },
+        "created_at": "@common_fields.created_at",
+        "updated_at": "@common_fields.updated_at",
+        "is_deleted": "@common_fields.is_deleted",
+        "deleted_at": "@common_fields.deleted_at"
+      },
+      "indexes": [["name"]]
+    },
+    "WordTagLink": {
+      "table": "english_word_tag_links",
+      "fields": {
+        "word_id": { "type": "ForeignKey", "to": "english_words.id", "on_delete": "CASCADE" },
+        "tag_id": { "type": "ForeignKey", "to": "english_word_tags.id", "on_delete": "CASCADE" }
+      },
+      "unique_together": [["word_id", "tag_id"]],
+      "indexes": [["word_id"], ["tag_id"]]
+    },
+    "WordExample": {
+      "table": "english_word_examples",
+      "fields": {
+        "id": { "type": "BigAutoField", "primary_key": true },
+        "word_id": { "type": "ForeignKey", "to": "english_words.id", "on_delete": "CASCADE" },
+        "sentence": { "type": "TextField" },
+        "translation": { "type": "TextField", "null": true },
+        "source_url": "@provenance_fields.source_url",
+        "quality_score": "@provenance_fields.quality_score",
+        "created_at": "@common_fields.created_at",
+        "updated_at": "@common_fields.updated_at",
+        "is_deleted": "@common_fields.is_deleted",
+        "deleted_at": "@common_fields.deleted_at"
+      },
+      "indexes": [["word_id"], ["quality_score"]]
+    },
+    "WordRelation": {
+      "table": "english_word_relations",
+      "fields": {
+        "id": { "type": "BigAutoField", "primary_key": true },
+        "word_id": { "type": "ForeignKey", "to": "english_words.id", "on_delete": "CASCADE" },
+        "related_word_id": { "type": "ForeignKey", "to": "english_words.id", "on_delete": "CASCADE" },
+        "relation_type": { "type": "CharField", "max_length": 20, "allowed": ["synonym", "antonym", "derived", "collocation"] },
+        "note": { "type": "CharField", "max_length": 200, "null": true },
+        "created_at": "@common_fields.created_at",
+        "updated_at": "@common_fields.updated_at"
+      },
+      "unique_together": [["word_id", "related_word_id", "relation_type"]],
+      "indexes": [["word_id"], ["relation_type"]]
+    },
+    "News": {
+      "table": "english_news",
+      "fields": {
+        "id": { "type": "BigAutoField", "primary_key": true },
+        "title": { "type": "CharField", "max_length": 500 },
+        "summary": { "type": "TextField", "null": true },
+        "content": { "type": "LongText", "null": true },
+        "category": { "type": "CharField", "max_length": 100, "null": true },
+        "difficulty_level": { "type": "CharField", "max_length": 20, "allowed": ["beginner", "intermediate", "advanced"], "default": "intermediate" },
+        "publish_date": { "type": "DateField", "null": true },
+        "word_count": { "type": "IntegerField", "default": 0 },
+        "source": { "type": "CharField", "max_length": 100, "null": true },
+        "source_url": "@provenance_fields.source_url",
+        "license": "@provenance_fields.license",
+        "quality_score": "@provenance_fields.quality_score",
+        "created_at": "@common_fields.created_at",
+        "updated_at": "@common_fields.updated_at",
+        "is_deleted": "@common_fields.is_deleted",
+        "deleted_at": "@common_fields.deleted_at"
+      },
+      "indexes": [["publish_date"], ["category"], ["difficulty_level"], ["source"], ["quality_score"]]
+    },
+    "EntityVersion": {
+      "table": "english_entity_versions",
+      "fields": {
+        "id": { "type": "BigAutoField", "primary_key": true },
+        "entity_type": { "type": "CharField", "max_length": 50 },
+        "entity_id": { "type": "BigIntegerField" },
+        "snapshot": { "type": "JSONField" },
+        "changed_by": { "type": "ForeignKey", "to": "users.id", "on_delete": "SET_NULL", "null": true },
+        "created_at": "@common_fields.created_at"
+      },
+      "indexes": [["entity_type", "entity_id"], ["created_at"]]
+    }
+  }
+}
