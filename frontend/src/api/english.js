@@ -111,8 +111,7 @@ export const englishAPI = {
     return request.get('/english/typing-practice/words/', { 
       params: { 
         category: params.category, 
-        chapter: params.chapter,
-        difficulty: params.difficulty || 'intermediate'
+        chapter: params.chapter
       } 
     })
   },

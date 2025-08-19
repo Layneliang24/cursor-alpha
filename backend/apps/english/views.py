@@ -1036,39 +1036,31 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
         # 兼容不同的请求类型
         if hasattr(request, 'query_params'):
             category = request.query_params.get('category', 'CET4_T')
-            difficulty = request.query_params.get('difficulty', 'intermediate')
             chapter = request.query_params.get('chapter')
             limit = int(request.query_params.get('limit', 50))
         else:
             category = request.GET.get('category', 'CET4_T')
-            difficulty = request.GET.get('difficulty', 'intermediate')
             chapter = request.GET.get('chapter')
             limit = int(request.GET.get('limit', 50))
         
-        # 验证参数 - difficulty 现在是可选的，默认为 'intermediate'
-        if difficulty is None:
-            difficulty = 'intermediate'
-        
-        valid_difficulties = ['beginner', 'intermediate', 'advanced']
-        
-        if difficulty not in valid_difficulties:
-            return Response(
-                {'error': f'无效的难度级别: {difficulty}'}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
         # 使用缓存键（包含章节信息）
-        cache_key = f'typing_words_{category}_{difficulty}_{chapter}_{limit}'
+        cache_key = f'typing_words_{category}_{chapter}_{limit}'
         cached_words = cache.get(cache_key)
         
         if cached_words is None:
             # 优化查询：只选择需要的字段
             try:
-                dictionary = Dictionary.objects.get(category=category)
-                words_query = TypingWord.objects.filter(
-                    dictionary=dictionary,
-                    difficulty=difficulty
-                )
+                # 使用filter而不是get，因为可能有多个词库使用相同的category
+                dictionaries = Dictionary.objects.filter(category=category)
+                if not dictionaries.exists():
+                    return Response(
+                        {'error': f'词库不存在: {category}'}, 
+                        status=status.HTTP_404_NOT_FOUND
+                    )
+                
+                # 如果有多个词库使用相同的category，选择第一个
+                dictionary = dictionaries.first()
+                words_query = TypingWord.objects.filter(dictionary=dictionary)
                 
                 # 如果指定了章节，按章节过滤
                 if chapter:

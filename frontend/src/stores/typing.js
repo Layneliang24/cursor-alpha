@@ -61,7 +61,6 @@ export const useTypingStore = defineStore('typing', () => {
   })
   
   const practiceSettings = reactive({
-    difficulty: 'beginner',
     wordCount: 20,
     showPhonetic: true
   })
@@ -184,7 +183,6 @@ export const useTypingStore = defineStore('typing', () => {
       console.log('调用API获取单词...')
       const response = await englishAPI.getTypingWords({
         category: practiceSettings.dictionary,
-        difficulty: practiceSettings.difficulty,
         limit: practiceSettings.wordCount
       })
       
