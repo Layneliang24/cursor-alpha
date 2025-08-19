@@ -1033,10 +1033,17 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def words(self, request):
         """获取练习单词列表 - 优化版本"""
-        category = request.query_params.get('category', 'CET4_T')
-        difficulty = request.query_params.get('difficulty', 'intermediate')
-        chapter = request.query_params.get('chapter')
-        limit = int(request.query_params.get('limit', 50))
+        # 兼容不同的请求类型
+        if hasattr(request, 'query_params'):
+            category = request.query_params.get('category', 'CET4_T')
+            difficulty = request.query_params.get('difficulty', 'intermediate')
+            chapter = request.query_params.get('chapter')
+            limit = int(request.query_params.get('limit', 50))
+        else:
+            category = request.GET.get('category', 'CET4_T')
+            difficulty = request.GET.get('difficulty', 'intermediate')
+            chapter = request.GET.get('chapter')
+            limit = int(request.GET.get('limit', 50))
         
         # 验证参数 - difficulty 现在是可选的，默认为 'intermediate'
         if difficulty is None:
@@ -1057,7 +1064,7 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
         if cached_words is None:
             # 优化查询：只选择需要的字段
             try:
-                dictionary = Dictionary.objects.get(name=category)
+                dictionary = Dictionary.objects.get(category=category)
                 words_query = TypingWord.objects.filter(
                     dictionary=dictionary,
                     difficulty=difficulty
@@ -1740,22 +1747,6 @@ class DataAnalysisViewSet(viewsets.ModelViewSet):
                 "success": False,
                 "message": f"获取数据概览失败: {str(e)}",
                 "data": {}
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    
-
-                'success': True,
-                'data': {
-                    'is_paused': False,
-                    'pause_start_time': None,
-                    'pause_elapsed_time': 0,
-                    'session_time': 0
-                }
-            })
-        except Exception as e:
-            return Response({
-                'success': False,
-                'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     @action(detail=False, methods=['post'])

@@ -941,3 +941,64 @@ sessionTime: computed(() => {
 
 *最后更新：2025-01-17*
 *维护者：开发团队*
+
+---
+
+## 问题11：数据库状态与代码不匹配
+
+**问题描述：** 恢复代码后，数据库状态与代码不匹配，导致API错误
+
+**解决方案：**
+1. 创建数据库备份脚本 `backup_database.py`
+2. 备份包含字典和单词数据的完整状态
+3. 将备份文件提交到git仓库，确保数据与代码同步
+4. 提供恢复脚本，可以从备份文件恢复数据库状态
+
+**恢复步骤：**
+```bash
+# 备份数据库
+python backend/backup_database.py
+
+# 恢复数据库
+python backend/backup_database.py restore database_backup_YYYYMMDD_HHMMSS.json
+```
+
+**所属业务或模块：** 数据库管理
+
+## 问题12：API兼容性问题导致500错误
+
+**问题描述：** 恢复代码后，API返回500错误，提示 `'WSGIRequest' object has no attribute 'query_params'`
+
+**问题分析：**
+1. **请求类型不匹配**：Django的普通视图中使用 `request.GET`，而DRF ViewSet中使用 `request.query_params`
+2. **代码恢复问题**：从远程仓库恢复代码后，之前的兼容性修复丢失
+3. **测试环境差异**：直接测试ViewSet方法时使用不同的请求对象类型
+
+**解决方案：**
+1. **添加兼容性代码**：在API方法中添加请求类型检查
+```python
+# 兼容不同的请求类型
+if hasattr(request, 'query_params'):
+    category = request.query_params.get('category', 'CET4_T')
+    difficulty = request.query_params.get('difficulty', 'intermediate')
+    chapter = request.query_params.get('chapter')
+    limit = int(request.query_params.get('limit', 50))
+else:
+    category = request.GET.get('category', 'CET4_T')
+    difficulty = request.GET.get('difficulty', 'intermediate')
+    chapter = request.GET.get('chapter')
+    limit = int(request.GET.get('limit', 50))
+```
+
+2. **修复字典查询逻辑**：使用 `category` 而不是 `name` 字段查询字典
+```python
+dictionary = Dictionary.objects.get(category=category)
+```
+
+**经验总结：**
+1. **代码恢复风险**：从远程仓库恢复代码可能丢失本地修复
+2. **兼容性处理**：API代码需要考虑不同的请求类型
+3. **数据库查询**：使用正确的字段进行数据库查询
+4. **测试验证**：每次修复后都要验证API功能
+
+**所属业务或模块：** API接口
