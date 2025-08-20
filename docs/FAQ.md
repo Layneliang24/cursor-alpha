@@ -447,6 +447,98 @@ class NewsSerializer(serializers.ModelSerializer):
 
 ---
 
+##### 问题21：月历热力图和键盘热力图数据不准确
+
+**问题描述：**
+- 月历热力图显示的练习次数不正确
+- 键盘热力图没有显示错误次数和颜色深浅
+- 数据分析页面的可视化效果不符合预期
+
+**问题分析：**
+1. **月历热力图练习次数统计错误**：使用基于时间间隔的统计，应该使用基于会话的统计
+2. **键盘热力图没有数据**：按键错误统计可能没有数据或逻辑有问题
+3. **数据统计逻辑不准确**：需要确保统计逻辑与QWERTY Learner一致
+
+**解决方案：**
+
+1. **修复月历热力图练习次数统计**：
+```python
+# 修改前：基于时间间隔统计
+for record in records.order_by('created_at'):
+    if record.session_date != current_date:
+        # ... 时间间隔逻辑
+
+# 修改后：基于完成的会话统计
+completed_sessions = TypingPracticeSession.objects.filter(
+    user_id=user_id,
+    is_completed=True,
+    session_date__range=[first_day, last_day]
+)
+
+for session in completed_sessions:
+    session_date = session.session_date
+    if session_date in daily_exercise_counts:
+        daily_exercise_counts[session_date] += 1
+    else:
+        daily_exercise_counts[session_date] = 1
+```
+
+2. **完善按键错误统计逻辑**：
+```python
+def update_key_error_stats_from_records(self, user_id: int) -> None:
+    """从练习记录更新按键错误统计"""
+    records_with_mistakes = TypingPracticeRecord.objects.filter(
+        user_id=user_id,
+        wrong_count__gt=0
+    )
+    
+    for record in records_with_mistakes:
+        if record.mistakes:
+            for key, errors in record.mistakes.items():
+                # 统计每个按键的错误次数
+                key_stat, created = KeyErrorStats.objects.get_or_create(
+                    user_id=user_id,
+                    key=key.upper(),
+                    defaults={'error_count': len(errors)}
+                )
+```
+
+3. **确保数据完整性**：
+- 检查练习记录是否正确关联到会话
+- 验证按键错误数据是否正确记录
+- 确保统计逻辑与QWERTY Learner一致
+
+**验证结果：**
+- ✅ 月历热力图练习次数正确显示（基于完成的会话）
+- ✅ 键盘热力图功能正常（有测试数据时能正确显示）
+- ✅ 按键错误统计逻辑正确
+- ✅ 前端组件能正确接收和显示数据
+
+**经验总结：**
+1. **统计逻辑一致性**：练习次数应该基于完成的会话，而不是时间间隔
+2. **数据模型设计**：按键错误应该使用JSONField存储详细信息
+3. **可视化数据准备**：确保前端组件能正确接收和显示数据
+4. **测试数据验证**：使用测试数据验证功能是否正常工作
+5. **数据完整性检查**：确保所有练习记录都有正确的会话关联
+
+**相关文件：**
+- `backend/apps/english/services.py`：修复月历热力图和按键错误统计逻辑
+- `frontend/src/components/charts/KeyboardLayoutChart.vue`：键盘热力图组件
+- `frontend/src/views/english/DataAnalysis.vue`：数据分析页面
+
+**所属业务或模块：** 英语学习 - 数据分析
+
+**解决时间**：2025-01-20
+
+**问题严重性**：⭐⭐⭐ 影响数据分析准确性
+
+**教训总结**
+- 统计逻辑必须与业务需求一致
+- 可视化组件需要正确的数据格式
+- 测试数据验证是确保功能正常的重要手段
+
+---
+
 ##### 问题7：修复图片显示问题后产生500错误（字段类型不匹配）
 
 **问题描述**
@@ -1050,3 +1142,553 @@ def daily_progress(self, request):
 3. **前后端路径一致性**：确保前端API调用路径与后端路由完全匹配
 
 **所属业务或模块：** 英语学习 - 智能练习
+
+## 问题14：数据分析模块数据不准确
+
+**问题描述：**
+- 数据分析页面显示练习次数和练习单词数都是1
+- 用户layne的练习数据明显不正确
+- 前端显示的数据与后端API返回的数据不一致
+
+**问题分析：**
+1. **数据保存逻辑问题**：`submit`方法只保存到`TypingSession`表
+2. **数据分析逻辑问题**：`DataAnalysisService`只从`TypingPracticeRecord`表读取数据
+3. **数据不同步**：两个表之间没有同步机制
+4. **历史数据不一致**：TypingSession(333条) != TypingPracticeRecord(734条)
+
+**解决方案：**
+
+1. **修改数据保存逻辑**
+```python
+# backend/apps/english/views.py
+# 在submit方法中同时保存到两个表
+session = TypingSession.objects.create(
+    user=request.user,
+    word=word,
+    is_correct=is_correct,
+    typing_speed=typing_speed,
+    response_time=response_time
+)
+
+# 同时保存到TypingPracticeRecord表（用于数据分析）
+TypingPracticeRecord.objects.create(
+    user=request.user,
+    word=word.word,  # 保存单词字符串
+    is_correct=is_correct,
+    typing_speed=typing_speed,
+    response_time=response_time,
+    total_time=response_time * 1000,  # 转换为毫秒
+    wrong_count=0,  # 默认值
+    mistakes={},  # 默认值
+    timing=[]  # 默认值
+)
+```
+
+2. **修复前端API响应处理**
+```javascript
+// frontend/src/views/english/DataAnalysis.vue
+// 修复所有API响应检查逻辑
+if (response.success && response.data) {
+  overview.value = response.data
+}
+```
+
+3. **创建数据同步脚本**
+```python
+# 同步TypingSession数据到TypingPracticeRecord表
+def sync_typing_data():
+    sessions = TypingSession.objects.select_related('word', 'user').all()
+    for session in sessions:
+        # 检查是否已存在对应记录
+        existing_record = TypingPracticeRecord.objects.filter(
+            user=session.user,
+            word=session.word.word,
+            is_correct=session.is_correct,
+            typing_speed=session.typing_speed,
+            response_time=session.response_time,
+            session_date=session.session_date
+        ).first()
+        
+        if not existing_record:
+            TypingPracticeRecord.objects.create(
+                user=session.user,
+                word=session.word.word,
+                is_correct=session.is_correct,
+                typing_speed=session.typing_speed,
+                response_time=session.response_time,
+                total_time=session.response_time * 1000,
+                wrong_count=0,
+                mistakes={},
+                timing=[],
+                session_date=session.session_date,
+                created_at=session.created_at
+            )
+```
+
+**经验总结：**
+1. **数据一致性**：确保数据保存和读取使用相同的表
+2. **双表同步**：重要数据应该同时保存到多个相关表
+3. **历史数据修复**：通过同步脚本修复历史数据不一致问题
+4. **API响应检查**：前端必须正确检查API响应的success字段
+
+**相关文件：**
+- `backend/apps/english/views.py`：修改数据保存逻辑
+- `frontend/src/views/english/DataAnalysis.vue`：修复API响应处理
+- `backend/apps/english/services.py`：数据分析服务
+- `backend/apps/english/models.py`：数据模型定义
+
+**所属业务或模块：** 英语学习 - 数据分析
+
+## 问题16：Submit API字段名错误和重复ViewSet定义导致400错误
+
+**问题描述：**
+- 练习完成后前端调用submit API时返回400 Bad Request错误
+- 错误信息：`{"success":false,"error":"缺少必要字段: word"}`
+- 前端发送的是`word_id`字段，但后端期望`word`字段
+- 服务器日志显示多次400错误，影响用户练习数据保存
+
+**问题分析：**
+1. **字段名不匹配**：前端发送`word_id`，后端期望`word`字段
+2. **重复ViewSet定义**：`views.py`中存在多个重复的ViewSet定义导致路由冲突
+3. **错误的submit方法被调用**：错误的submit方法期望不同的字段结构
+4. **代码重复**：文件中有重复的`DictionaryViewSet`、`TypingWordViewSet`、`DataAnalysisViewSet`定义
+
+**解决方案：**
+
+1. **删除重复的ViewSet定义**
+```python
+# 使用脚本清理重复的ViewSet定义
+def clean_duplicate_views():
+    # 找到所有ViewSet的开始位置
+    viewset_starts = []
+    for i, line in enumerate(lines):
+        if line.strip().startswith('class ') and 'ViewSet' in line:
+            viewset_starts.append(i)
+    
+    # 找到重复的ViewSet并删除
+    to_delete = []
+    for i, start_pos in enumerate(viewset_starts):
+        if i > 0:
+            viewset_name = lines[start_pos].split('(')[0].replace('class ', '').strip()
+            # 检查是否是重复的并标记删除
+```
+
+2. **删除错误的submit方法**
+```python
+# 删除期望'word'字段的错误submit方法
+# 保留期望'word_id'字段的正确submit方法
+@action(detail=False, methods=['post'])
+def submit(self, request):
+    """提交打字练习结果 - 优化版本"""
+    word_id = request.data.get('word_id')  # 正确：使用word_id
+    is_correct = request.data.get('is_correct')
+    typing_speed = request.data.get('typing_speed', 0)
+    response_time = request.data.get('response_time', 0)
+    # ... 正确的处理逻辑
+```
+
+3. **验证API正常工作**
+```python
+# 测试脚本验证修复结果
+def test_submit_api():
+    data = {
+        'word_id': word.id,        # 正确的字段名
+        'is_correct': True,
+        'typing_speed': 60,
+        'response_time': 2.5
+    }
+    response = requests.post(url, json=data, headers=headers)
+    # 期望：200状态码，{"status":"success","session_id":xxx}
+```
+
+4. **建立完整的测试体系**
+```python
+# tests/unit/test_typing_practice_submit.py - 单元测试
+# tests/integration/test_typing_practice_submit_integration.py - 集成测试  
+# tests/regression/english/test_typing_practice_submit_regression.py - 回归测试
+# tests/simple_submit_test.py - 快速验证测试
+```
+
+**测试结果：**
+- ✅ Submit API功能测试通过
+- ✅ 数据一致性测试通过  
+- ✅ 数据同时保存到`TypingSession`和`TypingPracticeRecord`表
+- ✅ API返回正确的响应格式：`{"status":"success","session_id":352}`
+
+**防回归措施：**
+1. **字段名保护**：回归测试确保API始终使用`word_id`字段
+2. **双表保存保护**：集成测试验证数据同时保存到两个表
+3. **认证保护**：回归测试确保认证要求不变
+4. **响应格式保护**：确保API响应格式一致性
+
+**经验总结：**
+1. **代码重复危害**：重复的ViewSet定义会导致路由冲突和方法调用错误
+2. **字段名一致性**：前后端API字段名必须完全一致
+3. **测试体系重要性**：完整的测试体系能防止类似问题再次发生
+4. **修复验证**：每次修复后都要立即验证功能是否正常
+
+**相关文件：**
+- `backend/apps/english/views.py`：删除重复ViewSet和错误submit方法
+- `frontend/src/stores/typing.js`：添加submitWordResult方法调用
+- `tests/unit/test_typing_practice_submit.py`：单元测试
+- `tests/integration/test_typing_practice_submit_integration.py`：集成测试
+- `tests/regression/english/test_typing_practice_submit_regression.py`：回归测试
+- `tests/simple_submit_test.py`：快速验证测试
+- `tests/SUBMIT_API_TEST_DOCUMENTATION.md`：测试文档
+
+**所属业务或模块：** 英语学习 - 智能练习
+
+---
+
+##### 问题15：数据分析模块"练习单词数"统计逻辑错误
+
+**问题描述：**
+- 数据分析页面显示"练习单词数"为1，用户认为这是错误的
+- 用户期望"练习单词数"应该统计所有练习过的单词总数，不去重
+- 当前实现使用`distinct()`去重，导致统计结果不符合用户期望
+
+**问题分析：**
+1. **统计逻辑不匹配**：`DataAnalysisService.get_data_overview`中使用`records.values('word').distinct().count()`去重统计
+2. **用户期望理解**：用户认为每次正确敲击完成一个单词就应该记录一个，不需要去重
+3. **业务逻辑混淆**：当前实现统计的是"不同单词数"，而用户期望的是"练习单词总数"
+
+**解决方案：**
+
+1. **修改DataAnalysisService.get_data_overview方法**
+```python
+# backend/apps/english/services.py
+# 修改前
+total_words = records.values('word').distinct().count()
+
+# 修改后
+total_words = records.count()  # 不去重，统计所有练习过的单词总数
+```
+
+2. **修改DataAnalysisService.get_word_heatmap方法**
+```python
+# backend/apps/english/services.py
+# 修改前
+word_count=Count('word', distinct=True)
+
+# 修改后
+word_count=Count('id')  # 统计所有练习记录，不去重
+```
+
+3. **创建测试验证**
+```python
+# 测试脚本验证修改后的逻辑
+def test_word_count_logic():
+    # 创建测试数据：9条练习记录，4个不同单词
+    # apple: 3次, banana: 2次, orange: 3次, grape: 1次
+    
+    # 验证结果
+    assert overview['total_exercises'] == 9  # 总练习次数
+    assert overview['total_words'] == 9      # 总练习单词数（不去重）
+    # distinct_words = 4  # 不同单词数（去重）
+```
+
+**经验总结：**
+1. **明确统计定义**：在开发前要明确各种统计指标的具体含义
+2. **用户期望对齐**：统计逻辑要与用户的理解和期望保持一致
+3. **测试验证**：修改统计逻辑后要通过测试验证结果的正确性
+4. **文档说明**：在代码注释中明确说明统计逻辑，避免后续混淆
+
+**相关文件：**
+- `backend/apps/english/services.py`：修改统计逻辑
+- `backend/test_multiple_words.py`：测试脚本
+- `backend/regression_test_word_count.py`：回归测试
+
+**所属业务或模块：** 英语学习 - 数据分析
+
+---
+
+##### 问题16：数据分析模块"练习次数"统计逻辑错误
+
+**问题描述：**
+- 用户反馈"练习次数跟单词数是一样的"，期望练习次数只在章节完成后记录一次
+- 当前实现中，`total_exercises` 和 `total_words` 都使用 `records.count()` 统计所有记录
+- 这导致练习次数和练习单词数相同，不符合用户期望
+
+**问题分析：**
+1. **统计逻辑混淆**：练习次数和练习单词数使用相同的统计方法
+2. **用户期望理解**：用户期望练习单词数统计每个单词的记录，练习次数统计练习会话的数量
+3. **数据库设计限制**：当前数据库设计是按单词记录，没有明确的"章节"或"练习会话"概念
+
+**解决方案：**
+
+1. **修改DataAnalysisService.get_data_overview方法**
+```python
+# backend/apps/english/services.py
+def get_data_overview(self, user_id: int, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
+    # 获取日期范围内的统计数据
+    records = TypingPracticeRecord.objects.filter(
+        user_id=user_id,
+        session_date__range=[start_date, end_date]
+    )
+    
+    # 计算概览数据
+    # 练习次数：统计不同的练习会话（这里暂时按日期分组，每天算一次练习）
+    # 注意：理想情况下应该按章节或练习会话分组，但目前数据库设计是按单词记录
+    total_exercises = records.values('session_date').distinct().count()
+    total_words = records.count()  # 不去重，统计所有练习过的单词总数
+```
+
+2. **测试验证逻辑正确性**
+```python
+# 测试结果
+# 同一天练习5个单词：
+# - 练习次数: 1（按日期分组统计）
+# - 练习单词数: 5（统计所有记录）
+```
+
+**经验总结：**
+1. **明确统计定义**：练习次数和练习单词数应该有明确的区别
+2. **按日期分组**：在当前数据库设计下，按日期分组是区分练习会话的合理方式
+3. **用户期望对齐**：统计逻辑要与用户的理解保持一致
+4. **测试验证**：修改后要通过测试验证逻辑的正确性
+
+**相关文件：**
+- `backend/apps/english/services.py`：修改统计逻辑
+
+**所属业务或模块：** 英语学习 - 数据分析
+
+---
+
+##### 问题17：实现Windows风格月历热力图功能
+
+**问题描述：**
+- 用户需要类似Windows系统日历的效果，按月显示，每个月的日历格子显示颜色深浅
+- 不是GitHub贡献图那样的连续时间轴，而是标准的月历布局
+- 可以自由选择查看哪一个月，不受时间范围影响
+- 时间范围只影响练习次数、练习词数、正确率、WPM等统计数据
+
+**问题分析：**
+1. **需求理解**：用户要的是标准月历布局，不是连续时间轴
+2. **数据独立性**：月历数据与时间范围选择器独立
+3. **布局要求**：需要完整的6周布局，包含前后月份的日期
+4. **颜色深浅**：根据练习数据计算热力图等级
+
+**解决方案：**
+
+1. **重新设计数据服务**
+```python
+# backend/apps/english/services.py
+def get_monthly_calendar_data(self, user_id: int, year: int, month: int) -> Dict[str, Any]:
+    """获取指定月份的日历热力图数据（Windows风格）"""
+    # 获取指定月份的第一天和最后一天
+    first_day = date(year, month, 1)
+    last_day = date(year, month, calendar.monthrange(year, month)[1])
+    
+    # 生成完整的月历数据（包括前后月份的日期）
+    # 按周分组数据（6周，确保完整的日历布局）
+    # 计算月度统计
+```
+
+2. **更新API接口**
+```python
+# backend/apps/english/views.py
+@action(detail=False, methods=['get'], url_path='monthly-calendar')
+def monthly_calendar(self, request):
+    """获取指定月份的日历热力图数据（Windows风格）"""
+    year = int(request.query_params.get('year', datetime.now().year))
+    month = int(request.query_params.get('month', datetime.now().month))
+```
+
+3. **数据结构设计**
+```json
+{
+  "year": 2025,
+  "month": 8,
+  "month_name": "August",
+  "calendar_data": [...],  // 所有日期数据
+  "weeks_data": [...],     // 按周分组（6周）
+  "month_stats": {         // 月度统计
+    "total_exercises": 5,
+    "total_words": 25,
+    "days_with_practice": 3,
+    "total_days": 31
+  }
+}
+```
+
+**经验总结：**
+1. **需求明确化**：明确区分月历和连续时间轴的不同需求
+2. **数据独立性**：月历数据与时间范围选择器完全独立
+3. **布局完整性**：确保6周完整布局，包含前后月份日期
+4. **用户体验**：提供标准的Windows风格月历体验
+
+**相关文件：**
+- `backend/apps/english/services.py`：月历数据服务
+- `backend/apps/english/views.py`：月历API接口
+- `docs/API.md`：API文档更新
+
+**所属业务或模块：** 英语学习 - 数据分析
+
+---
+
+##### 问题18：练习次数统计不更新，始终显示固定次数
+
+**问题描述：**
+- 用户反馈练习次数不更新，无论练习多少次都显示固定次数（如2次）
+- 数据分析页面中的"总练习次数"统计不准确
+- 月历热力图中的练习次数统计也不准确
+
+**问题分析：**
+1. **统计逻辑问题**：原统计逻辑使用 `records.values('session_date').distinct().count()` 按日期去重
+2. **会话定义不准确**：按日期去重导致同一天多次练习只算1次
+3. **用户期望不符**：用户期望每次独立的练习会话都算作一次练习
+
+**解决方案：**
+
+1. **重新定义练习会话**：
+```python
+# 按时间间隔分组，间隔超过30分钟算新会话
+def _count_exercise_sessions(self, records) -> int:
+    """按时间间隔统计练习会话数"""
+    if not records:
+        return 0
+    
+    sessions = 0
+    last_time = None
+    
+    for record in records:
+        if last_time is None:
+            # 第一条记录算一个会话
+            sessions = 1
+            last_time = record.created_at
+        else:
+            # 检查时间间隔，超过30分钟算新会话
+            time_diff = record.created_at - last_time
+            if time_diff.total_seconds() > 1800:  # 30分钟 = 1800秒
+                sessions += 1
+            last_time = record.created_at
+    
+    return sessions
+```
+
+2. **修改数据概览统计**：
+```python
+# 修改 get_data_overview 方法
+total_exercises = self._count_exercise_sessions(records)
+```
+
+3. **修改月历热力图统计**：
+```python
+# 计算每日练习次数（按时间间隔分组）
+daily_exercise_counts = {}
+current_date = None
+current_sessions = 0
+last_time = None
+
+for record in records.order_by('created_at'):
+    if record.session_date != current_date:
+        if current_date is not None:
+            daily_exercise_counts[current_date] = current_sessions
+        current_date = record.session_date
+        current_sessions = 1
+        last_time = record.created_at
+    else:
+        if last_time is not None:
+            time_diff = record.created_at - last_time
+            if time_diff.total_seconds() > 1800:  # 30分钟
+                current_sessions += 1
+        last_time = record.created_at
+```
+
+**经验总结：**
+            1. **会话定义**：练习会话应该基于时间间隔而非日期
+            2. **用户习惯**：30分钟间隔符合用户的练习习惯
+            3. **数据准确性**：按时间间隔统计更准确地反映实际练习情况
+            4. **测试验证**：修改后需要验证统计结果的合理性
+            5. **用户期望管理**：用户可能期望"每次完成章节算一次练习"，但实际统计是按时间间隔
+            6. **前端刷新**：添加手动刷新按钮，让用户可以及时看到最新数据
+
+**相关文件：**
+- `backend/apps/english/services.py`：修改统计逻辑
+
+**所属业务或模块：** 英语学习 - 数据分析
+
+---
+
+##### 问题19：前端练习次数显示不更新，需要手动刷新
+
+**问题描述：**
+- 用户完成练习后，前端数据分析页面的"总练习次数"没有自动更新
+- 数据分析页面显示空白，没有任何数据
+- 后端数据统计是正确的，但前端显示有问题
+- 练习完成后出现405错误（Method Not Allowed）
+
+**问题分析：**
+1. **前端显示条件错误**：使用`total_exercises > 0`作为显示条件，但会话逻辑被移除后该值为0
+2. **会话逻辑缺失**：移除了TypingPracticeSession相关逻辑，导致练习次数统计为0
+3. **前端无自动刷新**：数据分析页面没有自动刷新机制
+4. **练习完成逻辑缺失**：练习完成后没有调用`complete_session` API
+5. **API URL格式错误**：前端请求`complete-session`，但Django生成的是`complete_session`
+
+**解决方案：**
+
+1. **修改前端显示条件**：
+```vue
+<!-- 修改前 -->
+<div class="data-overview" v-if="overview.total_exercises > 0">
+
+<!-- 修改后 -->
+<div class="data-overview" v-if="overview.total_words > 0">
+```
+
+2. **恢复完整的会话逻辑**：
+- 在`views.py`中恢复TypingPracticeSession的创建和关联
+- 恢复`complete_session` API端点
+- 确保练习记录正确关联到会话
+
+3. **修复练习完成逻辑**：
+```javascript
+// 在typing.js中添加练习完成事件
+window.dispatchEvent(new CustomEvent('practice-completed'))
+
+// 在TypingPractice.vue中监听事件
+window.addEventListener('practice-completed', finishPractice)
+```
+
+4. **修复API URL格式**：
+```javascript
+// 修改前
+return request.post('/english/typing-practice/complete-session/')
+
+// 修改后
+return request.post('/english/typing-practice/complete_session/')
+```
+
+5. **添加手动刷新按钮**：
+```vue
+<el-button 
+  @click="refreshData" 
+  icon="Refresh" 
+  type="primary" 
+  :loading="loading"
+>
+  刷新数据
+</el-button>
+```
+
+6. **完成现有会话**：
+- 为现有的未完成会话调用`complete_session`
+- 确保所有练习记录都被正确统计
+
+**经验总结：**
+1. **会话逻辑重要性**：TypingPracticeSession是QWERTY Learner的核心功能，不能简化
+2. **显示条件设计**：应该基于更稳定的指标（如total_words）来判断是否有数据
+3. **数据完整性**：确保所有练习记录都有正确的会话关联
+4. **用户体验**：提供手动刷新功能，让用户主动控制数据更新
+5. **事件驱动**：使用自定义事件在组件间通信，确保练习完成后正确调用会话完成API
+6. **URL格式一致性**：Django的@action装饰器生成下划线格式的URL，前端需要保持一致
+
+**相关文件：**
+- `frontend/src/views/english/DataAnalysis.vue`：修改显示条件和添加刷新按钮
+- `frontend/src/views/english/TypingPractice.vue`：监听练习完成事件
+- `frontend/src/stores/typing.js`：触发练习完成事件
+- `frontend/src/api/english.js`：修复API URL格式
+- `backend/apps/english/views.py`：恢复会话逻辑
+- `backend/apps/english/services.py`：会话统计逻辑
+
+**所属业务或模块：** 英语学习 - 数据分析

@@ -485,9 +485,58 @@ class TypingSession(models.Model):
         return f"{self.user.username} - {self.word.word} ({'正确' if self.is_correct else '错误'})"
 
 
+
+
+
+class TypingPracticeSession(models.Model):
+    """打字练习会话模型（参考QWERTY Learner设计）"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    dictionary = models.CharField(max_length=100, verbose_name="词库")
+    chapter = models.IntegerField(default=1, verbose_name="章节")
+    start_time = models.DateTimeField(auto_now_add=True, verbose_name="开始时间")
+    end_time = models.DateTimeField(null=True, blank=True, verbose_name="结束时间")
+    total_words = models.IntegerField(default=0, verbose_name="总单词数")
+    correct_words = models.IntegerField(default=0, verbose_name="正确单词数")
+    total_time = models.FloatField(default=0.0, verbose_name="总用时(秒)")
+    average_wpm = models.FloatField(default=0.0, verbose_name="平均WPM")
+    accuracy_rate = models.FloatField(default=0.0, verbose_name="正确率")
+    is_completed = models.BooleanField(default=False, verbose_name="是否完成")
+    session_date = models.DateField(auto_now_add=True, verbose_name="练习日期")
+
+    class Meta:
+        verbose_name = "打字练习会话"
+        verbose_name_plural = "打字练习会话"
+        db_table = 'english_typing_practice_sessions'
+        indexes = [
+            models.Index(fields=['user', 'session_date']),
+            models.Index(fields=['user', 'is_completed']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.dictionary} Ch{self.chapter} ({'完成' if self.is_completed else '进行中'})"
+
+    def complete_session(self, total_words, correct_words, total_time):
+        """完成会话并计算统计"""
+        from django.utils import timezone
+        self.total_words = total_words
+        self.correct_words = correct_words
+        self.total_time = total_time
+        self.end_time = timezone.now()
+        self.is_completed = True
+        
+        # 计算平均WPM和正确率
+        if total_time > 0:
+            self.average_wpm = round((total_words * 5) / (total_time / 60), 2)  # 5个字符算一个单词
+        if total_words > 0:
+            self.accuracy_rate = round((correct_words / total_words) * 100, 2)
+        
+        self.save()
+
+
 class TypingPracticeRecord(models.Model):
     """打字练习详细记录"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    session = models.ForeignKey(TypingPracticeSession, on_delete=models.CASCADE, null=True, blank=True, verbose_name="练习会话")
     word = models.CharField(max_length=100, verbose_name="单词")
     is_correct = models.BooleanField(verbose_name="是否正确")
     typing_speed = models.FloatField(verbose_name="打字速度(WPM)")
@@ -506,6 +555,7 @@ class TypingPracticeRecord(models.Model):
         indexes = [
             models.Index(fields=['user', 'session_date']),
             models.Index(fields=['user', 'created_at']),
+            models.Index(fields=['session']),
         ]
 
     def __str__(self):
@@ -584,74 +634,3 @@ class UserTypingStats(models.Model):
         return round((self.total_correct_words / self.total_words_practiced) * 100, 2)
 
 
-
-class DailyPracticeStats(models.Model):
-    """每日练习统计"""
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
-    date = models.DateField(verbose_name="统计日期")
-    exercise_count = models.IntegerField(default=0, verbose_name="练习次数")
-    word_count = models.IntegerField(default=0, verbose_name="练习单词数")
-    total_time = models.FloatField(default=0, verbose_name="总用时(毫秒)")
-    wrong_count = models.IntegerField(default=0, verbose_name="总错误次数")
-    wrong_keys = models.JSONField(default=list, verbose_name="错误按键列表")
-    avg_wpm = models.FloatField(default=0, verbose_name="平均WPM")
-    accuracy_rate = models.FloatField(default=0, verbose_name="正确率")
-
-    class Meta:
-        verbose_name = "每日练习统计"
-        verbose_name_plural = "每日练习统计"
-        db_table = 'english_daily_practice_stats'
-        unique_together = [('user', 'date')]
-        indexes = [
-            models.Index(fields=['user', 'date']),
-        ]
-
-    def __str__(self):
-        return f"{self.user.username} - {self.date}"
-
-
-class KeyErrorStats(models.Model):
-    """按键错误统计"""
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
-    key = models.CharField(max_length=10, verbose_name="按键")
-    error_count = models.IntegerField(default=0, verbose_name="错误次数")
-    last_error_date = models.DateField(auto_now=True, verbose_name="最后错误日期")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
-
-    class Meta:
-        verbose_name = "按键错误统计"
-        verbose_name_plural = "按键错误统计"
-        db_table = 'english_key_error_stats'
-        unique_together = [('user', 'key')]
-        indexes = [
-            models.Index(fields=['user', 'error_count']),
-        ]
-
-    def __str__(self):
-        return f"{self.user.username} - {self.key} ({self.error_count}次)"
-
-
-class UserTypingStats(models.Model):
-    """用户打字统计"""
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
-    total_words_practiced = models.IntegerField(default=0, verbose_name="总练习单词数")
-    total_correct_words = models.IntegerField(default=0, verbose_name="总正确单词数")
-    average_wpm = models.FloatField(default=0.0, verbose_name="平均WPM")
-    total_practice_time = models.IntegerField(default=0, verbose_name="总练习时长(分钟)")
-    last_practice_date = models.DateField(null=True, blank=True, verbose_name="最后练习日期")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
-
-    class Meta:
-        verbose_name = "用户打字统计"
-        verbose_name_plural = "用户打字统计"
-        db_table = 'english_user_typing_stats'
-
-    def __str__(self):
-        return f"{self.user.username} - 统计"
-
-    @property
-    def accuracy(self):
-        """计算准确率"""
-        if self.total_words_practiced == 0:
-            return 0.0
-        return round((self.total_correct_words / self.total_words_practiced) * 100, 2)

@@ -4,19 +4,30 @@
     <div class="page-header">
       <el-button @click="goBack" icon="ArrowLeft" type="primary">返回</el-button>
       <h1>数据分析</h1>
-      <el-date-picker
-        v-model="dateRange"
-        type="daterange"
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        @change="handleDateChange"
-        :shortcuts="dateShortcuts"
-      />
+      <div class="header-controls">
+        <el-button 
+          @click="refreshData" 
+          icon="Refresh" 
+          type="primary" 
+          :loading="loading"
+        >
+          刷新数据
+        </el-button>
+        <el-date-picker
+          v-model="dateRange"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          @change="handleDateChange"
+          :shortcuts="dateShortcuts"
+          style="width: 280px;"
+        />
+      </div>
     </div>
     
     <!-- 数据概览 -->
-    <div class="data-overview" v-if="overview.total_exercises > 0">
+    <div class="data-overview" v-if="overview.total_words > 0">
       <el-row :gutter="20">
         <el-col :span="6">
           <el-card>
@@ -54,28 +65,27 @@
     </div>
     
     <!-- 无数据提示 -->
-    <div v-if="overview.total_exercises === 0" class="no-data">
+    <div v-if="overview.total_words === 0" class="no-data">
       <el-empty description="暂无练习数据" />
     </div>
     
     <!-- 图表区域 -->
     <div class="charts-container" v-else>
-      <!-- 练习次数热力图 -->
+      <!-- Windows风格月历热力图 -->
       <el-card class="chart-card">
         <template #header>
-          <span>过去一年练习次数热力图</span>
+          <span>月历练习热力图</span>
         </template>
-        <HeatmapChart :data="exerciseHeatmap" />
+        <MonthlyCalendarHeatmap 
+          :data="monthlyCalendarData" 
+          :initial-year="currentYear"
+          :initial-month="currentMonth"
+          @month-change="handleMonthChange"
+          @day-click="handleDayClick"
+        />
       </el-card>
       
-      <!-- 练习单词数热力图 -->
-      <el-card class="chart-card">
-        <template #header>
-          <span>过去一年练习单词数热力图</span>
-        </template>
-        <HeatmapChart :data="wordHeatmap" />
-      </el-card>
-      
+
       <!-- WPM趋势图 -->
       <el-card class="chart-card">
         <template #header>
@@ -95,9 +105,9 @@
       <!-- 按键错误分析 -->
       <el-card class="chart-card">
         <template #header>
-          <span>按键错误次数排行</span>
+          <span>按键错误热力图</span>
         </template>
-        <KeyboardErrorChart :data="keyErrorStats" />
+        <KeyboardLayoutChart :data="keyErrorStats" />
       </el-card>
     </div>
   </div>
@@ -107,17 +117,17 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import HeatmapChart from '@/components/charts/HeatmapChart.vue'
 import LineChart from '@/components/charts/LineChart.vue'
-import KeyboardErrorChart from '@/components/charts/KeyboardErrorChart.vue'
+import KeyboardLayoutChart from '@/components/charts/KeyboardLayoutChart.vue'
+import MonthlyCalendarHeatmap from '@/components/charts/MonthlyCalendarHeatmap.vue'
 import { dataAnalysisAPI } from '@/api/english'
 
 export default {
   name: 'DataAnalysis',
   components: {
-    HeatmapChart,
     LineChart,
-    KeyboardErrorChart
+    KeyboardLayoutChart,
+    MonthlyCalendarHeatmap
   },
   setup() {
     const router = useRouter()
@@ -130,11 +140,14 @@ export default {
       avg_accuracy: 0
     })
     
-    const exerciseHeatmap = ref([])
-    const wordHeatmap = ref([])
     const wpmTrend = ref([])
     const accuracyTrend = ref([])
     const keyErrorStats = ref([])
+    
+    // 月历热力图相关数据
+    const monthlyCalendarData = ref({})
+    const currentYear = ref(new Date().getFullYear())
+    const currentMonth = ref(new Date().getMonth() + 1)
     
     const dateRange = ref([])
     const loading = ref(false)
@@ -198,7 +211,7 @@ export default {
           end_date: endDate
         })
         
-        if (response.data) {
+        if (response.success && response.data) {
           overview.value = response.data
         }
       } catch (error) {
@@ -207,45 +220,7 @@ export default {
       }
     }
     
-    // 获取练习次数热力图数据
-    const fetchExerciseHeatmap = async () => {
-      try {
-        const startDate = dateRange.value[0]?.toISOString().split('T')[0]
-        const endDate = dateRange.value[1]?.toISOString().split('T')[0]
-        
-        const response = await dataAnalysisAPI.getExerciseHeatmap({
-          start_date: startDate,
-          end_date: endDate
-        })
-        
-        if (response.data) {
-          exerciseHeatmap.value = response.data
-        }
-      } catch (error) {
-        console.error('获取练习次数热力图失败:', error)
-        ElMessage.error('获取练习次数热力图失败')
-      }
-    }
-    
-    // 获取练习单词数热力图数据
-    const fetchWordHeatmap = async () => {
-      try {
-        const startDate = dateRange.value[0]?.toISOString().split('T')[0]
-        const endDate = dateRange.value[1]?.toISOString().split('T')[0]
-        
-        const response = await dataAnalysisAPI.getWordHeatmap({
-          start_date: startDate,
-          end_date: endDate
-        })
-        
-        if (response.data) {
-          wordHeatmap.value = response.data
-        }
-      } catch (error) {
-        console.error('获取练习单词数热力图失败:', error)
-        ElMessage.error('获取练习单词数热力图失败')
-      }
-    }
+
     
     // 获取WPM趋势数据
     const fetchWpmTrend = async () => {
@@ -258,7 +233,7 @@ export default {
           end_date: endDate
         })
         
-        if (response.data) {
+        if (response.success && response.data) {
           wpmTrend.value = response.data
         }
       } catch (error) {
@@ -278,7 +253,7 @@ export default {
           end_date: endDate
         })
         
-        if (response.data) {
+        if (response.success && response.data) {
           accuracyTrend.value = response.data
         }
       } catch (error) {
@@ -292,12 +267,29 @@ export default {
       try {
         const response = await dataAnalysisAPI.getKeyErrorStats()
         
-        if (response.data) {
+        if (response.success && response.data) {
           keyErrorStats.value = response.data
         }
       } catch (error) {
         console.error('获取按键错误统计失败:', error)
         ElMessage.error('获取按键错误统计失败')
+      }
+    }
+    
+    // 获取月历热力图数据
+    const fetchMonthlyCalendar = async () => {
+      try {
+        const response = await dataAnalysisAPI.getMonthlyCalendar({
+          year: currentYear.value,
+          month: currentMonth.value
+        })
+        
+        if (response.success && response.data) {
+          monthlyCalendarData.value = response.data
+        }
+      } catch (error) {
+        console.error('获取月历热力图数据失败:', error)
+        ElMessage.error('获取月历热力图数据失败')
       }
     }
     
@@ -307,11 +299,10 @@ export default {
       try {
         await Promise.all([
           fetchOverview(),
-          fetchExerciseHeatmap(),
-          fetchWordHeatmap(),
           fetchWpmTrend(),
           fetchAccuracyTrend(),
-          fetchKeyErrorStats()
+          fetchKeyErrorStats(),
+          fetchMonthlyCalendar()
         ])
       } catch (error) {
         console.error('加载数据失败:', error)
@@ -324,6 +315,24 @@ export default {
     // 处理日期变化
     const handleDateChange = () => {
       loadData()
+    }
+    
+    // 刷新数据
+    const refreshData = () => {
+      loadData()
+    }
+    
+    // 处理月份变化
+    const handleMonthChange = (params) => {
+      currentYear.value = params.year
+      currentMonth.value = params.month
+      fetchMonthlyCalendar()
+    }
+    
+    // 处理日期点击
+    const handleDayClick = (day) => {
+      console.log('点击日期:', day)
+      // 可以在这里添加日期点击的处理逻辑
     }
     
     // 返回上一页
@@ -339,15 +348,19 @@ export default {
     
     return {
       overview,
-      exerciseHeatmap,
-      wordHeatmap,
       wpmTrend,
       accuracyTrend,
       keyErrorStats,
+      monthlyCalendarData,
+      currentYear,
+      currentMonth,
       dateRange,
       loading,
       dateShortcuts,
       handleDateChange,
+      refreshData,
+      handleMonthChange,
+      handleDayClick,
       goBack
     }
   }
@@ -370,6 +383,12 @@ export default {
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .page-header h1 {

@@ -49,7 +49,7 @@ except Exception:
     crawl_english_news = _DummyTask()
 
 from django.core.cache import cache
-from django.db.models import Prefetch, Count, Avg
+from django.db.models import Prefetch, Count, Avg, Sum
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
@@ -1112,7 +1112,21 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
         
-        # 创建练习记录
+        # 获取或创建当前练习会话
+        from .models import TypingPracticeSession
+        
+        # 获取当前用户的未完成会话，或者创建新会话
+        current_session, created = TypingPracticeSession.objects.get_or_create(
+            user=request.user,
+            is_completed=False,
+            defaults={
+                'dictionary': word.dictionary.category,
+                'chapter': 1,  # 默认章节，后续可以从请求中获取
+                'start_time': timezone.now()
+            }
+        )
+        
+        # 创建练习记录 - 同时保存到两个表
         session = TypingSession.objects.create(
             user=request.user,
             word=word,
@@ -1121,13 +1135,76 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
             response_time=response_time
         )
         
+        # 同时保存到TypingPracticeRecord表（用于数据分析）
+        TypingPracticeRecord.objects.create(
+            user=request.user,
+            session=current_session,  # 关联到当前会话
+            word=word.word,  # 保存单词字符串
+            is_correct=is_correct,
+            typing_speed=typing_speed,
+            response_time=response_time,
+            total_time=response_time * 1000,  # 转换为毫秒
+            wrong_count=0,  # 默认值，后续可以扩展
+            mistakes={},  # 默认值，后续可以扩展
+            timing=[]  # 默认值，后续可以扩展
+        )
+        
         # 更新用户统计（异步处理）
         self._update_user_stats_async(request.user)
         
         return Response({
             'status': 'success',
-            'session_id': session.id
+            'session_id': session.id,
+            'practice_session_id': current_session.id
         })
+    
+    @action(detail=False, methods=['post'])
+    def complete_session(self, request):
+        """完成当前练习会话"""
+        from .models import TypingPracticeSession
+        from django.utils import timezone
+        
+        try:
+            # 获取当前用户的未完成会话
+            current_session = TypingPracticeSession.objects.filter(
+                user=request.user,
+                is_completed=False
+            ).first()
+            
+            if not current_session:
+                return Response({
+                    'error': '没有进行中的练习会话'
+                }, status=status.HTTP_404_NOT_FOUND)
+            
+            # 获取会话中的所有练习记录
+            practice_records = TypingPracticeRecord.objects.filter(
+                session=current_session
+            )
+            
+            # 计算会话统计
+            total_words = practice_records.count()
+            correct_words = practice_records.filter(is_correct=True).count()
+            total_time = practice_records.aggregate(
+                total_time=Sum('response_time')
+            )['total_time'] or 0.0
+            
+            # 完成会话
+            current_session.complete_session(total_words, correct_words, total_time)
+            
+            return Response({
+                'status': 'success',
+                'session_id': current_session.id,
+                'total_words': total_words,
+                'correct_words': correct_words,
+                'total_time': total_time,
+                'accuracy_rate': current_session.accuracy_rate,
+                'average_wpm': current_session.average_wpm
+            })
+            
+        except Exception as e:
+            return Response({
+                'error': f'完成会话失败: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     def _update_user_stats_async(self, user):
         """异步更新用户统计"""
@@ -1388,50 +1465,6 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-    @action(detail=False, methods=['post'])
-    def submit(self, request):
-        """提交练习数据"""
-        try:
-            # 检查用户是否已认证
-            if not request.user.is_authenticated:
-                return Response({
-                    'success': False,
-                    'error': '用户未认证'
-                }, status=status.HTTP_401_UNAUTHORIZED)
-            
-            # 获取练习数据
-            practice_data = request.data
-            if not practice_data:
-                return Response({
-                    'success': False,
-                    'error': '缺少练习数据'
-                }, status=status.HTTP_400_BAD_REQUEST)
-            
-            # 验证必要字段
-            required_fields = ['word', 'is_correct', 'typing_speed']
-            for field in required_fields:
-                if field not in practice_data:
-                    return Response({
-                        'success': False,
-                        'error': f'缺少必要字段: {field}'
-                    }, status=status.HTTP_400_BAD_REQUEST)
-            
-            # 这里可以实现练习数据保存逻辑
-            return Response({
-                'success': True,
-                'data': {
-                    'word': practice_data['word'],
-                    'is_correct': practice_data['is_correct'],
-                    'typing_speed': practice_data['typing_speed'],
-                    'submitted_at': timezone.now().isoformat()
-                }
-            })
-        except Exception as e:
-            return Response({
-                'success': False,
-                'error': str(e)
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
     
 
 class DictionaryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -1668,6 +1701,46 @@ class DataAnalysisViewSet(viewsets.ModelViewSet):
                 "data": []
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+    @action(detail=False, methods=['get'], url_path='monthly-calendar')
+    def monthly_calendar(self, request):
+        """获取指定月份的日历热力图数据（Windows风格）"""
+        try:
+            # 获取查询参数
+            from datetime import datetime
+            year = int(request.query_params.get('year', datetime.now().year))
+            month = int(request.query_params.get('month', datetime.now().month))
+            
+            # 验证参数
+            if year < 1900 or year > 2100:
+                return Response({
+                    "success": False,
+                    "message": "年份参数无效",
+                    "data": {}
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            if month < 1 or month > 12:
+                return Response({
+                    "success": False,
+                    "message": "月份参数无效",
+                    "data": {}
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 获取数据
+            service = DataAnalysisService()
+            data = service.get_monthly_calendar_data(request.user.id, year, month)
+            
+            return Response({
+                "success": True,
+                "message": f"获取{year}年{month}月日历数据成功",
+                "data": data
+            })
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"获取月历数据失败: {str(e)}",
+                "data": {}
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
     @action(detail=False, methods=['get'])
     def accuracy_trend(self, request):
         """获取正确率趋势数据"""
@@ -1788,320 +1861,6 @@ class DataAnalysisViewSet(viewsets.ModelViewSet):
             return Response({
                 'success': False,
                 'error': str(e)
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    
-
-class DictionaryViewSet(viewsets.ReadOnlyModelViewSet):
-    """词库视图集"""
-    queryset = Dictionary.objects.filter(is_active=True).order_by('category', 'name')
-    serializer_class = None  # 直接返回数据
-    permission_classes = [AllowAny]  # 允许匿名访问
-    
-    def list(self, request, *args, **kwargs):
-        """获取所有词库列表"""
-        dictionaries = self.get_queryset()
-        data = []
-        
-        for dict_obj in dictionaries:
-            data.append({
-                'id': dict_obj.id,
-                'name': dict_obj.name,
-                'description': dict_obj.description,
-                'category': dict_obj.category,
-                'language': dict_obj.language,
-                'total_words': dict_obj.total_words,
-                'chapter_count': dict_obj.chapter_count,
-                'is_active': dict_obj.is_active,
-                'source_file': dict_obj.source_file
-            })
-        
-        return Response(data)
-    
-    @action(detail=False, methods=['get'])
-    def by_category(self, request):
-        """按分类获取词库"""
-        category = request.query_params.get('category')
-        if category:
-            dictionaries = self.get_queryset().filter(category=category)
-        else:
-            dictionaries = self.get_queryset()
-        
-        data = []
-        for dict_obj in dictionaries:
-            data.append({
-                'id': dict_obj.id,
-                'name': dict_obj.name,
-                'description': dict_obj.description,
-                'category': dict_obj.category,
-                'language': dict_obj.language,
-                'total_words': dict_obj.total_words,
-                'chapter_count': dict_obj.chapter_count,
-                'is_active': dict_obj.is_active,
-                'source_file': dict_obj.source_file
-            })
-        
-        return Response(data)
-
-
-class TypingWordViewSet(viewsets.ReadOnlyModelViewSet):
-    """打字练习单词视图集"""
-    queryset = TypingWord.objects.all()
-    serializer_class = TypingWordSerializer
-    permission_classes = [AllowAny]
-    
-    @action(detail=False, methods=['get'])
-    def test(self, request):
-        """测试action是否工作"""
-        return Response({'message': 'TypingWordViewSet test action works!'})
-    
-    @action(detail=True, methods=['get'])
-    def pronunciation(self, request, pk=None):
-        """获取单词发音"""
-        try:
-            word = self.get_object()
-            # 构建有道词典发音URL
-            audio_url = f"https://dict.youdao.com/dictvoice?audio={word.word}&type=2"
-            
-            return Response({
-                'success': True,
-                'data': {
-                    'word': word.word,
-                    'audio_url': audio_url,
-                    'phonetic': word.phonetic
-                }
-            })
-        except (TypingWord.DoesNotExist, ValueError, Exception):
-            return Response({
-                'success': False,
-                'error': '单词不存在'
-            }, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({
-                'success': False,
-                'error': str(e)
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-    @action(detail=False, methods=['get'])
-    def by_dictionary(self, request):
-        """根据词库和章节获取单词"""
-        dictionary_id = request.query_params.get('dictionary_id')
-        chapter = request.query_params.get('chapter', 1)
-        
-        print(f"DEBUG: 请求参数 - dictionary_id: {dictionary_id}, chapter: {chapter}")
-        
-        if not dictionary_id:
-            return Response(
-                {'error': '缺少dictionary_id参数'}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        try:
-            # 获取指定词库和章节的单词，不限制difficulty
-            words = TypingWord.objects.filter(
-                dictionary_id=dictionary_id,
-                chapter=chapter
-            ).values('id', 'word', 'translation', 'phonetic', 'difficulty', 'frequency')
-            
-            print(f"DEBUG: 查询条件 - dictionary_id: {dictionary_id}, chapter: {chapter}")
-            print(f"DEBUG: 找到的单词数量: {words.count()}")
-            
-            # 如果单词太少，尝试不限制chapter，但限制总数
-            if words.count() < 10:
-                print(f"DEBUG: 单词数量太少，尝试不限制chapter")
-                words = TypingWord.objects.filter(
-                    dictionary_id=dictionary_id
-                ).values('id', 'word', 'translation', 'phonetic', 'difficulty', 'frequency')
-                print(f"DEBUG: 不限制chapter后找到的单词数量: {words.count()}")
-            
-            # 限制每个章节最多25个单词
-            word_list = list(words[:25])
-            print(f"DEBUG: 最终返回的单词数量: {len(word_list)}")
-            if word_list:
-                print(f"DEBUG: 第一个单词: {word_list[0]}")
-            
-            return Response(word_list)
-        except Exception as e:
-            print(f"DEBUG: 异常: {str(e)}")
-            return Response(
-                {'error': '获取单词失败', 'message': str(e)}, 
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-    
-
-class DataAnalysisViewSet(viewsets.ModelViewSet):
-    """数据分析API视图集"""
-    permission_classes = [IsAuthenticated]
-    serializer_class = DataAnalysisOverviewSerializer
-    
-    def get_queryset(self):
-        # 这个视图集主要用于数据分析，不需要queryset
-        return TypingPracticeRecord.objects.none()
-    
-    @action(detail=False, methods=['get'])
-    def exercise_heatmap(self, request):
-        """获取练习次数热力图数据"""
-        try:
-            # 获取查询参数
-            start_date_str = request.query_params.get('start_date')
-            end_date_str = request.query_params.get('end_date')
-            
-            # 解析日期
-            from datetime import datetime, timedelta
-            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
-            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
-            
-            # 获取数据
-            service = DataAnalysisService()
-            data = service.get_exercise_heatmap(request.user.id, start_date, end_date)
-            
-            return Response({
-                "success": True,
-                "message": "获取练习次数热力图数据成功",
-                "data": data
-            })
-        except Exception as e:
-            return Response({
-                "success": False,
-                "message": f"获取练习次数热力图数据失败: {str(e)}",
-                "data": []
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-    @action(detail=False, methods=['get'])
-    def word_heatmap(self, request):
-        """获取练习单词数热力图数据"""
-        try:
-            # 获取查询参数
-            start_date_str = request.query_params.get('start_date')
-            end_date_str = request.query_params.get('end_date')
-            
-            # 解析日期
-            from datetime import datetime, timedelta
-            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
-            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
-            
-            # 获取数据
-            service = DataAnalysisService()
-            data = service.get_word_heatmap(request.user.id, start_date, end_date)
-            
-            return Response({
-                "success": True,
-                "message": "获取练习单词数热力图数据成功",
-                "data": data
-            })
-        except Exception as e:
-            return Response({
-                "success": False,
-                "message": f"获取练习单词数热力图数据失败: {str(e)}",
-                "data": []
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-    @action(detail=False, methods=['get'])
-    def wpm_trend(self, request):
-        """获取WPM趋势数据"""
-        try:
-            # 获取查询参数
-            start_date_str = request.query_params.get('start_date')
-            end_date_str = request.query_params.get('end_date')
-            
-            # 解析日期
-            from datetime import datetime, timedelta
-            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
-            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
-            
-            # 获取数据
-            service = DataAnalysisService()
-            data = service.get_wpm_trend(request.user.id, start_date, end_date)
-            
-            return Response({
-                "success": True,
-                "message": "获取WPM趋势数据成功",
-                "data": data
-            })
-        except Exception as e:
-            return Response({
-                "success": False,
-                "message": f"获取WPM趋势数据失败: {str(e)}",
-                "data": []
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-    @action(detail=False, methods=['get'])
-    def accuracy_trend(self, request):
-        """获取正确率趋势数据"""
-        try:
-            # 获取查询参数
-            start_date_str = request.query_params.get('start_date')
-            end_date_str = request.query_params.get('end_date')
-            
-            # 解析日期
-            from datetime import datetime, timedelta
-            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
-            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
-            
-            # 获取数据
-            service = DataAnalysisService()
-            data = service.get_accuracy_trend(request.user.id, start_date, end_date)
-            
-            return Response({
-                "success": True,
-                "message": "获取正确率趋势数据成功",
-                "data": data
-            })
-        except Exception as e:
-            return Response({
-                "success": False,
-                "message": f"获取正确率趋势数据失败: {str(e)}",
-                "data": []
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-    @action(detail=False, methods=['get'])
-    def key_error_stats(self, request):
-        """获取按键错误统计"""
-        try:
-            # 获取数据
-            service = DataAnalysisService()
-            data = service.get_key_error_stats(request.user.id)
-            
-            return Response({
-                "success": True,
-                "message": "获取按键错误统计成功",
-                "data": data
-            })
-        except Exception as e:
-            return Response({
-                "success": False,
-                "message": f"获取按键错误统计失败: {str(e)}",
-                "data": []
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-    @action(detail=False, methods=['get'])
-    def overview(self, request):
-        """获取数据概览"""
-        try:
-            # 获取查询参数
-            start_date_str = request.query_params.get('start_date')
-            end_date_str = request.query_params.get('end_date')
-            
-            # 解析日期
-            from datetime import datetime, timedelta
-            start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=365)
-            end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
-            
-            # 获取数据
-            service = DataAnalysisService()
-            data = service.get_data_overview(request.user.id, start_date, end_date)
-            
-            return Response({
-                "success": True,
-                "message": "获取数据概览成功",
-                "data": data
-            })
-        except Exception as e:
-            return Response({
-                "success": False,
-                "message": f"获取数据概览失败: {str(e)}",
-                "data": {}
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     

@@ -542,9 +542,26 @@ export default {
       startPracticeWithSelection()
     }
 
-    const finishPractice = () => {
-      typingStore.resetPractice()
-      ElMessage.success('练习完成！')
+    const finishPractice = async () => {
+      try {
+        // 完成练习会话
+        await englishAPI.completeTypingSession()
+        
+        // 重置练习状态
+        typingStore.resetPractice()
+        
+        ElMessage.success('练习完成！')
+        
+        // 可以在这里添加跳转到数据分析页面的逻辑
+        // router.push('/english/data-analysis')
+        
+      } catch (error) {
+        console.error('完成练习会话失败:', error)
+        ElMessage.error('完成练习失败，但数据已保存')
+        
+        // 即使API失败，也要重置练习状态
+        typingStore.resetPractice()
+      }
     }
 
     const onDictChange = () => {
@@ -690,6 +707,9 @@ export default {
       
       // 添加点击外部关闭下拉菜单的事件监听
       document.addEventListener('click', handleClickOutside)
+      
+      // 监听练习完成事件
+      window.addEventListener('practice-completed', finishPractice)
       
       // 预加载键盘音效
       try {
