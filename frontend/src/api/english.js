@@ -125,9 +125,12 @@ export const englishAPI = {
   getTypingDailyProgress(params = {}) {
     return request.get('/english/typing-practice/daily-progress/', { params })
   },
-  submitTypingPractice(data) {
-    return request.post('/english/typing-practice/submit/', data)
-  },
+      submitTypingPractice(data) {
+      return request.post('/english/typing-practice/submit/', data)
+    },
+    completeTypingSession() {
+      return request.post('/english/typing-practice/complete_session/')
+    },
   submitTypingResult(data) {
     return request.post('/english/typing-practice/submit/', data)
   },
@@ -178,6 +181,10 @@ export const dataAnalysisAPI = {
   },
   getKeyErrorStats() {
     return request.get('/english/data-analysis/key_error_stats/')
+  },
+  // 新增：获取月历热力图数据
+  getMonthlyCalendar(params = {}) {
+    return request.get('/english/data-analysis/monthly-calendar/', { params })
   }
 }
 

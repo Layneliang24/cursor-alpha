@@ -434,6 +434,9 @@ export const useTypingStore = defineStore('typing', () => {
           window.playCorrectSound()
         }
         
+        // 提交练习数据
+        submitWordResult()
+        
         // 延迟后进入下一题，给用户时间看到完成状态
         setTimeout(() => {
           nextWord()
@@ -481,6 +484,46 @@ export const useTypingStore = defineStore('typing', () => {
     }
   }
   
+  // 提交单词练习结果
+  const submitWordResult = async () => {
+    if (!currentWord.value || submitting.value) return
+    
+    submitting.value = true
+    
+    try {
+      // 计算WPM
+      let wpm = 0
+      if (wordStartTime.value) {
+        const timeElapsed = (Date.now() - wordStartTime.value) / 1000 / 60 // 分钟
+        const wordLength = currentWord.value.word.length / 5 // 标准单词长度
+        wpm = Math.round(wordLength / timeElapsed)
+      }
+      
+      console.log('提交练习数据:', {
+        word_id: currentWord.value.id,
+        is_correct: true, // 因为只有输入正确才会调用这个方法
+        typing_speed: wpm,
+        response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0
+      })
+      
+      const response = await englishAPI.submitTypingPractice({
+        word_id: currentWord.value.id,
+        is_correct: true,
+        typing_speed: wpm,
+        response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0
+      })
+      
+      console.log('提交成功:', response)
+    } catch (err) {
+      console.error('提交练习结果失败:', err)
+      console.error('错误详情:', err.response?.data)
+      handleError(err, '提交练习结果')
+      // 提交失败不影响用户体验，继续下一题
+    } finally {
+      submitting.value = false
+    }
+  }
+
   const submitWord = async () => {
     if (!userInput.value.trim() || submitting.value) return
     
@@ -512,13 +555,24 @@ export const useTypingStore = defineStore('typing', () => {
     
     // 提交到后端（带重试机制）
     try {
-      await englishAPI.submitTypingPractice({
+      console.log('提交练习数据:', {
         word_id: currentWord.value.id,
         is_correct: isWordCorrect,
         typing_speed: currentWPM.value,
         response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0
       })
+      
+      const response = await englishAPI.submitTypingPractice({
+        word_id: currentWord.value.id,
+        is_correct: isWordCorrect,
+        typing_speed: currentWPM.value,
+        response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0
+      })
+      
+      console.log('提交成功:', response)
     } catch (err) {
+      console.error('提交练习结果失败:', err)
+      console.error('错误详情:', err.response?.data)
       handleError(err, '提交练习结果')
       // 提交失败不影响用户体验，继续下一题
     }
@@ -565,6 +619,9 @@ export const useTypingStore = defineStore('typing', () => {
       
       // 显示完成消息
       ElMessage.success(`练习完成！正确率: ${correctRate.value}%`)
+      
+      // 触发练习完成事件，让父组件处理会话完成
+      window.dispatchEvent(new CustomEvent('practice-completed'))
     } else {
       // 初始化下一个单词状态
       console.log('Initializing next word:', words.value[currentWordIndex.value])
@@ -731,6 +788,7 @@ export const useTypingStore = defineStore('typing', () => {
     stopSessionTimer,
     onInput,
     submitWord,
+    submitWordResult,
     skipWord,
     nextWord,
     resetPractice,
