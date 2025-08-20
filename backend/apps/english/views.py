@@ -1050,16 +1050,21 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
         if cached_words is None:
             # 优化查询：只选择需要的字段
             try:
-                # 使用filter而不是get，因为可能有多个词库使用相同的category
-                dictionaries = Dictionary.objects.filter(category=category)
-                if not dictionaries.exists():
+                # 兼容前端传入的 category 参数既可能是词库名称(name)，也可能是分类(category)
+                dictionary = None
+                dict_by_name = Dictionary.objects.filter(name=category)
+                if dict_by_name.exists():
+                    dictionary = dict_by_name.first()
+                else:
+                    dict_by_category = Dictionary.objects.filter(category=category)
+                    if dict_by_category.exists():
+                        dictionary = dict_by_category.first()
+
+                if not dictionary:
                     return Response(
-                        {'error': f'词库不存在: {category}'}, 
+                        {'error': f'词库不存在: {category}'},
                         status=status.HTTP_404_NOT_FOUND
                     )
-                
-                # 如果有多个词库使用相同的category，选择第一个
-                dictionary = dictionaries.first()
                 words_query = TypingWord.objects.filter(dictionary=dictionary)
                 
                 # 如果指定了章节，按章节过滤
