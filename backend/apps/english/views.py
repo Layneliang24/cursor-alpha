@@ -1196,7 +1196,7 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
         return Response(cached_stats)
     
     @method_decorator(cache_page(60 * 10))  # 缓存10分钟
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='daily-progress')
     def daily_progress(self, request):
         """获取每日学习进度 - 优化版本"""
         try:
