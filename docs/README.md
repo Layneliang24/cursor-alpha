@@ -32,6 +32,7 @@
 ### 📋 项目管理
 - **[待办事项](TODO.md)** - 开发计划和任务跟踪
 - **[文档规范](DOCUMENTATION_STANDARDS.md)** - 文档编写规范
+- **[自我检讨](self-examination.md)** - 开发效率分析与改进方案
 
 ---
 
