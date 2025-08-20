@@ -1002,3 +1002,51 @@ dictionary = Dictionary.objects.get(category=category)
 4. **测试验证**：每次修复后都要验证API功能
 
 **所属业务或模块：** API接口
+
+## 问题13：练习完成后出现404错误
+
+**问题描述：**
+- 练习完成后浏览器控制台出现两个404错误：
+  - `favicon.ico:1 Failed to load resource: the server responded with a status of 404 (Not Found)`
+  - `/api/v1/english/typing-practice/daily-progress/?days=7:1 Failed to load resource: the server responded with a status of 404 (Not Found)`
+- 前端显示"获取每日进度失败"的错误信息
+
+**问题分析：**
+1. **favicon.ico 404错误**：前端项目缺少favicon.ico文件，浏览器自动请求但找不到文件
+2. **daily-progress API 404错误**：前端调用`/daily-progress/`路径，但后端方法名为`daily_progress`，生成的路由是`/daily_progress/`
+3. **URL路径不匹配**：前端使用连字符，后端生成下划线路径
+
+**解决方案：**
+
+1. **修复API路由问题**
+```python
+# backend/apps/english/views.py
+@method_decorator(cache_page(60 * 10))
+@action(detail=False, methods=['get'], url_path='daily-progress')  # 添加url_path参数
+def daily_progress(self, request):
+    """获取每日学习进度 - 优化版本"""
+    # ... 原有代码保持不变
+```
+
+2. **添加favicon.ico链接**
+```html
+<!-- frontend/index.html -->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alpha 技术共享平台</title>
+    <link rel="icon" href="data:;base64,=" />  <!-- 添加空favicon避免404 -->
+</head>
+```
+
+**验证结果：**
+- API测试：`GET /api/v1/english/typing-practice/daily-progress/` 返回200状态码
+- 无认证时正确返回401错误
+- 前端构建成功，无语法错误
+
+**经验总结：**
+1. **API路径规范**：RESTful API中URL通常使用连字符分隔，需要在`@action`装饰器中明确指定`url_path`
+2. **favicon处理**：可以使用空的data URI避免404请求，或添加实际的favicon文件
+3. **前后端路径一致性**：确保前端API调用路径与后端路由完全匹配
+
+**所属业务或模块：** 英语学习 - 智能练习
