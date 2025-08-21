@@ -1035,13 +1035,25 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
         """获取练习单词列表 - 优化版本"""
         # 兼容不同的请求类型
         if hasattr(request, 'query_params'):
+            # 支持两种参数名：dictionary (ID) 和 category (名称)
+            dictionary_id = request.query_params.get('dictionary')
             category = request.query_params.get('category', 'CET4_T')
             chapter = request.query_params.get('chapter')
+            difficulty = request.query_params.get('difficulty')
             limit = int(request.query_params.get('limit', 50))
         else:
+            dictionary_id = request.GET.get('dictionary')
             category = request.GET.get('category', 'CET4_T')
             chapter = request.GET.get('chapter')
+            difficulty = request.GET.get('difficulty')
             limit = int(request.GET.get('limit', 50))
+        
+        # 验证difficulty参数
+        if difficulty and difficulty not in ['beginner', 'intermediate', 'advanced']:
+            return Response(
+                {'error': f'无效的难度级别: {difficulty}'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
         # 使用缓存键（包含章节信息）
         cache_key = f'typing_words_{category}_{chapter}_{limit}'
@@ -1050,26 +1062,42 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
         if cached_words is None:
             # 优化查询：只选择需要的字段
             try:
-                # 兼容前端传入的 category 参数既可能是词库名称(name)，也可能是分类(category)
                 dictionary = None
-                dict_by_name = Dictionary.objects.filter(name=category)
-                if dict_by_name.exists():
-                    dictionary = dict_by_name.first()
+                
+                # 优先使用dictionary_id参数（如果提供）
+                if dictionary_id:
+                    try:
+                        dictionary_id = int(dictionary_id)
+                        dictionary = Dictionary.objects.get(id=dictionary_id)
+                    except (ValueError, Dictionary.DoesNotExist):
+                        return Response(
+                            {'error': f'词库不存在: {dictionary_id}'},
+                            status=status.HTTP_404_NOT_FOUND
+                        )
                 else:
-                    dict_by_category = Dictionary.objects.filter(category=category)
-                    if dict_by_category.exists():
-                        dictionary = dict_by_category.first()
+                    # 兼容前端传入的 category 参数既可能是词库名称(name)，也可能是分类(category)
+                    dict_by_name = Dictionary.objects.filter(name=category)
+                    if dict_by_name.exists():
+                        dictionary = dict_by_name.first()
+                    else:
+                        dict_by_category = Dictionary.objects.filter(category=category)
+                        if dict_by_category.exists():
+                            dictionary = dict_by_category.first()
 
-                if not dictionary:
-                    return Response(
-                        {'error': f'词库不存在: {category}'},
-                        status=status.HTTP_404_NOT_FOUND
-                    )
+                    if not dictionary:
+                        return Response(
+                            {'error': f'词库不存在: {category}'},
+                            status=status.HTTP_404_NOT_FOUND
+                        )
                 words_query = TypingWord.objects.filter(dictionary=dictionary)
                 
                 # 如果指定了章节，按章节过滤
                 if chapter:
                     words_query = words_query.filter(chapter=chapter)
+                
+                # 如果指定了难度，按难度过滤
+                if difficulty:
+                    words_query = words_query.filter(difficulty=difficulty)
                 
                 words = words_query.values('id', 'word', 'translation', 'phonetic', 'difficulty', 'dictionary__name', 'chapter', 'frequency')[:limit]
             except Dictionary.DoesNotExist:
@@ -1087,11 +1115,14 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def submit(self, request):
         """提交打字练习结果 - 优化版本"""
+        from django.db import transaction
+        
         word_id = request.data.get('word_id')
         is_correct = request.data.get('is_correct')
         typing_speed = request.data.get('typing_speed', 0)
         response_time = request.data.get('response_time', 0)
         
+        # 数据类型验证
         if word_id is None:
             return Response(
                 {'error': '缺少word_id参数'}, 
@@ -1104,6 +1135,51 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
+        # 验证is_correct必须是布尔值或可转换的字符串
+        if isinstance(is_correct, str):
+            if is_correct.lower() in ['true', '1', 'yes']:
+                is_correct = True
+            elif is_correct.lower() in ['false', '0', 'no']:
+                is_correct = False
+            else:
+                return Response(
+                    {'error': 'is_correct必须是布尔值或有效的字符串'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        elif not isinstance(is_correct, bool):
+            return Response(
+                {'error': 'is_correct必须是布尔值'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 验证typing_speed必须是数字
+        try:
+            typing_speed = float(typing_speed)
+            if typing_speed < 0:
+                return Response(
+                    {'error': 'typing_speed不能为负数'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        except (ValueError, TypeError):
+            return Response(
+                {'error': 'typing_speed必须是数字'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 验证response_time必须是数字
+        try:
+            response_time = float(response_time)
+            if response_time < 0:
+                return Response(
+                    {'error': 'response_time不能为负数'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        except (ValueError, TypeError):
+            return Response(
+                {'error': 'response_time必须是数字'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
         try:
             word = TypingWord.objects.get(id=word_id)
         except TypingWord.DoesNotExist:
@@ -1112,51 +1188,62 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
         
-        # 获取或创建当前练习会话
-        from .models import TypingPracticeSession
-        
-        # 获取当前用户的未完成会话，或者创建新会话
-        current_session, created = TypingPracticeSession.objects.get_or_create(
-            user=request.user,
-            is_completed=False,
-            defaults={
-                'dictionary': word.dictionary.category,
-                'chapter': 1,  # 默认章节，后续可以从请求中获取
-                'start_time': timezone.now()
-            }
-        )
-        
-        # 创建练习记录 - 同时保存到两个表
-        session = TypingSession.objects.create(
-            user=request.user,
-            word=word,
-            is_correct=is_correct,
-            typing_speed=typing_speed,
-            response_time=response_time
-        )
-        
-        # 同时保存到TypingPracticeRecord表（用于数据分析）
-        TypingPracticeRecord.objects.create(
-            user=request.user,
-            session=current_session,  # 关联到当前会话
-            word=word.word,  # 保存单词字符串
-            is_correct=is_correct,
-            typing_speed=typing_speed,
-            response_time=response_time,
-            total_time=response_time * 1000,  # 转换为毫秒
-            wrong_count=0,  # 默认值，后续可以扩展
-            mistakes={},  # 默认值，后续可以扩展
-            timing=[]  # 默认值，后续可以扩展
-        )
-        
-        # 更新用户统计（异步处理）
-        self._update_user_stats_async(request.user)
-        
-        return Response({
-            'status': 'success',
-            'session_id': session.id,
-            'practice_session_id': current_session.id
-        })
+        # 使用事务保护整个提交过程
+        try:
+            with transaction.atomic():
+                # 获取或创建当前练习会话
+                from .models import TypingPracticeSession
+                
+                # 简化并发处理，不使用select_for_update
+                current_session, created = TypingPracticeSession.objects.get_or_create(
+                    user=request.user,
+                    is_completed=False,
+                    defaults={
+                        'dictionary': word.dictionary.name,  # 使用词库名称而不是分类
+                        'chapter': 1,  # 默认章节，后续可以从请求中获取
+                        'start_time': timezone.now()
+                    }
+                )
+                
+                # 创建练习记录 - 同时保存到两个表
+                session = TypingSession.objects.create(
+                    user=request.user,
+                    word=word,
+                    is_correct=is_correct,
+                    typing_speed=typing_speed,
+                    response_time=response_time
+                )
+                
+                # 同时保存到TypingPracticeRecord表（用于数据分析）
+                TypingPracticeRecord.objects.create(
+                    user=request.user,
+                    session=current_session,  # 关联到当前会话
+                    word=word.word,  # 保存单词字符串
+                    is_correct=is_correct,
+                    typing_speed=typing_speed,
+                    response_time=response_time,
+                    total_time=float(response_time) * 1000,  # 转换为毫秒
+                    wrong_count=0,  # 默认值，后续可以扩展
+                    mistakes={},  # 默认值，后续可以扩展
+                    timing=[]  # 默认值，后续可以扩展
+                )
+                
+                # 更新用户统计（在事务内同步处理）
+                self._update_user_stats_sync(request.user)
+                
+                return Response({
+                    'status': 'success',
+                    'message': '练习结果提交成功',  # 修复：添加message字段
+                    'session_id': session.id,
+                    'practice_session_id': current_session.id
+                })
+                
+        except Exception as e:
+            print(f"提交练习结果失败: {e}")
+            return Response(
+                {'error': f'提交失败: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
     @action(detail=False, methods=['post'])
     def complete_session(self, request):
@@ -1207,9 +1294,47 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     def _update_user_stats_async(self, user):
-        """异步更新用户统计"""
+        """异步更新用户统计 - 修复并发问题"""
+        from django.db import transaction
+        
         try:
-            # 获取用户统计或创建新的
+            with transaction.atomic():
+                # 使用select_for_update防止并发问题
+                stats, created = UserTypingStats.objects.select_for_update().get_or_create(
+                    user=user,
+                    defaults={
+                        'total_words_practiced': 0,
+                        'total_correct_words': 0,
+                        'average_wpm': 0.0,
+                        'total_practice_time': 0
+                    }
+                )
+                
+                # 计算最新统计
+                sessions = TypingSession.objects.filter(user=user)
+                total_practiced = sessions.count()
+                total_correct = sessions.filter(is_correct=True).count()
+                avg_wpm = sessions.aggregate(avg_wpm=Avg('typing_speed'))['avg_wpm'] or 0.0
+                total_time = sessions.aggregate(total_time=Avg('response_time'))['total_time'] or 0.0
+                
+                # 更新统计
+                stats.total_words_practiced = total_practiced
+                stats.total_correct_words = total_correct
+                stats.average_wpm = round(avg_wpm, 2)
+                stats.total_practice_time = round(total_time, 2)
+                stats.save()
+                
+                # 清除相关缓存
+                cache.delete(f'typing_stats_{user.id}')
+                
+        except Exception as e:
+            print(f"更新用户统计失败: {e}")
+            # 不抛出异常，避免影响主要功能
+    
+    def _update_user_stats_sync(self, user):
+        """同步更新用户统计 - 在事务内调用"""
+        try:
+            # 简化并发处理，不使用select_for_update
             stats, created = UserTypingStats.objects.get_or_create(
                 user=user,
                 defaults={
@@ -1238,7 +1363,9 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
             cache.delete(f'typing_stats_{user.id}')
             
         except Exception as e:
-            print(f"更新用户统计失败: {e}")
+            print(f"同步更新用户统计失败: {e}")
+            # 在事务内抛出异常，让事务回滚
+            raise
     
     @method_decorator(cache_page(60 * 2))  # 缓存2分钟
     @action(detail=False, methods=['get'])
@@ -1254,8 +1381,11 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
             try:
                 stats = UserTypingStats.objects.get(user=user)
                 cached_stats = {
+                    'total_practices': stats.total_words_practiced,  # 修复：添加total_practices字段
                     'total_words_practiced': stats.total_words_practiced,
                     'total_correct_words': stats.total_correct_words,
+                    'average_accuracy': round((stats.total_correct_words / stats.total_words_practiced * 100) if stats.total_words_practiced > 0 else 0, 2),  # 修复：添加average_accuracy字段
+                    'average_speed': stats.average_wpm,  # 修复：添加average_speed字段
                     'average_wpm': stats.average_wpm,
                     'total_practice_time': stats.total_practice_time,
                     'last_practice_date': stats.last_practice_date.isoformat() if stats.last_practice_date else None
@@ -1263,8 +1393,11 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
                 cache.set(cache_key, cached_stats, 120)  # 缓存2分钟
             except UserTypingStats.DoesNotExist:
                 cached_stats = {
+                    'total_practices': 0,  # 修复：添加total_practices字段
                     'total_words_practiced': 0,
                     'total_correct_words': 0,
+                    'average_accuracy': 0.0,  # 修复：添加average_accuracy字段
+                    'average_speed': 0.0,  # 修复：添加average_speed字段
                     'average_wpm': 0.0,
                     'total_practice_time': 0,
                     'last_practice_date': None
@@ -1272,77 +1405,216 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
         
         return Response(cached_stats)
     
-    @method_decorator(cache_page(60 * 10))  # 缓存10分钟
-    @action(detail=False, methods=['get'], url_path='daily-progress')
-    def daily_progress(self, request):
-        """获取每日学习进度 - 优化版本"""
+    @action(detail=False, methods=['get'])
+    def history(self, request):
+        """获取打字练习历史"""
+        user = request.user
+        
+        # 获取用户的练习记录
+        sessions = TypingSession.objects.filter(user=user).select_related('word').order_by('-created_at')[:50]
+        
+        history_data = []
+        for session in sessions:
+            history_data.append({
+                'id': session.id,
+                'word': session.word.word,
+                'translation': session.word.translation,
+                'is_correct': session.is_correct,
+                'typing_speed': session.typing_speed,
+                'response_time': session.response_time,
+                'created_at': session.created_at.isoformat()
+            })
+        
+        return Response({
+            'results': history_data  # 修复：使用results字段包装
+        })
+    
+    @action(detail=False, methods=['get'])
+    def progress(self, request):
+        """获取打字练习进度"""
+        user = request.user
+        dictionary_id = request.query_params.get('dictionary')
+        
+        if not dictionary_id:
+            return Response(
+                {'error': '缺少dictionary参数'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
         try:
-            days = int(request.query_params.get('days', 7))
+            dictionary = Dictionary.objects.get(id=dictionary_id)
             
+            # 获取该词库的所有章节
+            chapters = TypingWord.objects.filter(dictionary=dictionary).values_list('chapter', flat=True).distinct().order_by('chapter')
+            total_chapters = len(chapters)
+            
+            # 获取用户完成的章节（简化逻辑：有练习记录就算完成）
+            completed_chapters = []
+            for chapter in chapters:
+                chapter_words = TypingWord.objects.filter(dictionary=dictionary, chapter=chapter)
+                practiced_words = TypingSession.objects.filter(
+                    user=user,
+                    word__in=chapter_words
+                ).values_list('word__id', flat=True).distinct()
+                
+                if practiced_words.count() >= min(5, chapter_words.count()):  # 至少练习5个单词或全部单词
+                    completed_chapters.append(chapter)
+            
+            completion_rate = round((len(completed_chapters) / total_chapters * 100) if total_chapters > 0 else 0, 2)
+            
+            return Response({
+                'completed_chapters': completed_chapters,
+                'total_chapters': total_chapters,
+                'completion_rate': completion_rate
+            })
+            
+        except Dictionary.DoesNotExist:
+            return Response(
+                {'error': '词库不存在'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+    
+    @action(detail=False, methods=['post'])
+    def session(self, request):
+        """创建打字练习会话"""
+        from .models import TypingPracticeSession  # 修复：添加必要的导入
+        
+        dictionary_id = request.data.get('dictionary')
+        chapter = request.data.get('chapter', 1)
+        word_count = request.data.get('word_count', 10)
+        
+        if not dictionary_id:
+            return Response(
+                {'error': '缺少dictionary参数'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            dictionary = Dictionary.objects.get(id=dictionary_id)
+            
+            # 获取指定章节的单词
+            words = TypingWord.objects.filter(
+                dictionary=dictionary,
+                chapter=chapter
+            )[:word_count]
+            
+            # 创建练习会话
+            session = TypingPracticeSession.objects.create(
+                user=request.user,
+                dictionary=dictionary.name,
+                chapter=chapter,
+                start_time=timezone.now()
+            )
+            
+            # 准备返回的单词数据
+            words_data = []
+            for word in words:
+                words_data.append({
+                    'id': word.id,
+                    'word': word.word,
+                    'translation': word.translation,
+                    'phonetic': word.phonetic,
+                    'difficulty': word.difficulty,
+                    'chapter': word.chapter
+                })
+            
+            return Response({
+                'session_id': session.id,
+                'words': words_data
+            })
+            
+        except Dictionary.DoesNotExist:
+            return Response(
+                {'error': '词库不存在'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {'error': f'创建会话失败: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=False, methods=['post'])
+    def result(self, request):
+        """提交打字练习结果（兼容旧接口）"""
+        # 重定向到submit方法
+        return self.submit(request)
+    
+    @action(detail=False, methods=['post'])
+    def review(self, request):
+        """打字练习复习"""
+        word_ids = request.data.get('word_ids', [])
+        review_type = request.data.get('review_type', 'error_words')
+        
+        if not word_ids:
+            return Response(
+                {'error': '缺少word_ids参数'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            # 根据复习类型获取单词
+            if review_type == 'error_words':
+                # 获取错误单词
+                error_sessions = TypingSession.objects.filter(
+                    user=request.user,
+                    word_id__in=word_ids,
+                    is_correct=False
+                ).values_list('word_id', flat=True).distinct()
+                
+                words = TypingWord.objects.filter(id__in=error_sessions)
+            else:
+                # 获取所有指定单词
+                words = TypingWord.objects.filter(id__in=word_ids)
+            
+            # 准备返回的单词数据
+            words_data = []
+            for word in words:
+                words_data.append({
+                    'id': word.id,
+                    'word': word.word,
+                    'translation': word.translation,
+                    'phonetic': word.phonetic,
+                    'difficulty': word.difficulty,
+                    'chapter': word.chapter
+                })
+            
+            return Response({
+                'words': words_data
+            })
+            
+        except Exception as e:
+            return Response(
+                {'error': f'获取复习单词失败: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=False, methods=['get'])
+    def status(self, request):
+        """获取练习会话状态"""
+        try:
             # 检查用户是否已认证
             if not request.user.is_authenticated:
-                # 对于匿名用户，返回空数据
-                return Response([])
+                return Response({
+                    'success': False,
+                    'error': '用户未认证'
+                }, status=status.HTTP_401_UNAUTHORIZED)
             
-            user = request.user
-            
-            # 使用缓存键
-            cache_key = f'daily_progress_{user.id}_{days}'
-            cached_progress = cache.get(cache_key)
-            
-            if cached_progress is None:
-                from django.utils import timezone
-                from datetime import timedelta
-                
-                end_date = timezone.now().date()
-                start_date = end_date - timedelta(days=days-1)
-                
-                # 优化查询：使用聚合查询
-                daily_data = TypingSession.objects.filter(
-                    user=user,
-                    session_date__range=[start_date, end_date]
-                ).values('session_date').annotate(
-                    words_practiced=Count('id'),
-                    correct_words=Count('id', filter=models.Q(is_correct=True)),
-                    avg_wpm=Avg('typing_speed')
-                ).order_by('session_date')
-                
-                # 格式化数据
-                progress_data = []
-                current_date = start_date
-                while current_date <= end_date:
-                    day_data = next(
-                        (item for item in daily_data if item['session_date'] == current_date), 
-                        None
-                    )
-                    
-                    if day_data:
-                        progress_data.append({
-                            'date': current_date.isoformat(),
-                            'words_practiced': day_data['words_practiced'],
-                            'correct_words': day_data['correct_words'],
-                            'accuracy': round((day_data['correct_words'] / day_data['words_practiced']) * 100, 2) if day_data['words_practiced'] > 0 else 0,
-                            'avg_wpm': round(day_data['avg_wpm'], 2) if day_data['avg_wpm'] else 0
-                        })
-                    else:
-                        progress_data.append({
-                            'date': current_date.isoformat(),
-                            'words_practiced': 0,
-                            'correct_words': 0,
-                            'accuracy': 0,
-                            'avg_wpm': 0
-                        })
-                    
-                    current_date += timedelta(days=1)
-                
-                cached_progress = progress_data
-                cache.set(cache_key, cached_progress, 600)  # 缓存10分钟
-            
-            return Response(cached_progress)
+            # 这里可以实现练习会话状态查询逻辑
+            return Response({
+                'success': True,
+                'data': {
+                    'is_paused': False,
+                    'pause_start_time': None,
+                    'pause_elapsed_time': 0,
+                    'session_time': 0
+                }
+            })
         except Exception as e:
-            print(f"获取每日进度失败: {e}")
-            # 对于任何错误，返回空数组而不是500错误
-            return Response([])
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     @action(detail=False, methods=['post'])
     def start(self, request):
@@ -1465,7 +1737,105 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+    @method_decorator(cache_page(60 * 10))  # 缓存10分钟
+    @action(detail=False, methods=['get'], url_path='daily-progress')
+    def daily_progress(self, request):
+        """获取每日学习进度 - 优化版本"""
+        try:
+            days = int(request.query_params.get('days', 7))
+            
+            # 检查用户是否已认证
+            if not request.user.is_authenticated:
+                # 对于匿名用户，返回空数据
+                return Response([])
+            
+            user = request.user
+            
+            # 使用缓存键
+            cache_key = f'daily_progress_{user.id}_{days}'
+            cached_progress = cache.get(cache_key)
+            
+            if cached_progress is None:
+                from django.utils import timezone
+                from datetime import timedelta
+                
+                end_date = timezone.now().date()
+                start_date = end_date - timedelta(days=days-1)
+                
+                # 优化查询：使用聚合查询
+                daily_data = TypingSession.objects.filter(
+                    user=user,
+                    session_date__range=[start_date, end_date]
+                ).values('session_date').annotate(
+                    words_practiced=Count('id'),
+                    correct_words=Count('id', filter=models.Q(is_correct=True)),
+                    avg_wpm=Avg('typing_speed')
+                ).order_by('session_date')
+                
+                # 格式化数据
+                progress_data = []
+                current_date = start_date
+                while current_date <= end_date:
+                    day_data = next(
+                        (item for item in daily_data if item['session_date'] == current_date), 
+                        None
+                    )
+                    
+                    if day_data:
+                        progress_data.append({
+                            'date': current_date.isoformat(),
+                            'words_practiced': day_data['words_practiced'],
+                            'correct_words': day_data['correct_words'],
+                            'accuracy': round((day_data['correct_words'] / day_data['words_practiced']) * 100, 2) if day_data['words_practiced'] > 0 else 0,
+                            'avg_wpm': round(day_data['avg_wpm'], 2) if day_data['avg_wpm'] else 0
+                        })
+                    else:
+                        progress_data.append({
+                            'date': current_date.isoformat(),
+                            'words_practiced': 0,
+                            'correct_words': 0,
+                            'accuracy': 0,
+                            'avg_wpm': 0
+                        })
+                    
+                    current_date += timedelta(days=1)
+                
+                cached_progress = progress_data
+                cache.set(cache_key, cached_progress, 600)  # 缓存10分钟
+            
+            return Response(cached_progress)
+        except Exception as e:
+            print(f"获取每日进度失败: {e}")
+            # 对于任何错误，返回空数组而不是500错误
+            return Response([])
     
+    @action(detail=False, methods=['get'])
+    def status(self, request):
+        """获取练习会话状态"""
+        try:
+            # 检查用户是否已认证
+            if not request.user.is_authenticated:
+                return Response({
+                    'success': False,
+                    'error': '用户未认证'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+            
+            # 这里可以实现练习会话状态查询逻辑
+            return Response({
+                'success': True,
+                'data': {
+                    'is_paused': False,
+                    'pause_start_time': None,
+                    'pause_elapsed_time': 0,
+                    'session_time': 0
+                }
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class DictionaryViewSet(viewsets.ReadOnlyModelViewSet):
     """词库视图集"""
@@ -1565,6 +1935,41 @@ class TypingWordViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = TypingWord.objects.all()
     serializer_class = TypingWordSerializer
     permission_classes = [AllowAny]
+    
+    def get_queryset(self):
+        """重写get_queryset方法，支持按dictionary和chapter参数过滤"""
+        queryset = TypingWord.objects.all()
+        
+        # 支持按dictionary参数过滤
+        dictionary_id = self.request.query_params.get('dictionary')
+        if dictionary_id:
+            queryset = queryset.filter(dictionary_id=dictionary_id)
+        
+        # 支持按chapter参数过滤
+        chapter = self.request.query_params.get('chapter')
+        if chapter:
+            queryset = queryset.filter(chapter=chapter)
+        
+        # 支持按difficulty参数过滤
+        difficulty = self.request.query_params.get('difficulty')
+        if difficulty:
+            queryset = queryset.filter(difficulty=difficulty)
+        
+        return queryset
+    
+    def list(self, request, *args, **kwargs):
+        """重写list方法，返回results字段包装的数据"""
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({
+            'results': serializer.data  # 修复：使用results字段包装
+        })
+    
+    def retrieve(self, request, *args, **kwargs):
+        """重写retrieve方法，返回单个单词详情"""
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
     
     @action(detail=False, methods=['get'])
     def test(self, request):

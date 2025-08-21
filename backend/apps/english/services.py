@@ -138,7 +138,7 @@ class DataAnalysisService:
         # 获取日期范围内的统计数据
         records = TypingPracticeRecord.objects.filter(
             user_id=user_id,
-            session_date__range=[start_date, end_date]
+            session_date__range=[start_date.date(), end_date.date()]
         ).order_by('created_at')
         
         # 计算概览数据
@@ -158,8 +158,9 @@ class DataAnalysisService:
         return {
             'total_exercises': total_exercises,
             'total_words': total_words,
+            'correct_exercises': correct_words_count,  # 添加正确练习次数
+            'avg_accuracy': round(avg_accuracy, 2),  # 保持原有字段名以匹配测试期望
             'avg_wpm': round(avg_wpm, 2),
-            'avg_accuracy': round(avg_accuracy, 2),
             'date_range': [start_date, end_date]
         }
     
@@ -181,20 +182,19 @@ class DataAnalysisService:
         if not records:
             return 0
 
-        # 使用TypingPracticeSession模型统计完成的会话数
+        # 使用TypingPracticeSession模型统计会话数（包括进行中的会话）
         from .models import TypingPracticeSession
         
         user_id = records.first().user.id if records.exists() else None
         if not user_id:
             return 0
             
-        # 统计完成的会话数量
-        completed_sessions = TypingPracticeSession.objects.filter(
-            user_id=user_id,
-            is_completed=True
+        # 统计所有会话数量（包括进行中和已完成的）
+        all_sessions = TypingPracticeSession.objects.filter(
+            user_id=user_id
         ).count()
         
-        return completed_sessions
+        return all_sessions
     
     def get_monthly_calendar_data(self, user_id: int, year: int, month: int) -> Dict[str, Any]:
         """获取指定月份的日历热力图数据（Windows风格）"""

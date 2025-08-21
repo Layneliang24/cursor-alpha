@@ -400,7 +400,7 @@ class TypingPracticeTest(TestCase):
     
     def test_get_typing_words_by_difficulty(self):
         """测试按难度获取打字练习单词"""
-        response = self.client.get(f'/api/v1/english/typing-words/?dictionary={self.dictionary.id}&difficulty=easy')
+        response = self.client.get(f'/api/v1/english/typing-words/?dictionary={self.dictionary.id}&difficulty=beginner')  # 修复：easy -> beginner
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), 1)
@@ -424,10 +424,9 @@ class TypingPracticeTest(TestCase):
         """测试提交打字练习结果"""
         result_data = {
             'word_id': self.typing_word.id,
-            'accuracy': 95.5,
-            'speed': 60,
-            'time_taken': 30,
-            'errors': 1
+            'is_correct': True,  # 修复：accuracy -> is_correct
+            'typing_speed': 60,  # 修复：speed -> typing_speed
+            'response_time': 30  # 修复：time_taken -> response_time
         }
         
         response = self.client.post('/api/v1/english/typing-practice/result/', result_data, format='json')

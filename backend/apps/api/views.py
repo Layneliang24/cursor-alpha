@@ -1,4 +1,5 @@
 from rest_framework import viewsets, status, permissions
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -104,6 +105,8 @@ class ArticleViewSet(viewsets.ModelViewSet):
         if user.is_authenticated and author_id and str(user.id) == str(author_id):
             return Article.objects.select_related('author', 'category').prefetch_related('tags').filter(author=user)
         return qs
+    
+
     
     def perform_create(self, serializer):
         """创建文章时设置作者"""

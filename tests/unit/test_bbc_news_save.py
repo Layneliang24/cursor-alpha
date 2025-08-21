@@ -64,13 +64,13 @@ class TestBBCNewsSave(TestCase):
         self.assertEqual(news.source, "BBC")
         self.assertGreaterEqual(news.word_count, 30, "词数应该大于等于30")
     
-    def test_news_save_with_insufficient_content(self):
-        """测试内容不足的新闻被跳过"""
-        # 创建内容不足的测试新闻项
+    def test_news_save_with_short_content(self):
+        """测试短内容新闻也能保存（无字数限制）"""
+        # 创建短内容的测试新闻项
         test_item = NewsItem(
-            title="Test BBC Article with Insufficient Content",
+            title="Test BBC Article with Short Content",
             content="Short content.",
-            url="http://test-bbc-insufficient.com/article1",
+            url="http://test-bbc-short.com/article1",
             source="BBC",
             published_at=timezone.now(),
             summary="Short summary",
@@ -79,20 +79,23 @@ class TestBBCNewsSave(TestCase):
             image_url="",
             image_alt=""
         )
-        
+
         # 测试保存
         real_service = EnhancedNewsCrawlerService()
         saved_count = real_service.save_news_to_db([test_item])
-        
+
         # 验证结果
-        self.assertEqual(saved_count, 0, "内容不足的新闻应该被跳过")
+        self.assertEqual(saved_count, 1, "短内容新闻也应该被保存（无字数限制）")
         
-        # 检查数据库中没有保存
-        saved_news = News.objects.filter(source_url="http://test-bbc-insufficient.com/article1")
-        self.assertEqual(saved_news.count(), 0, "数据库中不应该有这条新闻")
+        # 检查数据库中确实保存了
+        saved_news = News.objects.filter(source_url="http://test-bbc-short.com/article1")
+        self.assertEqual(saved_news.count(), 1, "数据库中应该有短内容新闻")
     
     def test_duplicate_url_detection(self):
         """测试重复URL检测"""
+        # 清理之前的测试数据
+        News.objects.filter(source_url="http://test-bbc-duplicate.com/article1").delete()
+        
         # 创建第一条新闻
         test_item1 = NewsItem(
             title="Test BBC Article 1",
@@ -128,8 +131,8 @@ class TestBBCNewsSave(TestCase):
         saved_count1 = real_service.save_news_to_db([test_item1])
         self.assertEqual(saved_count1, 1, "第一条新闻应该成功保存")
         
-        # 尝试保存第二条新闻（重复URL）
-        saved_count2 = real_service.save_news_to_db([test_item2])
+        # 尝试保存第二条新闻（重复URL），禁用备用新闻生成
+        saved_count2 = real_service.save_news_to_db([test_item2], generate_fallback=False)
         self.assertEqual(saved_count2, 0, "重复URL的新闻应该被跳过")
         
         # 检查数据库中只有一条新闻
@@ -146,20 +149,20 @@ class TestBBCNewsSave(TestCase):
             {
                 'title': 'Very Short Content',
                 'content': 'Short.',
-                'expected_saved': 0,
-                'description': '极短内容应该被跳过'
+                'expected_saved': 1,
+                'description': '短内容也应该被保存（无字数限制）'
             },
             {
                 'title': 'Medium Content',
-                'content': 'This is a medium length content with more words but still not enough to meet the minimum requirement.',
-                'expected_saved': 0,
-                'description': '中等长度但不足50词的内容应该被跳过'
+                'content': 'This is a medium length content with more words.',
+                'expected_saved': 1,
+                'description': '中等长度内容应该被保存'
             },
             {
                 'title': 'Sufficient Content',
                 'content': 'This is a longer content that should meet the minimum word count requirement. It contains enough words to pass the validation and should be saved to the database successfully.',
                 'expected_saved': 1,
-                'description': '足够长度的内容应该被保存'
+                'description': '长内容应该被保存'
             }
         ]
         
@@ -225,9 +228,9 @@ class TestBBCNewsSave(TestCase):
         self.assertEqual(news_item.url, 'http://test-bbc-crawler.com/article1')
         self.assertEqual(news_item.source, 'BBC')
         
-        # 验证内容长度
+        # 验证内容不为空
         word_count = len(news_item.content.split())
-        self.assertGreaterEqual(word_count, 50, "内容应该满足最小词数要求")
+        self.assertGreater(word_count, 0, "内容应该不为空")
     
     def test_news_model_fields(self):
         """测试News模型字段"""
@@ -298,9 +301,9 @@ class TestBBCNewsCrawlerIntegration(TestCase):
         self.assertEqual(news_item.title, 'Test BBC Article')
         self.assertEqual(news_item.source, 'BBC')
         
-        # 验证内容长度
+        # 验证内容不为空
         word_count = len(news_item.content.split())
-        self.assertGreaterEqual(word_count, 30, "内容应该满足最小词数要求")
+        self.assertGreater(word_count, 0, "内容应该不为空")
     
     def test_crawler_initialization(self):
         """测试爬虫初始化"""

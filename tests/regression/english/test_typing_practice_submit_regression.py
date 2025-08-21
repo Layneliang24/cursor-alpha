@@ -240,17 +240,17 @@ class SubmitAPIRegressionTest(APITestCase):
             {
                 'name': '字符串is_correct',
                 'data': {'word_id': self.word.id, 'is_correct': 'true'},
-                'should_succeed': True  # Django REST framework会转换
+                'should_succeed': True  # 字符串'true'可以正确转换为布尔值
             },
             {
                 'name': '字符串typing_speed',
                 'data': {'word_id': self.word.id, 'is_correct': True, 'typing_speed': '60'},
-                'should_succeed': True
+                'should_succeed': True  # 字符串'60'可以正确转换为数字
             },
             {
                 'name': '负数typing_speed',
                 'data': {'word_id': self.word.id, 'is_correct': True, 'typing_speed': -10},
-                'should_succeed': True  # API应该接受，业务逻辑可能处理
+                'should_succeed': False  # 负数typing_speed不应该被接受
             }
         ]
         

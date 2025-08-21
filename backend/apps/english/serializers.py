@@ -41,10 +41,12 @@ class WordSerializer(serializers.ModelSerializer):
 
 class TypingWordSerializer(serializers.ModelSerializer):
     """打字练习单词序列化器"""
+    dictionary_name = serializers.CharField(source='dictionary.name', read_only=True)
+    meaning = serializers.CharField(source='translation', read_only=True)  # 修复：添加meaning字段别名
     
     class Meta:
         model = TypingWord
-        fields = ['id', 'word', 'translation', 'phonetic', 'difficulty', 'category', 'frequency']
+        fields = ['id', 'word', 'translation', 'meaning', 'phonetic', 'difficulty', 'dictionary', 'dictionary_name', 'chapter', 'frequency']  # 修复：添加chapter字段
 
 
 class UserWordProgressSerializer(serializers.ModelSerializer):

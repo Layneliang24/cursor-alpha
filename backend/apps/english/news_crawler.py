@@ -733,8 +733,13 @@ class EnhancedNewsCrawlerService:
         logger.info(f"所有新闻源抓取完成，共获取 {len(all_news)} 条新闻")
         return all_news
     
-    def save_news_to_db(self, news_items: List[NewsItem]) -> int:
-        """保存新闻到数据库"""
+    def save_news_to_db(self, news_items: List[NewsItem], generate_fallback: bool = True) -> int:
+        """保存新闻到数据库
+        
+        Args:
+            news_items: 新闻项列表
+            generate_fallback: 是否在没有保存任何新闻时生成备用新闻（默认True）
+        """
         from .models import News
         
         saved_count = 0
@@ -775,8 +780,8 @@ class EnhancedNewsCrawlerService:
             except Exception as e:
                 logger.error(f"保存新闻失败 {item.title[:50]}: {str(e)}")
         
-        # 如果没有保存任何新闻，生成一些高质量新闻
-        if saved_count == 0:
+        # 如果没有保存任何新闻且允许生成备用新闻，则生成一些高质量新闻
+        if saved_count == 0 and generate_fallback:
             logger.info("没有保存任何新闻，生成高质量英语新闻...")
             generated_news = self._generate_quality_news_for_save()
             for item in generated_news:
