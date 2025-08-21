@@ -12,6 +12,14 @@ export default defineConfig({
   server: {
     port: 3000,
     historyApiFallback: true,
+    hmr: {
+      overlay: true, // 错误覆盖层
+      port: 24678   // HMR 端口
+    },
+    watch: {
+      usePolling: true, // Windows 环境优化
+      interval: 100
+    },
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:8000',

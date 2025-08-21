@@ -181,16 +181,33 @@ run_tests.bat  # Windows
 python verify_tests.py
 ```
 
-5. **启动服务**
+5. **启动服务（推荐使用热重载脚本）**
 ```bash
-# 后端
-start_backend.bat  # Windows
-# 或 ./start_backend.sh  # Linux/macOS
+# 方式1：使用热重载脚本（推荐）
+# 在项目根目录运行
+start_dev.bat
 
-# 前端
-start_frontend.bat  # Windows
-# 或 ./start_frontend.sh  # Linux/macOS
+# 方式2：手动启动
+# 后端（支持热重载）
+cd backend
+python run_dev.py
+# 或
+run_dev.bat
+
+# 前端（支持热重载）
+cd frontend
+run_dev.bat
+# 或
+npm run dev
 ```
+
+### 🔥 热重载功能
+
+- **后端热重载**：修改 Python 代码后，Django 服务器自动重启
+- **前端热重载**：修改 Vue 组件后，浏览器自动刷新
+- **开发体验**：无需手动重启服务，提升开发效率
+
+详细说明请查看：[热重载指南](docs/HOT_RELOAD_GUIDE.md)
 
 ### 详细指南
 请查看 [docs/GUIDE.md](docs/GUIDE.md) 获取详细的使用指南和开发文档。

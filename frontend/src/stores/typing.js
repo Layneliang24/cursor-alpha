@@ -240,9 +240,29 @@ export const useTypingStore = defineStore('typing', () => {
       loading.value = true
       clearError()
       
+      // 首先获取词典列表，找到对应的dictionary_id
+      console.log('获取词典列表以找到正确的dictionary_id...')
+      const dictResponse = await englishAPI.getDictionaries()
+      let targetDictionaryId = null
+      
+      for (const dict of dictResponse) {
+        if (dict.name === dictionaryId) {
+          targetDictionaryId = dict.id
+          break
+        }
+      }
+      
+      if (!targetDictionaryId) {
+        console.error('未找到词典:', dictionaryId)
+        ElMessage.error('未找到指定的词典')
+        return false
+      }
+      
+      console.log('找到词典ID:', targetDictionaryId)
+      
       console.log('调用API获取指定词库和章节的单词...')
       const response = await englishAPI.getTypingWordsByDictionary({
-        category: dictionaryId,
+        dictionary_id: targetDictionaryId,  // 修复：使用正确的参数名和值
         chapter: chapter
       })
       
