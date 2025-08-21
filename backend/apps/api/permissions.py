@@ -53,10 +53,13 @@ class IsAuthorOrAdminOrReadOnly(BasePermission):
     """对象级权限：作者本人或管理员可写，其余用户只读"""
 
     def has_permission(self, request, view):
-        # 所有人可读；登录用户可继续进入对象级判断
+        # 所有人可读；写操作需要认证
         if request.method in SAFE_METHODS:
             return True
-        return bool(request.user and request.user.is_authenticated)
+        # 修复：明确要求认证用户才能进行写操作
+        if not request.user or not request.user.is_authenticated:
+            return False
+        return True
 
     def has_object_permission(self, request, view, obj):
         # 读取权限允许任何请求

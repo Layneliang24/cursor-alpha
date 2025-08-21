@@ -329,10 +329,34 @@ class TestPauseResumeIntegration(TestCase):
     
     def test_pause_resume_with_practice_data(self):
         """测试带练习数据的暂停/继续"""
-        # 1. 开始练习并输入一些单词
+        # 1. 创建测试数据
+        from apps.english.models import Dictionary, TypingWord
+        
+        # 创建词库
+        dictionary = Dictionary.objects.create(
+            name='Test Dictionary',
+            description='Test dictionary for pause resume test'
+        )
+        
+        # 创建打字练习单词
+        word1 = TypingWord.objects.create(
+            word='hello',
+            translation='你好',
+            difficulty='beginner',
+            dictionary=dictionary,
+            chapter=1
+        )
+        word2 = TypingWord.objects.create(
+            word='world',
+            translation='世界',
+            difficulty='beginner',
+            dictionary=dictionary,
+            chapter=1
+        )
+        
         practice_data = [
-            {'word': 'hello', 'is_correct': True, 'typing_speed': 50.0},
-            {'word': 'world', 'is_correct': False, 'typing_speed': 45.0}
+            {'word_id': word1.id, 'is_correct': True, 'typing_speed': 50.0},
+            {'word_id': word2.id, 'is_correct': False, 'typing_speed': 45.0}
         ]
         
         for data in practice_data:
@@ -351,7 +375,7 @@ class TestPauseResumeIntegration(TestCase):
         
         # 4. 继续输入单词
         more_practice_data = [
-            {'word': 'computer', 'is_correct': True, 'typing_speed': 55.0}
+            {'word_id': word1.id, 'is_correct': True, 'typing_speed': 55.0}
         ]
         
         for data in more_practice_data:

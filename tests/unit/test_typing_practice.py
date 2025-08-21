@@ -100,7 +100,8 @@ class TypingPracticeTestCase(TestCase):
         
         response = self.client.get(url, params)
         
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        # 修复：不存在的资源应该返回404而不是400
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn('error', response.data)
     
     def test_get_typing_words_invalid_difficulty(self):
@@ -200,7 +201,8 @@ class TypingPracticeTestCase(TestCase):
     
     def test_get_daily_progress(self):
         """测试获取每日学习进度"""
-        url = '/api/v1/english/typing-practice/daily_progress/'
+        # 修复：使用正确的URL格式（连字符而不是下划线）
+        url = '/api/v1/english/typing-practice/daily-progress/'
         params = {'days': 7}
         
         response = self.client.get(url, params)
@@ -262,7 +264,7 @@ class TypingPracticeTestCase(TestCase):
         self.assertEqual(data['translation'], '测试')
         self.assertEqual(data['phonetic'], 'test')
         self.assertEqual(data['difficulty'], 'beginner')
-        self.assertIn('dictionary', data)  # 检查dictionary字段
+        self.assertIn('dictionary', data)  # 检查dictionary字段而不是category
     
     def test_typing_session_serializer(self):
         """测试打字会话序列化器"""
