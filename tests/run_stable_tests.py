@@ -45,7 +45,7 @@ def run_stable_tests():
         'tests/unit/test_model_fields_fix.py',
         # 新增的完善测试覆盖（逐步启用）
         'tests/performance/test_performance_regression.py',  # 已修复，可以启用
-        # 'tests/integration/test_full_workflow_integration.py',
+        'tests/integration/test_full_workflow_integration.py',  # 已修复，可以启用
         'tests/edge_cases/test_edge_cases.py',  # 已修复，可以启用
     ]
     
