@@ -1517,6 +1517,47 @@ class DictionaryViewSet(viewsets.ReadOnlyModelViewSet):
             })
         
         return Response(data)
+    
+    @action(detail=False, methods=['get'])
+    def chapter_word_counts(self, request):
+        """获取指定词库各章节的单词数量"""
+        dictionary_id = request.query_params.get('dictionary_id')
+        
+        if not dictionary_id:
+            return Response({
+                'error': '缺少dictionary_id参数'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            dictionary = Dictionary.objects.get(id=dictionary_id, is_active=True)
+        except Dictionary.DoesNotExist:
+            return Response({
+                'error': f'词库不存在: {dictionary_id}'
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 查询各章节的单词数量
+        from django.db.models import Count
+        chapter_counts = TypingWord.objects.filter(
+            dictionary_id=dictionary_id
+        ).values('chapter').annotate(
+            word_count=Count('id')
+        ).order_by('chapter')
+        
+        # 构建章节数据
+        chapters = []
+        for item in chapter_counts:
+            chapters.append({
+                'number': item['chapter'],
+                'wordCount': item['word_count']
+            })
+        
+        return Response({
+            'dictionary_id': dictionary_id,
+            'dictionary_name': dictionary.name,
+            'total_words': dictionary.total_words,
+            'chapter_count': dictionary.chapter_count,
+            'chapters': chapters
+        })
 
 
 class TypingWordViewSet(viewsets.ReadOnlyModelViewSet):
@@ -1572,7 +1613,7 @@ class TypingWordViewSet(viewsets.ReadOnlyModelViewSet):
             )
         
         try:
-            # 获取指定词库和章节的单词，不限制difficulty
+            # 严格按照指定词库和章节获取单词
             words = TypingWord.objects.filter(
                 dictionary_id=dictionary_id,
                 chapter=chapter
@@ -1580,14 +1621,6 @@ class TypingWordViewSet(viewsets.ReadOnlyModelViewSet):
             
             print(f"DEBUG: 查询条件 - dictionary_id: {dictionary_id}, chapter: {chapter}")
             print(f"DEBUG: 找到的单词数量: {words.count()}")
-            
-            # 如果单词太少，尝试不限制chapter，但限制总数
-            if words.count() < 10:
-                print(f"DEBUG: 单词数量太少，尝试不限制chapter")
-                words = TypingWord.objects.filter(
-                    dictionary_id=dictionary_id
-                ).values('id', 'word', 'translation', 'phonetic', 'difficulty', 'frequency')
-                print(f"DEBUG: 不限制chapter后找到的单词数量: {words.count()}")
             
             # 限制每个章节最多25个单词
             word_list = list(words[:25])

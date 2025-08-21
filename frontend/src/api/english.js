@@ -104,13 +104,18 @@ export const englishAPI = {
   getChapters(dictionaryId) {
     return request.get(`/english/dictionaries/${dictionaryId}/chapters/`)
   },
+  getChapterWordCounts(dictionaryId) {
+    return request.get('/english/dictionaries/chapter_word_counts/', { 
+      params: { dictionary_id: dictionaryId }
+    })
+  },
   getWordsForPractice(params = {}) {
     return request.get('/english/typing-practice/words/', { params })
   },
   getTypingWordsByDictionary(params = {}) {
-    return request.get('/english/typing-practice/words/', { 
+    return request.get('/english/typing-words/by_dictionary/', { 
       params: { 
-        category: params.category, 
+        dictionary_id: params.dictionary_id, 
         chapter: params.chapter
       } 
     })

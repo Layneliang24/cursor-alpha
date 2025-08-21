@@ -171,8 +171,10 @@ python manage.py migrate
 # 创建超级用户
 python manage.py createsuperuser
 
-# 启动开发服务器
-python manage.py runserver
+# 启动开发服务器（支持热重载）
+python run_dev.py
+# 或使用批处理文件
+run_dev.bat
 ```
 
 #### 3. 启动前端服务
@@ -182,9 +184,28 @@ cd frontend
 # 安装依赖
 npm install
 
-# 启动开发服务器
+# 启动开发服务器（支持热重载）
 npm run dev
+# 或使用批处理文件
+run_dev.bat
 ```
+
+### 🚀 热重载功能
+
+#### 后端热重载
+- **自动重载**：修改 Python 代码后，Django 服务器自动重启
+- **文件监控**：使用 `django-extensions` 的 `runserver_plus` 命令
+- **启动方式**：`python run_dev.py` 或 `run_dev.bat`
+
+#### 前端热重载
+- **HMR 支持**：修改 Vue 组件后，浏览器自动刷新
+- **实时更新**：样式、脚本、组件变更即时生效
+- **错误覆盖**：编译错误直接在浏览器中显示
+
+#### 开发体验优化
+- **智能启动**：自动检测环境，选择最佳启动方式
+- **错误处理**：启动失败时自动降级到标准模式
+- **跨平台**：支持 Windows、Linux、macOS
 
 ### 访问地址
 - **前端应用**: http://localhost:5173

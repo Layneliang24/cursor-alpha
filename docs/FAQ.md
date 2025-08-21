@@ -99,6 +99,95 @@ const getComponentRef = () => {
 
 ---
 
+##### 问题2：进度条首次加载时不显示
+
+**问题描述**
+- 练习界面首次加载时进度条不显示
+- 需要点击任意键开始练习后，再切换到其他页面，再回到练习界面，进度条才显示
+- 组件功能正常，但进度条显示时机有问题
+
+**问题分析**
+1. **组件初始化时机问题**：进度条组件在页面首次加载时没有正确初始化
+2. **状态同步问题**：`useTypingStore` 中的 `words` 和 `currentWordIndex` 状态在组件首次渲染时可能为空
+3. **路由切换触发重新挂载**：从其他页面返回时触发了组件的重新挂载，此时 store 状态已经存在
+4. **条件渲染逻辑问题**：`v-if="words && words.length > 0"` 条件在首次渲染时可能为 false
+
+**解决方案**
+
+1. **优化进度条显示逻辑**
+```vue
+<!-- 使用 v-show 替代 v-if，避免重复渲染 -->
+<div class="progress-section" v-show="shouldShowProgressBar">
+  <div class="progress-bar">
+    <div class="progress-fill" :style="{ width: progressBarWidth + '%' }"></div>
+  </div>
+  <div class="progress-text">{{ progressBarText }}</div>
+</div>
+```
+
+2. **添加进度条计算属性**
+```javascript
+// 进度条显示条件
+const shouldShowProgressBar = computed(() => {
+  const hasWords = typingStore.words && typingStore.words.length > 0
+  const isPracticeActive = typingStore.practiceStarted && !typingStore.practiceCompleted
+  return hasWords && isPracticeActive
+})
+
+// 进度条宽度
+const progressBarWidth = computed(() => {
+  if (!typingStore.words || typingStore.words.length === 0) return 0
+  const progress = ((typingStore.currentWordIndex + 1) / typingStore.words.length) * 100
+  return Math.min(progress, 100)
+})
+
+// 进度条文本
+const progressBarText = computed(() => {
+  if (!typingStore.words || typingStore.words.length === 0) return '0/0'
+  return `${typingStore.currentWordIndex + 1}/${typingStore.words.length}`
+})
+```
+
+3. **改进组件初始化**
+```javascript
+onMounted(async () => {
+  // 现有代码...
+  
+  // 检查并恢复练习状态
+  if (typingStore.practiceStarted && !typingStore.practiceCompleted && typingStore.words.length > 0) {
+    console.log('检测到未完成的练习，恢复状态...')
+    await nextTick()
+  }
+})
+```
+
+4. **添加状态变化监听**
+```javascript
+// 监听进度条相关状态变化
+watch(() => [typingStore.words, typingStore.practiceStarted, typingStore.practiceCompleted], 
+  ([words, practiceStarted, practiceCompleted]) => {
+    console.log('进度条状态变化:', { words, practiceStarted, practiceCompleted })
+  }, 
+  { immediate: true, deep: true }
+)
+```
+
+**经验总结**
+1. **使用 v-show 替代 v-if**：避免组件重复创建和销毁，提高性能
+2. **computed 属性响应式**：确保进度条状态变化时自动更新
+3. **状态监听和调试**：添加 watch 和日志，便于问题排查
+4. **组件生命周期管理**：在 onMounted 中正确处理状态初始化
+
+**相关文件**
+- `frontend/src/views/english/TypingPractice.vue`：主要修改文件
+- `frontend/src/stores/typing.js`：状态管理
+- `tests/frontend/test_progress_bar_display.py`：测试脚本
+- `tests/frontend/test_typing_component_lifecycle.py`：生命周期测试
+
+**解决时间**：2025-01-17
+
+---
+
 ### 🧪 测试与CI/CD
 
 > 参见 `docs/TESTING_STANDARDS.md` 获取完整规范与流程；本节聚合与测试/CI 相关的问题记录。
@@ -1692,3 +1781,213 @@ return request.post('/english/typing-practice/complete_session/')
 - `backend/apps/english/services.py`：会话统计逻辑
 
 **所属业务或模块：** 英语学习 - 数据分析
+
+---
+
+##### 问题4：练习界面进度条不显示
+
+**问题描述**
+- 打字练习界面选择测试词典后，进度条完全不显示
+- 前端控制台显示"没有找到符合条件的单词"
+- 练习无法正常开始，进度条条件 `words && words.length > 0` 不满足
+- 影响用户体验，无法看到练习进度
+
+**问题分析**
+1. **API调用参数错误**：前端传递 `{ category: "测试词典", chapter: 1 }`，但API期望 `{ dictionary_id: 3, chapter: 1 }`
+2. **参数名不匹配**：使用 `category` 而不是 `dictionary_id`
+3. **参数值错误**：传递词典名称而不是词典ID
+4. **API返回空数组**：由于参数错误，API无法找到对应数据，返回 `[]`
+5. **进度条条件失败**：`words.length > 0` 条件不满足，进度条不显示
+
+**解决方案**
+
+1. **修复API调用参数**
+```javascript
+// 修复前（错误）
+const response = await englishAPI.getTypingWordsByDictionary({
+  category: dictionaryId,  // ❌ 错误参数名和值
+  chapter: chapter
+})
+
+// 修复后（正确）
+// 首先获取词典列表，找到对应的dictionary_id
+const dictResponse = await englishAPI.getDictionaries()
+let targetDictionaryId = null
+
+for (const dict of dictResponse) {
+  if (dict.name === dictionaryId) {
+    targetDictionaryId = dict.id
+    break
+  }
+}
+
+if (!targetDictionaryId) {
+  console.error('未找到词典:', dictionaryId)
+  ElMessage.error('未找到指定的词典')
+  return false
+}
+
+// 使用正确的参数调用API
+const response = await englishAPI.getTypingWordsByDictionary({
+  dictionary_id: targetDictionaryId,  // ✅ 正确的参数名和值
+  chapter: chapter
+})
+```
+
+2. **验证API参数匹配**
+```javascript
+// 前端传递参数
+{ dictionary_id: 3, chapter: 1 }
+
+// 后端API期望参数
+params = {
+  'dictionary_id': dictionary_id,  // 数字ID
+  'chapter': chapter
+}
+```
+
+3. **测试验证修复结果**
+```bash
+# 测试API调用
+curl -X GET "http://localhost:8000/api/v1/english/typing-words/by_dictionary/?dictionary_id=3&chapter=1"
+
+# 预期结果：返回5个测试单词
+[{"id":2350,"word":"testing","translation":"测试",...}, ...]
+```
+
+**经验总结**
+1. **API参数规范**：前后端API调用必须确保参数名和参数值完全匹配
+2. **数据映射关系**：前端显示名称需要正确映射到后端数据库ID
+3. **错误排查方法**：使用测试脚本模拟前端API调用，快速定位参数问题
+4. **进度条显示条件**：确保 `words` 数组有数据，进度条才能正常显示
+5. **调试工具使用**：创建专门的测试脚本验证API调用和数据流
+
+**相关文件**
+- `frontend/src/stores/typing.js`：修复 `startPracticeWithDictionary` 方法
+- `frontend/src/views/english/TypingPractice.vue`：进度条显示逻辑
+- `tests/api/test_frontend_api_simulation.py`：诊断测试脚本
+- `backend/apps/english/views.py`：`by_dictionary` API实现
+
+**解决时间**：2025-08-21
+
+---
+
+##### 问题5：练习界面章节单词数量显示错误
+
+**问题描述**
+- 打字练习界面章节下拉框中显示的单词数量不准确
+- 测试词典第1章实际只有5个单词，前端却显示25个
+- 测试词典第2章实际只有3个单词，前端却显示25个
+- 所有词典都存在类似问题，影响用户对练习内容的预期
+
+**问题分析**
+1. **前端硬编码**：章节单词数量使用固定的 `wordsPerChapter = 25`
+2. **数据不一致**：前端显示的数量与实际数据库中的数量不符
+3. **计算逻辑错误**：使用简单的数学计算而不是实时查询数据库
+4. **用户体验问题**：用户无法准确了解每章的实际练习内容
+
+**解决方案**
+
+1. **新增后端API接口**
+```python
+# backend/apps/english/views.py
+@action(detail=False, methods=['get'])
+def chapter_word_counts(self, request):
+    """获取指定词库各章节的单词数量"""
+    dictionary_id = request.query_params.get('dictionary_id')
+    
+    # 查询各章节的单词数量
+    from django.db.models import Count
+    chapter_counts = TypingWord.objects.filter(
+        dictionary_id=dictionary_id
+    ).values('chapter').annotate(
+        word_count=Count('id')
+    ).order_by('chapter')
+    
+    # 构建章节数据
+    chapters = []
+    for item in chapter_counts:
+        chapters.append({
+            'number': item['chapter'],
+            'wordCount': item['word_count']
+        })
+    
+    return Response({
+        'dictionary_id': dictionary_id,
+        'dictionary_name': dictionary.name,
+        'total_words': dictionary.total_words,
+        'chapter_count': dictionary.chapter_count,
+        'chapters': chapters
+    })
+```
+
+2. **前端API调用**
+```javascript
+// frontend/src/api/english.js
+getChapterWordCounts(dictionaryId) {
+  return request.get('/english/dictionaries/chapter_word_counts/', { 
+    params: { dictionary_id: dictionaryId }
+  })
+}
+```
+
+3. **修复前端章节列表逻辑**
+```javascript
+// frontend/src/views/english/TypingPractice.vue
+const updateChapterList = async () => {
+  if (!selectedDictionary.value) {
+    chapterList.value = []
+    return
+  }
+  
+  try {
+    // 实时获取各章节的单词数量
+    const response = await englishAPI.getChapterWordCounts(selectedDictionary.value.id)
+    
+    if (response && response.chapters) {
+      chapterList.value = response.chapters
+      console.log('获取到真实章节数据:', response.chapters)
+    } else {
+      // 如果API调用失败，使用备用逻辑
+      fallbackChapterList()
+    }
+  } catch (error) {
+    console.error('获取章节单词数量失败:', error)
+    // 使用备用逻辑
+    fallbackChapterList()
+  }
+}
+```
+
+4. **测试验证**
+```bash
+# 测试新API接口
+curl -X GET "http://localhost:8000/api/v1/english/dictionaries/chapter_word_counts/?dictionary_id=3"
+
+# 预期结果：返回真实的章节数据
+{
+  "dictionary_id": 3,
+  "dictionary_name": "测试词典",
+  "chapters": [
+    {"number": 1, "wordCount": 5},
+    {"number": 2, "wordCount": 3}
+  ]
+}
+```
+
+**经验总结**
+1. **数据一致性**：前端显示的数据必须与后端数据库保持一致
+2. **实时查询**：避免硬编码，应该实时查询数据库获取准确数据
+3. **备用机制**：API调用失败时应该有备用方案，确保功能可用
+4. **用户体验**：准确的数据显示有助于用户做出正确的选择
+5. **测试覆盖**：新增功能需要完整的测试覆盖，包括正常情况和错误情况
+
+**相关文件**
+- `backend/apps/english/views.py`：新增 `chapter_word_counts` API接口
+- `frontend/src/api/english.js`：新增 `getChapterWordCounts` 方法
+- `frontend/src/views/english/TypingPractice.vue`：修复章节列表更新逻辑
+- `tests/api/test_chapter_word_counts_api.py`：新增API测试脚本
+
+**解决时间**：2025-08-21
+
+---

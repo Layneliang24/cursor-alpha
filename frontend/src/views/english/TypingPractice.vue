@@ -123,14 +123,14 @@
         </div>
         
         <!-- 进度条 -->
-        <div class="progress-section" v-if="words && words.length > 0">
+        <div class="progress-section" v-show="shouldShowProgressBar">
           <div class="progress-bar">
             <div 
               class="progress-fill" 
-              :style="{ width: ((currentWordIndex + 1) / (words.length || 1) * 100) + '%' }"
+              :style="{ width: progressBarWidth + '%' }"
             ></div>
           </div>
-          <div class="progress-text">{{ currentWordIndex + 1 }}/{{ words.length || 0 }}</div>
+          <div class="progress-text">{{ progressBarText }}</div>
         </div>
         
         <!-- 左右提示词 - 动态显示上一个和下一个单词 -->
@@ -313,6 +313,22 @@ export default {
       }
     }, { immediate: true })
     
+    // 监听进度条相关状态变化
+    watch(() => [typingStore.words, typingStore.practiceStarted, typingStore.practiceCompleted], ([words, practiceStarted, practiceCompleted]) => {
+      console.log('进度条状态变化监听:', {
+        words: words,
+        wordsLength: words?.length,
+        practiceStarted: practiceStarted,
+        practiceCompleted: practiceCompleted,
+        shouldShow: words && words.length > 0 && practiceStarted && !practiceCompleted
+      })
+    }, { immediate: true, deep: true })
+    
+    // 监听当前单词索引变化
+    watch(() => typingStore.currentWordIndex, (newIndex, oldIndex) => {
+      console.log('当前单词索引变化:', { oldIndex, newIndex })
+    }, { immediate: true })
+    
     // 练习设置
     const practiceSettings = reactive({
       difficulty: 'beginner',
@@ -475,12 +491,33 @@ export default {
     }
     
     // 更新章节列表
-    const updateChapterList = () => {
+    const updateChapterList = async () => {
       if (!selectedDictionary.value) {
         chapterList.value = []
         return
       }
       
+      try {
+        // 实时获取各章节的单词数量
+        const response = await englishAPI.getChapterWordCounts(selectedDictionary.value.id)
+        
+        if (response && response.chapters) {
+          chapterList.value = response.chapters
+          console.log('获取到真实章节数据:', response.chapters)
+        } else {
+          // 如果API调用失败，使用备用逻辑
+          console.warn('API调用失败，使用备用逻辑')
+          fallbackChapterList()
+        }
+      } catch (error) {
+        console.error('获取章节单词数量失败:', error)
+        // 使用备用逻辑
+        fallbackChapterList()
+      }
+    }
+    
+    // 备用章节列表逻辑（保持原有功能）
+    const fallbackChapterList = () => {
       const chapters = []
       for (let i = 1; i <= selectedDictionary.value.chapter_count; i++) {
         const isLastChapter = i === selectedDictionary.value.chapter_count
@@ -775,6 +812,13 @@ export default {
       
       // 调试信息：检查组件是否正确渲染
       console.log('组件已挂载')
+      console.log('初始状态检查:', {
+        words: typingStore.words,
+        wordsLength: typingStore.words?.length,
+        practiceStarted: typingStore.practiceStarted,
+        practiceCompleted: typingStore.practiceCompleted,
+        currentWordIndex: typingStore.currentWordIndex
+      })
       
       // 延迟检查组件状态
       setTimeout(() => {
@@ -783,6 +827,16 @@ export default {
         } else {
           console.log('发音组件未就绪')
         }
+        
+        // 检查进度条状态
+        console.log('延迟状态检查:', {
+          words: typingStore.words,
+          wordsLength: typingStore.words?.length,
+          practiceStarted: typingStore.practiceStarted,
+          practiceCompleted: typingStore.practiceCompleted,
+          currentWordIndex: typingStore.currentWordIndex,
+          shouldShowProgressBar: typingStore.words && typingStore.words.length > 0 && typingStore.practiceStarted && !typingStore.practiceCompleted
+        })
       }, 1000)
     })
     
@@ -869,6 +923,28 @@ export default {
         if (currentSessionTime === 0) return 0
         const minutes = currentSessionTime / 60
         return Math.round(currentCorrectCount / minutes)
+      }),
+      
+      // 进度条相关计算属性
+      shouldShowProgressBar: computed(() => {
+        const hasWords = typingStore.words && typingStore.words.length > 0
+        const isPracticeActive = typingStore.practiceStarted && !typingStore.practiceCompleted
+        console.log('进度条显示条件检查:', { hasWords, isPracticeActive, wordsLength: typingStore.words?.length })
+        return hasWords && isPracticeActive
+      }),
+      
+      progressBarWidth: computed(() => {
+        if (!typingStore.words || typingStore.words.length === 0) return 0
+        const progress = ((typingStore.currentWordIndex + 1) / typingStore.words.length) * 100
+        console.log('进度条宽度计算:', { currentIndex: typingStore.currentWordIndex, totalWords: typingStore.words.length, progress })
+        return Math.min(progress, 100)
+      }),
+      
+      progressBarText: computed(() => {
+        if (!typingStore.words || typingStore.words.length === 0) return '0/0'
+        const text = `${typingStore.currentWordIndex + 1}/${typingStore.words.length}`
+        console.log('进度条文本:', text)
+        return text
       }),
       
       // 字母样式方法
