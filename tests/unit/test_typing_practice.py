@@ -262,7 +262,7 @@ class TypingPracticeTestCase(TestCase):
         self.assertEqual(data['translation'], '测试')
         self.assertEqual(data['phonetic'], 'test')
         self.assertEqual(data['difficulty'], 'beginner')
-        self.assertIn('dictionary', data)  # 检查dictionary字段而不是category
+        self.assertIn('dictionary', data)  # 检查dictionary字段
     
     def test_typing_session_serializer(self):
         """测试打字会话序列化器"""
