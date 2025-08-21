@@ -47,6 +47,8 @@ def run_stable_tests():
         'tests/performance/test_performance_regression.py',  # 已修复，可以启用
         'tests/integration/test_full_workflow_integration.py',  # 已修复，可以启用
         'tests/edge_cases/test_edge_cases.py',  # 已修复，可以启用
+        # 'tests/data_management/test_data_factory.py',  # 新增测试数据管理（暂时移除）
+        # 'tests/api_docs/test_api_documentation.py',  # 新增API文档测试（暂时移除）
     ]
     
     # 排除的测试文件（有问题的测试）
