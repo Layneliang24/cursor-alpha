@@ -85,15 +85,32 @@ const mockElPagination = {
   emits: ['size-change', 'current-change']
 }
 
+const mockElRow = {
+  template: '<div class="el-row" :gutter="gutter"><slot /></div>',
+  props: ['gutter']
+}
+
+const mockElCol = {
+  template: '<div class="el-col" :span="span"><slot /></div>',
+  props: ['span']
+}
+
 // Mock 路由
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/articles', component: { template: '<div>Articles</div>' } },
     { path: '/articles/create', component: { template: '<div>Create</div>' } },
-    { path: '/articles/:id', component: { template: '<div>Article Detail</div>' } }
+    { 
+      path: '/articles/:id', 
+      name: 'ArticleDetail',
+      component: { template: '<div>Article Detail</div>' } 
+    }
   ]
 })
+
+// Mock router.push
+router.push = vi.fn()
 
 // Mock Pinia
 const pinia = createPinia()
@@ -277,25 +294,71 @@ describe('ArticleList.vue Component', () => {
 
   describe('空状态处理', () => {
     it('显示空状态（当没有文章时）', async () => {
+      // 重新设置mock数据为空状态
       mockArticlesStore.articles = []
       mockArticlesStore.pagination.total = 0
       
-      await wrapper.vm.$nextTick()
+      // 重新挂载组件以应用新的数据
+      const emptyWrapper = mount(ArticleList, {
+        global: {
+          plugins: [router],
+          stubs: {
+            'el-input': mockElInput,
+            'el-button': mockElButton,
+            'el-select': mockElSelect,
+            'el-option': mockElOption,
+            'el-row': mockElRow,
+            'el-col': mockElCol,
+            'el-card': mockElCard,
+            'el-avatar': mockElAvatar,
+            'el-icon': mockElIcon,
+            'el-tag': mockElTag,
+            'el-empty': mockElEmpty,
+            'el-pagination': mockElPagination,
+            'el-skeleton': mockElSkeleton
+          }
+        }
+      })
+      
+      await emptyWrapper.vm.$nextTick()
       
       // 检查空状态组件是否存在
-      const emptyState = wrapper.findComponent(mockElEmpty)
+      const emptyState = emptyWrapper.findComponent(mockElEmpty)
       expect(emptyState.exists()).toBe(true)
     })
   })
 
   describe('加载状态', () => {
     it('显示骨架屏（当加载中时）', async () => {
+      // 重新设置mock数据为加载状态
       mockArticlesStore.loading = true
       
-      await wrapper.vm.$nextTick()
+      // 重新挂载组件以应用新的数据
+      const loadingWrapper = mount(ArticleList, {
+        global: {
+          plugins: [router],
+          stubs: {
+            'el-input': mockElInput,
+            'el-button': mockElButton,
+            'el-select': mockElSelect,
+            'el-option': mockElOption,
+            'el-row': mockElRow,
+            'el-col': mockElCol,
+            'el-card': mockElCard,
+            'el-avatar': mockElAvatar,
+            'el-icon': mockElIcon,
+            'el-tag': mockElTag,
+            'el-empty': mockElEmpty,
+            'el-pagination': mockElPagination,
+            'el-skeleton': mockElSkeleton
+          }
+        }
+      })
+      
+      await loadingWrapper.vm.$nextTick()
       
       // 检查骨架屏组件是否存在
-      const skeletons = wrapper.findAllComponents(mockElSkeleton)
+      const skeletons = loadingWrapper.findAllComponents(mockElSkeleton)
       expect(skeletons.length).toBeGreaterThan(0)
     })
   })

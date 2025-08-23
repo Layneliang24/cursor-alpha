@@ -128,7 +128,8 @@ Object.defineProperty(navigator, 'clipboard', {
   value: {
     writeText: vi.fn().mockResolvedValue(undefined)
   },
-  writable: true
+  writable: true,
+  configurable: true
 })
 
 describe('ArticleDetail.vue Component', () => {
