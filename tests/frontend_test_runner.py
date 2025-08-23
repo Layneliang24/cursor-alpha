@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 import time
+import shutil
 
 # 项目根目录
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -24,6 +25,31 @@ class FrontendTestRunner:
         self.frontend_dir = FRONTEND_DIR
         self.test_results = {}
         self.coverage_data = {}
+        self.npm_cmd = self._get_npm_command()
+        
+    def _get_npm_command(self) -> str:
+        """获取npm命令路径"""
+        # 在Windows上，优先查找npm.cmd
+        if os.name == 'nt':  # Windows
+            npm_cmd = shutil.which('npm.cmd') or shutil.which('npm')
+            if npm_cmd:
+                return npm_cmd
+            # 尝试常见的npm路径
+            possible_paths = [
+                r"C:\Program Files\nodejs\npm.cmd",
+                r"C:\Program Files (x86)\nodejs\npm.cmd",
+                r"C:\Users\%USERNAME%\AppData\Roaming\npm\npm.cmd"
+            ]
+            for path in possible_paths:
+                expanded_path = os.path.expandvars(path)
+                if os.path.exists(expanded_path):
+                    return expanded_path
+        else:
+            npm_cmd = shutil.which('npm')
+            if npm_cmd:
+                return npm_cmd
+        
+        return 'npm'  # 回退到默认值
         
     def check_frontend_environment(self) -> bool:
         """检查前端测试环境"""
@@ -61,10 +87,12 @@ class FrontendTestRunner:
         
         try:
             result = subprocess.run(
-                ["npm", "install"],
+                [self.npm_cmd, "install"],
                 cwd=self.frontend_dir,
                 capture_output=True,
                 text=True,
+                encoding='utf-8',
+                errors='ignore',
                 timeout=300
             )
             
@@ -87,7 +115,7 @@ class FrontendTestRunner:
         print(f"🚀 运行前端{level}测试...")
         
         # 构建测试命令
-        cmd = ["npm", "run", "test:fe"]
+        cmd = [self.npm_cmd, "run", "test:fe"]
         
         # 添加覆盖率参数
         if coverage:
@@ -111,6 +139,8 @@ class FrontendTestRunner:
                 cwd=self.frontend_dir,
                 capture_output=True,
                 text=True,
+                encoding='utf-8',
+                errors='ignore',
                 timeout=600
             )
             
