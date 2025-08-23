@@ -26,11 +26,18 @@ const mockAudio = {
   removeEventListener: vi.fn()
 }
 
+// 确保Audio构造函数返回正确的mock对象
 global.Audio = vi.fn(() => mockAudio)
 
 // 确保Audio.play()返回Promise
 Object.defineProperty(mockAudio, 'play', {
   value: vi.fn().mockResolvedValue(undefined),
+  writable: true
+})
+
+// 确保Audio构造函数本身也被正确mock
+Object.defineProperty(global, 'Audio', {
+  value: vi.fn(() => mockAudio),
   writable: true
 })
 
