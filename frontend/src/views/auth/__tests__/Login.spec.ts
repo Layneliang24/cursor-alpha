@@ -57,10 +57,10 @@ describe('Login.vue', () => {
     const authAPIModule = await import('@/api/auth')
     mockAuthAPI = authAPIModule.authAPI
 
-    // 确保mock函数被正确设置
-    mockAuthStore.login = vi.fn()
-    mockAuthAPI.verifyUserIdentity = vi.fn()
-    mockAuthAPI.requestPasswordReset = vi.fn()
+    // 确保mock函数被正确设置 - 不要重新创建，只重置调用记录
+    mockAuthStore.login.mockClear()
+    mockAuthAPI.verifyUserIdentity.mockClear()
+    mockAuthAPI.requestPasswordReset.mockClear()
 
     wrapper = shallowMount(Login, {
       global: {
@@ -118,12 +118,6 @@ describe('Login.vue', () => {
       const currentCaptcha = wrapper.vm.captchaCode
       wrapper.vm.loginForm.captcha = currentCaptcha
 
-      console.log('验证码设置:', {
-        captcha: wrapper.vm.loginForm.captcha,
-        captchaCode: wrapper.vm.captchaCode,
-        captchaMatch: wrapper.vm.loginForm.captcha.toLowerCase() === wrapper.vm.captchaCode.toLowerCase()
-      })
-
       // 模拟登录成功
       mockAuthStore.login.mockResolvedValue()
 
@@ -135,30 +129,10 @@ describe('Login.vue', () => {
       await nextTick()
 
       // 执行登录
-      console.log('执行登录前:', {
-        mockLogin: mockAuthStore.login,
-        mockLoginCalls: mockAuthStore.login.mock?.calls?.length || 0,
-        loginFormRef: wrapper.vm.loginFormRef,
-        loginFormRefValue: wrapper.vm.loginFormRef?.value,
-        loginFormRefValueValidate: wrapper.vm.loginFormRef?.value?.validate,
-        loginFormRefValueType: typeof wrapper.vm.loginFormRef?.value,
-        loginFormRefValueTruthy: !!wrapper.vm.loginFormRef?.value
-      })
-      
-      try {
-        await wrapper.vm.handleLogin()
-        console.log('handleLogin 执行成功')
-      } catch (error) {
-        console.log('handleLogin 执行失败:', error)
-      }
-      
-      console.log('执行登录后:', {
-        mockLoginCalls: mockAuthStore.login.mock?.calls?.length || 0,
-        mockLoginArgs: mockAuthStore.login.mock?.calls || []
-      })
+      await wrapper.vm.handleLogin()
 
       expect(mockValidate).toHaveBeenCalled()
-      expect(mockAuthStore.login).toHaveBeenCalledWith({
+      expect(wrapper.vm.authStore.login).toHaveBeenCalledWith({
         username: 'testuser',
         password: 'testpass'
       })
@@ -208,7 +182,7 @@ describe('Login.vue', () => {
       await wrapper.vm.handleLogin()
 
       expect(mockValidate).toHaveBeenCalled()
-      expect(mockAuthStore.login).toHaveBeenCalled()
+      expect(wrapper.vm.authStore.login).toHaveBeenCalled()
     })
   })
 
