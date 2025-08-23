@@ -126,7 +126,7 @@ const pinia = createPinia()
 // Mock navigator.clipboard
 Object.defineProperty(navigator, 'clipboard', {
   value: {
-    writeText: vi.fn().mockResolvedValue(undefined)
+    writeText: vi.fn(() => Promise.resolve())
   },
   writable: true,
   configurable: true
@@ -320,11 +320,33 @@ describe('ArticleDetail.vue Component', () => {
 
   describe('加载状态', () => {
     it('显示骨架屏（当加载中时）', async () => {
+      // 重新设置mock数据为加载状态
       mockArticlesStore.loading = true
-      await wrapper.vm.$nextTick()
       
-      // 检查骨架屏是否存在
-      const skeleton = wrapper.findComponent(mockElSkeleton)
+      // 重新挂载组件以应用新的数据
+      const loadingWrapper = mount(ArticleDetail, {
+        global: {
+          plugins: [router],
+          stubs: {
+            'TableOfContents': mockTableOfContents,
+            'MarkdownRenderer': mockMarkdownRenderer,
+            'el-skeleton': mockElSkeleton,
+            'el-breadcrumb': mockElBreadcrumb,
+            'el-breadcrumb-item': mockElBreadcrumbItem,
+            'el-avatar': mockElAvatar,
+            'el-icon': mockElIcon,
+            'el-tag': mockElTag,
+            'el-button': mockElButton,
+            'el-input': mockElInput,
+            'el-empty': mockElEmpty
+          }
+        }
+      })
+      
+      await loadingWrapper.vm.$nextTick()
+      
+      // 检查骨架屏组件是否存在
+      const skeleton = loadingWrapper.findComponent(mockElSkeleton)
       expect(skeleton.exists()).toBe(true)
     })
   })
@@ -358,6 +380,9 @@ describe('ArticleDetail.vue Component', () => {
 
   describe('评论交互', () => {
     it('发表评论功能正确调用', async () => {
+      // 设置评论内容
+      wrapper.vm.newComment = '测试评论内容'
+      
       // 直接调用组件方法测试
       await wrapper.vm.submitComment()
       
@@ -365,11 +390,14 @@ describe('ArticleDetail.vue Component', () => {
       const { articlesAPI } = await import('@/api/articles')
       expect(articlesAPI.createComment).toHaveBeenCalledWith({
         article: '1',
-        content: ''
+        content: '测试评论内容'
       })
     })
 
     it('空评论不能提交', async () => {
+      // 确保评论为空
+      wrapper.vm.newComment = ''
+      
       // 直接调用组件方法测试
       await wrapper.vm.submitComment()
       
@@ -484,40 +512,127 @@ describe('ArticleDetail.vue Component', () => {
 
   describe('边界情况', () => {
     it('文章不存在时显示错误', async () => {
+      // 重新设置mock数据为空状态
       mockArticlesStore.currentArticle = null
       
-      await wrapper.vm.$nextTick()
+      // 重新挂载组件以应用新的数据
+      const nullWrapper = mount(ArticleDetail, {
+        global: {
+          plugins: [router],
+          stubs: {
+            'TableOfContents': mockTableOfContents,
+            'MarkdownRenderer': mockMarkdownRenderer,
+            'el-skeleton': mockElSkeleton,
+            'el-breadcrumb': mockElBreadcrumb,
+            'el-breadcrumb-item': mockElBreadcrumbItem,
+            'el-avatar': mockElAvatar,
+            'el-icon': mockElIcon,
+            'el-tag': mockElTag,
+            'el-button': mockElButton,
+            'el-input': mockElInput,
+            'el-empty': mockElEmpty
+          }
+        }
+      })
+      
+      await nullWrapper.vm.$nextTick()
       
       // 应该显示错误状态或空状态
-      expect(wrapper.find('.article-layout').exists()).toBe(false)
-      expect(wrapper.find('.error-container').exists()).toBe(true)
+      expect(nullWrapper.find('.article-layout').exists()).toBe(false)
+      expect(nullWrapper.find('.error-container').exists()).toBe(true)
     })
 
     it('文章无封面时正确处理', async () => {
-      mockArticlesStore.currentArticle.cover_image = null
+      // 重新设置mock数据
+      const noCoverArticle = { ...mockArticlesStore.currentArticle, cover_image: null }
+      mockArticlesStore.currentArticle = noCoverArticle
       
-      await wrapper.vm.$nextTick()
+      // 重新挂载组件
+      const noCoverWrapper = mount(ArticleDetail, {
+        global: {
+          plugins: [router],
+          stubs: {
+            'TableOfContents': mockTableOfContents,
+            'MarkdownRenderer': mockMarkdownRenderer,
+            'el-skeleton': mockElSkeleton,
+            'el-breadcrumb': mockElBreadcrumb,
+            'el-breadcrumb-item': mockElBreadcrumbItem,
+            'el-avatar': mockElAvatar,
+            'el-icon': mockElIcon,
+            'el-tag': mockElTag,
+            'el-button': mockElButton,
+            'el-input': mockElInput,
+            'el-empty': mockElEmpty
+          }
+        }
+      })
       
-      const coverImage = wrapper.find('.article-cover img')
+      await noCoverWrapper.vm.$nextTick()
+      
+      const coverImage = noCoverWrapper.find('.article-cover img')
       expect(coverImage.exists()).toBe(false)
     })
 
     it('文章无标签时正确处理', async () => {
-      mockArticlesStore.currentArticle.tags = []
+      // 重新设置mock数据
+      const noTagsArticle = { ...mockArticlesStore.currentArticle, tags: [] }
+      mockArticlesStore.currentArticle = noTagsArticle
       
-      await wrapper.vm.$nextTick()
+      // 重新挂载组件
+      const noTagsWrapper = mount(ArticleDetail, {
+        global: {
+          plugins: [router],
+          stubs: {
+            'TableOfContents': mockTableOfContents,
+            'MarkdownRenderer': mockMarkdownRenderer,
+            'el-skeleton': mockElSkeleton,
+            'el-breadcrumb': mockElBreadcrumb,
+            'el-breadcrumb-item': mockElBreadcrumbItem,
+            'el-avatar': mockElAvatar,
+            'el-icon': mockElIcon,
+            'el-tag': mockElTag,
+            'el-button': mockElButton,
+            'el-input': mockElInput,
+            'el-empty': mockElEmpty
+          }
+        }
+      })
       
-      const tags = wrapper.findAll('.el-tag')
+      await noTagsWrapper.vm.$nextTick()
+      
+      const tags = noTagsWrapper.findAll('.el-tag')
       expect(tags.length).toBe(0)
     })
 
     it('文章无分类时正确处理', async () => {
-      mockArticlesStore.currentArticle.category = null
+      // 重新设置mock数据
+      const noCategoryArticle = { ...mockArticlesStore.currentArticle, category: null }
+      mockArticlesStore.currentArticle = noCategoryArticle
       
-      await wrapper.vm.$nextTick()
+      // 重新挂载组件
+      const noCategoryWrapper = mount(ArticleDetail, {
+        global: {
+          plugins: [router],
+          stubs: {
+            'TableOfContents': mockTableOfContents,
+            'MarkdownRenderer': mockMarkdownRenderer,
+            'el-skeleton': mockElSkeleton,
+            'el-breadcrumb': mockElBreadcrumb,
+            'el-breadcrumb-item': mockElBreadcrumbItem,
+            'el-avatar': mockElAvatar,
+            'el-icon': mockElIcon,
+            'el-tag': mockElTag,
+            'el-button': mockElButton,
+            'el-input': mockElInput,
+            'el-empty': mockElEmpty
+          }
+        }
+      })
+      
+      await noCategoryWrapper.vm.$nextTick()
       
       // 面包屑中不应该显示分类
-      expect(wrapper.text()).not.toContain('技术')
+      expect(noCategoryWrapper.text()).not.toContain('技术')
     })
   })
 
@@ -525,6 +640,9 @@ describe('ArticleDetail.vue Component', () => {
     it('评论提交后重新获取数据', async () => {
       const { articlesAPI } = await import('@/api/articles')
       articlesAPI.createComment.mockResolvedValue({ id: 1, content: 'test' })
+      
+      // 设置评论内容
+      wrapper.vm.newComment = '测试评论内容'
       
       // 直接调用组件方法测试
       await wrapper.vm.submitComment()
