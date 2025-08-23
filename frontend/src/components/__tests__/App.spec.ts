@@ -5,7 +5,7 @@ import { createPinia } from 'pinia'
 import App from '../../App.vue'
 
 // Mock 路由
-const createMockRouter = (path: string) => {
+const createMockRouter = async (path: string) => {
   const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -16,8 +16,9 @@ const createMockRouter = (path: string) => {
     ]
   })
   
-  // 设置当前路径
-  router.push(path)
+  // 设置当前路径并等待完成
+  await router.push(path)
+  await router.isReady()
   return router
 }
 
@@ -35,7 +36,7 @@ const mockComponents = {
 describe('App Component', () => {
   describe('认证页面布局', () => {
     it('在登录页面显示简洁布局', async () => {
-      const router = createMockRouter('/login')
+      const router = await createMockRouter('/login')
       const wrapper = mount(App, {
         global: {
           plugins: [router, pinia],
@@ -46,7 +47,6 @@ describe('App Component', () => {
         }
       })
       
-      await router.isReady()
       await wrapper.vm.$nextTick()
       
       expect(wrapper.find('.auth-layout').exists()).toBe(true)
@@ -55,7 +55,7 @@ describe('App Component', () => {
     })
 
     it('在注册页面显示简洁布局', async () => {
-      const router = createMockRouter('/register')
+      const router = await createMockRouter('/register')
       const wrapper = mount(App, {
         global: {
           plugins: [router, pinia],
@@ -66,7 +66,6 @@ describe('App Component', () => {
         }
       })
       
-      await router.isReady()
       await wrapper.vm.$nextTick()
       
       expect(wrapper.find('.auth-layout').exists()).toBe(true)
@@ -77,7 +76,7 @@ describe('App Component', () => {
 
   describe('普通页面布局', () => {
     it('在首页显示完整布局', async () => {
-      const router = createMockRouter('/')
+      const router = await createMockRouter('/')
       const wrapper = mount(App, {
         global: {
           plugins: [router, pinia],
@@ -88,7 +87,6 @@ describe('App Component', () => {
         }
       })
       
-      await router.isReady()
       await wrapper.vm.$nextTick()
       
       expect(wrapper.find('.auth-layout').exists()).toBe(false)
@@ -99,7 +97,7 @@ describe('App Component', () => {
     })
 
     it('在仪表板页面显示完整布局', async () => {
-      const router = createMockRouter('/dashboard')
+      const router = await createMockRouter('/dashboard')
       const wrapper = mount(App, {
         global: {
           plugins: [router, pinia],
@@ -121,7 +119,7 @@ describe('App Component', () => {
 
   describe('响应式布局', () => {
     it('主内容区域根据侧边栏状态调整样式', async () => {
-      const router = createMockRouter('/')
+      const router = await createMockRouter('/')
       const wrapper = mount(App, {
         global: {
           plugins: [router, pinia],
@@ -132,7 +130,6 @@ describe('App Component', () => {
         }
       })
       
-      await router.isReady()
       await wrapper.vm.$nextTick()
       
       const mainContent = wrapper.find('.main-content')
@@ -142,7 +139,7 @@ describe('App Component', () => {
 
   describe('组件挂载', () => {
     it('正确挂载所有子组件', async () => {
-      const router = createMockRouter('/')
+      const router = await createMockRouter('/')
       const wrapper = mount(App, {
         global: {
           plugins: [router, pinia],
@@ -153,7 +150,6 @@ describe('App Component', () => {
         }
       })
       
-      await router.isReady()
       await wrapper.vm.$nextTick()
       
       expect(wrapper.findComponent(mockComponents.TopNavBar).exists()).toBe(true)
