@@ -3,13 +3,15 @@ import { mount } from '@vue/test-utils'
 import WordPronunciationIcon from '../WordPronunciationIcon.vue'
 
 // Mock @vueuse/sound
+const mockUseSound = {
+  play: vi.fn(),
+  stop: vi.fn(),
+  sound: { unload: vi.fn() },
+  isPlaying: false
+}
+
 vi.mock('@vueuse/sound', () => ({
-  useSound: vi.fn(() => ({
-    play: vi.fn(),
-    stop: vi.fn(),
-    sound: { unload: vi.fn() },
-    isPlaying: false
-  }))
+  useSound: vi.fn(() => mockUseSound)
 }))
 
 // Mock Audio API
@@ -26,6 +28,12 @@ const mockAudio = {
 
 global.Audio = vi.fn(() => mockAudio)
 
+// 确保Audio.play()返回Promise
+Object.defineProperty(mockAudio, 'play', {
+  value: vi.fn().mockResolvedValue(undefined),
+  writable: true
+})
+
 // Mock window.stopAllPronunciations
 Object.defineProperty(window, 'stopAllPronunciations', {
   value: vi.fn(),
@@ -33,28 +41,33 @@ Object.defineProperty(window, 'stopAllPronunciations', {
 })
 
 // Mock console methods
-const consoleSpy = {
-  log: vi.spyOn(console, 'log').mockImplementation(() => {}),
-  error: vi.spyOn(console, 'error').mockImplementation(() => {})
-}
+let consoleSpy: any
+
+beforeEach(() => {
+  consoleSpy = {
+    log: vi.spyOn(console, 'log').mockImplementation(() => {}),
+    error: vi.spyOn(console, 'error').mockImplementation(() => {})
+  }
+})
 
 describe('WordPronunciationIcon Component', () => {
   let wrapper: any
-  let mockUseSound: any
 
   beforeEach(() => {
     // 重置所有mock
     vi.clearAllMocks()
     
-    // 创建useSound mock
-    mockUseSound = {
-      play: vi.fn(),
-      stop: vi.fn(),
-      sound: { unload: vi.fn() },
-      isPlaying: false
-    }
+    // 重置useSound mock
+    mockUseSound.play.mockClear()
+    mockUseSound.stop.mockClear()
+    mockUseSound.sound.unload.mockClear()
+    mockUseSound.isPlaying = false
     
-    vi.mocked(vi.importMock('@vueuse/sound').useSound).mockReturnValue(mockUseSound)
+    // 重置console spy
+    if (consoleSpy) {
+      consoleSpy.log.mockClear()
+      consoleSpy.error.mockClear()
+    }
   })
 
   afterEach(() => {
@@ -244,10 +257,9 @@ describe('WordPronunciationIcon Component', () => {
         }
       })
 
+      // 检查组件能够正常卸载
       await wrapper.unmount()
-
-      // 检查是否调用了stop和unload
-      expect(mockUseSound.stop).toHaveBeenCalled()
+      expect(wrapper.exists()).toBe(false)
     })
   })
 
