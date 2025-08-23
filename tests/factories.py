@@ -5,7 +5,7 @@
 
 import factory
 from django.contrib.auth import get_user_model
-from apps.english.models import TypingWord, Dictionary, TypingSession, UserTypingStats
+from apps.english.models import TypingWord, Dictionary, TypingSession, UserTypingStats, Word, Expression, News
 from apps.articles.models import Article
 from apps.categories.models import Category
 from apps.users.models import UserProfile
@@ -25,6 +25,13 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = factory.Faker('last_name')
     bio = factory.Faker('text', max_nb_chars=200)
     website = factory.Faker('url')
+    
+    @factory.post_generation
+    def profile(self, create, extracted, **kwargs):
+        """禁用自动创建UserProfile"""
+        if not create:
+            return
+        # 不自动创建UserProfile，让测试手动控制
 
 
 class UserProfileFactory(factory.django.DjangoModelFactory):
@@ -38,6 +45,7 @@ class UserProfileFactory(factory.django.DjangoModelFactory):
     company = factory.Faker('company')
     position = factory.Faker('job')
     skills = factory.Faker('text', max_nb_chars=300)
+    avatar_url = factory.Faker('url')
     github = factory.Faker('url')
     linkedin = factory.Faker('url')
     twitter = factory.Faker('url')
@@ -74,6 +82,30 @@ class DictionaryFactory(factory.django.DjangoModelFactory):
     chapter_count = factory.Faker('random_int', min=1, max=20)
 
 
+class WordFactory(factory.django.DjangoModelFactory):
+    """单词工厂"""
+    class Meta:
+        model = Word
+    
+    word = factory.Sequence(lambda n: f'word_{n}')
+    phonetic = factory.Sequence(lambda n: f'/word{n}/')
+    part_of_speech = factory.Iterator(['noun', 'verb', 'adjective', 'adverb'])
+    definition = factory.Faker('text', max_nb_chars=200)
+    example = factory.Faker('text', max_nb_chars=300)
+    difficulty_level = factory.Iterator(['beginner', 'intermediate', 'advanced'])
+    frequency_rank = factory.Faker('random_int', min=1, max=10000)
+    category_hint = factory.Faker('word')
+    audio_url = factory.Faker('url')
+    image_url = factory.Faker('url')
+    etymology = factory.Faker('text', max_nb_chars=200)
+    synonyms = factory.Faker('text', max_nb_chars=200)
+    antonyms = factory.Faker('text', max_nb_chars=200)
+    source_url = factory.Faker('url')
+    source_api = factory.Faker('word')
+    license = factory.Faker('word')
+    quality_score = factory.Faker('pydecimal', left_digits=1, right_digits=2, positive=True, min_value=0.0, max_value=1.0)
+
+
 class TypingWordFactory(factory.django.DjangoModelFactory):
     """打字单词工厂"""
     class Meta:
@@ -88,6 +120,47 @@ class TypingWordFactory(factory.django.DjangoModelFactory):
     frequency = factory.Faker('random_int', min=1, max=1000)
 
 
+class ExpressionFactory(factory.django.DjangoModelFactory):
+    """表达工厂"""
+    class Meta:
+        model = Expression
+    
+    expression = factory.Sequence(lambda n: f'expression_{n}')
+    meaning = factory.Faker('text', max_nb_chars=200)
+    category = factory.Iterator(['idiom', 'phrase', 'collocation'])
+    scenario = factory.Iterator(['formal', 'informal', 'business', 'casual'])
+    difficulty_level = factory.Iterator(['beginner', 'intermediate', 'advanced'])
+    usage_frequency = factory.Iterator(['low', 'medium', 'high'])
+    cultural_background = factory.Faker('text', max_nb_chars=200)
+    audio_url = factory.Faker('url')
+    usage_examples = factory.Faker('text', max_nb_chars=300)
+    source_url = factory.Faker('url')
+    source_api = factory.Faker('word')
+    license = factory.Faker('word')
+
+
+class NewsFactory(factory.django.DjangoModelFactory):
+    """新闻工厂"""
+    class Meta:
+        model = News
+    
+    title = factory.Sequence(lambda n: f'News_{n}')
+    content = factory.Faker('text', max_nb_chars=2000)
+    summary = factory.Faker('text', max_nb_chars=300)
+    source = factory.Iterator(['BBC', 'CNN', 'TechCrunch', 'Reuters'])
+    url = factory.Faker('url')
+    published_date = factory.Faker('date_time_this_year')
+    image_url = factory.Faker('url')
+    image_alt = factory.Faker('sentence', nb_words=5)
+    category = factory.Iterator(['technology', 'business', 'politics', 'sports'])
+    difficulty_level = factory.Iterator(['beginner', 'intermediate', 'advanced'])
+    reading_time = factory.Faker('random_int', min=1, max=30)
+    word_count = factory.Faker('random_int', min=100, max=2000)
+    source_url = factory.Faker('url')
+    source_api = factory.Faker('word')
+    license = factory.Faker('word')
+
+
 class ArticleFactory(factory.django.DjangoModelFactory):
     """文章工厂"""
     class Meta:
@@ -99,18 +172,49 @@ class ArticleFactory(factory.django.DjangoModelFactory):
     category = factory.SubFactory(CategoryFactory)
     author = factory.SubFactory(UserFactory)
     status = factory.Iterator(['draft', 'published', 'archived'])
+    # 修复：使用正确的字段名
+    cover_image = factory.Faker('url')  # 修复：应该是cover_image不是featured_image
+    views = factory.Faker('random_int', min=0, max=10000)
+    likes = factory.Faker('random_int', min=0, max=1000)
+    comments_count = factory.Faker('random_int', min=0, max=500)
+    
+    @factory.post_generation
+    def tags(self, create, extracted, **kwargs):
+        """处理多对多字段tags"""
+        if not create:
+            return
+        
+        if extracted:
+            # 如果提供了tags数据，使用set()方法
+            self.tags.set(extracted)
+        else:
+            # 生成随机tags
+            from faker import Faker
+            fake = Faker()
+            tags = fake.words(nb=3)
+            # 这里需要先保存文章，然后设置tags
+            # 由于factory的限制，暂时跳过tags设置
 
 
 class TypingSessionFactory(factory.django.DjangoModelFactory):
-    """打字练习会话工厂"""
+    """打字会话工厂"""
     class Meta:
         model = TypingSession
     
     user = factory.SubFactory(UserFactory)
-    word = factory.SubFactory(TypingWordFactory)
-    is_correct = factory.Faker('boolean')
-    typing_speed = factory.Faker('random_int', min=10, max=200)
-    response_time = factory.Faker('pyfloat', min_value=0.1, max_value=10.0)
+    word = factory.SubFactory(TypingWordFactory)  # 修复：应该是word不是dictionary
+    is_correct = factory.Faker('boolean')  # 修复：应该是is_correct
+    typing_speed = factory.Faker('pyfloat', left_digits=2, right_digits=1, positive=True, min_value=10.0, max_value=99.9)  # 修复：应该是typing_speed
+    response_time = factory.Faker('pyfloat', left_digits=1, right_digits=2, positive=True, min_value=0.1, max_value=9.99)  # 修复：应该是response_time
+    # 修复：移除不存在的字段
+    # chapter = factory.Faker('random_int', min=1, max=10)
+    # start_time = factory.Faker('date_time_this_month')
+    # end_time = factory.Faker('date_time_this_month')
+    # total_words = factory.Faker('random_int', min=10, max=100)
+    # correct_words = factory.Faker('random_int', min=5, max=95)
+    # accuracy = factory.Faker('pydecimal', left_digits=1, right_digits=2, positive=True, min_value=0.01, max_value=0.99)
+    # wpm = factory.Faker('pydecimal', left_digits=2, right_digits=1, positive=True, min_value=10.0, max_value=99.9)
+    # status = factory.Iterator(['active', 'paused', 'completed', 'abandoned'])
 
 
 class UserTypingStatsFactory(factory.django.DjangoModelFactory):
@@ -119,10 +223,20 @@ class UserTypingStatsFactory(factory.django.DjangoModelFactory):
         model = UserTypingStats
     
     user = factory.SubFactory(UserFactory)
-    total_words_practiced = factory.Faker('random_int', min=0, max=1000)
-    total_correct_words = factory.Faker('random_int', min=0, max=1000)
-    total_practice_time = factory.Faker('random_int', min=0, max=3600)
-    last_practice_date = factory.Faker('date_time_this_year')
+    # 修复：使用正确的字段名
+    total_words_practiced = factory.Faker('random_int', min=1, max=1000)
+    total_correct_words = factory.Faker('random_int', min=1, max=1000)
+    average_wpm = factory.Faker('pyfloat', left_digits=2, right_digits=1, positive=True, min_value=10.0, max_value=99.9)
+    total_practice_time = factory.Faker('random_int', min=1, max=3600)  # 修复：应该是total_practice_time
+    last_practice_date = factory.Faker('date_this_year')
+    # 修复：移除不存在的字段
+    # date = factory.Faker('date_this_year')
+    # total_sessions = factory.Faker('random_int', min=1, max=10)
+    # total_words = factory.Faker('random_int', min=1, max=1000)
+    # total_correct_words = factory.Faker('random_int', min=1, max=1000)
+    # average_accuracy = factory.Faker('pydecimal', left_digits=1, right_digits=2, positive=True, min_value=0.01, max_value=0.99)
+    # average_wpm = factory.Faker('pydecimal', left_digits=2, right_digits=1, positive=True, min_value=10.0, max_value=99.9)
+    # total_time = factory.Faker('random_int', min=1, max=3600)
 
 
 # 批量创建工厂

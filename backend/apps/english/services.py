@@ -148,7 +148,9 @@ class DataAnalysisService:
         
         # 计算平均WPM
         wpm_records = records.filter(typing_speed__gt=0)
-        avg_wpm = wpm_records.aggregate(avg_wpm=Avg('typing_speed'))['avg_wpm'] or 0
+        # 修复：安全处理聚合查询结果
+        avg_wpm_result = wpm_records.aggregate(avg_wpm=Avg('typing_speed'))
+        avg_wpm = avg_wpm_result['avg_wpm'] if avg_wpm_result and avg_wpm_result['avg_wpm'] is not None else 0
         
         # 计算平均正确率
         total_words_count = records.count()
@@ -415,7 +417,9 @@ class DataAnalysisService:
         
         # 计算平均WPM
         wpm_records = records.filter(typing_speed__gt=0)
-        avg_wpm = wpm_records.aggregate(avg_wpm=Avg('typing_speed'))['avg_wpm'] or 0
+        # 修复：安全处理聚合查询结果
+        avg_wpm_result = wpm_records.aggregate(avg_wpm=Avg('typing_speed'))
+        avg_wpm = avg_wpm_result['avg_wpm'] if avg_wpm_result and avg_wpm_result['avg_wpm'] is not None else 0
         
         # 计算正确率
         total_words_count = records.count()

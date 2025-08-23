@@ -27,9 +27,9 @@ class SearchModuleTestCase(TestCase):
             email='test@example.com',
             password='testpass123'
         )
+        # UserProfile没有bio字段，bio字段在User模型中
         self.user_profile = UserProfile.objects.create(
-            user=self.user,
-            bio='Test bio'
+            user=self.user
         )
         
         # 创建测试数据
@@ -112,8 +112,8 @@ class SearchAPITestCase(TestCase):
         
         self.word = Word.objects.create(
             word='python',
-            translation='Python编程语言',
-            difficulty='medium',
+            definition='Python编程语言',
+            difficulty_level='intermediate',
             phonetic='/ˈpaɪθən/'
         )
     
@@ -139,7 +139,7 @@ class SearchAPITestCase(TestCase):
         """测试搜索模块初始化"""
         from apps.search.apps import SearchConfig
         # 检查搜索应用配置
-        self.assertEqual(SearchConfig.name, 'search')
+        self.assertEqual(SearchConfig.name, 'apps.search')
         self.assertEqual(SearchConfig.default_auto_field, 'django.db.models.BigAutoField')
 
 

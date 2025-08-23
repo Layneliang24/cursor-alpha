@@ -39,9 +39,9 @@ class JobsModuleTestCase(TestCase):
     
     def test_jobs_module_views_structure(self):
         """测试任务模块视图结构"""
-        from apps.jobs.views import JobsView
+        from apps.jobs.views import JobPostViewSet
         # 检查任务视图类是否存在
-        self.assertTrue(hasattr(JobsView, 'get'))
+        self.assertTrue(hasattr(JobPostViewSet, 'list'))
     
     def test_jobs_module_permissions(self):
         """测试任务模块权限控制"""
@@ -84,7 +84,7 @@ class JobsAPITestCase(TestCase):
         """测试任务模块初始化"""
         from apps.jobs.apps import JobsConfig
         # 检查任务应用配置
-        self.assertEqual(JobsConfig.name, 'jobs')
+        self.assertEqual(JobsConfig.name, 'apps.jobs')
         self.assertEqual(JobsConfig.default_auto_field, 'django.db.models.BigAutoField')
 
 
