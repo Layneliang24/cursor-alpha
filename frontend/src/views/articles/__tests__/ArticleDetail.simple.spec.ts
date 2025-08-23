@@ -15,7 +15,7 @@ vi.mock('@/api/articles', () => ({
 // Mock stores
 const mockArticlesStore = {
   loading: false,
-  article: null,
+  currentArticle: null as any,
   fetchArticle: vi.fn(),
   likeArticle: vi.fn(),
   bookmarkArticle: vi.fn()
@@ -43,7 +43,7 @@ const mockTableOfContents = {
 }
 
 const mockMarkdownRenderer = {
-  template: '<div class="markdown-renderer"><slot /></div>',
+  template: '<div class="markdown-renderer">{{ content }}</div>',
   props: ['content']
 }
 
@@ -88,6 +88,11 @@ const mockElInput = {
   emits: ['update:modelValue']
 }
 
+const mockElEmpty = {
+  template: '<div class="el-empty"><slot /></div>',
+  props: ['description']
+}
+
 // Mock 路由
 const router = createRouter({
   history: createWebHistory(),
@@ -115,6 +120,18 @@ const mockRoute = {
   params: { id: '1' }
 }
 
+// Mock useRoute
+vi.mock('vue-router', async () => {
+  const actual = await vi.importActual('vue-router')
+  return {
+    ...actual,
+    useRoute: () => mockRoute,
+    useRouter: () => ({
+      push: vi.fn()
+    })
+  }
+})
+
 describe('ArticleDetail.vue Component - 简化测试', () => {
   let wrapper: any
 
@@ -125,7 +142,7 @@ describe('ArticleDetail.vue Component - 简化测试', () => {
     vi.clearAllMocks()
     
     // 设置默认的mock返回值
-    mockArticlesStore.article = {
+    mockArticlesStore.currentArticle = {
       id: 1,
       title: '测试文章标题',
       content: '# 测试文章内容\n\n这是测试文章的完整内容。',
@@ -165,11 +182,9 @@ describe('ArticleDetail.vue Component - 简化测试', () => {
           'el-icon': mockElIcon,
           'el-tag': mockElTag,
           'el-button': mockElButton,
-          'el-input': mockElInput
+          'el-input': mockElInput,
+          'el-empty': mockElEmpty
         }
-      },
-      props: {
-        route: mockRoute
       }
     })
     
@@ -240,7 +255,7 @@ describe('ArticleDetail.vue Component - 简化测试', () => {
 
   describe('边界情况', () => {
     it('文章不存在时组件仍能挂载', async () => {
-      mockArticlesStore.article = null
+      mockArticlesStore.currentArticle = null
       await wrapper.vm.$nextTick()
       
       expect(wrapper.exists()).toBe(true)
