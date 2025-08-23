@@ -430,6 +430,7 @@ const handleForgotPassword = async () => {
 
 // 关闭忘记密码弹窗
 const handleForgotPasswordClose = () => {
+  showForgotPassword.value = false
   forgotPasswordForm.email = ''
   if (forgotPasswordFormRef.value) {
     forgotPasswordFormRef.value.clearValidate()
