@@ -31,10 +31,7 @@ class EndToEndWorkflowTestCase(TestCase):
             email='test@example.com',
             password='testpass123'
         )
-        self.user_profile = UserProfile.objects.create(
-            user=self.user,
-            bio='Test bio'
-        )
+        # UserProfile会在User创建时自动创建，bio字段在User模型中
         self.client.force_authenticate(user=self.user)
         
         # 创建测试数据
@@ -54,14 +51,14 @@ class EndToEndWorkflowTestCase(TestCase):
         
         self.word = Word.objects.create(
             word='python',
-            translation='Python编程语言',
-            difficulty='medium',
+            definition='Python编程语言',
+            difficulty_level='intermediate',
             phonetic='/ˈpaɪθən/'
         )
         
         self.expression = Expression.objects.create(
             expression='learn by doing',
-            translation='在实践中学习',
+            meaning='在实践中学习',
             usage_examples='The best way to learn programming is to learn by doing.'
         )
     

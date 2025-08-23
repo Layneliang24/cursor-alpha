@@ -1314,8 +1314,12 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
                 sessions = TypingSession.objects.filter(user=user)
                 total_practiced = sessions.count()
                 total_correct = sessions.filter(is_correct=True).count()
-                avg_wpm = sessions.aggregate(avg_wpm=Avg('typing_speed'))['avg_wpm'] or 0.0
-                total_time = sessions.aggregate(total_time=Avg('response_time'))['total_time'] or 0.0
+                # 修复：安全处理聚合查询结果
+                avg_wpm_result = sessions.aggregate(avg_wpm=Avg('typing_speed'))
+                avg_wpm = avg_wpm_result['avg_wpm'] if avg_wpm_result and avg_wpm_result['avg_wpm'] is not None else 0.0
+                
+                total_time_result = sessions.aggregate(total_time=Sum('response_time'))
+                total_time = total_time_result['total_time'] if total_time_result and total_time_result['total_time'] is not None else 0.0
                 
                 # 更新统计
                 stats.total_words_practiced = total_practiced
@@ -1349,8 +1353,13 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
             sessions = TypingSession.objects.filter(user=user)
             total_practiced = sessions.count()
             total_correct = sessions.filter(is_correct=True).count()
-            avg_wpm = sessions.aggregate(avg_wpm=Avg('typing_speed'))['avg_wpm'] or 0.0
-            total_time = sessions.aggregate(total_time=Avg('response_time'))['total_time'] or 0.0
+            
+            # 修复：安全处理聚合查询结果
+            avg_wpm_result = sessions.aggregate(avg_wpm=Avg('typing_speed'))
+            avg_wpm = avg_wpm_result['avg_wpm'] if avg_wpm_result and avg_wpm_result['avg_wpm'] is not None else 0.0
+            
+            total_time_result = sessions.aggregate(total_time=Sum('response_time'))
+            total_time = total_time_result['total_time'] if total_time_result and total_time_result['total_time'] is not None else 0.0
             
             # 更新统计
             stats.total_words_practiced = total_practiced
