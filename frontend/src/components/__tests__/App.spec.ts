@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
-import App from '../App.vue'
+import App from '../../App.vue'
 
 // Mock 路由
 const createMockRouter = (path: string) => {

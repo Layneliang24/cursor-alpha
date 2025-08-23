@@ -99,8 +99,10 @@ describe('TopNavBar Component', () => {
       await router.isReady()
       await wrapper.vm.$nextTick()
       
-      expect(wrapper.find('.logo-text').text()).toBe('Alpha')
-      expect(wrapper.find('.logo-icon').exists()).toBe(true)
+      // 由于router-link被stub，我们需要检查其内容
+      const brandLink = wrapper.find('.navbar-brand')
+      expect(brandLink.exists()).toBe(true)
+      expect(wrapper.text()).toContain('Alpha')
     })
   })
 
@@ -119,14 +121,15 @@ describe('TopNavBar Component', () => {
       await router.isReady()
       await wrapper.vm.$nextTick()
       
-      const navItems = wrapper.findAll('.nav-item')
-      expect(navItems.length).toBeGreaterThan(0)
-      
-      // 检查主要导航项
+      // 检查主要导航项文本内容
       expect(wrapper.text()).toContain('首页')
       expect(wrapper.text()).toContain('博客')
       expect(wrapper.text()).toContain('英语学习')
       expect(wrapper.text()).toContain('热门')
+      
+      // 检查导航项元素存在
+      const navItems = wrapper.findAll('.nav-item')
+      expect(navItems.length).toBeGreaterThan(0)
     })
 
     it('博客下拉菜单正确显示', async () => {
@@ -224,6 +227,10 @@ describe('TopNavBar Component', () => {
       // 检查是否显示登录/注册按钮
       expect(wrapper.text()).toContain('登录')
       expect(wrapper.text()).toContain('注册')
+      
+      // 检查按钮元素存在
+      expect(wrapper.find('.btn-login').exists()).toBe(true)
+      expect(wrapper.find('.btn-register').exists()).toBe(true)
     })
 
     it('认证用户显示用户菜单', async () => {

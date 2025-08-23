@@ -21,11 +21,16 @@ export function getImageUrl(imagePath) {
   
   // 如果是相对路径，拼接完整URL
   if (imagePath.startsWith('/media/')) {
-    return `${API_BASE_URL}${imagePath}`
+    return imagePath
+  }
+  
+  // 如果是以/开头的其他路径，添加/media前缀
+  if (imagePath.startsWith('/')) {
+    return `/media${imagePath}`
   }
   
   // 如果不是以/开头，添加/media/前缀
-  return `${API_BASE_URL}/media/${imagePath}`
+  return `/media/${imagePath}`
 }
 
 /**
