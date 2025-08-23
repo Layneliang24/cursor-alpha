@@ -32,13 +32,22 @@ global.Audio = vi.fn(() => mockAudio)
 // 确保Audio.play()返回Promise
 Object.defineProperty(mockAudio, 'play', {
   value: vi.fn().mockResolvedValue(undefined),
-  writable: true
+  writable: true,
+  configurable: true
 })
 
 // 确保Audio构造函数本身也被正确mock
 Object.defineProperty(global, 'Audio', {
   value: vi.fn(() => mockAudio),
-  writable: true
+  writable: true,
+  configurable: true
+})
+
+// 确保Promise.resolve()正常工作
+Object.defineProperty(mockAudio, 'play', {
+  value: vi.fn(() => Promise.resolve()),
+  writable: true,
+  configurable: true
 })
 
 // Mock window.stopAllPronunciations
