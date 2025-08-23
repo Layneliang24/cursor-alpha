@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { createRouter, createWebHistory } from 'vue-router'
+import { nextTick } from 'vue'
 import Login from '../Login.vue'
 
 // Mock dependencies
@@ -126,9 +127,12 @@ describe('Login.vue', () => {
       // 模拟登录成功
       mockAuthStore.login.mockResolvedValue()
 
-      // 模拟表单验证通过
+      // 模拟表单验证通过 - 直接设置整个ref对象
       const mockValidate = vi.fn().mockResolvedValue(true)
-      wrapper.vm.loginFormRef = { value: { validate: mockValidate } }
+      wrapper.vm.loginFormRef.value = { validate: mockValidate }
+      
+      // 等待响应式更新
+      await nextTick()
 
       // 执行登录
       console.log('执行登录前:', {
@@ -136,7 +140,9 @@ describe('Login.vue', () => {
         mockLoginCalls: mockAuthStore.login.mock?.calls?.length || 0,
         loginFormRef: wrapper.vm.loginFormRef,
         loginFormRefValue: wrapper.vm.loginFormRef?.value,
-        loginFormRefValueValidate: wrapper.vm.loginFormRef?.value?.validate
+        loginFormRefValueValidate: wrapper.vm.loginFormRef?.value?.validate,
+        loginFormRefValueType: typeof wrapper.vm.loginFormRef?.value,
+        loginFormRefValueTruthy: !!wrapper.vm.loginFormRef?.value
       })
       
       try {
@@ -167,7 +173,10 @@ describe('Login.vue', () => {
 
       // 模拟表单验证通过
       const mockValidate = vi.fn().mockResolvedValue(true)
-      wrapper.vm.loginFormRef = { value: { validate: mockValidate } }
+      wrapper.vm.loginFormRef.value = { validate: mockValidate }
+      
+      // 等待响应式更新
+      await nextTick()
 
       // 执行登录
       await wrapper.vm.handleLogin()
@@ -191,7 +200,10 @@ describe('Login.vue', () => {
 
       // 模拟表单验证通过
       const mockValidate = vi.fn().mockResolvedValue(true)
-      wrapper.vm.loginFormRef = { value: { validate: mockValidate } }
+      wrapper.vm.loginFormRef.value = { validate: mockValidate }
+      
+      // 等待响应式更新
+      await nextTick()
 
       await wrapper.vm.handleLogin()
 
