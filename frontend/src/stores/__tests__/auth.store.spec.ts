@@ -1,6 +1,19 @@
 import { setActivePinia, createPinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
+// Mock localStorage
+const localStorageMock = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn()
+}
+
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+  writable: true
+})
+
 // Mock auth API used inside the store（保留真实 store 导出）
 vi.mock('@/api/auth', () => {
   return {
@@ -26,7 +39,11 @@ import { useAuthStore } from '@/stores/auth'
 describe('auth store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    localStorage.clear()
+    // 重置localStorage mock
+    localStorageMock.getItem.mockClear()
+    localStorageMock.setItem.mockClear()
+    localStorageMock.removeItem.mockClear()
+    localStorageMock.clear.mockClear()
   })
 
   it('login sets tokens, user and localStorage', async () => {
@@ -37,28 +54,32 @@ describe('auth store', () => {
     expect(store.refreshToken).toBe('refresh_token_mock')
     expect(store.user?.username).toBe('u')
     expect(store.isLoggedIn).toBe(true)
-    expect(localStorage.getItem('access_token')).toBe('access_token_mock')
-    expect(localStorage.getItem('refresh_token')).toBe('refresh_token_mock')
-    expect(localStorage.getItem('user')).toContain('"username":"u"')
+    expect(localStorageMock.setItem).toHaveBeenCalledWith('access_token', 'access_token_mock')
+    expect(localStorageMock.setItem).toHaveBeenCalledWith('refresh_token', 'refresh_token_mock')
+    expect(localStorageMock.setItem).toHaveBeenCalledWith('user', expect.stringContaining('"username":"u"'))
   })
 
   it('logout clears state and storage, and calls API when token exists', async () => {
     const store = useAuthStore()
     // Prime state
     store.token = 't'; store.refreshToken = 'r'; store.user = { id: 1 } as any
-    localStorage.setItem('access_token', 't')
-    localStorage.setItem('refresh_token', 'r')
-    localStorage.setItem('user', JSON.stringify({ id: 1 }))
 
     await store.logout()
     expect(store.token).toBeNull()
     expect(store.user).toBeNull()
-    expect(localStorage.getItem('access_token')).toBeNull()
+    expect(localStorageMock.removeItem).toHaveBeenCalledWith('access_token')
+    expect(localStorageMock.removeItem).toHaveBeenCalledWith('refresh_token')
+    expect(localStorageMock.removeItem).toHaveBeenCalledWith('user')
   })
 
   it('initAuth hydrates from localStorage and updates user via API', async () => {
-    localStorage.setItem('access_token', 't')
-    localStorage.setItem('user', JSON.stringify({ id: 1, username: 'tester' }))
+    // Mock localStorage.getItem to return stored values
+    localStorageMock.getItem.mockImplementation((key: string) => {
+      if (key === 'access_token') return 't'
+      if (key === 'user') return JSON.stringify({ id: 1, username: 'tester' })
+      return null
+    })
+    
     const store = useAuthStore()
     await store.initAuth()
     expect(store.isLoggedIn).toBe(true)
@@ -71,7 +92,7 @@ describe('auth store', () => {
     const newAccess = await store.refreshAccessToken()
     expect(newAccess).toBe('new_access_token_mock')
     expect(store.token).toBe('new_access_token_mock')
-    expect(localStorage.getItem('access_token')).toBe('new_access_token_mock')
+    expect(localStorageMock.setItem).toHaveBeenCalledWith('access_token', 'new_access_token_mock')
   })
 })
 
