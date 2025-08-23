@@ -47,71 +47,63 @@ describe('categoriesAPI', () => {
 
   describe('getCategory', () => {
     it('应该获取单个分类详情', async () => {
-      const mockResponse = {
-        data: { id: 1, name: '技术', slug: 'tech', description: '技术相关文章' }
-      }
+      const mockResponse = { id: 1, name: '技术', slug: 'tech', description: '技术相关文章' }
       mockRequest.get.mockResolvedValue(mockResponse)
 
       const result = await categoriesAPI.getCategory(1)
 
       expect(mockRequest.get).toHaveBeenCalledWith('/categories/1/')
-      expect(result).toEqual(mockResponse.data)
+      expect(result).toEqual(mockResponse)
     })
   })
 
   describe('getCategoryArticles', () => {
     it('应该获取分类下的文章列表', async () => {
       const mockResponse = {
-        data: {
-          category: { id: 1, name: '技术' },
-          articles: [
-            { id: 1, title: 'Vue.js 教程', content: '...' },
-            { id: 2, title: 'React 入门', content: '...' }
-          ]
-        }
+        category: { id: 1, name: '技术' },
+        articles: [
+          { id: 1, title: 'Vue.js 教程', content: '...' },
+          { id: 2, title: 'React 入门', content: '...' }
+        ]
       }
       mockRequest.get.mockResolvedValue(mockResponse)
 
       const result = await categoriesAPI.getCategoryArticles(1)
 
       expect(mockRequest.get).toHaveBeenCalledWith('/categories/1/articles/', { params: {} })
-      expect(result).toEqual(mockResponse.data)
+      expect(result).toEqual(mockResponse)
     })
   })
 
   describe('createCategory', () => {
     it('应该创建新分类', async () => {
       const categoryData = { name: '新分类', slug: 'new-category' }
-      const mockResponse = {
-        data: { id: 3, ...categoryData }
-      }
+      const mockResponse = { id: 3, ...categoryData }
       mockRequest.post.mockResolvedValue(mockResponse)
 
       const result = await categoriesAPI.createCategory(categoryData)
 
       expect(mockRequest.post).toHaveBeenCalledWith('/categories/', categoryData)
-      expect(result).toEqual(mockResponse.data)
+      expect(result).toEqual(mockResponse)
     })
   })
 
   describe('updateCategory', () => {
-    it('应该更新分类信息', async () => {
+    it('should update category information', async () => {
       const updateData = { name: '更新后的分类' }
-      const mockResponse = {
-        data: { id: 1, ...updateData, slug: 'tech' }
-      }
+      const mockResponse = { id: 1, ...updateData, slug: 'tech' }
       mockRequest.put.mockResolvedValue(mockResponse)
 
       const result = await categoriesAPI.updateCategory(1, updateData)
 
       expect(mockRequest.put).toHaveBeenCalledWith('/categories/1/', updateData)
-      expect(result).toEqual(mockResponse.data)
+      expect(result).toEqual(mockResponse)
     })
   })
 
   describe('deleteCategory', () => {
-    it('应该删除分类', async () => {
-      mockRequest.delete.mockResolvedValue({ data: { message: '删除成功' } })
+    it('should delete category', async () => {
+      mockRequest.delete.mockResolvedValue({ message: '删除成功' })
 
       const result = await categoriesAPI.deleteCategory(1)
 
@@ -121,20 +113,18 @@ describe('categoriesAPI', () => {
   })
 
   describe('getTags', () => {
-    it('应该获取标签列表', async () => {
-      const mockResponse = {
-        data: [
-          { id: 1, name: 'Vue.js' },
-          { id: 2, name: 'React' },
-          { id: 3, name: 'JavaScript' }
-        ]
-      }
+    it('should get tags list', async () => {
+      const mockResponse = [
+        { id: 1, name: 'Vue.js' },
+        { id: 2, name: 'React' },
+        { id: 3, name: 'JavaScript' }
+      ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
       const result = await categoriesAPI.getTags()
 
       expect(mockRequest.get).toHaveBeenCalledWith('/tags/')
-      expect(result).toEqual(mockResponse.data)
+      expect(result).toEqual(mockResponse)
     })
   })
 })
