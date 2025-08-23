@@ -350,25 +350,13 @@ const clearVerifiedUser = () => {
 }
 
 const handleLogin = async () => {
-  console.log('=== handleLogin 开始执行 ===')
-  console.log('loginFormRef:', loginFormRef)
-  console.log('loginFormRef.value:', loginFormRef.value)
-  console.log('loginFormRef.value?.validate:', loginFormRef.value?.validate)
-  console.log('loginFormRef.value?.value?.validate:', loginFormRef.value?.value?.validate)
-  
-  if (!loginFormRef.value) {
-    console.log('loginFormRef.value 为空，直接返回')
-    return
-  }
+  if (!loginFormRef.value) return
   
   try {
-    console.log('开始调用 validate 方法')
     // 尝试访问嵌套的value属性
     const validateMethod = loginFormRef.value.validate || loginFormRef.value.value?.validate
     if (validateMethod) {
       await validateMethod()
-    } else {
-      console.log('找不到validate方法')
     }
     
     // 验证码校验
