@@ -17,6 +17,16 @@ export const useTypingStore = defineStore('typing', () => {
   const keyMistakes = ref({}) // 记录每个按键的错误次数
   const cumulativeKeyMistakes = ref({}) // 累积的按键错误记录（用于正确率计算）
   
+  // 字母级别统计 ⭐ 新增
+  const letterStats = reactive({
+    totalInputLetters: 0, // 总输入字母数
+    totalCorrectLetters: 0, // 总正确字母数
+    totalWrongLetters: 0, // 总错误字母数
+    currentWordInputLetters: 0, // 当前单词已输入字母数
+    currentWordCorrectLetters: 0, // 当前单词正确字母数
+    currentWordWrongLetters: 0 // 当前单词错误字母数
+  })
+  
   const words = ref([])
   const currentWordIndex = ref(0)
   
@@ -97,19 +107,30 @@ export const useTypingStore = defineStore('typing', () => {
   })
   
   const correctRate = computed(() => {
-    if (answeredCount.value === 0) return 0
+    if (letterStats.totalInputLetters === 0) return 0
     
-    // 照搬 QWERTY Learner 逻辑：基于单词级别计算正确率
-    // 正确率 = 正确完成的单词数 / 总处理的单词数 * 100
-    // 注意：这里包括跳过的单词，所以正确率可能不是100%
-    const accuracy = (correctCount.value / answeredCount.value) * 100
+    // 基于字母级别计算正确率
+    // 正确率 = (总输入字母数 - 总错误字母数) / 总输入字母数 * 100
+    const accuracy = ((letterStats.totalInputLetters - letterStats.totalWrongLetters) / letterStats.totalInputLetters) * 100
     
     return Math.round(accuracy)
   })
   
+  // 字母级别统计计算属性 ⭐ 新增
+  const totalInputLetters = computed(() => letterStats.totalInputLetters)
+  const totalCorrectLetters = computed(() => letterStats.totalCorrectLetters)
+  const totalWrongLetters = computed(() => letterStats.totalWrongLetters)
+  const currentWordInputLetters = computed(() => letterStats.currentWordInputLetters)
+  const currentWordCorrectLetters = computed(() => letterStats.currentWordCorrectLetters)
+  const currentWordWrongLetters = computed(() => letterStats.currentWordWrongLetters)
+  
   const averageWPM = computed(() => {
-    if (answeredCount.value === 0) return 0
-    return Math.round(currentWPM.value / answeredCount.value)
+    if (letterStats.totalInputLetters === 0) return 0
+    // 基于字母级别计算WPM：每5个字母算一个单词
+    const totalWords = Math.round(letterStats.totalCorrectLetters / 5)
+    if (sessionTime.value === 0) return 0
+    const minutes = sessionTime.value / 60
+    return Math.round(totalWords / minutes)
   })
   
   const progressPercentage = computed(() => {
@@ -420,6 +441,11 @@ export const useTypingStore = defineStore('typing', () => {
     // 强制触发响应式更新 - 使用reactive重新包装
     Object.assign(wordState, newWordState)
     
+    // 重置当前单词的字母统计 ⭐ 新增
+    letterStats.currentWordInputLetters = 0
+    letterStats.currentWordCorrectLetters = 0
+    letterStats.currentWordWrongLetters = 0
+    
     // 强制触发Vue的响应式更新
     nextTick(() => {
       // 强制触发响应式更新
@@ -451,29 +477,35 @@ export const useTypingStore = defineStore('typing', () => {
       wordState.letterStates[currentInputLength] = 'correct'
       wordState.correctCount++
       
-             // 检查是否完成
-       if (wordState.inputWord.length >= wordState.displayWord.length) {
-         wordState.isFinished = true
-         wordState.endTime = Date.now()
-         
-         // 更新统计 - 照搬 QWERTY Learner 逻辑
-         // 即使有错误，单词完成也算正确（因为用户最终完成了）
-         correctCount.value++
-         answeredCount.value++
-         
-         // 播放正确声音
-         if (window.playCorrectSound) {
-           window.playCorrectSound()
-         }
-         
-         // 提交练习数据
-         submitWordResult()
-         
-         // 延迟后进入下一题，给用户时间看到完成状态
-         setTimeout(() => {
-           nextWord()
-         }, 500)
-       }
+      // 更新字母级别统计 ⭐ 新增
+      letterStats.totalInputLetters++
+      letterStats.totalCorrectLetters++
+      letterStats.currentWordInputLetters++
+      letterStats.currentWordCorrectLetters++
+      
+      // 检查是否完成
+      if (wordState.inputWord.length >= wordState.displayWord.length) {
+        wordState.isFinished = true
+        wordState.endTime = Date.now()
+        
+        // 更新统计 - 照搬 QWERTY Learner 逻辑
+        // 即使有错误，单词完成也算正确（因为用户最终完成了）
+        correctCount.value++
+        answeredCount.value++
+        
+        // 播放正确声音
+        if (window.playCorrectSound) {
+          window.playCorrectSound()
+        }
+        
+        // 提交练习数据
+        submitWordResult()
+        
+        // 延迟后进入下一题，给用户时间看到完成状态
+        setTimeout(() => {
+          nextWord()
+        }, 500)
+      }
     } else {
       // 输入错误，强制重新开始整个单词
       console.log('输入错误，强制重新开始单词:', targetChar, '用户输入:', inputChar)
@@ -502,6 +534,12 @@ export const useTypingStore = defineStore('typing', () => {
         }, 200)
       }
       
+      // 更新字母级别统计 ⭐ 新增
+      letterStats.totalInputLetters++
+      letterStats.totalWrongLetters++
+      letterStats.currentWordInputLetters++
+      letterStats.currentWordWrongLetters++
+      
       // 先显示错误状态（只有敲错的字母显示红色 + 抖动效果）
       wordState.hasWrong = true
       // 只将当前敲错的字母位置标记为错误，其他字母保持原状态
@@ -520,6 +558,11 @@ export const useTypingStore = defineStore('typing', () => {
         wordState.correctCount = 0
         wordState.wrongCount++
         
+        // 重置当前单词的字母统计 ⭐ 新增
+        letterStats.currentWordInputLetters = 0
+        letterStats.currentWordCorrectLetters = 0
+        letterStats.currentWordWrongLetters = 0
+        
         console.log('单词已重置，要求用户重新输入')
       }, 800) // 800ms 让用户看到错误状态和抖动效果
     }
@@ -531,6 +574,11 @@ export const useTypingStore = defineStore('typing', () => {
     wordState.letterStates = new Array(wordState.displayWord.length).fill('normal')
     wordState.hasWrong = false
     wordState.shake = false
+    
+    // 重置当前单词的字母统计 ⭐ 新增
+    letterStats.currentWordInputLetters = 0
+    letterStats.currentWordCorrectLetters = 0
+    letterStats.currentWordWrongLetters = 0
   }
   
   const onInput = () => {
@@ -784,6 +832,14 @@ export const useTypingStore = defineStore('typing', () => {
     keyMistakes.value = {}
     cumulativeKeyMistakes.value = {}
     
+    // 重置字母级别统计 ⭐ 新增
+    letterStats.totalInputLetters = 0
+    letterStats.totalCorrectLetters = 0
+    letterStats.totalWrongLetters = 0
+    letterStats.currentWordInputLetters = 0
+    letterStats.currentWordCorrectLetters = 0
+    letterStats.currentWordWrongLetters = 0
+    
     stopSessionTimer()
     clearError()
     console.log('Practice reset complete')
@@ -851,6 +907,15 @@ export const useTypingStore = defineStore('typing', () => {
     // 按键错误记录 ⭐ 新增
     keyMistakes,
     cumulativeKeyMistakes,
+    
+    // 字母级别统计 ⭐ 新增
+    letterStats,
+    totalInputLetters,
+    totalCorrectLetters,
+    totalWrongLetters,
+    currentWordInputLetters,
+    currentWordCorrectLetters,
+    currentWordWrongLetters,
     
     // 计算属性
     currentWord,
