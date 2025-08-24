@@ -76,13 +76,13 @@ export default {
     
     const weekdays = ['日', '一', '二', '三', '四', '五', '六']
     
-    // 图例颜色配置
+    // 图例颜色配置 - 红色系热力图
     const legendColors = {
-      0: '#ebedf0', // 无数据
-      1: '#c6e48b', // 低强度
-      2: '#7bc96f', // 中强度
-      3: '#239a3b', // 高强度
-      4: '#196127'  // 极高强度
+      0: '#ebedf0', // 无数据 - 浅灰色
+      1: '#ffcdd2', // 低强度 - 浅红色
+      2: '#ef9a9a', // 中强度 - 中等红色
+      3: '#e57373', // 高强度 - 深红色
+      4: '#f44336'  // 极高强度 - 火红色
     }
     
     // 计算当前月份标题
@@ -109,14 +109,14 @@ export default {
       return data
     })
     
-    // 获取图例标签
+    // 获取图例标签 - 红色系热力图
     const getLegendLabel = (level) => {
       const labels = {
         0: '无练习',
-        1: '1-2次',
-        2: '3-5次', 
-        3: '6-10次',
-        4: '10次以上'
+        1: '小火苗', // 1-2次
+        2: '中火苗', // 3-5次
+        3: '大火苗', // 6-10次
+        4: '熊熊烈火' // 10次以上
       }
       return labels[level] || '无练习'
     }
@@ -308,33 +308,33 @@ export default {
   color: #67c23a;
 }
 
-/* 热力图颜色级别 - 更美观的渐变色 */
+/* 热力图颜色级别 - 红色系渐变色 */
 .calendar-day.level-0 {
   background: #f8f9fa;
   border: 1px solid #e9ecef;
 }
 
 .calendar-day.level-1 {
-  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-  border: 1px solid #b8dacc;
-  color: #155724;
+  background: linear-gradient(135deg, #ffcdd2 0%, #ef9a9a 100%);
+  border: 1px solid #e57373;
+  color: #c62828;
 }
 
 .calendar-day.level-2 {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-  border: 1px solid #1e7e34;
+  background: linear-gradient(135deg, #ef9a9a 0%, #e57373 100%);
+  border: 1px solid #ef5350;
   color: #fff;
 }
 
 .calendar-day.level-3 {
-  background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
-  border: 1px solid #004085;
+  background: linear-gradient(135deg, #e57373 0%, #ef5350 100%);
+  border: 1px solid #f44336;
   color: #fff;
 }
 
 .calendar-day.level-4 {
-  background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);
-  border: 1px solid #59359a;
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  border: 1px solid #c62828;
   color: #fff;
 }
 
