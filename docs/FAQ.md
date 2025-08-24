@@ -1485,4 +1485,174 @@ const finishPractice = async () => {
 
 ---
 
+### 问题2：章节练习次数统计不独立，章节完成界面UI问题
+
+**问题描述：**
+用户反馈："首先章节练习完成页面太丑了，为什么练习完成页面会有顶部栏和底部栏？是不是复用了练习界面的东西？以及练习完成数据统计框不居中，而是覆盖到了侧边栏去？其次，章节的练习次数应该是每个词典的每个章节都应该有单独的统计，而不是我切换不同的词典，第一章的练习次数都显示一样的次数。"
+
+**问题分析：**
+1. **章节完成界面UI问题**：
+   - 章节完成页面复用了练习界面的布局，显示不必要的顶部栏和底部栏
+   - 统计框不居中，覆盖到侧边栏，布局错乱
+   - 界面不够美观，用户体验差
+
+2. **练习次数统计逻辑错误**：
+   - 所有词典共享同一套统计数据，没有按词典区分
+   - 切换词典时没有重新加载对应章节的练习次数
+   - 数据结构设计不合理，无法支持多词典独立统计
+
+**解决方案：**
+
+1. **重构练习次数统计数据结构**：
+```javascript
+// 旧结构：所有词典共享
+const chapterPracticeCounts = ref({})
+
+// 新结构：按词典+章节组合统计
+const chapterPracticeStats = ref({
+  'toefl': { 1: 3, 2: 1, 3: 0 },
+  'ielts': { 1: 2, 2: 0, 3: 1 }
+})
+```
+
+2. **更新相关方法**：
+```javascript
+// 增加练习次数（需要词典ID和章节号）
+const incrementChapterPracticeCount = (dictionaryId, chapterNumber) => {
+  if (!chapterPracticeStats.value[dictionaryId]) {
+    chapterPracticeStats.value[dictionaryId] = {}
+  }
+  if (!chapterPracticeStats.value[dictionaryId][chapterNumber]) {
+    chapterPracticeStats.value[dictionaryId][chapterNumber] = 0
+  }
+  chapterPracticeStats.value[dictionaryId][chapterNumber]++
+  saveToStorage('chapterPracticeStats', chapterPracticeStats.value)
+}
+
+// 获取练习次数
+const getChapterPracticeCount = (dictionaryId, chapterNumber) => {
+  return chapterPracticeStats.value[dictionaryId]?.[chapterNumber] || 0
+}
+
+// 词典切换时加载对应统计数据
+const loadDictionaryChapterStats = async (dictionaryId) => {
+  try {
+    const { englishAPI } = await import('@/api/english')
+    const stats = await englishAPI.getChapterStats(dictionaryId)
+    if (stats[dictionaryId]) {
+      chapterPracticeStats.value[dictionaryId] = stats[dictionaryId]
+      saveToStorage('chapterPracticeStats', chapterPracticeStats.value)
+    }
+    return stats
+  } catch (error) {
+    console.error('加载词典章节统计失败:', error)
+    return {}
+  }
+}
+```
+
+3. **优化章节完成界面UI**：
+```css
+.chapter-completion-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.completion-content {
+  position: relative;
+  z-index: 2;
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  /* 确保内容完全居中 */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.completion-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+  /* 确保统计框完全居中 */
+  width: 100%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+```
+
+4. **添加API集成方法**：
+```javascript
+// 从API获取练习次数数据
+const fetchChapterPracticeStats = async () => {
+  try {
+    const { englishAPI } = await import('@/api/english')
+    const stats = await englishAPI.getChapterStats()
+    chapterPracticeStats.value = stats
+    return stats
+  } catch (error) {
+    console.error('获取章节练习统计失败:', error)
+    return {}
+  }
+}
+
+// 向API提交练习次数更新
+const submitChapterPracticeStats = async () => {
+  try {
+    const { englishAPI } = await import('@/api/english')
+    const result = await englishAPI.updateChapterStats(chapterPracticeStats.value)
+    return result
+  } catch (error) {
+    console.error('提交章节练习统计失败:', error)
+    return { success: false, error: error.message }
+  }
+}
+```
+
+**经验总结：**
+1. **数据结构设计**：设计数据结构时要考虑多维度组合，避免单一维度的限制
+2. **UI组件独立**：重要界面应该设计为独立组件，不继承父组件的布局和样式
+3. **数据持久化**：客户端数据要与后端API保持同步，支持数据的增删改查
+4. **测试驱动开发**：新功能开发要先写测试用例，确保功能正确性和代码质量
+
+**测试验证：**
+- 新增测试文件：`typing_chapter_stats.spec.ts`（9个测试用例全部通过）
+- 新增测试文件：`ChapterCompletion.spec.ts`（13个测试用例全部通过）
+- 所有前端测试通过（1748/1748）
+- 数据结构重构后功能正常，支持多词典独立统计
+
+**相关文件：**
+- `frontend/src/stores/typing.js`：重构练习次数统计数据结构和方法
+- `frontend/src/views/english/TypingPractice.vue`：更新调用方式，支持词典切换时加载统计数据
+- `frontend/src/views/english/ChapterCompletion.vue`：优化UI样式，确保完全居中显示
+- `frontend/src/stores/__tests__/typing_chapter_stats.spec.ts`：新增测试文件
+- `frontend/src/views/english/__tests__/ChapterCompletion.spec.ts`：新增测试文件
+
+**解决时间**：2025-01-17
+
+**问题严重性**：⭐⭐⭐ 功能设计不合理，用户体验差
+
+**教训总结**
+- **需求分析**：要充分理解用户需求，设计合理的数据结构和UI布局
+- **代码重构**：重构时要保持向后兼容，确保现有功能不受影响
+- **测试覆盖**：新功能要有完整的测试覆盖，包括单元测试和集成测试
+- **用户体验**：UI设计要考虑用户体验，确保界面美观和功能易用
+
 // ... existing code ...
