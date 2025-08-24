@@ -970,6 +970,15 @@ export const useTypingStore = defineStore('typing', () => {
     if (sessionTime.value > 0) {
       recordPracticeSession(sessionTime.value)
     }
+    
+    // 将本次练习的错误单词添加到错题本 ⭐ 新增
+    wrongWordsInSession.value.forEach(wrongWord => {
+      addWrongWord({
+        ...wrongWord,
+        dictionary: selectedDictionary.value?.name || 'Unknown',
+        lastErrorTime: new Date().toISOString()
+      })
+    })
   }
 
   const resetChapterCompletion = () => {
