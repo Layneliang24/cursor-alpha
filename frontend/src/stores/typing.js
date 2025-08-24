@@ -30,7 +30,8 @@ export const useTypingStore = defineStore('typing', () => {
     correctCount: 0,
     wrongCount: 0,
     startTime: null,
-    endTime: null
+    endTime: null,
+    shake: false // 抖动效果状态
   })
   
   // UI State
@@ -412,7 +413,8 @@ export const useTypingStore = defineStore('typing', () => {
       correctCount: 0,
       wrongCount: 0,
       startTime: Date.now(),
-      endTime: null
+      endTime: null,
+      shake: false
     }
     
     // 强制触发响应式更新 - 使用reactive重新包装
@@ -500,14 +502,25 @@ export const useTypingStore = defineStore('typing', () => {
         }, 200)
       }
       
-      // 强制重新开始：清空输入，重置状态
-      wordState.inputWord = ''
-      wordState.letterStates = new Array(wordState.displayWord.length).fill('normal')
-      wordState.hasWrong = false
-      wordState.correctCount = 0
-      wordState.wrongCount++
+      // 先显示错误状态（红色 + 抖动效果）
+      wordState.hasWrong = true
+      wordState.letterStates = new Array(wordState.displayWord.length).fill('wrong')
       
-      console.log('单词已重置，要求用户重新输入')
+      // 触发抖动效果（通过设置一个临时状态）
+      wordState.shake = true
+      
+      // 延迟后重置状态，给用户时间看到错误反馈
+      setTimeout(() => {
+        // 强制重新开始：清空输入，重置状态
+        wordState.inputWord = ''
+        wordState.letterStates = new Array(wordState.displayWord.length).fill('normal')
+        wordState.hasWrong = false
+        wordState.shake = false
+        wordState.correctCount = 0
+        wordState.wrongCount++
+        
+        console.log('单词已重置，要求用户重新输入')
+      }, 800) // 800ms 让用户看到错误状态和抖动效果
     }
   }
   
@@ -516,6 +529,7 @@ export const useTypingStore = defineStore('typing', () => {
     wordState.inputWord = ''
     wordState.letterStates = new Array(wordState.displayWord.length).fill('normal')
     wordState.hasWrong = false
+    wordState.shake = false
   }
   
   const onInput = () => {

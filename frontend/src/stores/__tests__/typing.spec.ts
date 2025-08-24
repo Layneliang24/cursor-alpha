@@ -55,7 +55,7 @@ describe('Typing Store', () => {
   })
 
   describe('按键错误记录', () => {
-    it('应该正确记录按键错误', () => {
+    it('应该正确记录按键错误', async () => {
       // 模拟单词状态
       store.wordState.displayWord = 'hello'
       store.wordState.inputWord = ''
@@ -67,11 +67,21 @@ describe('Typing Store', () => {
       // 验证按键错误被记录（应该记录目标字符 'h'，而不是用户按的 'x'）
       expect(store.keyMistakes.h).toBeDefined()
       expect(store.keyMistakes.h).toContain('h')
-      // 新逻辑：错误后立即重置状态，所以hasWrong应该是false
+      
+      // 新逻辑：错误后先显示错误状态，然后延迟重置
+      // 立即检查：应该显示错误状态
+      expect(store.wordState.hasWrong).toBe(true)
+      expect(store.wordState.letterStates).toEqual(new Array(5).fill('wrong'))
+      expect(store.wordState.shake).toBe(true)
+      
+      // 等待延迟重置完成
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      // 延迟后检查：状态应该被重置
       expect(store.wordState.hasWrong).toBe(false)
-      // 验证单词状态被重置
       expect(store.wordState.inputWord).toBe('')
       expect(store.wordState.letterStates).toEqual(new Array(5).fill('normal'))
+      expect(store.wordState.shake).toBe(false)
     })
 
     it('应该记录多个按键错误', () => {
