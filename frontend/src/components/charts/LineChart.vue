@@ -44,6 +44,9 @@ export default {
       chart = echarts.init(chartContainer.value)
 
       // 处理数据
+      if (!props.data || !Array.isArray(props.data)) {
+        return
+      }
       const dates = props.data.map(item => item[0])
       const values = props.data.map(item => item[1])
 

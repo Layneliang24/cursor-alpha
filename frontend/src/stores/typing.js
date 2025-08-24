@@ -13,6 +13,10 @@ export const useTypingStore = defineStore('typing', () => {
   const pauseStartTime = ref(null)
   const pauseElapsedTime = ref(null) // 暂停时已用时间
   
+  // 按键错误记录 ⭐ 新增
+  const keyMistakes = ref({}) // 记录每个按键的错误次数
+  const cumulativeKeyMistakes = ref({}) // 累积的按键错误记录（用于正确率计算）
+  
   const words = ref([])
   const currentWordIndex = ref(0)
   
@@ -93,7 +97,13 @@ export const useTypingStore = defineStore('typing', () => {
   
   const correctRate = computed(() => {
     if (answeredCount.value === 0) return 0
-    return Math.round((correctCount.value / answeredCount.value) * 100)
+    
+    // 照搬 QWERTY Learner 逻辑：基于单词级别计算正确率
+    // 正确率 = 正确完成的单词数 / 总处理的单词数 * 100
+    // 注意：这里包括跳过的单词，所以正确率可能不是100%
+    const accuracy = (correctCount.value / answeredCount.value) * 100
+    
+    return Math.round(accuracy)
   })
   
   const averageWPM = computed(() => {
@@ -425,11 +435,10 @@ export const useTypingStore = defineStore('typing', () => {
       return
     }
     
-    // 如果之前有错误，重置状态
-    if (wordState.hasWrong) {
-      resetWordState()
-    }
+    // 如果之前有错误，重置状态（现在错误后会自动重置，这里不需要额外处理）
+    // 错误后会自动清空输入，要求用户重新开始
     
+    // 计算当前应该输入的位置：inputWord长度 + 之前的错误次数
     const currentInputLength = wordState.inputWord.length
     const targetChar = wordState.displayWord[currentInputLength]
     const inputChar = key
@@ -440,36 +449,44 @@ export const useTypingStore = defineStore('typing', () => {
       wordState.letterStates[currentInputLength] = 'correct'
       wordState.correctCount++
       
-      // 检查是否完成
-      if (wordState.inputWord.length >= wordState.displayWord.length) {
-        wordState.isFinished = true
-        wordState.endTime = Date.now()
-        
-        // 更新统计
-        correctCount.value++
-        answeredCount.value++
-        
-        // 播放正确声音
-        if (window.playCorrectSound) {
-          window.playCorrectSound()
-        }
-        
-        // 提交练习数据
-        submitWordResult()
-        
-        // 延迟后进入下一题，给用户时间看到完成状态
-        setTimeout(() => {
-          nextWord()
-        }, 500)
-      }
+             // 检查是否完成
+       if (wordState.inputWord.length >= wordState.displayWord.length) {
+         wordState.isFinished = true
+         wordState.endTime = Date.now()
+         
+         // 更新统计 - 照搬 QWERTY Learner 逻辑
+         // 即使有错误，单词完成也算正确（因为用户最终完成了）
+         correctCount.value++
+         answeredCount.value++
+         
+         // 播放正确声音
+         if (window.playCorrectSound) {
+           window.playCorrectSound()
+         }
+         
+         // 提交练习数据
+         submitWordResult()
+         
+         // 延迟后进入下一题，给用户时间看到完成状态
+         setTimeout(() => {
+           nextWord()
+         }, 500)
+       }
     } else {
-      // 输入错误，不添加到inputWord，只标记错误状态
-      wordState.letterStates[currentInputLength] = 'wrong'
-      wordState.hasWrong = true
-      wordState.wrongCount++
+      // 输入错误，强制重新开始整个单词
+      console.log('输入错误，强制重新开始单词:', targetChar, '用户输入:', inputChar)
       
-      // 更新统计
-      answeredCount.value++
+      // 记录按键错误
+      const wrongKey = targetChar.toLowerCase()
+      if (!keyMistakes.value[wrongKey]) {
+        keyMistakes.value[wrongKey] = []
+      }
+      if (!cumulativeKeyMistakes.value[wrongKey]) {
+        cumulativeKeyMistakes.value[wrongKey] = []
+      }
+      keyMistakes.value[wrongKey].push(wrongKey)
+      cumulativeKeyMistakes.value[wrongKey].push(wrongKey)
+      console.log('记录按键错误:', wrongKey, '当前错误记录:', keyMistakes.value)
       
       // 播放错误声音
       if (window.playWrongSound) {
@@ -483,10 +500,14 @@ export const useTypingStore = defineStore('typing', () => {
         }, 200)
       }
       
-      // 延迟后重置
-      setTimeout(() => {
-        resetWordState()
-      }, 1000)
+      // 强制重新开始：清空输入，重置状态
+      wordState.inputWord = ''
+      wordState.letterStates = new Array(wordState.displayWord.length).fill('normal')
+      wordState.hasWrong = false
+      wordState.correctCount = 0
+      wordState.wrongCount++
+      
+      console.log('单词已重置，要求用户重新输入')
     }
   }
   
@@ -519,21 +540,27 @@ export const useTypingStore = defineStore('typing', () => {
         wpm = Math.round(wordLength / timeElapsed)
       }
       
-      console.log('提交练习数据:', {
+      // 准备提交数据，包含按键错误信息 ⭐ 新增
+      const submitData = {
         word_id: currentWord.value.id,
         is_correct: true, // 因为只有输入正确才会调用这个方法
         typing_speed: wpm,
-        response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0
-      })
+        response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0,
+        mistakes: keyMistakes.value, // ⭐ 新增：包含按键错误数据
+        wrong_count: Object.values(keyMistakes.value).reduce((total, mistakes) => total + mistakes.length, 0) // ⭐ 新增：计算总错误次数
+      }
       
-      const response = await englishAPI.submitTypingPractice({
-        word_id: currentWord.value.id,
-        is_correct: true,
-        typing_speed: wpm,
-        response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0
-      })
+      console.log('提交练习数据:', submitData)
+      console.log('按键错误记录:', keyMistakes.value)
+      
+      const response = await englishAPI.submitTypingPractice(submitData)
       
       console.log('提交成功:', response)
+      
+      // 提交成功后清空按键错误记录 ⭐ 新增
+      keyMistakes.value = {}
+      console.log('按键错误记录已清空')
+      
     } catch (err) {
       console.error('提交练习结果失败:', err)
       console.error('错误详情:', err.response?.data)
@@ -575,21 +602,27 @@ export const useTypingStore = defineStore('typing', () => {
     
     // 提交到后端（带重试机制）
     try {
-      console.log('提交练习数据:', {
+      // 准备提交数据，包含按键错误信息 ⭐ 新增
+      const submitData = {
         word_id: currentWord.value.id,
         is_correct: isWordCorrect,
         typing_speed: currentWPM.value,
-        response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0
-      })
+        response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0,
+        mistakes: keyMistakes.value, // ⭐ 新增：包含按键错误数据
+        wrong_count: Object.values(keyMistakes.value).reduce((total, mistakes) => total + mistakes.length, 0) // ⭐ 新增：计算总错误次数
+      }
       
-      const response = await englishAPI.submitTypingPractice({
-        word_id: currentWord.value.id,
-        is_correct: isWordCorrect,
-        typing_speed: currentWPM.value,
-        response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0
-      })
+      console.log('提交练习数据:', submitData)
+      console.log('按键错误记录:', keyMistakes.value)
+      
+      const response = await englishAPI.submitTypingPractice(submitData)
       
       console.log('提交成功:', response)
+      
+      // 提交成功后清空按键错误记录 ⭐ 新增
+      keyMistakes.value = {}
+      console.log('按键错误记录已清空')
+      
     } catch (err) {
       console.error('提交练习结果失败:', err)
       console.error('错误详情:', err.response?.data)
@@ -603,10 +636,17 @@ export const useTypingStore = defineStore('typing', () => {
     }, 1500)
   }
   
-  const skipWord = () => {
-    if (submitting.value) return
-    nextWord()
-  }
+     const skipWord = () => {
+     if (submitting.value) return
+     
+     // 如果当前单词有输入，记录为跳过（不算正确，但算回答）
+     if (wordState.inputWord.length > 0) {
+       answeredCount.value++
+       // 不增加correctCount，因为跳过了
+     }
+     
+     nextWord()
+   }
   
   const nextWord = () => {
     console.log('nextWord called')
@@ -725,6 +765,10 @@ export const useTypingStore = defineStore('typing', () => {
     answeredCount.value = 0
     currentWPM.value = 0
     
+    // 清空按键错误记录 ⭐ 新增
+    keyMistakes.value = {}
+    cumulativeKeyMistakes.value = {}
+    
     stopSessionTimer()
     clearError()
     console.log('Practice reset complete')
@@ -788,6 +832,10 @@ export const useTypingStore = defineStore('typing', () => {
     retryCount,
     selectedDictionary,
     selectedChapter,
+    
+    // 按键错误记录 ⭐ 新增
+    keyMistakes,
+    cumulativeKeyMistakes,
     
     // 计算属性
     currentWord,

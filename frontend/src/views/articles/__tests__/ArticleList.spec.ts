@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia, setActivePinia } from 'pinia'
+import { ElMessage } from 'element-plus'
 import ArticleList from '../ArticleList.vue'
 
 // Mock API模块
@@ -13,7 +14,7 @@ vi.mock('@/api/categories', () => ({
 
 // Mock stores
 const mockArticlesStore = {
-  articles: [],
+  articles: [] as any[],
   loading: false,
   pagination: {
     current: 1,
@@ -445,6 +446,14 @@ describe('ArticleList.vue Component', () => {
       // 测试默认颜色
       const defaultColor = wrapper.vm.getContrastColor('')
       expect(defaultColor).toBe('#333333')
+      
+      // 测试无效颜色长度
+      const invalidColor = wrapper.vm.getContrastColor('#12345')
+      expect(invalidColor).toBe('#333333')
+      
+      // 测试边界亮度值 - #808080是中等灰色，亮度等于128，应该返回白色文字
+      const boundaryColor = wrapper.vm.getContrastColor('#808080')
+      expect(boundaryColor).toBe('#ffffff')
     })
   })
 
@@ -468,6 +477,7 @@ describe('ArticleList.vue Component', () => {
   describe('错误处理', () => {
     it('API调用失败时显示错误消息', async () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const elMessageSpy = vi.spyOn(ElMessage, 'error').mockImplementation(() => ({} as any))
       
       // 模拟API失败
       mockArticlesStore.fetchArticles.mockRejectedValue(new Error('API Error'))
@@ -475,7 +485,10 @@ describe('ArticleList.vue Component', () => {
       await wrapper.vm.fetchArticles()
       
       expect(consoleSpy).toHaveBeenCalledWith('获取文章失败:', expect.any(Error))
+      expect(elMessageSpy).toHaveBeenCalledWith('获取文章失败，请检查网络连接')
+      
       consoleSpy.mockRestore()
+      elMessageSpy.mockRestore()
     })
   })
 
@@ -493,6 +506,42 @@ describe('ArticleList.vue Component', () => {
       
       expect(mockArticlesStore.pagination.current).toBe(2)
       expect(mockArticlesStore.fetchArticles).toHaveBeenCalled()
+    })
+  })
+
+  describe('搜索防抖', () => {
+    it('搜索防抖正确工作', async () => {
+      // Mock setTimeout和clearTimeout
+      const setTimeoutSpy = vi.spyOn(window, 'setTimeout')
+      const clearTimeoutSpy = vi.spyOn(window, 'clearTimeout')
+      
+      // 第一次调用handleSearch
+      wrapper.vm.handleSearch()
+      
+      // 验证setTimeout被调用
+      expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 300)
+      
+      // 第二次调用handleSearch，这次应该会清除之前的timer
+      wrapper.vm.handleSearch()
+      
+      // 验证clearTimeout被调用
+      expect(clearTimeoutSpy).toHaveBeenCalled()
+      
+      // 清理spy
+      setTimeoutSpy.mockRestore()
+      clearTimeoutSpy.mockRestore()
+    })
+  })
+
+  describe('控制台日志', () => {
+    it('fetchArticles正确输出请求参数日志', async () => {
+      const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+      
+      await wrapper.vm.fetchArticles()
+      
+      expect(consoleLogSpy).toHaveBeenCalledWith('请求参数:', expect.any(Object))
+      
+      consoleLogSpy.mockRestore()
     })
   })
 }) 
