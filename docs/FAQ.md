@@ -2381,3 +2381,215 @@ curl -X GET "http://localhost:8000/api/v1/english/dictionaries/chapter_word_coun
 **解决时间**：2025-08-21
 
 ---
+
+## 问题5：英语学习智能练习界面需要拓展新功能
+
+**问题描述**
+用户要求为英语学习智能练习界面拓展新功能，包括：
+1. 每次练习章节完毕，出现撒花效果，并显示本次练习的统计数据界面
+2. 练习界面顶部栏增加错题本入口
+3. 每个词库的章节下拉框显示每个章节的练习次数
+4. 增加练习时长统计功能，为接入英语学习仪表盘做准备
+
+**问题分析**
+1. **功能复杂度高**：涉及多个新功能模块，需要系统性的设计和实现
+2. **状态管理复杂**：需要管理章节完成状态、练习次数、错题本、练习时长等多个状态
+3. **UI交互丰富**：需要实现撒花效果、统计数据展示、错误单词列表等复杂UI
+4. **数据收集逻辑**：需要在练习过程中实时收集错误单词信息
+5. **向后兼容性**：新功能不能影响现有的练习功能
+
+**解决方案**
+
+### 1. 核心状态管理设计
+在 `typing.js` store中添加新的状态变量：
+
+```javascript
+// 章节完成功能
+const chapterCompleted = ref(false)
+const chapterCompletionData = ref(null)
+
+// 章节练习次数统计
+const chapterPracticeCounts = ref({})
+
+// 错题本功能
+const wrongWordsNotebook = ref([])
+
+// 每日练习时长统计
+const dailyPracticeDuration = ref(0)
+const dailyPracticeSessions = ref([])
+
+// 错误单词收集
+const wrongWordsInSession = ref([])
+```
+
+### 2. 核心方法实现
+```javascript
+// 章节完成管理
+const markChapterCompleted = (completionData) => {
+  chapterCompleted.value = true
+  chapterCompletionData.value = completionData
+  
+  // 增加章节练习次数
+  if (selectedChapter.value) {
+    incrementChapterPracticeCount(selectedChapter.value)
+  }
+  
+  // 记录练习会话时长
+  if (sessionTime.value > 0) {
+    recordPracticeSession(sessionTime.value)
+  }
+}
+
+// 章节练习次数统计
+const incrementChapterPracticeCount = (chapterNumber) => {
+  if (!chapterPracticeCounts.value[chapterNumber]) {
+    chapterPracticeCounts.value[chapterNumber] = 0
+  }
+  chapterPracticeCounts.value[chapterNumber]++
+}
+
+// 错题本管理
+const addWrongWord = (wrongWord) => {
+  const existingIndex = wrongWordsNotebook.value.findIndex(
+    item => item.word === wrongWord.word && item.dictionary === wrongWord.dictionary
+  )
+  
+  if (existingIndex >= 0) {
+    wrongWordsNotebook.value[existingIndex].errorCount += wrongWord.errorCount
+  } else {
+    wrongWordsNotebook.value.push(wrongWord)
+  }
+}
+
+// 每日练习时长统计
+const recordPracticeSession = (duration) => {
+  dailyPracticeDuration.value += duration
+  dailyPracticeSessions.value.push({
+    duration,
+    timestamp: new Date().toISOString()
+  })
+}
+```
+
+### 3. UI组件实现
+在 `TypingPractice.vue` 中添加新的界面：
+
+```vue
+<!-- 章节完成状态 -->
+<div v-else-if="chapterCompleted" class="chapter-completion-state">
+  <!-- 撒花效果 -->
+  <div class="confetti-container" v-if="showConfetti">
+    <div class="confetti" v-for="i in 50" :key="i" :style="getConfettiStyle(i)"></div>
+  </div>
+  
+  <div class="completion-title">🎉 章节练习完成！</div>
+  
+  <!-- 统计数据 -->
+  <div class="completion-stats">
+    <div class="stat-item">
+      <div class="stat-value">{{ chapterCompletionData?.accuracy || 0 }}%</div>
+      <div class="stat-label">正确率</div>
+    </div>
+    <!-- 其他统计项... -->
+  </div>
+  
+  <!-- 错误单词列表 -->
+  <div class="wrong-words-section" v-if="chapterCompletionData?.wrongWords?.length > 0">
+    <h3>本次练习的错误单词：</h3>
+    <div class="wrong-words-list">
+      <!-- 错误单词项... -->
+    </div>
+  </div>
+  
+  <!-- 操作按钮 -->
+  <div class="completion-actions">
+    <button @click="repeatChapter" class="action-btn repeat-btn">🔄 重复本章</button>
+    <button @click="nextChapter" class="action-btn next-btn">➡️ 下一章节</button>
+  </div>
+</div>
+```
+
+### 4. 错误单词收集逻辑
+在 `handleKeyInput` 函数中添加错误单词收集：
+
+```javascript
+// 收集错误单词
+if (currentWord.value) {
+  const existingIndex = wrongWordsInSession.value.findIndex(
+    item => item.word === currentWord.value.word
+  )
+  
+  if (existingIndex >= 0) {
+    wrongWordsInSession.value[existingIndex].errorCount++
+  } else {
+    wrongWordsInSession.value.push({
+      word: currentWord.value.word,
+      translation: currentWord.value.translation || '',
+      errorCount: 1
+    })
+  }
+}
+```
+
+### 5. 自动章节完成触发
+在练习完成时自动标记章节完成：
+
+```javascript
+if (currentWordIndex.value >= words.value.length) {
+  // 练习完成
+  practiceCompleted.value = true
+  stopSessionTimer()
+  
+  // 自动标记章节完成
+  const completionData = generateChapterCompletionData()
+  markChapterCompleted(completionData)
+  
+  // 其他逻辑...
+}
+```
+
+### 6. 测试用例设计
+创建完整的测试文件 `typing_chapter_completion.spec.ts`，包含20个测试用例：
+
+```javascript
+describe('章节完成功能测试', () => {
+  describe('章节完成状态管理', () => {
+    it('应该正确初始化章节完成状态', () => {
+      expect(store.chapterCompleted).toBe(false)
+      expect(store.chapterCompletionData).toBeNull()
+    })
+    
+    it('应该能够标记章节为完成状态', () => {
+      const mockCompletionData = { /* ... */ }
+      store.markChapterCompleted(mockCompletionData)
+      expect(store.chapterCompleted).toBe(true)
+    })
+  })
+  
+  describe('错题本功能', () => {
+    it('应该能够添加错误单词到错题本', () => {
+      const wrongWord = { /* ... */ }
+      store.addWrongWord(wrongWord)
+      expect(store.wrongWordsNotebook).toHaveLength(1)
+    })
+  })
+  
+  // 其他测试用例...
+})
+```
+
+**经验总结**
+1. **测试驱动开发**：先写测试用例定义期望行为，再实现功能代码
+2. **状态管理设计**：合理设计状态结构，确保数据流清晰
+3. **UI组件设计**：考虑用户体验，实现丰富的视觉效果和交互
+4. **数据收集策略**：在合适的时机收集数据，确保数据准确性
+5. **向后兼容性**：新功能不能破坏现有功能，需要仔细设计接口
+6. **代码组织**：合理组织代码结构，便于维护和扩展
+
+**相关文件**
+- `frontend/src/stores/typing.js`：新增章节完成相关状态和方法
+- `frontend/src/views/english/TypingPractice.vue`：新增章节完成界面和错题本入口
+- `frontend/src/stores/__tests__/typing_chapter_completion.spec.ts`：新增测试用例
+- `docs/FAQ.md`：记录问题和解决方案
+
+**解决时间**：2025-08-24
