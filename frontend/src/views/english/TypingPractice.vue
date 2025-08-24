@@ -728,7 +728,13 @@ export default {
     
     // 键盘事件处理
     const handleGlobalKeydown = (event) => {
-      console.log('键盘事件:', event.key, '练习状态:', typingStore.practiceStarted)
+      console.log('键盘事件:', event.key, '练习状态:', typingStore.practiceStarted, '章节完成状态:', typingStore.chapterCompleted)
+      
+      // 如果章节已完成，不处理任意键开始练习
+      if (typingStore.chapterCompleted) {
+        console.log('章节已完成，不处理任意键开始练习')
+        return
+      }
       
       // 如果练习还没开始，按任意键开始
       if (!typingStore.practiceStarted) {
@@ -1497,6 +1503,7 @@ export default {
   min-height: 0;
   overflow: hidden;
   position: relative;
+  z-index: 1;
 }
 
 /* 开始状态 */
@@ -1870,6 +1877,7 @@ export default {
   text-align: center;
   position: relative;
   overflow: hidden;
+  z-index: 1000;
 }
 
 .confetti-container {
