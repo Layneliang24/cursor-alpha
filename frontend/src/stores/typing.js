@@ -110,8 +110,8 @@ export const useTypingStore = defineStore('typing', () => {
   const chapterCompleted = ref(false)
   const chapterCompletionData = ref(null)
   
-  // 章节练习次数统计 ⭐ 新增
-  const chapterPracticeCounts = ref(loadFromStorage('chapterPracticeCounts', {}))
+  // 章节练习次数统计 ⭐ 重构：按词典+章节组合统计
+  const chapterPracticeStats = ref(loadFromStorage('chapterPracticeStats', {}))
   
   // 错题本功能 ⭐ 新增
   const wrongWordsNotebook = ref(loadFromStorage('wrongWordsNotebook', []))
@@ -981,8 +981,8 @@ export const useTypingStore = defineStore('typing', () => {
     console.log('设置后的章节完成数据:', chapterCompletionData.value)
     
     // 增加章节练习次数
-    if (selectedChapter.value) {
-      incrementChapterPracticeCount(selectedChapter.value)
+    if (selectedChapter.value && selectedDictionary.value) {
+      incrementChapterPracticeCount(selectedDictionary.value.id, selectedChapter.value)
     }
     
     // 记录练习会话时长
@@ -1009,23 +1009,88 @@ export const useTypingStore = defineStore('typing', () => {
     chapterCompletionData.value = null
   }
 
-  // 章节练习次数统计 ⭐ 新增
-  const incrementChapterPracticeCount = (chapterNumber) => {
-    if (!chapterPracticeCounts.value[chapterNumber]) {
-      chapterPracticeCounts.value[chapterNumber] = 0
+  // 章节练习次数统计 ⭐ 重构：按词典+章节组合统计
+  const incrementChapterPracticeCount = (dictionaryId, chapterNumber) => {
+    if (!chapterPracticeStats.value[dictionaryId]) {
+      chapterPracticeStats.value[dictionaryId] = {}
     }
-    chapterPracticeCounts.value[chapterNumber]++
-    saveToStorage('chapterPracticeCounts', chapterPracticeCounts.value)
+    if (!chapterPracticeStats.value[dictionaryId][chapterNumber]) {
+      chapterPracticeStats.value[dictionaryId][chapterNumber] = 0
+    }
+    chapterPracticeStats.value[dictionaryId][chapterNumber]++
+    saveToStorage('chapterPracticeStats', chapterPracticeStats.value)
   }
 
-  const getChapterPracticeCountDisplay = (chapterNumber) => {
-    const count = chapterPracticeCounts.value[chapterNumber] || 0
+  const getChapterPracticeCount = (dictionaryId, chapterNumber) => {
+    return chapterPracticeStats.value[dictionaryId]?.[chapterNumber] || 0
+  }
+
+  const getChapterPracticeCountDisplay = (dictionaryId, chapterNumber) => {
+    const count = getChapterPracticeCount(dictionaryId, chapterNumber)
     if (count <= 999) return count.toString()
     return '999+'
   }
 
-  const resetChapterPracticeCount = (chapterNumber) => {
-    chapterPracticeCounts.value[chapterNumber] = 0
+  const resetChapterPracticeCount = (dictionaryId, chapterNumber) => {
+    if (chapterPracticeStats.value[dictionaryId]) {
+      chapterPracticeStats.value[dictionaryId][chapterNumber] = 0
+      saveToStorage('chapterPracticeStats', chapterPracticeStats.value)
+    }
+  }
+
+  // 新增：设置和获取练习统计数据
+  const setChapterPracticeStats = (stats) => {
+    chapterPracticeStats.value = stats
+  }
+
+  const saveChapterPracticeStats = () => {
+    saveToStorage('chapterPracticeStats', chapterPracticeStats.value)
+  }
+
+  const loadChapterPracticeStats = () => {
+    const stats = loadFromStorage('chapterPracticeStats', {})
+    chapterPracticeStats.value = stats
+    return stats
+  }
+
+  // 新增：API集成方法
+  const fetchChapterPracticeStats = async () => {
+    try {
+      const { englishAPI } = await import('@/api/english')
+      const stats = await englishAPI.getChapterStats()
+      chapterPracticeStats.value = stats
+      return stats
+    } catch (error) {
+      console.error('获取章节练习统计失败:', error)
+      return {}
+    }
+  }
+
+  const submitChapterPracticeStats = async () => {
+    try {
+      const { englishAPI } = await import('@/api/english')
+      const result = await englishAPI.updateChapterStats(chapterPracticeStats.value)
+      return result
+    } catch (error) {
+      console.error('提交章节练习统计失败:', error)
+      return { success: false, error: error.message }
+    }
+  }
+
+  // 新增：词典切换时加载对应统计数据
+  const loadDictionaryChapterStats = async (dictionaryId) => {
+    try {
+      const { englishAPI } = await import('@/api/english')
+      const stats = await englishAPI.getChapterStats(dictionaryId)
+      if (stats[dictionaryId]) {
+        chapterPracticeStats.value[dictionaryId] = stats[dictionaryId]
+        saveToStorage('chapterPracticeStats', chapterPracticeStats.value)
+      }
+      return stats
+    } catch (error) {
+      console.error('加载词典章节统计失败:', error)
+      return {}
+    }
   }
 
   // 错题本功能 ⭐ 新增
@@ -1174,7 +1239,7 @@ export const useTypingStore = defineStore('typing', () => {
     chapterCompletionData,
     
     // 章节练习次数统计 ⭐ 新增
-    chapterPracticeCounts,
+    chapterPracticeStats,
     
     // 错题本功能 ⭐ 新增
     wrongWordsNotebook,
@@ -1246,10 +1311,17 @@ export const useTypingStore = defineStore('typing', () => {
     markChapterCompleted,
     resetChapterCompletion,
     
-    // 章节练习次数统计 ⭐ 新增
+    // 章节练习次数统计 ⭐ 重构：按词典+章节组合统计
     incrementChapterPracticeCount,
+    getChapterPracticeCount,
     getChapterPracticeCountDisplay,
     resetChapterPracticeCount,
+    setChapterPracticeStats,
+    saveChapterPracticeStats,
+    loadChapterPracticeStats,
+    fetchChapterPracticeStats,
+    submitChapterPracticeStats,
+    loadDictionaryChapterStats,
     
     // 错题本功能 ⭐ 新增
     addWrongWord,

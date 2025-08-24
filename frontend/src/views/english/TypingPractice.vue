@@ -104,7 +104,7 @@
       </div>
 
       <!-- 打字状态 -->
-      <div v-else-if="!practiceCompleted" class="typing-state">
+      <div v-if="practiceStarted && !practiceCompleted && !chapterCompleted" class="typing-state">
         <div class="current-word-container">
           <div :class="getWordContainerClass()" v-if="wordState && wordState.displayWord">
             <span 
@@ -156,15 +156,15 @@
 
       <!-- 章节完成状态 -->
       <ChapterCompletion 
-        v-if="chapterCompleted"
+        v-else-if="chapterCompleted"
         :completion-data="chapterCompletionData"
         @repeat-chapter="repeatChapter"
         @next-chapter="nextChapter"
         @back-to-practice="backToPractice"
       />
 
-      <!-- 练习完成状态（保持向后兼容） -->
-      <div v-else class="completion-state">
+      <!-- 练习完成状态（保持向后兼容，仅在非章节完成状态下显示） -->
+      <div v-else-if="practiceCompleted && !chapterCompleted" class="completion-state">
         <div class="completion-title">练习完成！</div>
         
         <div class="completion-stats">
@@ -442,11 +442,18 @@ export default {
       }
     }
     
-    const selectDictionary = (dict) => {
+    const selectDictionary = async (dict) => {
       selectedDictionary.value = dict
       selectedChapter.value = 1
       isDictExpanded.value = false
       updateChapterList()
+      
+      // 加载对应词典的章节练习次数统计
+      try {
+        await typingStore.loadDictionaryChapterStats(dict.id)
+      } catch (error) {
+        console.error('加载词典章节统计失败:', error)
+      }
       
       // 如果练习已经开始，重新加载单词
       if (typingStore.practiceStarted) {
@@ -1076,9 +1083,9 @@ export default {
       chapterCompleted: computed(() => typingStore.chapterCompleted),
       chapterCompletionData: computed(() => typingStore.chapterCompletionData),
       
-      // 章节练习次数相关 ⭐ 新增
-      getChapterPracticeCount: (chapterNumber) => typingStore.chapterPracticeCounts[chapterNumber] || 0,
-      getChapterPracticeCountDisplay: (chapterNumber) => typingStore.getChapterPracticeCountDisplay(chapterNumber),
+      // 章节练习次数相关 ⭐ 重构：按词典+章节组合统计
+      getChapterPracticeCount: (chapterNumber) => typingStore.getChapterPracticeCount(selectedDictionary.value?.id, chapterNumber),
+      getChapterPracticeCountDisplay: (chapterNumber) => typingStore.getChapterPracticeCountDisplay(selectedDictionary.value?.id, chapterNumber),
       
       // 错题本相关 ⭐ 新增
       wrongWordsNotebook: computed(() => typingStore.wrongWordsNotebook),

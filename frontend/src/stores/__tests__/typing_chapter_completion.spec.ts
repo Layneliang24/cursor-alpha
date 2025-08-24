@@ -53,41 +53,42 @@ describe('章节完成功能测试', () => {
 
   describe('章节练习次数统计', () => {
     it('应该正确初始化章节练习次数', () => {
-      expect(store.chapterPracticeCounts).toEqual({})
+      expect(store.chapterPracticeStats).toEqual({})
     })
 
     it('应该能够增加章节练习次数', () => {
-      store.incrementChapterPracticeCount(1)
-      expect(store.chapterPracticeCounts[1]).toBe(1)
+      store.incrementChapterPracticeCount('test', 1)
+      expect(store.getChapterPracticeCount('test', 1)).toBe(1)
 
-      store.incrementChapterPracticeCount(1)
-      expect(store.chapterPracticeCounts[1]).toBe(2)
+      store.incrementChapterPracticeCount('test', 1)
+      expect(store.getChapterPracticeCount('test', 1)).toBe(2)
     })
 
     it('应该能够获取章节练习次数显示文本', () => {
       // 先设置一些测试数据
-      store.incrementChapterPracticeCount(1)
-      store.incrementChapterPracticeCount(50)
-      store.incrementChapterPracticeCount(999)
-      store.incrementChapterPracticeCount(1000)
-      store.incrementChapterPracticeCount(1500)
+      store.incrementChapterPracticeCount('test', 1)
+      store.incrementChapterPracticeCount('test', 1) // 章节1增加2次
+      store.incrementChapterPracticeCount('test', 50)
+      store.incrementChapterPracticeCount('test', 999)
+      store.incrementChapterPracticeCount('test', 1000)
+      store.incrementChapterPracticeCount('test', 1500)
       
       // 测试不同次数范围的显示
-      expect(store.getChapterPracticeCountDisplay(0)).toBe('0')
-      expect(store.getChapterPracticeCountDisplay(1)).toBe('1')
-      expect(store.getChapterPracticeCountDisplay(50)).toBe('1')
-      expect(store.getChapterPracticeCountDisplay(999)).toBe('1')
-      expect(store.getChapterPracticeCountDisplay(1000)).toBe('1')
-      expect(store.getChapterPracticeCountDisplay(1500)).toBe('1')
+      expect(store.getChapterPracticeCountDisplay('test', 0)).toBe('0')
+      expect(store.getChapterPracticeCountDisplay('test', 1)).toBe('2') // 章节1有2次练习
+      expect(store.getChapterPracticeCountDisplay('test', 50)).toBe('1')
+      expect(store.getChapterPracticeCountDisplay('test', 999)).toBe('1')
+      expect(store.getChapterPracticeCountDisplay('test', 1000)).toBe('1')
+      expect(store.getChapterPracticeCountDisplay('test', 1500)).toBe('1')
     })
 
     it('应该能够重置特定章节的练习次数', () => {
-      store.incrementChapterPracticeCount(1)
-      store.incrementChapterPracticeCount(1)
-      expect(store.chapterPracticeCounts[1]).toBe(2)
+      store.incrementChapterPracticeCount('test', 1)
+      store.incrementChapterPracticeCount('test', 1)
+      expect(store.getChapterPracticeCount('test', 1)).toBe(2)
 
-      store.resetChapterPracticeCount(1)
-      expect(store.chapterPracticeCounts[1]).toBe(0)
+      store.resetChapterPracticeCount('test', 1)
+      expect(store.getChapterPracticeCount('test', 1)).toBe(0)
     })
   })
 
