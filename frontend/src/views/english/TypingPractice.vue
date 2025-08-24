@@ -155,53 +155,13 @@
       </div>
 
       <!-- 章节完成状态 -->
-      <div v-else-if="chapterCompleted" class="chapter-completion-state">
-        <!-- 撒花效果 -->
-        <div class="confetti-container" v-if="showConfetti">
-          <div class="confetti" v-for="i in 50" :key="i" :style="getConfettiStyle(i)"></div>
-        </div>
-        
-        <div class="completion-title">🎉 章节练习完成！</div>
-        
-        <div class="completion-stats">
-          <div class="stat-item">
-            <div class="stat-value">{{ chapterCompletionData?.accuracy || 0 }}%</div>
-            <div class="stat-label">正确率</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">{{ formatTime(chapterCompletionData?.practiceTime || 0) }}</div>
-            <div class="stat-label">练习用时</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">{{ chapterCompletionData?.wpm || 0 }}</div>
-            <div class="stat-label">WPM</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">{{ chapterCompletionData?.wrongWords?.length || 0 }}</div>
-            <div class="stat-label">错误单词数</div>
-          </div>
-        </div>
-        
-        <!-- 错误单词列表 -->
-        <div class="wrong-words-section" v-if="chapterCompletionData?.wrongWords?.length > 0">
-          <h3>本次练习的错误单词：</h3>
-          <div class="wrong-words-list">
-            <div 
-              v-for="word in chapterCompletionData.wrongWords" 
-              :key="word.word"
-              class="wrong-word-item"
-            >
-              <span class="word-text">{{ word.word }}</span>
-              <span class="word-translation">{{ word.translation }}</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="completion-actions">
-          <button @click="repeatChapter" class="action-btn repeat-btn">🔄 重复本章</button>
-          <button @click="nextChapter" class="action-btn next-btn">➡️ 下一章节</button>
-        </div>
-      </div>
+      <ChapterCompletion 
+        v-if="chapterCompleted"
+        :completion-data="chapterCompletionData"
+        @repeat-chapter="repeatChapter"
+        @next-chapter="nextChapter"
+        @back-to-practice="backToPractice"
+      />
 
       <!-- 练习完成状态（保持向后兼容） -->
       <div v-else class="completion-state">
@@ -261,6 +221,7 @@ import useKeySounds from '@/hooks/useKeySounds'
 import WordPronunciationIcon from '@/components/typing/WordPronunciationIcon.vue'
 import DictionarySelector from '@/components/typing/DictionarySelector.vue'
 import ChapterSelector from '@/components/typing/ChapterSelector.vue'
+import ChapterCompletion from './ChapterCompletion.vue'
 import { englishAPI } from '@/api/english'
 
 export default {
@@ -269,7 +230,8 @@ export default {
     // Letter // Removed Letter component
     DictionarySelector,
     ChapterSelector,
-    WordPronunciationIcon
+    WordPronunciationIcon,
+    ChapterCompletion
   },
   setup() {
     const router = useRouter()
@@ -1089,31 +1051,21 @@ export default {
         }
       },
       
+      backToPractice: () => {
+        typingStore.resetChapterCompletion()
+        // 不重置练习，只是返回练习界面
+      },
+      
       // 错题本相关方法 ⭐ 新增
       openWrongWordsNotebook: () => {
         router.push('/english/wrong-words-notebook')
       },
       
-      // 撒花效果相关方法 ⭐ 新增
-      getConfettiStyle: (index) => {
-        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff']
-        const color = colors[index % colors.length]
-        const left = Math.random() * 100
-        const animationDelay = Math.random() * 3
-        const animationDuration = 3 + Math.random() * 2
-        
-        return {
-          left: `${left}%`,
-          backgroundColor: color,
-          animationDelay: `${animationDelay}s`,
-          animationDuration: `${animationDuration}s`
-        }
-      },
+
       
       // 章节完成相关计算属性 ⭐ 新增
       chapterCompleted: computed(() => typingStore.chapterCompleted),
       chapterCompletionData: computed(() => typingStore.chapterCompletionData),
-      showConfetti: computed(() => typingStore.chapterCompleted),
       
       // 章节练习次数相关 ⭐ 新增
       getChapterPracticeCount: (chapterNumber) => typingStore.chapterPracticeCounts[chapterNumber] || 0,

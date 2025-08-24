@@ -873,6 +873,7 @@ export const useTypingStore = defineStore('typing', () => {
     // 重置练习状态
     practiceStarted.value = false
     practiceCompleted.value = false
+    chapterCompleted.value = false  // 重置章节完成状态
     words.value = []
     currentWordIndex.value = 0
     userInput.value = ''
