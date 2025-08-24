@@ -112,11 +112,11 @@ describe('Typing Store - 字母级别统计', () => {
       store.handleKeyInput('x') // 错误（应该是 'l'）
       
       // 正确率 = (4 - 1) / 4 * 100 = 75%
-      expect(store.correctRate).toBe(75)
+      expect(store.letterAccuracy).toBe(75)
     })
 
     it('应该在没有输入时返回0%', () => {
-      expect(store.correctRate).toBe(0)
+      expect(store.letterAccuracy).toBe(0)
     })
 
     it('应该在全部正确时返回100%', () => {
@@ -130,7 +130,7 @@ describe('Typing Store - 字母级别统计', () => {
       store.handleKeyInput('l')
       store.handleKeyInput('o')
       
-      expect(store.correctRate).toBe(100)
+      expect(store.letterAccuracy).toBe(100)
     })
   })
 

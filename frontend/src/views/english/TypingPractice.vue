@@ -939,7 +939,8 @@ export default {
       words: typingStore.words,
       currentWordIndex: typingStore.currentWordIndex,
       wordState: typingStore.wordState,
-      correctRate: typingStore.correctRate, // This is now accuracy
+      correctRate: typingStore.correctRate, // 单词级别正确率（向后兼容）
+      letterAccuracy: typingStore.letterAccuracy, // 字母级别正确率（新功能）
       progressPercentage: typingStore.progressPercentage,
       typingStats: typingStore.typingStats,
       practiceSettings: typingStore.practiceSettings,
@@ -968,7 +969,7 @@ export default {
       },
 
       // 计算属性 - 使用computed确保响应式更新
-      accuracy: computed(() => typingStore.correctRate),
+      accuracy: computed(() => typingStore.letterAccuracy), // 使用字母级别正确率
       totalInputLetters: computed(() => typingStore.totalInputLetters),
       totalCorrectLetters: computed(() => typingStore.totalCorrectLetters),
       totalWrongLetters: computed(() => typingStore.totalWrongLetters),

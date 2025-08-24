@@ -142,12 +142,24 @@ export const useTypingStore = defineStore('typing', () => {
     return null
   })
   
-  const correctRate = computed(() => {
+  // 字母级别正确率（新功能）
+  const letterAccuracy = computed(() => {
     if (letterStats.totalInputLetters === 0) return 0
     
     // 基于字母级别计算正确率
     // 正确率 = (总输入字母数 - 总错误字母数) / 总输入字母数 * 100
     const accuracy = ((letterStats.totalInputLetters - letterStats.totalWrongLetters) / letterStats.totalInputLetters) * 100
+    
+    return Math.round(accuracy)
+  })
+  
+  // 单词级别正确率（保持向后兼容，QWERTY Learner逻辑）
+  const correctRate = computed(() => {
+    if (answeredCount.value === 0) return 0
+    
+    // 基于单词级别计算正确率
+    // 正确率 = 正确完成的单词数 / 已处理的单词数 * 100
+    const accuracy = (correctCount.value / answeredCount.value) * 100
     
     return Math.round(accuracy)
   })
@@ -1074,7 +1086,7 @@ export const useTypingStore = defineStore('typing', () => {
 
   // 章节完成数据生成 ⭐ 新增
   const generateChapterCompletionData = () => {
-    const accuracy = correctRate.value
+    const accuracy = letterAccuracy.value // 使用字母级别正确率
     const practiceTime = sessionTime.value
     const wpm = averageWPM.value
     const wrongWords = wrongWordsInSession.value.map(item => ({
@@ -1160,6 +1172,7 @@ export const useTypingStore = defineStore('typing', () => {
     previousWord,
     nextWordData,
     correctRate,
+    letterAccuracy, // 字母级别正确率
     averageWPM,
     progressPercentage,
     hasError,
