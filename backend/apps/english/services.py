@@ -152,15 +152,28 @@ class DataAnalysisService:
         avg_wpm_result = wpm_records.aggregate(avg_wpm=Avg('typing_speed'))
         avg_wpm = avg_wpm_result['avg_wpm'] if avg_wpm_result and avg_wpm_result['avg_wpm'] is not None else 0
         
-        # 计算平均正确率
-        total_words_count = records.count()
-        correct_words_count = records.filter(is_correct=True).count()
-        avg_accuracy = (correct_words_count / total_words_count * 100) if total_words_count > 0 else 0
+        # 计算平均正确率 - 使用字母级别统计（与练习界面保持一致）
+        total_letters = 0
+        correct_letters = 0
+        
+        for record in records:
+            word_length = len(record.word)
+            total_letters += word_length
+            
+            # 如果有错误次数记录，使用错误次数计算正确字母数
+            if hasattr(record, 'wrong_count') and record.wrong_count is not None:
+                correct_letters += word_length - record.wrong_count
+            else:
+                # 如果没有错误次数记录，默认全部正确（保持向后兼容）
+                correct_letters += word_length
+        
+        avg_accuracy = (correct_letters / total_letters * 100) if total_letters > 0 else 0
         
         return {
             'total_exercises': total_exercises,
             'total_words': total_words,
-            'correct_exercises': correct_words_count,  # 添加正确练习次数
+            'correct_letters': correct_letters,  # 正确字母数
+            'total_letters': total_letters,  # 总字母数
             'avg_accuracy': round(avg_accuracy, 2),  # 保持原有字段名以匹配测试期望
             'avg_wpm': round(avg_wpm, 2),
             'date_range': [start_date, end_date]
