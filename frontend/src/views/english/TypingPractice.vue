@@ -56,6 +56,9 @@
               @click="selectChapter(chapter.number)"
             >
               第{{ chapter.number }}章 ({{ chapter.wordCount }}词)
+              <span class="practice-count" v-if="getChapterPracticeCount(chapter.number) > 0">
+                {{ getChapterPracticeCountDisplay(chapter.number) }}
+              </span>
             </div>
           </div>
         </div>
@@ -67,6 +70,11 @@
         <!-- 数据分析入口 -->
         <button @click="goToDataAnalysis" class="analysis-btn" title="数据分析">
           📊
+        </button>
+        
+        <!-- 错题本入口 -->
+        <button @click="openWrongWordsNotebook" class="notebook-btn" title="错题本">
+          📝
         </button>
         
 
@@ -146,7 +154,56 @@
         </div>
       </div>
 
-      <!-- 完成状态 -->
+      <!-- 章节完成状态 -->
+      <div v-else-if="chapterCompleted" class="chapter-completion-state">
+        <!-- 撒花效果 -->
+        <div class="confetti-container" v-if="showConfetti">
+          <div class="confetti" v-for="i in 50" :key="i" :style="getConfettiStyle(i)"></div>
+        </div>
+        
+        <div class="completion-title">🎉 章节练习完成！</div>
+        
+        <div class="completion-stats">
+          <div class="stat-item">
+            <div class="stat-value">{{ chapterCompletionData?.accuracy || 0 }}%</div>
+            <div class="stat-label">正确率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ formatTime(chapterCompletionData?.practiceTime || 0) }}</div>
+            <div class="stat-label">练习用时</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ chapterCompletionData?.wpm || 0 }}</div>
+            <div class="stat-label">WPM</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ chapterCompletionData?.wrongWords?.length || 0 }}</div>
+            <div class="stat-label">错误单词数</div>
+          </div>
+        </div>
+        
+        <!-- 错误单词列表 -->
+        <div class="wrong-words-section" v-if="chapterCompletionData?.wrongWords?.length > 0">
+          <h3>本次练习的错误单词：</h3>
+          <div class="wrong-words-list">
+            <div 
+              v-for="word in chapterCompletionData.wrongWords" 
+              :key="word.word"
+              class="wrong-word-item"
+            >
+              <span class="word-text">{{ word.word }}</span>
+              <span class="word-translation">{{ word.translation }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="completion-actions">
+          <button @click="repeatChapter" class="action-btn repeat-btn">🔄 重复本章</button>
+          <button @click="nextChapter" class="action-btn next-btn">➡️ 下一章节</button>
+        </div>
+      </div>
+
+      <!-- 练习完成状态（保持向后兼容） -->
       <div v-else class="completion-state">
         <div class="completion-title">练习完成！</div>
         
@@ -1003,7 +1060,66 @@ export default {
       // 跳转到数据分析页面
       goToDataAnalysis: () => {
         router.push('/english/data-analysis')
-      }
+      },
+      
+      // 章节完成相关方法 ⭐ 新增
+      repeatChapter: () => {
+        typingStore.resetChapterCompletion()
+        typingStore.resetPractice()
+        // 重新开始当前章节
+        startPracticeWithSelection()
+      },
+      
+      nextChapter: () => {
+        typingStore.resetChapterCompletion()
+        typingStore.resetPractice()
+        // 选择下一章节
+        if (selectedChapter.value < chapterList.value.length) {
+          selectChapter(selectedChapter.value + 1)
+        } else {
+          // 如果是最后一章，回到第一章
+          selectChapter(1)
+        }
+      },
+      
+      // 错题本相关方法 ⭐ 新增
+      openWrongWordsNotebook: () => {
+        // TODO: 打开错题本页面或弹窗
+        console.log('打开错题本')
+      },
+      
+      // 撒花效果相关方法 ⭐ 新增
+      getConfettiStyle: (index) => {
+        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff']
+        const color = colors[index % colors.length]
+        const left = Math.random() * 100
+        const animationDelay = Math.random() * 3
+        const animationDuration = 3 + Math.random() * 2
+        
+        return {
+          left: `${left}%`,
+          backgroundColor: color,
+          animationDelay: `${animationDelay}s`,
+          animationDuration: `${animationDuration}s`
+        }
+      },
+      
+      // 章节完成相关计算属性 ⭐ 新增
+      chapterCompleted: computed(() => typingStore.chapterCompleted),
+      chapterCompletionData: computed(() => typingStore.chapterCompletionData),
+      showConfetti: computed(() => typingStore.chapterCompleted),
+      
+      // 章节练习次数相关 ⭐ 新增
+      getChapterPracticeCount: (chapterNumber) => typingStore.chapterPracticeCounts[chapterNumber] || 0,
+      getChapterPracticeCountDisplay: (chapterNumber) => typingStore.getChapterPracticeCountDisplay(chapterNumber),
+      
+      // 错题本相关 ⭐ 新增
+      wrongWordsNotebook: computed(() => typingStore.wrongWordsNotebook),
+      wrongWordsNotebookStats: computed(() => typingStore.getWrongWordsNotebookStats()),
+      
+      // 每日练习时长相关 ⭐ 新增
+      dailyPracticeDuration: computed(() => typingStore.dailyPracticeDuration),
+      formattedDailyPracticeDuration: computed(() => typingStore.getFormattedDailyPracticeDuration())
     }
   }
 }
@@ -1743,4 +1859,195 @@ export default {
 .sound-icon:active {
   transform: scale(0.95);
 } */
+
+/* 章节完成界面样式 ⭐ 新增 */
+.chapter-completion-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.confetti-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  animation: confetti-fall linear infinite;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.completion-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #3b82f6;
+  margin-bottom: 30px;
+  z-index: 2;
+}
+
+.completion-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+  z-index: 2;
+}
+
+.completion-stats .stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.completion-stats .stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.completion-stats .stat-label {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.wrong-words-section {
+  margin-bottom: 30px;
+  z-index: 2;
+}
+
+.wrong-words-section h3 {
+  font-size: 18px;
+  color: #64748b;
+  margin-bottom: 15px;
+}
+
+.wrong-words-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.wrong-word-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 15px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.word-text {
+  font-weight: 600;
+  color: #dc2626;
+}
+
+.word-translation {
+  color: #7f1d1d;
+}
+
+.completion-actions {
+  display: flex;
+  gap: 20px;
+  z-index: 2;
+}
+
+.action-btn {
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.repeat-btn {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.repeat-btn:hover {
+  background: #e5e7eb;
+  transform: translateY(-2px);
+}
+
+.next-btn {
+  background: #3b82f6;
+  color: white;
+}
+
+.next-btn:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* 错题本按钮样式 ⭐ 新增 */
+.notebook-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+}
+
+.notebook-btn:hover {
+  background: #fef3c7;
+  transform: scale(1.1);
+}
+
+.notebook-btn:active {
+  transform: scale(0.95);
+}
+
+/* 章节练习次数样式 ⭐ 新增 */
+.practice-count {
+  font-size: 12px;
+  color: #10b981;
+  background: #d1fae5;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 8px;
+  font-weight: 600;
+}
 </style>

@@ -100,6 +100,9 @@ export const useTypingStore = defineStore('typing', () => {
   // 每日练习时长统计 ⭐ 新增
   const dailyPracticeDuration = ref(0)
   const dailyPracticeSessions = ref([])
+  
+  // 错误单词收集 ⭐ 新增
+  const wrongWordsInSession = ref([])
 
   // 计算属性
   const currentWord = computed(() => {
@@ -581,6 +584,25 @@ export const useTypingStore = defineStore('typing', () => {
         letterStats.currentWordCorrectLetters = 0
         letterStats.currentWordWrongLetters = 0
         
+        // 收集错误单词 ⭐ 新增
+        if (currentWord.value) {
+          const existingIndex = wrongWordsInSession.value.findIndex(
+            item => item.word === currentWord.value.word
+          )
+          
+          if (existingIndex >= 0) {
+            // 更新已存在的错误单词
+            wrongWordsInSession.value[existingIndex].errorCount++
+          } else {
+            // 添加新的错误单词
+            wrongWordsInSession.value.push({
+              word: currentWord.value.word,
+              translation: currentWord.value.translation || '',
+              errorCount: 1
+            })
+          }
+        }
+        
         console.log('单词已重置，要求用户重新输入')
       }, 800) // 800ms 让用户看到错误状态和抖动效果
     }
@@ -754,6 +776,10 @@ export const useTypingStore = defineStore('typing', () => {
       practiceCompleted.value = true
       stopSessionTimer()
       
+      // 自动标记章节完成 ⭐ 新增
+      const completionData = generateChapterCompletionData()
+      markChapterCompleted(completionData)
+      
       // 异步更新统计
       loadTypingStats()
       loadDailyProgress()
@@ -860,6 +886,9 @@ export const useTypingStore = defineStore('typing', () => {
     
     // 重置章节完成状态 ⭐ 新增
     resetChapterCompletion()
+    
+    // 重置错误单词收集 ⭐ 新增
+    wrongWordsInSession.value = []
     
     stopSessionTimer()
     clearError()
@@ -1007,7 +1036,11 @@ export const useTypingStore = defineStore('typing', () => {
     const accuracy = correctRate.value
     const practiceTime = sessionTime.value
     const wpm = averageWPM.value
-    const wrongWords = [] // TODO: 从练习过程中收集错误单词
+    const wrongWords = wrongWordsInSession.value.map(item => ({
+      word: item.word,
+      translation: item.translation,
+      errorCount: item.errorCount
+    }))
     
     return {
       accuracy,
@@ -1061,6 +1094,9 @@ export const useTypingStore = defineStore('typing', () => {
     // 每日练习时长统计 ⭐ 新增
     dailyPracticeDuration,
     dailyPracticeSessions,
+    
+    // 错误单词收集 ⭐ 新增
+    wrongWordsInSession,
     
     // 按键错误记录 ⭐ 新增
     keyMistakes,
