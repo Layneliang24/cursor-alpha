@@ -156,8 +156,12 @@
             <div class="stat-label">正确率</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">{{ correctCount || 0 }}</div>
-            <div class="stat-label">正确数</div>
+            <div class="stat-value">{{ totalInputLetters || 0 }}</div>
+            <div class="stat-label">输入字母数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ totalCorrectLetters || 0 }}</div>
+            <div class="stat-label">正确字母数</div>
           </div>
         </div>
         
@@ -172,16 +176,16 @@
         <div class="stat-label">时间</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value">{{ answeredCount || 0 }}</div>
-        <div class="stat-label">输入数</div>
+        <div class="stat-value">{{ totalInputLetters || 0 }}</div>
+        <div class="stat-label">输入字母数</div>
       </div>
       <div class="stat-item">
         <div class="stat-value">{{ wpm || 0 }}</div>
         <div class="stat-label">WPM</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value">{{ correctCount || 0 }}</div>
-        <div class="stat-label">正确数</div>
+        <div class="stat-value">{{ totalCorrectLetters || 0 }}</div>
+        <div class="stat-label">正确字母数</div>
       </div>
       <div class="stat-item">
         <div class="stat-value">{{ accuracy || 0 }}%</div>
@@ -908,8 +912,9 @@ export default {
 
       // 计算属性 - 使用computed确保响应式更新
       accuracy: computed(() => typingStore.correctRate),
-      correctCount: computed(() => typingStore.correctCount),
-      answeredCount: computed(() => typingStore.answeredCount),
+      totalInputLetters: computed(() => typingStore.totalInputLetters),
+      totalCorrectLetters: computed(() => typingStore.totalCorrectLetters),
+      totalWrongLetters: computed(() => typingStore.totalWrongLetters),
       sessionTime: computed(() => {
         const time = typingStore.sessionTime
         console.log('sessionTime computed更新:', time)
@@ -919,10 +924,11 @@ export default {
       currentWord: computed(() => typingStore.currentWord),
       wpm: computed(() => {
         const currentSessionTime = typingStore.sessionTime
-        const currentCorrectCount = typingStore.correctCount
+        const currentCorrectLetters = typingStore.totalCorrectLetters
         if (currentSessionTime === 0) return 0
         const minutes = currentSessionTime / 60
-        return Math.round(currentCorrectCount / minutes)
+        // 基于字母计算WPM：每5个字母算一个单词
+        return Math.round((currentCorrectLetters / 5) / minutes)
       }),
       
       // 进度条相关计算属性
