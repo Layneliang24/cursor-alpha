@@ -94,9 +94,9 @@
         </div>
       </div>
 
-      <!-- 主练习内容区域 -->
+      <!-- 主练习内容区域 - 全宽拉伸 -->
       <div class="main-content-section">
-        <!-- 开始状态 -->
+        <!-- 开始状态 - 全宽一体化 -->
         <div v-if="!practiceStarted" class="start-state">
           <div class="start-title">
             {{ selectedDictionary && selectedChapter ? '按任意键开始练习' : '请先选择词库和章节' }}
@@ -106,7 +106,7 @@
           </div>
         </div>
 
-        <!-- 打字状态 -->
+        <!-- 打字状态 - 全宽一体化 -->
         <div v-else-if="practiceStarted && !practiceCompleted" class="typing-state">
           <div class="current-word-container">
             <div :class="getWordContainerClass()" v-if="wordState && wordState.displayWord">
@@ -1083,7 +1083,7 @@ export default {
 .typing-practice-page {
   height: 100vh;
   width: 100%;
-  background: #f8fafc;
+  background: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   display: flex;
   flex-direction: column;
@@ -1094,7 +1094,7 @@ export default {
   padding: 0;
 }
 
-/* 一体化练习区域 - 扁平化风格 */
+/* 一体化练习区域 - 真正的一体化设计 */
 .integrated-practice-container {
   flex: 1;
   display: flex;
@@ -1106,23 +1106,15 @@ export default {
   border: none;
   margin: 0;
   box-shadow: none;
-  /* 移除磨砂玻璃效果，采用扁平化设计 */
+  /* 完全一体化，无边界 */
 }
 
-/* 背景装饰 - 简化扁平化 */
+/* 背景装饰 - 完全移除装饰性元素 */
 .background-decoration {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-  opacity: 0.3;
-  z-index: -1;
-  pointer-events: none;
+  display: none; /* 移除所有背景装饰 */
 }
 
-/* 顶部控制区域 - 扁平化风格 */
+/* 顶部控制区域 - 无缝一体化 */
 .top-control-section {
   flex-shrink: 0;
   display: flex;
@@ -1130,11 +1122,12 @@ export default {
   align-items: center;
   padding: 20px 30px;
   background: #ffffff;
-  border-bottom: 2px solid #e2e8f0;
+  border: none; /* 移除底部边框 */
   border-radius: 0;
   z-index: 10;
   min-height: 70px;
   box-shadow: none;
+  margin: 0; /* 移除所有外边距 */
 }
 
 .left-section {
@@ -1174,10 +1167,32 @@ export default {
   min-width: 40px;
 }
 
+/* 统计项样式 - 完全一体化 */
+.bottom-stats-section .stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 100px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
+  backdrop-filter: none;
+  transition: all 0.2s ease;
+}
+
+.bottom-stats-section .stat-item:hover {
+  transform: none;
+  box-shadow: none;
+  border: none; /* 移除悬停时的边框 */
+}
+
+/* 按钮样式 - 完全一体化 */
 .dict-btn, .chapter-btn {
   padding: 12px 20px;
-  border: 2px solid #cbd5e1;
-  border-radius: 8px;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
   background: #ffffff;
   color: #334155;
   font-size: 14px;
@@ -1192,14 +1207,14 @@ export default {
 }
 
 .dict-btn:hover, .chapter-btn:hover {
-  border-color: #64748b;
+  border: none; /* 移除悬停时的边框 */
   background: #f8fafc;
   transform: none;
   box-shadow: none;
 }
 
 .dict-btn.expanded, .chapter-btn.expanded {
-  border-color: #3b82f6;
+  border: none; /* 移除展开时的边框 */
   background: #eff6ff;
   box-shadow: none;
 }
@@ -1219,8 +1234,8 @@ export default {
   top: 100%;
   left: 0;
   background: #ffffff;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
   box-shadow: none;
   z-index: 10000;
   min-width: 240px;
@@ -1273,22 +1288,22 @@ export default {
   padding: 12px 16px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-radius: 8px;
+  border-radius: 0; /* 移除圆角 */
   margin-bottom: 6px;
-  border: 2px solid transparent;
+  border: none; /* 移除边框 */
 }
 
 .dict-item:hover, .chapter-item:hover {
   background: #f1f5f9;
   transform: none;
-  border-color: #cbd5e1;
+  border: none; /* 移除悬停时的边框 */
 }
 
 .dict-item.selected, .chapter-item.selected {
   background: #eff6ff;
   font-weight: 600;
   color: #1d4ed8;
-  border-left: 3px solid #3b82f6;
+  border: none; /* 移除选中时的边框 */
   box-shadow: none;
 }
 
@@ -1319,15 +1334,15 @@ export default {
   font-weight: 500;
   padding: 10px 14px;
   background: #ffffff;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
   backdrop-filter: none;
 }
 
 .analysis-btn, .notebook-btn {
   padding: 12px 16px;
-  border: 2px solid #cbd5e1;
-  border-radius: 8px;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
   font-size: 16px;
   color: #334155;
   background: #ffffff;
@@ -1342,7 +1357,7 @@ export default {
 }
 
 .analysis-btn:hover, .notebook-btn:hover {
-  border-color: #64748b;
+  border: none; /* 移除悬停时的边框 */
   background: #f8fafc;
   transform: none;
   box-shadow: none;
@@ -1366,8 +1381,8 @@ export default {
 
 .control-btn {
   padding: 12px 20px;
-  border: 2px solid #cbd5e1;
-  border-radius: 8px;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
   font-size: 14px;
   color: #334155;
   background: #ffffff;
@@ -1382,7 +1397,7 @@ export default {
 }
 
 .control-btn:hover {
-  border-color: #64748b;
+  border: none; /* 移除悬停时的边框 */
   background: #f8fafc;
   transform: none;
   box-shadow: none;
@@ -1391,28 +1406,28 @@ export default {
 .control-btn.pause-btn {
   background: #3b82f6;
   color: white;
-  border-color: #3b82f6;
+  border: none; /* 移除边框 */
 }
 
 .control-btn.pause-btn:hover {
   background: #2563eb;
-  border-color: #2563eb;
+  border: none; /* 移除悬停时的边框 */
   box-shadow: none;
 }
 
 .control-btn.restart-btn {
   background: #10b981;
   color: white;
-  border-color: #10b981;
+  border: none; /* 移除边框 */
 }
 
 .control-btn.restart-btn:hover {
   background: #059669;
-  border-color: #059669;
+  border: none; /* 移除悬停时的边框 */
   box-shadow: none;
 }
 
-/* 主练习内容区域 */
+/* 主练习内容区域 - 全宽拉伸 */
 .main-content-section {
   flex: 1;
   display: flex;
@@ -1425,9 +1440,10 @@ export default {
   overflow: hidden;
   position: relative;
   z-index: 1;
+  width: 100%; /* 确保全宽 */
 }
 
-/* 开始状态 - 扁平化风格 */
+/* 开始状态 - 全宽一体化 */
 .start-state {
   display: flex;
   flex-direction: column;
@@ -1435,35 +1451,14 @@ export default {
   gap: 30px;
   padding: 60px 40px;
   background: #ffffff;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
   box-shadow: none;
+  width: 100%; /* 全宽 */
+  max-width: none; /* 移除最大宽度限制 */
 }
 
-.start-title {
-  font-size: 42px;
-  font-weight: 700;
-  color: #1e293b;
-  background: none;
-  -webkit-background-clip: unset;
-  -webkit-text-fill-color: unset;
-  background-clip: unset;
-  margin-bottom: 20px;
-  text-shadow: none;
-}
-
-.selection-hint {
-  color: #64748b;
-  font-size: 18px;
-  font-style: italic;
-  padding: 16px 24px;
-  background: #ffffff;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  backdrop-filter: none;
-}
-
-/* 打字状态 - 扁平化风格 */
+/* 打字状态 - 全宽一体化 */
 .typing-state {
   display: flex;
   flex-direction: column;
@@ -1471,10 +1466,12 @@ export default {
   gap: 30px;
   padding: 40px;
   background: #ffffff;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
   box-shadow: none;
-  min-width: 500px;
+  width: 100%; /* 全宽 */
+  min-width: auto; /* 移除最小宽度限制 */
+  max-width: none; /* 移除最大宽度限制 */
 }
 
 .current-word-container {
@@ -1496,8 +1493,8 @@ export default {
   font-family: monospace;
   transition: all 0.2s ease;
   background: #ffffff;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
   box-shadow: none;
 }
 
@@ -1512,26 +1509,25 @@ export default {
   border-radius: 4px;
 }
 
-/* 字母样式 - 扁平化 */
+/* 字母样式 - 完全一体化 */
 .letter.correct {
   color: #10b981;
   background: #ecfdf5;
-  border: 2px solid #10b981;
+  border: none; /* 移除边框 */
   transform: none;
 }
 
 .letter.incorrect {
   color: #ef4444;
   background: #fef2f2;
-  border: 2px solid #ef4444;
+  border: none; /* 移除边框 */
   animation: letterShake 0.3s ease;
 }
 
 .letter.current {
   color: #3b82f6;
-  border-bottom: 3px solid #3b82f6;
+  border: none; /* 移除边框 */
   background: #eff6ff;
-  border: 2px solid #3b82f6;
   transform: none;
 }
 
@@ -1559,8 +1555,8 @@ export default {
   margin-bottom: 40px;
   padding: 20px 30px;
   background: #ffffff;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
   backdrop-filter: none;
 }
 
@@ -1592,7 +1588,7 @@ export default {
   width: 100%;
   height: 8px;
   background: #e2e8f0;
-  border-radius: 4px;
+  border-radius: 0; /* 移除圆角 */
   overflow: hidden;
   box-shadow: none;
 }
@@ -1600,7 +1596,7 @@ export default {
 .progress-fill {
   height: 100%;
   background: #3b82f6;
-  border-radius: 4px;
+  border-radius: 0; /* 移除圆角 */
   transition: width 0.3s ease-in-out;
   box-shadow: none;
 }
@@ -1611,8 +1607,8 @@ export default {
   color: #64748b;
   padding: 8px 16px;
   background: #ffffff;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
   backdrop-filter: none;
 }
 
@@ -1630,8 +1626,8 @@ export default {
   gap: 8px;
   padding: 16px 24px;
   background: #ffffff;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  border: none; /* 移除边框 */
+  border-radius: 0; /* 移除圆角 */
   backdrop-filter: none;
   box-shadow: none;
   transition: all 0.2s ease;
@@ -1640,7 +1636,7 @@ export default {
 .hint-left:hover, .hint-right:hover {
   transform: none;
   box-shadow: none;
-  border-color: #64748b;
+  border: none; /* 移除悬停时的边框 */
 }
 
 .hint-word {
@@ -1663,11 +1659,12 @@ export default {
   gap: 60px;
   padding: 25px 35px;
   background: #ffffff;
-  border-top: 2px solid #e2e8f0;
+  border: none; /* 移除顶部边框 */
   border-radius: 0;
   z-index: 10;
   min-height: 80px;
   box-shadow: none;
+  margin: 0; /* 移除所有外边距 */
 }
 
 /* 统计项样式 - 扁平化 */
