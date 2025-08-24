@@ -97,6 +97,84 @@ const getComponentRef = () => {
 
 **解决时间**：2025-01-17
 
+##### 问题2：错题本功能缺失和撒花界面显示问题
+
+**问题描述**
+- 错题本页面打开后没有显示任何错误单词
+- 撒花界面（章节完成界面）很快被"按任意键开始"界面挤掉
+- 章节练习次数没有正确显示
+- 每日练习时长统计没有持久化到数据库
+
+**问题分析**
+1. **错题本数据缺失**：`markChapterCompleted` 函数没有调用 `addWrongWord` 来将错误单词添加到错题本
+2. **撒花界面被覆盖**：键盘事件处理中，章节完成状态下按任意键仍然会重新开始练习
+3. **z-index 层级问题**：章节完成界面的 z-index 设置不够高，容易被其他界面覆盖
+4. **数据持久化问题**：错题本和练习次数数据只存储在 localStorage，没有后端数据库支持
+
+**解决方案**
+
+1. **修复错题本数据收集**
+```javascript
+// 在 markChapterCompleted 函数中添加错误单词收集
+const markChapterCompleted = (completionData) => {
+  // ... 现有代码 ...
+  
+  // 将本次练习的错误单词添加到错题本 ⭐ 新增
+  wrongWordsInSession.value.forEach(wrongWord => {
+    addWrongWord({
+      ...wrongWord,
+      dictionary: selectedDictionary.value?.name || 'Unknown',
+      lastErrorTime: new Date().toISOString()
+    })
+  })
+}
+```
+
+2. **修复键盘事件处理**
+```javascript
+// 在键盘事件处理中添加章节完成状态检查
+const handleGlobalKeydown = (event) => {
+  // 如果章节已完成，不处理任意键开始练习
+  if (typingStore.chapterCompleted) {
+    console.log('章节已完成，不处理任意键开始练习')
+    return
+  }
+  
+  // ... 现有代码 ...
+}
+```
+
+3. **优化 z-index 设置**
+```css
+/* 章节完成界面样式 */
+.chapter-completion-state {
+  z-index: 1000; /* 确保足够高的层级 */
+}
+
+/* 主练习区域 */
+.main-practice-area {
+  z-index: 1; /* 设置较低的层级 */
+}
+```
+
+4. **数据持久化策略**
+- 使用 localStorage 进行客户端数据持久化
+- 为后续后端集成预留接口
+- 实现每日统计重置功能
+
+**经验总结**
+1. **状态管理完整性**：确保所有相关状态变化都有对应的数据收集和处理
+2. **事件处理优先级**：在键盘事件处理中要考虑不同状态下的行为差异
+3. **UI 层级管理**：合理设置 z-index 确保界面正确显示
+4. **数据流完整性**：从错误收集到存储的完整数据流要经过充分测试
+
+**相关文件**
+- `frontend/src/stores/typing.js`：修复错题本数据收集逻辑
+- `frontend/src/views/english/TypingPractice.vue`：修复键盘事件和UI层级
+- `frontend/src/views/english/WrongWordsNotebook.vue`：错题本页面组件
+
+**解决时间**：2025-01-17
+
 ---
 
 ##### 问题4：正确率统计逻辑需要重新设计
