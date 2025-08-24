@@ -502,9 +502,10 @@ export const useTypingStore = defineStore('typing', () => {
         }, 200)
       }
       
-      // 先显示错误状态（红色 + 抖动效果）
+      // 先显示错误状态（只有敲错的字母显示红色 + 抖动效果）
       wordState.hasWrong = true
-      wordState.letterStates = new Array(wordState.displayWord.length).fill('wrong')
+      // 只将当前敲错的字母位置标记为错误，其他字母保持原状态
+      wordState.letterStates[currentInputLength] = 'wrong'
       
       // 触发抖动效果（通过设置一个临时状态）
       wordState.shake = true

@@ -71,7 +71,9 @@ describe('Typing Store', () => {
       // 新逻辑：错误后先显示错误状态，然后延迟重置
       // 立即检查：应该显示错误状态
       expect(store.wordState.hasWrong).toBe(true)
-      expect(store.wordState.letterStates).toEqual(new Array(5).fill('wrong'))
+      // 只有敲错的字母位置显示为错误状态，其他字母保持正常状态
+      expect(store.wordState.letterStates[0]).toBe('wrong') // 第0个位置（'h'）应该显示为错误
+      expect(store.wordState.letterStates.slice(1)).toEqual(new Array(4).fill('normal')) // 其他位置保持正常
       expect(store.wordState.shake).toBe(true)
       
       // 等待延迟重置完成
