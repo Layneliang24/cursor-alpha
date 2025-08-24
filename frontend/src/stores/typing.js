@@ -87,6 +87,20 @@ export const useTypingStore = defineStore('typing', () => {
   const dailyProgress = ref([])
   const wordComponentKey = ref(0) // 强制重新渲染的key
 
+  // 章节完成功能 ⭐ 新增
+  const chapterCompleted = ref(false)
+  const chapterCompletionData = ref(null)
+  
+  // 章节练习次数统计 ⭐ 新增
+  const chapterPracticeCounts = ref({})
+  
+  // 错题本功能 ⭐ 新增
+  const wrongWordsNotebook = ref([])
+  
+  // 每日练习时长统计 ⭐ 新增
+  const dailyPracticeDuration = ref(0)
+  const dailyPracticeSessions = ref([])
+
   // 计算属性
   const currentWord = computed(() => {
     return words.value[currentWordIndex.value] || null
@@ -140,6 +154,10 @@ export const useTypingStore = defineStore('typing', () => {
   
   const hasError = computed(() => error.value !== null)
   const canRetry = computed(() => retryCount.value < maxRetries)
+
+  // 章节完成相关计算属性 ⭐ 新增
+  const isChapterCompleted = computed(() => chapterCompleted.value)
+  const getChapterCompletionData = computed(() => chapterCompletionData.value)
 
   // 错误处理工具函数
   const handleError = (err, operation = '操作') => {
@@ -840,6 +858,9 @@ export const useTypingStore = defineStore('typing', () => {
     letterStats.currentWordCorrectLetters = 0
     letterStats.currentWordWrongLetters = 0
     
+    // 重置章节完成状态 ⭐ 新增
+    resetChapterCompletion()
+    
     stopSessionTimer()
     clearError()
     console.log('Practice reset complete')
@@ -875,6 +896,129 @@ export const useTypingStore = defineStore('typing', () => {
     }
   }
 
+  // 章节完成功能 ⭐ 新增
+  const markChapterCompleted = (completionData) => {
+    chapterCompleted.value = true
+    chapterCompletionData.value = completionData
+    
+    // 增加章节练习次数
+    if (selectedChapter.value) {
+      incrementChapterPracticeCount(selectedChapter.value)
+    }
+    
+    // 记录练习会话时长
+    if (sessionTime.value > 0) {
+      recordPracticeSession(sessionTime.value)
+    }
+  }
+
+  const resetChapterCompletion = () => {
+    chapterCompleted.value = false
+    chapterCompletionData.value = null
+  }
+
+  // 章节练习次数统计 ⭐ 新增
+  const incrementChapterPracticeCount = (chapterNumber) => {
+    if (!chapterPracticeCounts.value[chapterNumber]) {
+      chapterPracticeCounts.value[chapterNumber] = 0
+    }
+    chapterPracticeCounts.value[chapterNumber]++
+  }
+
+  const getChapterPracticeCountDisplay = (chapterNumber) => {
+    const count = chapterPracticeCounts.value[chapterNumber] || 0
+    if (count <= 999) return count.toString()
+    return '999+'
+  }
+
+  const resetChapterPracticeCount = (chapterNumber) => {
+    chapterPracticeCounts.value[chapterNumber] = 0
+  }
+
+  // 错题本功能 ⭐ 新增
+  const addWrongWord = (wrongWord) => {
+    const existingIndex = wrongWordsNotebook.value.findIndex(
+      item => item.word === wrongWord.word && item.dictionary === wrongWord.dictionary
+    )
+    
+    if (existingIndex >= 0) {
+      // 更新已存在的单词
+      wrongWordsNotebook.value[existingIndex].errorCount += wrongWord.errorCount
+      wrongWordsNotebook.value[existingIndex].lastErrorTime = wrongWord.lastErrorTime
+    } else {
+      // 添加新单词
+      wrongWordsNotebook.value.push(wrongWord)
+    }
+  }
+
+  const removeWrongWord = (word) => {
+    const index = wrongWordsNotebook.value.findIndex(item => item.word === word)
+    if (index >= 0) {
+      wrongWordsNotebook.value.splice(index, 1)
+    }
+  }
+
+  const clearWrongWordsNotebook = () => {
+    wrongWordsNotebook.value = []
+  }
+
+  const getWrongWordsNotebookStats = () => {
+    const totalWords = wrongWordsNotebook.value.length
+    const totalErrors = wrongWordsNotebook.value.reduce((sum, item) => sum + item.errorCount, 0)
+    const dictionaries = new Set(wrongWordsNotebook.value.map(item => item.dictionary))
+    
+    return {
+      totalWords,
+      totalErrors,
+      dictionaryCount: dictionaries.size
+    }
+  }
+
+  // 每日练习时长统计 ⭐ 新增
+  const recordPracticeSession = (duration) => {
+    dailyPracticeDuration.value += duration
+    dailyPracticeSessions.value.push({
+      duration,
+      timestamp: new Date().toISOString()
+    })
+  }
+
+  const getFormattedDailyPracticeDuration = () => {
+    const totalSeconds = dailyPracticeDuration.value
+    const hours = Math.floor(totalSeconds / 3600)
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+    const seconds = totalSeconds % 60
+    
+    let result = ''
+    if (hours > 0) result += `${hours}小时`
+    if (minutes > 0) result += `${minutes}分`
+    if (seconds > 0 || result === '') result += `${seconds}秒`
+    
+    return result
+  }
+
+  const resetDailyPracticeDuration = () => {
+    dailyPracticeDuration.value = 0
+    dailyPracticeSessions.value = []
+  }
+
+  // 章节完成数据生成 ⭐ 新增
+  const generateChapterCompletionData = () => {
+    const accuracy = correctRate.value
+    const practiceTime = sessionTime.value
+    const wpm = averageWPM.value
+    const wrongWords = [] // TODO: 从练习过程中收集错误单词
+    
+    return {
+      accuracy,
+      practiceTime,
+      wpm,
+      wrongWords,
+      dictionary: selectedDictionary.value?.name || 'Unknown',
+      chapter: selectedChapter.value
+    }
+  }
+
   return {
     // 状态
     loading,
@@ -904,6 +1048,20 @@ export const useTypingStore = defineStore('typing', () => {
     selectedDictionary,
     selectedChapter,
     
+    // 章节完成功能 ⭐ 新增
+    chapterCompleted,
+    chapterCompletionData,
+    
+    // 章节练习次数统计 ⭐ 新增
+    chapterPracticeCounts,
+    
+    // 错题本功能 ⭐ 新增
+    wrongWordsNotebook,
+    
+    // 每日练习时长统计 ⭐ 新增
+    dailyPracticeDuration,
+    dailyPracticeSessions,
+    
     // 按键错误记录 ⭐ 新增
     keyMistakes,
     cumulativeKeyMistakes,
@@ -926,6 +1084,10 @@ export const useTypingStore = defineStore('typing', () => {
     progressPercentage,
     hasError,
     canRetry,
+    
+    // 章节完成相关计算属性 ⭐ 新增
+    isChapterCompleted,
+    getChapterCompletionData,
     
     // Actions
     loadTypingStats,
@@ -953,6 +1115,29 @@ export const useTypingStore = defineStore('typing', () => {
     resetWordState,
     wordComponentKey,
     isTimerRunning,
-    setSessionStartTime
+    setSessionStartTime,
+    
+    // 章节完成功能 ⭐ 新增
+    markChapterCompleted,
+    resetChapterCompletion,
+    
+    // 章节练习次数统计 ⭐ 新增
+    incrementChapterPracticeCount,
+    getChapterPracticeCountDisplay,
+    resetChapterPracticeCount,
+    
+    // 错题本功能 ⭐ 新增
+    addWrongWord,
+    removeWrongWord,
+    clearWrongWordsNotebook,
+    getWrongWordsNotebookStats,
+    
+    // 每日练习时长统计 ⭐ 新增
+    recordPracticeSession,
+    getFormattedDailyPracticeDuration,
+    resetDailyPracticeDuration,
+    
+    // 章节完成数据生成 ⭐ 新增
+    generateChapterCompletionData
   }
 })
