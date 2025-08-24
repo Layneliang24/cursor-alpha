@@ -857,3 +857,149 @@ markers =
   - 建议 `src/**/__tests__/*.spec.ts` 或与组件同目录的 `*.spec.ts`
 - 配置文件：
   - `vitest.config.ts`（已启用 jsdom、全局断言与覆盖率）
+
+# 新功能指南
+
+## 声音提示系统
+
+### 概述
+声音提示系统用于在开发流程中自动发出声音提示，帮助用户及时了解开发进度和需要确认的操作。
+
+### 功能特性
+
+#### 1. 通知类型
+- **🔔 一般通知**：信息提示，使用 `beep.wav`
+- **✅ 确认通知**：需要确认操作，使用 `correct.wav`
+- **⚠️ 警告通知**：需要授权操作，使用 `key-default.wav`
+- **🚨 紧急通知**：重要操作，连续播放多次
+
+#### 2. 使用方式
+
+##### 基本使用
+```javascript
+import notificationManager from '@/utils/notificationManager'
+
+// 一般通知
+notificationManager.notify('有新消息')
+
+// 确认通知
+notificationManager.confirm('需要确认操作')
+
+// 警告通知
+notificationManager.alert('需要授权操作')
+
+// 紧急通知
+notificationManager.urgent('紧急操作', 3)
+```
+
+##### 开发流程使用
+```javascript
+import developmentFlowHelper from '@/utils/developmentFlowHelper'
+
+// 需求分析
+developmentFlowHelper.requirementsAnalysis.start('用户积分系统')
+developmentFlowHelper.requirementsAnalysis.complete('用户积分系统', '分析完成')
+
+// 开发过程
+developmentFlowHelper.development.start('用户积分系统')
+developmentFlowHelper.development.complete('用户积分系统')
+
+// 测试过程
+developmentFlowHelper.testing.start('单元测试')
+developmentFlowHelper.testing.complete('单元测试', 'success', 50)
+
+// 部署过程
+developmentFlowHelper.deployment.prepare('生产环境')
+developmentFlowHelper.deployment.needsAuthorization('数据库迁移', '影响现有数据')
+```
+
+#### 3. 控制功能
+
+##### 启用/禁用声音
+```javascript
+// 禁用声音
+notificationManager.toggleSound(false)
+
+// 启用声音
+notificationManager.toggleSound(true)
+
+// 切换状态
+notificationManager.toggleSound()
+```
+
+##### 停止所有声音
+```javascript
+notificationManager.stopAll()
+```
+
+##### 查看通知历史
+```javascript
+const history = notificationManager.getHistory(10)
+console.log(history)
+```
+
+#### 4. 集成到开发流程
+
+在 `.cursorrules` 中已经集成了声音提示系统，当遇到以下场景时会自动发出声音：
+
+- **需求分析完成时**：发出确认声音
+- **需要用户确认时**：发出警告声音
+- **需要用户授权时**：发出紧急声音
+- **重大变更时**：发出紧急声音
+- **测试完成时**：根据结果发出不同声音
+- **部署准备时**：发出紧急声音
+- **错误发生时**：发出紧急声音
+
+#### 5. 自定义声音
+
+可以通过修改 `useNotificationSound.js` 来自定义声音：
+
+```javascript
+// 修改声音文件路径
+const notificationSoundSrc = computed(() => '/sounds/custom-notification.wav')
+
+// 修改音量
+const { play: playNotification } = useSound(notificationSoundSrc, {
+  volume: 0.5, // 调整音量
+  interrupt: true
+})
+```
+
+#### 6. 测试声音
+
+可以使用 `NotificationPanel` 组件来测试各种声音：
+
+```vue
+<template>
+  <NotificationPanel />
+</template>
+
+<script setup>
+import NotificationPanel from '@/components/NotificationPanel.vue'
+</script>
+```
+
+### 最佳实践
+
+1. **合理使用**：不要过度使用声音提示，避免干扰用户
+2. **音量控制**：根据环境调整音量大小
+3. **紧急程度**：根据操作的重要程度选择合适的通知类型
+4. **用户偏好**：提供开关让用户控制是否启用声音提示
+5. **历史记录**：保留通知历史便于用户查看
+
+### 故障排除
+
+1. **声音不播放**：
+   - 检查浏览器是否允许播放音频
+   - 检查声音文件是否存在
+   - 检查音量设置
+
+2. **声音文件加载失败**：
+   - 检查文件路径是否正确
+   - 检查文件格式是否支持
+   - 检查网络连接
+
+3. **声音延迟**：
+   - 预加载音频文件
+   - 使用较小的音频文件
+   - 优化音频格式
