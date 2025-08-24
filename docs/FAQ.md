@@ -965,6 +965,135 @@ python manage.py shell -c "from django.conf import settings; print('当前环境
 
 **问题严重性**：⭐⭐⭐⭐⭐ 数据丢失，影响严重
 
+---
+
+##### 问题6：章节完成页面UI显示问题
+
+**问题描述**
+- 章节完成页面显示时仍然显示顶部栏和底部栏
+- 章节完成页面的元素覆盖到了侧边栏区域
+- 页面布局不够美观，影响用户体验
+
+**问题分析**
+1. **组件位置错误**：ChapterCompletion组件被放在主练习区域内，继承了父组件的布局
+2. **条件显示缺失**：没有在章节完成时隐藏顶部栏和底部栏
+3. **层级不够高**：z-index值不够高，无法完全覆盖其他元素
+
+**解决方案**
+
+1. **调整组件位置**
+```vue
+<!-- 将ChapterCompletion组件移到主练习区域外面，作为独立覆盖层 -->
+<ChapterCompletion 
+  v-if="chapterCompleted"
+  :completion-data="chapterCompletionData"
+  @repeat-chapter="repeatChapter"
+  @next-chapter="nextChapter"
+  @back-to-practice="backToPractice"
+/>
+```
+
+2. **隐藏顶部栏和底部栏**
+```vue
+<!-- 顶部设置栏 -->
+<div class="top-settings" v-if="!chapterCompleted">
+<!-- 底部状态栏 -->
+<div class="bottom-stats" v-if="!chapterCompleted">
+<!-- 主练习区域 -->
+<div class="main-practice-area" v-if="!chapterCompleted">
+```
+
+3. **提高组件层级并避开侧边栏**
+```css
+.chapter-completion-page {
+  position: fixed;
+  top: 0;
+  left: 250px; /* 避开侧边栏区域 */
+  width: calc(100vw - 250px); /* 减去侧边栏宽度 */
+  height: 100vh;
+  z-index: 99999; /* 提高层级确保完全覆盖 */
+  backdrop-filter: blur(5px); /* 添加背景模糊效果 */
+}
+```
+
+**经验总结**
+1. **组件层级管理**：重要覆盖层组件需要足够高的z-index值
+2. **条件渲染**：使用v-if控制组件的显示和隐藏，避免布局冲突
+3. **组件位置**：覆盖层组件应该放在最外层，而不是嵌套在内容区域内
+4. **布局适配**：全屏覆盖层需要考虑侧边栏等固定元素，使用left和width调整覆盖区域
+5. **用户体验**：全屏覆盖的完成页面应该隐藏所有其他UI元素，并确保内容正确居中
+6. **系统性检查**：类似的全屏覆盖层问题可能存在于其他页面，需要统一检查和修复
+
+**相关文件**
+- `frontend/src/views/english/TypingPractice.vue`：主练习页面
+- `frontend/src/views/english/ChapterCompletion.vue`：章节完成组件
+
+**解决时间**：2025-01-17
+
+**问题严重性**：⭐⭐⭐ UI显示问题，影响用户体验
+
+##### 问题7：文章编辑页面全屏覆盖层布局问题
+
+**问题描述**
+- ArticleEdit.vue 和 ArticleCreate.vue 中的成功提示覆盖层延伸到侧边栏区域
+- 覆盖层使用 `left: 0; width: 100%` 导致内容看起来不居中
+- 与章节完成页面存在相同的布局问题
+
+**问题分析**
+1. **布局设计问题**：全屏覆盖层没有考虑侧边栏的存在
+2. **系统性问题**：多个页面存在相同的全屏覆盖层布局问题
+3. **用户体验影响**：覆盖层延伸到侧边栏区域，影响视觉居中效果
+
+**解决方案**
+
+1. **修复ArticleEdit.vue覆盖层布局**
+```javascript
+successContainer.style.cssText = `
+  position: fixed;
+  top: 0;
+  left: 250px; /* 避开侧边栏区域 */
+  width: calc(100vw - 250px); /* 减去侧边栏宽度 */
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+`
+```
+
+2. **修复ArticleCreate.vue覆盖层布局**
+```javascript
+successContainer.style.cssText = `
+  position: fixed;
+  top: 0;
+  left: 250px; /* 避开侧边栏区域 */
+  width: calc(100vw - 250px); /* 减去侧边栏宽度 */
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+`
+```
+
+**经验总结**
+1. **系统性检查**：发现章节完成页面的问题后，应该检查其他类似的全屏覆盖层
+2. **统一修复方案**：所有全屏覆盖层都应该使用相同的布局适配方案
+3. **侧边栏适配**：固定侧边栏宽度为250px，覆盖层需要相应调整
+4. **代码复用**：可以考虑创建通用的全屏覆盖层组件
+
+**相关文件**
+- `frontend/src/views/articles/ArticleEdit.vue`：文章编辑页面
+- `frontend/src/views/articles/ArticleCreate.vue`：文章创建页面
+
+**解决时间**：2025-01-17
+
+**问题严重性**：⭐⭐ UI显示问题，影响用户体验
+
 **教训总结**
 - **数据安全**：生产数据是项目的核心资产，必须严格保护
 - **操作谨慎**：任何可能影响数据的命令都要反复确认
