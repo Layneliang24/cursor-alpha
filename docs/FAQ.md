@@ -99,6 +99,102 @@ const getComponentRef = () => {
 
 ---
 
+##### 问题4：正确率统计逻辑需要重新设计
+
+**问题描述**
+- 练习界面和数据统计界面的正确率统计基于单词层面，不够精确
+- 用户希望改为字母层面统计，更准确反映实际输入表现
+- 需要重新设计"输入数"、"正确数"和"正确率"的计算逻辑
+
+**问题分析**
+1. **统计粒度问题**：当前基于单词级别统计，无法反映用户在每个字母上的表现
+2. **计算公式不合理**：单词级别的正确率无法体现用户的实际输入准确性
+3. **用户体验需求**：用户希望看到更精确的字母级别统计信息
+4. **学习效果评估**：字母级别的统计更有助于评估学习效果
+
+**解决方案**
+
+1. **添加字母级别统计变量**
+```javascript
+// 在 typing.js 中添加新的统计变量
+const letterStats = reactive({
+  totalInputLetters: 0, // 总输入字母数
+  totalCorrectLetters: 0, // 总正确字母数
+  totalWrongLetters: 0, // 总错误字母数
+  currentWordInputLetters: 0, // 当前单词已输入字母数
+  currentWordCorrectLetters: 0, // 当前单词正确字母数
+  currentWordWrongLetters: 0 // 当前单词错误字母数
+})
+```
+
+2. **修改正确率计算逻辑**
+```javascript
+// 基于字母级别计算正确率
+const correctRate = computed(() => {
+  if (letterStats.totalInputLetters === 0) return 0
+  
+  // 正确率 = (总输入字母数 - 总错误字母数) / 总输入字母数 * 100
+  const accuracy = ((letterStats.totalInputLetters - letterStats.totalWrongLetters) / letterStats.totalInputLetters) * 100
+  
+  return Math.round(accuracy)
+})
+```
+
+3. **更新WPM计算**
+```javascript
+// 基于字母级别计算WPM
+const averageWPM = computed(() => {
+  if (letterStats.totalInputLetters === 0) return 0
+  // 基于字母级别计算WPM：每5个字母算一个单词
+  const totalWords = Math.round(letterStats.totalCorrectLetters / 5)
+  if (sessionTime.value === 0) return 0
+  const minutes = sessionTime.value / 60
+  return Math.round(totalWords / minutes)
+})
+```
+
+4. **修改练习界面显示**
+```vue
+<!-- 将"输入数"和"正确数"改为字母级别 -->
+<div class="stat-item">
+  <div class="stat-value">{{ totalInputLetters || 0 }}</div>
+  <div class="stat-label">输入字母数</div>
+</div>
+<div class="stat-item">
+  <div class="stat-value">{{ totalCorrectLetters || 0 }}</div>
+  <div class="stat-label">正确字母数</div>
+</div>
+```
+
+5. **添加完整的测试用例**
+```typescript
+// 创建专门的测试文件验证新的统计逻辑
+describe('Typing Store - 字母级别统计', () => {
+  // 测试字母级别统计初始化
+  // 测试正确输入字母统计
+  // 测试错误输入字母统计
+  // 测试正确率计算
+  // 测试统计重置
+  // 测试WPM计算
+})
+```
+
+**经验总结**
+1. **统计粒度设计**：根据用户需求选择合适的统计粒度，字母级别比单词级别更精确
+2. **计算逻辑重构**：重新设计统计逻辑时，需要同时更新计算属性和界面显示
+3. **测试驱动开发**：为新功能编写完整的测试用例，确保逻辑正确性
+4. **向后兼容性**：保持现有功能不受影响，只增强统计功能
+5. **用户体验优化**：提供更精确的统计信息，帮助用户了解学习进度
+
+**相关文件**
+- `frontend/src/stores/typing.js`：核心统计逻辑修改
+- `frontend/src/views/english/TypingPractice.vue`：练习界面显示更新
+- `frontend/src/stores/__tests__/typing_letter_stats.spec.ts`：新增测试文件
+
+**解决时间**：2025-01-17
+
+---
+
 ##### 问题2：练习界面逻辑不合理 - 敲错字母后允许继续输入
 
 **问题描述**
