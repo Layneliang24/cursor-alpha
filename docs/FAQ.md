@@ -885,6 +885,94 @@ class TestRunner:
 
 ---
 
+##### 问题5：数据库数据意外清空（严重错误）
+
+**问题描述**
+- 在修复测试数据库问题时，错误使用了 `python manage.py flush --noinput` 命令
+- 该命令清空了整个数据库的所有数据，包括用户数据、词典数据、单词数据、新闻数据等
+- 这是一个严重的操作错误，导致生产数据丢失
+
+**问题分析**
+1. **命令误用**：`flush` 命令会清空整个数据库，而不是只清理测试数据
+2. **缺乏备份**：在清空数据库前没有进行数据备份
+3. **测试环境混淆**：误将生产数据库当作测试数据库处理
+4. **操作不当**：应该使用更精确的方法来清理测试数据
+
+**解决方案**
+
+1. **立即停止操作**
+```bash
+# 立即停止所有数据库操作，避免进一步数据丢失
+```
+
+2. **数据恢复方案**
+```bash
+# 如果有数据库备份，立即恢复
+# 如果没有备份，需要重新导入数据
+```
+
+3. **正确的测试数据库清理方法**
+```bash
+# 方法1：使用测试数据库（推荐）
+python manage.py test --keepdb  # 保留测试数据库
+python manage.py test --reuse-db  # 重用测试数据库
+
+# 方法2：只清理特定表
+python manage.py shell -c "
+from django.db import connection
+cursor = connection.cursor()
+cursor.execute('DELETE FROM english_typing_practice_record WHERE id > 0')
+cursor.execute('DELETE FROM english_wrong_word_record WHERE id > 0')
+cursor.execute('DELETE FROM english_daily_practice_duration WHERE id > 0')
+"
+
+# 方法3：使用事务回滚
+python manage.py shell -c "
+from django.db import transaction
+with transaction.atomic():
+    # 执行测试操作
+    pass
+# 事务结束后自动回滚
+"
+```
+
+4. **预防措施**
+```bash
+# 1. 定期备份数据库
+python manage.py dumpdata > backup_$(date +%Y%m%d_%H%M%S).json
+
+# 2. 使用环境变量区分环境
+export DJANGO_SETTINGS_MODULE=alpha.settings_test  # 测试环境
+export DJANGO_SETTINGS_MODULE=alpha.settings  # 生产环境
+
+# 3. 在清空数据前确认环境
+python manage.py shell -c "from django.conf import settings; print('当前环境:', settings.DEBUG)"
+```
+
+**经验总结**
+1. **数据安全第一**：任何可能清空数据的操作都要极其谨慎
+2. **环境区分**：明确区分测试环境和生产环境
+3. **备份策略**：重要操作前必须备份数据
+4. **命令理解**：充分理解每个Django命令的作用和影响范围
+5. **测试隔离**：使用独立的测试数据库，避免影响生产数据
+
+**相关文件**
+- `backend/`：数据库配置文件
+- `docs/FAQ.md`：记录此错误和解决方案
+- `backup/`：建议创建数据备份目录
+
+**解决时间**：2025-01-17
+
+**问题严重性**：⭐⭐⭐⭐⭐ 数据丢失，影响严重
+
+**教训总结**
+- **数据安全**：生产数据是项目的核心资产，必须严格保护
+- **操作谨慎**：任何可能影响数据的命令都要反复确认
+- **备份重要**：定期备份是数据安全的基本保障
+- **环境管理**：明确的环境区分是避免误操作的关键
+
+---
+
 #### 问题2：API路径不一致导致的测试失败
 
 **问题描述**
