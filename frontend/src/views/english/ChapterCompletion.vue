@@ -155,8 +155,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 99999;
   overflow: hidden;
+  /* 确保完全覆盖，包括隐藏父组件的顶部栏和底部栏 */
+  backdrop-filter: blur(5px);
 }
 
 .confetti-container {

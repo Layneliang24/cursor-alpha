@@ -1,7 +1,7 @@
 <template>
   <div class="typing-practice-page">
     <!-- 顶部设置栏 -->
-    <div class="top-settings" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
+    <div class="top-settings" v-if="!chapterCompleted" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
       <div class="left-section">
         <div class="logo">⌨️ Alpha Learner</div>
       </div>
@@ -92,7 +92,7 @@
     </div>
 
     <!-- 主练习区域 -->
-    <div class="main-practice-area">
+    <div class="main-practice-area" v-if="!chapterCompleted">
       <!-- 开始状态 -->
       <div v-if="!practiceStarted" class="start-state">
         <div class="start-title">
@@ -154,15 +154,6 @@
         </div>
       </div>
 
-      <!-- 章节完成状态 -->
-      <ChapterCompletion 
-        v-else-if="chapterCompleted"
-        :completion-data="chapterCompletionData"
-        @repeat-chapter="repeatChapter"
-        @next-chapter="nextChapter"
-        @back-to-practice="backToPractice"
-      />
-
       <!-- 练习完成状态（保持向后兼容，仅在非章节完成状态下显示） -->
       <div v-else-if="practiceCompleted && !chapterCompleted" class="completion-state">
         <div class="completion-title">练习完成！</div>
@@ -187,7 +178,7 @@
     </div>
 
     <!-- 底部状态栏 -->
-    <div class="bottom-stats" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
+    <div class="bottom-stats" v-if="!chapterCompleted" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
       <div class="stat-item">
         <div class="stat-value">{{ formatTime(sessionTime || 0) }}</div>
         <div class="stat-label">时间</div>
@@ -209,6 +200,15 @@
         <div class="stat-label">正确率</div>
       </div>
     </div>
+
+    <!-- 章节完成状态 - 独立覆盖层 -->
+    <ChapterCompletion 
+      v-if="chapterCompleted"
+      :completion-data="chapterCompletionData"
+      @repeat-chapter="repeatChapter"
+      @next-chapter="nextChapter"
+      @back-to-practice="backToPractice"
+    />
   </div>
 </template>
 
