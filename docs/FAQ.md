@@ -392,6 +392,91 @@ def get_or_create_permission(codename, content_type):
 
 ---
 
+#### 问题4：按键错误热力图没有更新 ⭐ 新增
+
+**问题描述**
+- 按键错误热力图没有显示用户按错的键，即使按错了L键十几次也没有显示
+- 用户反馈按键错误统计功能完全失效
+- 热力图显示空白或默认状态
+
+**问题分析**
+1. **前端数据缺失**：前端没有记录用户的按键错误
+2. **数据传递中断**：前端没有发送按键错误数据到后端
+3. **后端硬编码**：后端创建 TypingPracticeRecord 时 mistakes 字段被硬编码为空对象
+4. **统计更新缺失**：后端没有调用按键错误统计更新服务
+
+**解决方案**
+
+1. **前端按键错误记录**
+```javascript
+// frontend/src/stores/typing.js
+// 添加按键错误记录状态
+const keyMistakes = ref({}) // 记录每个按键的错误次数
+
+// 在 handleKeyInput 方法中记录错误
+if (inputChar !== targetChar) {
+  // 记录按键错误
+  const wrongKey = key.toLowerCase()
+  if (!keyMistakes.value[wrongKey]) {
+    keyMistakes.value[wrongKey] = []
+  }
+  keyMistakes.value[wrongKey].push(wrongKey)
+}
+```
+
+2. **前端数据发送**
+```javascript
+// 在 submitWordResult 和 submitWord 方法中发送按键错误数据
+const submitData = {
+  word_id: currentWord.value.id,
+  is_correct: isWordCorrect,
+  typing_speed: wpm,
+  response_time: response_time,
+  mistakes: keyMistakes.value, // 包含按键错误数据
+  wrong_count: Object.values(keyMistakes.value).reduce((total, mistakes) => total + mistakes.length, 0)
+}
+```
+
+3. **后端数据接收**
+```python
+# backend/apps/english/views.py
+# 获取按键错误数据
+mistakes = request.data.get('mistakes', {})
+wrong_count = request.data.get('wrong_count', 0)
+
+# 保存真实的按键错误数据
+TypingPracticeRecord.objects.create(
+    # ... 其他字段
+    wrong_count=wrong_count,  # 使用真实的错误次数
+    mistakes=mistakes,  # 使用真实的按键错误数据
+)
+```
+
+4. **后端统计更新**
+```python
+# 更新按键错误统计
+if mistakes:
+    from .services import DataAnalysisService
+    service = DataAnalysisService()
+    service.update_key_error_stats(request.user.id, mistakes)
+```
+
+**经验总结**
+1. **数据流完整性**：必须确保前端→后端→数据库→统计的完整数据流
+2. **测试覆盖重要性**：这个问题暴露了数据流测试的缺失
+3. **硬编码风险**：避免在关键业务逻辑中使用硬编码的默认值
+4. **用户反馈价值**：用户反馈是发现功能问题的重要途径
+
+**相关文件**
+- `frontend/src/stores/typing.js`：前端状态管理和数据发送
+- `backend/apps/english/views.py`：后端数据接收和保存
+- `backend/apps/english/services.py`：按键错误统计服务
+- `frontend/src/stores/__tests__/typing.spec.ts`：新增的测试用例
+
+**解决时间**：2024-12-19
+
+---
+
 ### 📰 新闻系统模块
 
 ##### 问题5：新闻图片显示问题（图片URL构建错误）

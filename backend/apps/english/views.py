@@ -1122,6 +1122,10 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
         typing_speed = request.data.get('typing_speed', 0)
         response_time = request.data.get('response_time', 0)
         
+        # 获取按键错误数据 ⭐ 新增
+        mistakes = request.data.get('mistakes', {})
+        wrong_count = request.data.get('wrong_count', 0)
+        
         # 数据类型验证
         if word_id is None:
             return Response(
@@ -1223,13 +1227,20 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
                     typing_speed=typing_speed,
                     response_time=response_time,
                     total_time=float(response_time) * 1000,  # 转换为毫秒
-                    wrong_count=0,  # 默认值，后续可以扩展
-                    mistakes={},  # 默认值，后续可以扩展
+                    wrong_count=wrong_count,  # ⭐ 修复：使用真实的错误次数
+                    mistakes=mistakes,  # ⭐ 修复：使用真实的按键错误数据
                     timing=[]  # 默认值，后续可以扩展
                 )
                 
                 # 更新用户统计（在事务内同步处理）
                 self._update_user_stats_sync(request.user)
+                
+                # 更新按键错误统计 ⭐ 新增
+                if mistakes:
+                    from .services import DataAnalysisService
+                    service = DataAnalysisService()
+                    service.update_key_error_stats(request.user.id, mistakes)
+                    print(f"按键错误统计已更新: {mistakes}")
                 
                 return Response({
                     'status': 'success',

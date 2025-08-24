@@ -8,7 +8,9 @@
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "test:fe": "vitest run --coverage",
-    "test:fe:watch": "vitest"
+    "test:fe:watch": "vitest",
+    "test:check": "node scripts/check-test-standards.js",
+    "test:all": "npm run test:check && npm run test:fe"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",

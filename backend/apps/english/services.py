@@ -334,7 +334,7 @@ class DataAnalysisService:
                     'is_current_month': False
                 })
         
-        # 按周分组数据（6周，确保完整的日历布局）
+        # 按周分组数据（动态计算周数，最多5周）
         weeks_data = []
         current_week = []
         
@@ -344,29 +344,30 @@ class DataAnalysisService:
                 weeks_data.append(current_week)
                 current_week = []
         
-        # 确保有6周（42天）
-        while len(weeks_data) < 6:
-            if current_week:
-                weeks_data.append(current_week)
-                current_week = []
-            else:
-                # 补充空周
-                empty_week = []
-                for i in range(7):
-                    empty_week.append({
-                        'date': '',
-                        'day': 0,
-                        'month': 0,
-                        'year': 0,
-                        'weekday': i,
-                        'exercise_count': 0,
-                        'word_count': 0,
-                        'exercise_level': 0,
-                        'word_level': 0,
-                        'has_data': False,
-                        'is_current_month': False
-                    })
-                weeks_data.append(empty_week)
+        # 处理最后一周（如果还有剩余天数）
+        if current_week:
+            weeks_data.append(current_week)
+        
+        # 确保至少有5周（35天），但不超过实际需要的周数
+        # 一个月最多31天，最多跨越5周
+        while len(weeks_data) < 5:
+            # 补充空周
+            empty_week = []
+            for i in range(7):
+                empty_week.append({
+                    'date': '',
+                    'day': 0,
+                    'month': 0,
+                    'year': 0,
+                    'weekday': i,
+                    'exercise_count': 0,
+                    'word_count': 0,
+                    'exercise_level': 0,
+                    'word_level': 0,
+                    'has_data': False,
+                    'is_current_month': False
+                })
+            weeks_data.append(empty_week)
         
         # 计算月度统计
         current_month_records = [day for day in calendar_data if day['is_current_month']]
