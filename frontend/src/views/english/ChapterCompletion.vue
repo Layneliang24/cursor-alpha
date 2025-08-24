@@ -197,6 +197,12 @@ export default {
   max-width: 600px;
   width: 90%;
   text-align: center;
+  /* 确保内容完全居中 */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .completion-title {
@@ -211,6 +217,11 @@ export default {
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-bottom: 30px;
+  /* 确保统计框完全居中 */
+  width: 100%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .stat-item {
