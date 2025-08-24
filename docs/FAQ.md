@@ -185,12 +185,14 @@ expect(store.wordState.letterStates).toEqual(new Array(5).fill('normal'))
 - 修复练习界面逻辑后，敲错字母不再显示红色
 - 缺少敲错字母后的视觉反馈（抖动效果）
 - 用户体验下降，无法直观看到错误状态
+- **新发现的问题**：整个单词都显示红色，而不是只有敲错的字母显示红色
 
 **问题分析**
 1. **状态重置过快**：新逻辑中立即重置 `letterStates` 为 'normal'，没有显示错误状态
 2. **缺少抖动效果**：没有实现敲错字母后单词抖动的视觉反馈
 3. **错误反馈时间短**：用户无法看到错误状态，影响学习体验
 4. **CSS 动画缺失**：缺少抖动动画的 CSS 定义
+5. **错误状态标记错误**：`wordState.letterStates = new Array(wordState.displayWord.length).fill('wrong')` 导致整个单词都显示红色
 
 **解决方案**
 
@@ -202,9 +204,10 @@ expect(store.wordState.letterStates).toEqual(new Array(5).fill('normal'))
   
   // 记录按键错误...（省略）
   
-  // 先显示错误状态（红色 + 抖动效果）
+  // 先显示错误状态（只有敲错的字母显示红色 + 抖动效果）
   wordState.hasWrong = true
-  wordState.letterStates = new Array(wordState.displayWord.length).fill('wrong')
+  // 只将当前敲错的字母位置标记为错误，其他字母保持原状态
+  wordState.letterStates[currentInputLength] = 'wrong'
   
   // 触发抖动效果（通过设置一个临时状态）
   wordState.shake = true
@@ -273,7 +276,9 @@ it('应该正确记录按键错误', async () => {
   
   // 立即检查：应该显示错误状态
   expect(store.wordState.hasWrong).toBe(true)
-  expect(store.wordState.letterStates).toEqual(new Array(5).fill('wrong'))
+  // 只有敲错的字母位置显示为错误状态，其他字母保持正常状态
+  expect(store.wordState.letterStates[0]).toBe('wrong') // 第0个位置（'h'）应该显示为错误
+  expect(store.wordState.letterStates.slice(1)).toEqual(new Array(4).fill('normal')) // 其他位置保持正常
   expect(store.wordState.shake).toBe(true)
   
   // 等待延迟重置完成
