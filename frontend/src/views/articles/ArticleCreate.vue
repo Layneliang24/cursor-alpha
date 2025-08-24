@@ -343,8 +343,8 @@ const showSuccessAnimation = (article) => {
   successContainer.style.cssText = `
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: 250px; /* 避开侧边栏区域 */
+    width: calc(100vw - 250px); /* 减去侧边栏宽度 */
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     display: flex;
