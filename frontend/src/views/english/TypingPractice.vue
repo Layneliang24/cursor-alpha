@@ -1,208 +1,190 @@
 <template>
   <div class="typing-practice-page">
-    <!-- 顶部设置栏 -->
-    <div class="top-settings" v-if="!chapterCompleted" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
-      <div class="left-section">
-        <div class="logo">⌨️ Alpha Learner</div>
-      </div>
+    <!-- 一体化练习区域 - 透明磨砂玻璃效果 -->
+    <div class="integrated-practice-container" v-if="!chapterCompleted">
+      <!-- 背景装饰 -->
+      <div class="background-decoration"></div>
       
-      <!-- 词库和章节选择区域 - 同时展示 -->
-      <div class="dict-chapter-section">
-        <!-- 词库选择 -->
-        <div class="dict-selector">
-          <span class="selector-label">词库</span>
-          <button :class="['dict-btn', { 'expanded': isDictExpanded }]" @click="toggleDictExpanded">
-            {{ selectedDictionary ? selectedDictionary.name : 'TOEFL' }}
-            <span class="arrow">▼</span>
-          </button>
-          
-          <!-- 词库下拉菜单 -->
-          <div :class="['dict-dropdown', { 'expanded': isDictExpanded }]">
-            <div 
-              v-for="category in groupedDictionaries" 
-              :key="category.name" 
-              class="category-group"
-            >
-              <div class="category-title">{{ category.name }}</div>
-              <div class="dict-list">
-                <div
-                  v-for="dict in category.dictionaries"
-                  :key="dict.id"
-                  :class="['dict-item', { 'selected': selectedDictionary?.id === dict.id }]"
-                  @click="selectDictionary(dict)"
-                >
-                  <span class="dict-name">{{ dict.name }}</span>
-                  <span class="dict-info">{{ dict.total_words }}词 · {{ dict.chapter_count }}章</span>
+      <!-- 顶部控制区域 -->
+      <div class="top-control-section">
+        <div class="left-section">
+          <div class="logo">⌨️ Alpha Learner</div>
+        </div>
+        
+        <!-- 词库和章节选择区域 -->
+        <div class="dict-chapter-section">
+          <!-- 词库选择 -->
+          <div class="dict-selector">
+            <span class="selector-label">词库</span>
+            <button :class="['dict-btn', { 'expanded': isDictExpanded }]" @click="toggleDictExpanded">
+              {{ selectedDictionary ? selectedDictionary.name : 'TOEFL' }}
+              <span class="arrow">▼</span>
+            </button>
+            
+            <!-- 词库下拉菜单 -->
+            <div :class="['dict-dropdown', { 'expanded': isDictExpanded }]">
+              <div 
+                v-for="category in groupedDictionaries" 
+                :key="category.name" 
+                class="category-group"
+              >
+                <div class="category-title">{{ category.name }}</div>
+                <div class="dict-list">
+                  <div
+                    v-for="dict in category.dictionaries"
+                    :key="dict.id"
+                    :class="['dict-item', { 'selected': selectedDictionary?.id === dict.id }]"
+                    @click="selectDictionary(dict)"
+                  >
+                    <span class="dict-name">{{ dict.name }}</span>
+                    <span class="dict-info">{{ dict.total_words }}词 · {{ dict.chapter_count }}章</span>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 章节选择 -->
+          <div class="chapter-selector">
+            <span class="selector-label">章节</span>
+            <button :class="['chapter-btn', { 'expanded': isChapterExpanded }]" @click="toggleChapterExpanded">
+              第{{ selectedChapter }}章
+              <span class="arrow">▼</span>
+            </button>
+            
+            <!-- 章节下拉菜单 -->
+            <div :class="['chapter-dropdown', { 'expanded': isChapterExpanded }]">
+              <div
+                v-for="chapter in chapterList"
+                :key="chapter.number"
+                :class="['chapter-item', { 'selected': selectedChapter === chapter.number }]"
+                @click="selectChapter(chapter.number)"
+              >
+                第{{ chapter.number }}章 ({{ chapter.wordCount }}词)
+                <span class="practice-count" v-if="getChapterPracticeCount(chapter.number) > 0">
+                  · 练习{{ getChapterPracticeCountDisplay(chapter.number) }}次
+                </span>
               </div>
             </div>
           </div>
         </div>
         
-        <!-- 章节选择 -->
-        <div class="chapter-selector">
-          <span class="selector-label">章节</span>
-          <button :class="['chapter-btn', { 'expanded': isChapterExpanded }]" @click="toggleChapterExpanded">
-            第{{ selectedChapter }}章
-            <span class="arrow">▼</span>
+        <div class="settings-bar">
+          <span class="setting-item">美音 🔊</span>
+          
+          <!-- 数据分析入口 -->
+          <button @click="goToDataAnalysis" class="analysis-btn" title="数据分析">
+            📊
           </button>
           
-          <!-- 章节下拉菜单 -->
-          <div :class="['chapter-dropdown', { 'expanded': isChapterExpanded }]">
-            <div
-              v-for="chapter in chapterList"
-              :key="chapter.number"
-              :class="['chapter-item', { 'selected': selectedChapter === chapter.number }]"
-              @click="selectChapter(chapter.number)"
-            >
-              第{{ chapter.number }}章 ({{ chapter.wordCount }}词)
-              <span class="practice-count" v-if="getChapterPracticeCount(chapter.number) > 0">
-                · 练习{{ getChapterPracticeCountDisplay(chapter.number) }}次
+          <!-- 错题本入口 -->
+          <button @click="openWrongWordsNotebook" class="notebook-btn" title="错题本">
+            📝
+          </button>
+          
+          <!-- 练习控制按钮 -->
+          <div class="practice-controls" v-if="practiceStarted && !practiceCompleted">
+            <button @click="togglePause" class="control-btn pause-btn">
+              {{ isPaused ? '继续' : '暂停' }}
+            </button>
+            <button @click="resetPractice" class="control-btn restart-btn">
+              重新开始
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 主练习内容区域 -->
+      <div class="main-content-section">
+        <!-- 开始状态 -->
+        <div v-if="!practiceStarted" class="start-state">
+          <div class="start-title">
+            {{ selectedDictionary && selectedChapter ? '按任意键开始练习' : '请先选择词库和章节' }}
+          </div>
+          <div class="selection-hint" v-if="!selectedDictionary || !selectedChapter">
+            请在上方选择词库和章节开始练习
+          </div>
+        </div>
+
+        <!-- 打字状态 -->
+        <div v-else-if="practiceStarted && !practiceCompleted" class="typing-state">
+          <div class="current-word-container">
+            <div :class="getWordContainerClass()" v-if="wordState && wordState.displayWord">
+              <span 
+                v-for="(letter, index) in wordState.displayWord" 
+                :key="index"
+                :class="getLetterClass(index)"
+                class="letter"
+              >
+                {{ letter }}
               </span>
+            </div>
+            <!-- 使用WordPronunciationIcon组件，每个单词独立管理发音 -->
+            <WordPronunciationIcon 
+              :key="`pronunciation-${currentWord?.word || 'default'}`"
+              ref="wordPronunciationRef"
+              :word="currentWord?.word || ''"
+              pronunciation-type="us"
+            />
+          </div>
+          
+          <div class="word-info" v-if="currentWord">
+            <span v-if="currentWord.phonetic" class="phonetic">AmE: [{{ currentWord.phonetic }}]</span>
+            <span v-if="currentWord.translation" class="translation">{{ currentWord.translation }}</span>
+          </div>
+          
+          <!-- 进度条 -->
+          <div class="progress-section" v-show="shouldShowProgressBar">
+            <div class="progress-bar">
+              <div 
+                class="progress-fill" 
+                :style="{ width: progressBarWidth + '%' }"
+              ></div>
+            </div>
+            <div class="progress-text">{{ progressBarText }}</div>
+          </div>
+          
+          <!-- 左右提示词 - 动态显示上一个和下一个单词 -->
+          <div class="word-hints">
+            <div class="hint-left" v-if="previousWord">
+              <span class="hint-word">{{ previousWord.word }}</span>
+              <span class="hint-translation">{{ previousWord.translation }}</span>
+            </div>
+            <div class="hint-right" v-if="nextWord">
+              <span class="hint-word">{{ nextWord.word }}</span>
+              <span class="hint-translation">{{ nextWord.translation }}</span>
             </div>
           </div>
         </div>
       </div>
-      
-      <div class="settings-bar">
-        <span class="setting-item">美音 🔊</span>
-        
-        <!-- 数据分析入口 -->
-        <button @click="goToDataAnalysis" class="analysis-btn" title="数据分析">
-          📊
-        </button>
-        
-        <!-- 错题本入口 -->
-        <button @click="openWrongWordsNotebook" class="notebook-btn" title="错题本">
-          📝
-        </button>
-        
 
-        
-        <!-- 练习控制按钮 -->
-        <div class="practice-controls" v-if="practiceStarted && !practiceCompleted">
-          <button @click="togglePause" class="control-btn pause-btn">
-          {{ isPaused ? '继续' : '暂停' }}
-        </button>
-          <button @click="resetPractice" class="control-btn restart-btn">
-            重新开始
-          </button>
+      <!-- 底部统计区域 -->
+      <div class="bottom-stats-section">
+        <div class="stat-item">
+          <div class="stat-value">{{ formatTime(sessionTime || 0) }}</div>
+          <div class="stat-label">时间</div>
         </div>
-      </div>
-    </div>
-
-    <!-- 主练习区域 -->
-    <div class="main-practice-area" v-if="!chapterCompleted">
-      <!-- 开始状态 -->
-      <div v-if="!practiceStarted" class="start-state">
-        <div class="start-title">
-          {{ selectedDictionary && selectedChapter ? '按任意键开始练习' : '请先选择词库和章节' }}
+        <div class="stat-item">
+          <div class="stat-value">{{ totalInputLetters || 0 }}</div>
+          <div class="stat-label">输入字母数</div>
         </div>
-        <div v-if="!selectedDictionary || !selectedChapter" class="selection-hint">
-          请在上方选择词库和章节
+        <div class="stat-item">
+          <div class="stat-value">{{ wpm || 0 }}</div>
+          <div class="stat-label">WPM</div>
         </div>
-      </div>
-
-      <!-- 打字状态 -->
-      <div v-if="practiceStarted && !practiceCompleted && !chapterCompleted" class="typing-state">
-        <div class="current-word-container">
-          <div :class="getWordContainerClass()" v-if="wordState && wordState.displayWord">
-            <span 
-              v-for="(letter, index) in wordState.displayWord" 
-              :key="index"
-              :class="getLetterClass(index)"
-              class="letter"
-            >
-              {{ letter }}
-            </span>
-          </div>
-          <!-- 使用WordPronunciationIcon组件，每个单词独立管理发音 -->
-          <WordPronunciationIcon 
-            :key="`pronunciation-${currentWord?.word || 'default'}`"
-            ref="wordPronunciationRef"
-            :word="currentWord?.word || ''"
-            pronunciation-type="us"
-          />
+        <div class="stat-item">
+          <div class="stat-value">{{ totalCorrectLetters || 0 }}</div>
+          <div class="stat-label">正确字母数</div>
         </div>
-        
-        <div class="word-info" v-if="currentWord">
-          <span v-if="currentWord.phonetic" class="phonetic">AmE: [{{ currentWord.phonetic }}]</span>
-          <span v-if="currentWord.translation" class="translation">{{ currentWord.translation }}</span>
+        <div class="stat-item">
+          <div class="stat-value">{{ accuracy || 0 }}%</div>
+          <div class="stat-label">正确率</div>
         </div>
-        
-        <!-- 进度条 -->
-        <div class="progress-section" v-show="shouldShowProgressBar">
-          <div class="progress-bar">
-            <div 
-              class="progress-fill" 
-              :style="{ width: progressBarWidth + '%' }"
-            ></div>
-          </div>
-          <div class="progress-text">{{ progressBarText }}</div>
-        </div>
-        
-        <!-- 左右提示词 - 动态显示上一个和下一个单词 -->
-        <div class="word-hints">
-          <div class="hint-left" v-if="previousWord">
-            <span class="hint-word">{{ previousWord.word }}</span>
-            <span class="hint-translation">{{ previousWord.translation }}</span>
-          </div>
-          <div class="hint-right" v-if="nextWord">
-            <span class="hint-word">{{ nextWord.word }}</span>
-            <span class="hint-translation">{{ nextWord.translation }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 练习完成状态（保持向后兼容，仅在非章节完成状态下显示） -->
-      <div v-else-if="practiceCompleted && !chapterCompleted" class="completion-state">
-        <div class="completion-title">练习完成！</div>
-        
-        <div class="completion-stats">
-          <div class="stat-item">
-            <div class="stat-value">{{ accuracy || 0 }}%</div>
-            <div class="stat-label">正确率</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">{{ totalInputLetters || 0 }}</div>
-            <div class="stat-label">输入字母数</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">{{ totalCorrectLetters || 0 }}</div>
-            <div class="stat-label">正确字母数</div>
-          </div>
-        </div>
-        
-        <button @click="resetPractice" class="restart-btn">重新开始</button>
-      </div>
-    </div>
-
-    <!-- 底部状态栏 -->
-    <div class="bottom-stats" v-if="!chapterCompleted" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
-      <div class="stat-item">
-        <div class="stat-value">{{ formatTime(sessionTime || 0) }}</div>
-        <div class="stat-label">时间</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value">{{ totalInputLetters || 0 }}</div>
-        <div class="stat-label">输入字母数</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value">{{ wpm || 0 }}</div>
-        <div class="stat-label">WPM</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value">{{ totalCorrectLetters || 0 }}</div>
-        <div class="stat-label">正确字母数</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value">{{ accuracy || 0 }}%</div>
-        <div class="stat-label">正确率</div>
       </div>
     </div>
 
     <!-- 章节完成状态 - 独立覆盖层 -->
-    <ChapterCompletion 
+    <ChapterCompletion
       v-if="chapterCompleted"
       :completion-data="chapterCompletionData"
       @repeat-chapter="repeatChapter"
@@ -962,8 +944,6 @@ export default {
         console.log('sessionTime computed更新:', time)
         return time
       }),
-      practiceCompleted: computed(() => typingStore.practiceCompleted),
-      currentWord: computed(() => typingStore.currentWord),
       wpm: computed(() => {
         const currentSessionTime = typingStore.sessionTime
         const currentCorrectLetters = typingStore.totalCorrectLetters
@@ -1114,44 +1094,76 @@ export default {
   padding: 5px;
 }
 
-/* 顶部设置栏 */
-.top-settings {
+/* 一体化练习区域 */
+.integrated-practice-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
+  margin: 20px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* 背景装饰 */
+.background-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+  opacity: 0.8;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* 顶部控制区域 */
+.top-control-section {
   flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
-  background: #f8fafc !important;
-  border-bottom: 1px solid #e2e8f0;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px 20px 0 0;
   z-index: 10;
-  min-height: 50px;
-  position: relative;
-  margin: 0 20px 12px 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-height: 60px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
 }
 
 .left-section {
   display: flex;
   align-items: center;
-  gap: 12px;
-  z-index: 10000;
+  gap: 16px;
 }
 
 .logo {
   font-size: 24px;
   font-weight: 700;
-  color: #3b82f6;
-  z-index: 10000;
+  color: #1e293b;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .dict-chapter-section {
   display: flex;
-  gap: 20px;
   align-items: center;
-  font-size: 16px;
-  color: #64748b;
-  z-index: 10000;
+  gap: 20px;
 }
 
 .dict-selector, .chapter-selector {
@@ -1164,42 +1176,44 @@ export default {
 .selector-label {
   font-size: 14px;
   color: #64748b;
-  font-weight: 500;
+  font-weight: 600;
   min-width: 40px;
 }
 
 .dict-btn, .chapter-btn {
-  padding: 8px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 10px 16px;
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
   color: #1e293b;
-  background: white;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   min-width: 120px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.dict-btn:focus, .chapter-btn:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .dict-btn:hover, .chapter-btn:hover {
-  border-color: #cbd5e1;
-  background: #f8fafc;
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.dict-btn.expanded, .chapter-btn.expanded {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
 
 .dict-btn .arrow, .chapter-btn .arrow {
   font-size: 12px;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease;
   color: #64748b;
 }
 
@@ -1211,25 +1225,39 @@ export default {
   position: absolute;
   top: 100%;
   left: 0;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   z-index: 10000;
-  min-width: 220px;
+  min-width: 240px;
   max-height: 300px;
   overflow-y: auto;
   display: none;
   margin-top: 8px;
+  padding: 8px;
 }
 
 .dict-dropdown.expanded, .chapter-dropdown.expanded {
   display: block;
+  animation: dropdownFadeIn 0.3s ease;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .category-group {
   padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .category-group:last-child {
@@ -1250,23 +1278,26 @@ export default {
 }
 
 .dict-item {
-  padding: 10px 15px;
+  padding: 12px 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 8px;
+  transition: all 0.3s ease;
+  border-radius: 12px;
   margin-bottom: 6px;
+  border: 1px solid transparent;
 }
 
 .dict-item:hover {
-  background-color: #f0f9ff;
+  background: rgba(59, 130, 246, 0.08);
   transform: translateX(4px);
+  border-color: rgba(59, 130, 246, 0.2);
 }
 
 .dict-item.selected {
-  background-color: #dbeafe;
+  background: rgba(59, 130, 246, 0.15);
   font-weight: 600;
   color: #1d4ed8;
   border-left: 3px solid #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
 }
 
 .dict-name {
@@ -1284,23 +1315,26 @@ export default {
 }
 
 .chapter-item {
-  padding: 10px 15px;
+  padding: 12px 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 8px;
+  transition: all 0.3s ease;
+  border-radius: 12px;
   margin-bottom: 6px;
+  border: 1px solid transparent;
 }
 
 .chapter-item:hover {
-  background-color: #f0f9ff;
+  background: rgba(59, 130, 246, 0.08);
   transform: translateX(4px);
+  border-color: rgba(59, 130, 246, 0.2);
 }
 
 .chapter-item.selected {
-  background-color: #dbeafe;
+  background: rgba(59, 130, 246, 0.15);
   font-weight: 600;
   color: #1d4ed8;
   border-left: 3px solid #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
 }
 
 .settings-bar {
@@ -1314,102 +1348,80 @@ export default {
   color: #64748b;
   font-size: 14px;
   font-weight: 500;
-}
-
-.test-btn {
-  padding: 8px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #1e293b;
-  background: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.test-btn:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.test-btn:hover {
-  border-color: #cbd5e1;
-  background: #f8fafc;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.analysis-btn {
   padding: 8px 12px;
-  border: 2px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.6);
   border-radius: 8px;
+  backdrop-filter: blur(5px);
+}
+
+.analysis-btn, .notebook-btn {
+  padding: 10px 14px;
+  border: 2px solid rgba(16, 185, 129, 0.2);
+  border-radius: 12px;
   font-size: 16px;
   color: #1e293b;
-  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  margin-right: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  min-width: 44px;
+  height: 44px;
 }
 
-.analysis-btn:focus {
-  outline: none;
+.analysis-btn:hover, .notebook-btn:hover {
   border-color: #10b981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-}
-
-.analysis-btn:hover {
-  border-color: #10b981;
-  background: #f0fdf4;
+  background: rgba(16, 185, 129, 0.05);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+}
+
+.notebook-btn {
+  border-color: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.notebook-btn:hover {
+  border-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.05);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
 }
 
 .practice-controls {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .control-btn {
-  padding: 8px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  padding: 10px 18px;
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
   font-size: 14px;
   color: #1e293b;
-  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   min-width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.control-btn:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-weight: 600;
 }
 
 .control-btn:hover {
-  border-color: #cbd5e1;
-  background: #f8fafc;
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
 .control-btn.pause-btn {
-  background: #3b82f6;
+  background: rgba(59, 130, 246, 0.9);
   color: white;
   border-color: #3b82f6;
 }
@@ -1417,10 +1429,11 @@ export default {
 .control-btn.pause-btn:hover {
   background: #2563eb;
   border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .control-btn.restart-btn {
-  background: #10b981;
+  background: rgba(16, 185, 129, 0.9);
   color: white;
   border-color: #10b981;
 }
@@ -1428,45 +1441,17 @@ export default {
 .control-btn.restart-btn:hover {
   background: #059669;
   border-color: #059669;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
 }
 
-.start-practice-btn {
-  background: #10b981;
-  color: white;
-  border: none;
-  padding: 16px 32px;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.start-practice-btn:hover:not(:disabled) {
-  background: #059669;
-  transform: translateY(-2px);
-}
-
-.start-practice-btn:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.selection-hint {
-  margin-top: 16px;
-  color: #6b7280;
-  font-size: 14px;
-}
-
-/* 主练习区域 */
-.main-practice-area {
+/* 主练习内容区域 */
+.main-content-section {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 20px;
+  padding: 40px 20px;
   text-align: center;
   min-height: 0;
   overflow: hidden;
@@ -1479,20 +1464,34 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
+  padding: 60px 40px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(15px);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .start-title {
-  font-size: 36px;
+  font-size: 42px;
   font-weight: 700;
-  color: #1e293b;
+  background: linear-gradient(135deg, #1e293b, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: 20px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .selection-hint {
   color: #64748b;
-  font-size: 16px;
+  font-size: 18px;
   font-style: italic;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
 }
 
 /* 打字状态 */
@@ -1500,50 +1499,74 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(15px);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-width: 500px;
 }
 
 .current-word-container {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 16px;
+  margin-bottom: 30px;
   font-family: monospace;
 }
 
 .current-word {
   display: flex;
   gap: 0;
-  font-size: 48px;
+  font-size: 56px;
   font-weight: 600;
-  padding: 0 4px;
+  padding: 20px 30px;
   line-height: 1.2;
   height: 1.2em;
   font-family: monospace;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .letter {
-  font-size: 48px;
+  font-size: 56px;
   font-weight: 600;
-  padding: 0 4px;
+  padding: 0 6px;
   line-height: 1.2;
   height: 1.2em;
   font-family: monospace;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  border-radius: 4px;
 }
 
 .letter.correct {
   color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  transform: scale(1.05);
 }
 
 .letter.incorrect {
   color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  animation: letterShake 0.3s ease;
 }
 
 .letter.current {
   color: #3b82f6;
-  border-bottom: 3px solid #3b82f6;
+  border-bottom: 4px solid #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  transform: scale(1.1);
+}
+
+@keyframes letterShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
 }
 
 /* 抖动效果 */
@@ -1553,48 +1576,100 @@ export default {
 
 @keyframes wordShake {
   0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-  20%, 40%, 60%, 80% { transform: translateX(4px); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+  20%, 40%, 60%, 80% { transform: translateX(6px); }
 }
 
 .word-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 30px;
+  gap: 12px;
+  margin-bottom: 40px;
+  padding: 20px 30px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .phonetic {
-  font-size: 18px;
+  font-size: 20px;
   color: #64748b;
   font-style: italic;
+  font-weight: 500;
 }
 
 .translation {
-  font-size: 20px;
+  font-size: 24px;
   color: #1e293b;
-  font-weight: 500;
+  font-weight: 600;
+}
+
+/* 进度条样式 */
+.progress-section {
+  width: 100%;
+  max-width: 400px;
+  margin: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(226, 232, 240, 0.5);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+  border-radius: 4px;
+  transition: width 0.3s ease-in-out;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.progress-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #64748b;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
 }
 
 .word-hints {
   display: flex;
-  gap: 40px;
-  margin-top: 20px;
+  gap: 50px;
+  margin-top: 30px;
 }
 
 .hint-left, .hint-right {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 12px 20px;
-  background: #f8fafc;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  gap: 8px;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.hint-left:hover, .hint-right:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .hint-word {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   color: #3b82f6;
 }
@@ -1604,139 +1679,78 @@ export default {
   color: #64748b;
 }
 
-/* 完成状态 */
-.completion-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-}
-
-.completion-title {
-  font-size: 32px;
-  font-weight: 700;
-  color: #10b981;
-}
-
-.completion-stats {
-  display: flex;
-  gap: 40px;
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.stat-value {
-  font-size: 32px;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.stat-label {
-  font-size: 14px;
-  color: #64748b;
-}
-
-.restart-btn {
-  background: #3b82f6;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.restart-btn:hover {
-  background: #2563eb;
-  transform: translateY(-2px);
-}
-
-/* 进度条样式 */
-.progress-section {
-  width: 100%;
-  max-width: 300px;
-  margin: 20px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 6px;
-  background-color: #e2e8f0;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-  border-radius: 3px;
-  transition: width 0.3s ease-in-out;
-}
-
-.progress-text {
-  font-size: 14px;
-  font-weight: 600;
-  color: #64748b;
-}
-
-/* 底部状态栏 */
-.bottom-stats {
+/* 底部统计区域 */
+.bottom-stats-section {
   flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
-  padding: 16px 20px;
-  background: #f8fafc !important;
-  border-top: 1px solid #e2e8f0;
+  gap: 50px;
+  padding: 20px 30px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(15px);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0 0 20px 20px;
   z-index: 10;
-  min-height: 50px;
-  position: relative;
-  margin: 10px 20px 0 20px;
-  border-radius: 12px;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  min-height: 70px;
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.05);
 }
 
-.bottom-stats .stat-item {
+.bottom-stats-section .stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  min-width: 80px;
+  min-width: 100px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
 }
 
-.bottom-stats .stat-value {
-  font-size: 28px;
+.bottom-stats-section .stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.bottom-stats-section .stat-value {
+  font-size: 32px;
   font-weight: 700;
-  color: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.bottom-stats .stat-label {
+.bottom-stats-section .stat-label {
   font-size: 12px;
   color: #64748b;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
+/* 章节练习次数样式 */
+.practice-count {
+  font-size: 12px;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-left: 8px;
+  font-weight: 600;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
 /* 响应式设计 */
 @media (max-width: 1200px) {
-  .top-settings {
+  .top-control-section {
     flex-direction: column;
     gap: 16px;
     padding: 20px;
-}
+  }
 
   .dict-chapter-section {
     flex-direction: column;
@@ -1753,12 +1767,23 @@ export default {
     left: 50%;
     transform: translateX(-50%);
   }
+  
+  .bottom-stats-section {
+    gap: 30px;
+    padding: 16px 20px;
+  }
 }
 
 @media (max-width: 768px) {
-  .top-settings {
+  .integrated-practice-container {
+    margin: 10px;
+    border-radius: 16px;
+  }
+  
+  .top-control-section {
     margin: 0 10px 12px 10px;
     padding: 16px;
+    border-radius: 16px 16px 0 0;
   }
   
   .logo {
@@ -1776,16 +1801,49 @@ export default {
     min-width: 35px;
   }
   
-  .start-practice-btn, .pause-btn {
+  .control-btn {
     padding: 10px 20px;
     font-size: 14px;
+  }
+  
+  .typing-state {
+    min-width: 90%;
+    padding: 30px 20px;
+  }
+  
+  .current-word {
+    font-size: 42px;
+    padding: 16px 24px;
+  }
+  
+  .letter {
+    font-size: 42px;
+  }
+  
+  .start-title {
+    font-size: 32px;
+  }
+  
+  .bottom-stats-section {
+    gap: 20px;
+    padding: 12px 16px;
+  }
+  
+  .bottom-stats-section .stat-value {
+    font-size: 24px;
   }
 }
 
 @media (max-width: 480px) {
-  .top-settings {
+  .integrated-practice-container {
+    margin: 5px;
+    border-radius: 12px;
+  }
+  
+  .top-control-section {
     margin: 0 5px 10px 5px;
     padding: 12px;
+    border-radius: 12px 12px 0 0;
   }
   
   .dict-chapter-section {
@@ -1798,14 +1856,34 @@ export default {
     padding: 6px 10px;
   }
   
-  .selector-label {
-    font-size: 12px;
-    min-width: 30px;
+  .typing-state {
+    padding: 20px 15px;
   }
   
-  .start-practice-btn, .pause-btn {
-    padding: 8px 16px;
-    font-size: 13px;
+  .current-word {
+    font-size: 36px;
+    padding: 12px 20px;
+  }
+  
+  .letter {
+    font-size: 36px;
+  }
+  
+  .start-title {
+    font-size: 28px;
+  }
+  
+  .bottom-stats-section {
+    gap: 15px;
+    padding: 10px 12px;
+  }
+  
+  .bottom-stats-section .stat-value {
+    font-size: 20px;
+  }
+  
+  .bottom-stats-section .stat-label {
+    font-size: 10px;
   }
 }
 
@@ -2020,10 +2098,11 @@ export default {
 .practice-count {
   font-size: 12px;
   color: #10b981;
-  background: #d1fae5;
-  padding: 2px 6px;
-  border-radius: 10px;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 4px 8px;
+  border-radius: 12px;
   margin-left: 8px;
   font-weight: 600;
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 </style>

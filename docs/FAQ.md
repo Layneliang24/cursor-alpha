@@ -1957,4 +1957,70 @@ const submitChapterPracticeStats = async () => {
 - **测试覆盖**：新功能要有完整的测试覆盖，包括单元测试和集成测试
 - **用户体验**：UI设计要考虑用户体验，确保界面美观和功能易用
 
+##### 问题8：数据统计界面正确率计算逻辑错误
+
+**问题描述**
+- 数据统计界面的平均正确率总是显示100%
+- 用户反馈正确率统计不准确，与实际练习情况不符
+- 练习界面使用字母级别统计，但数据统计界面使用单词级别统计
+
+**问题分析**
+1. **统计逻辑不一致**：练习界面使用字母级别正确率（正确字母数/总字母数），数据统计界面使用单词级别正确率（正确单词数/总单词数）
+2. **用户多次输入机会**：用户输入错误后可以继续输入，直到输入正确为止，导致最终 `is_correct` 总是 `True`
+3. **数据记录问题**：数据库中所有练习记录的 `is_correct` 都是 `True`，没有反映真实的错误情况
+4. **统计方法不合理**：应该使用字母级别的错误统计，而不是单词级别的正确/错误判断
+
+**解决方案**
+
+1. **修改后端统计逻辑**：
+```python
+# 计算平均正确率 - 使用字母级别统计（与练习界面保持一致）
+total_letters = 0
+correct_letters = 0
+
+for record in records:
+    word_length = len(record.word)
+    total_letters += word_length
+    
+    # 如果有错误次数记录，使用错误次数计算正确字母数
+    if hasattr(record, 'wrong_count') and record.wrong_count is not None:
+        correct_letters += word_length - record.wrong_count
+    else:
+        # 如果没有错误次数记录，默认全部正确（保持向后兼容）
+        correct_letters += word_length
+
+avg_accuracy = (correct_letters / total_letters * 100) if total_letters > 0 else 0
+```
+
+2. **更新返回数据结构**：
+```python
+return {
+    'total_exercises': total_exercises,
+    'total_words': total_words,
+    'correct_letters': correct_letters,  # 正确字母数
+    'total_letters': total_letters,  # 总字母数
+    'avg_accuracy': round(avg_accuracy, 2),  # 保持原有字段名以匹配测试期望
+    'avg_wpm': round(avg_wpm, 2),
+    'date_range': [start_date, end_date]
+}
+```
+
+**经验总结**
+1. **统计逻辑统一**：练习界面和数据统计界面应该使用相同的统计逻辑
+2. **字母级别统计**：对于打字练习，字母级别的正确率统计更准确反映用户表现
+3. **错误记录重要性**：要正确记录和利用错误次数数据，而不是仅依赖最终结果
+4. **向后兼容性**：修改统计逻辑时要保持向后兼容，处理历史数据
+
+**相关文件**
+- `backend/apps/english/services.py`：修改 `get_data_overview` 方法的正确率计算逻辑
+
+**解决时间**：2025-01-17
+
+**问题严重性**：⭐⭐⭐ 数据统计不准确，影响用户体验
+
+**验证结果**
+- 修改前：平均正确率总是100%
+- 修改后：平均正确率显示88.99%（基于实际错误数据）
+- API测试通过：`/api/v1/english/data-analysis/overview/` 返回正确的统计数据
+
 // ... existing code ...
