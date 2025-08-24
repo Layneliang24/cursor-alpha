@@ -148,8 +148,8 @@ export default {
 .chapter-completion-page {
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100vw;
+  left: 250px; /* 避开侧边栏区域 */
+  width: calc(100vw - 250px); /* 减去侧边栏宽度 */
   height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
