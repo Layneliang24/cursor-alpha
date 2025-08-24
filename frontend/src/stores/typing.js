@@ -4,6 +4,25 @@ import { englishAPI } from '@/api/english'
 import { ElMessage } from 'element-plus'
 
 export const useTypingStore = defineStore('typing', () => {
+  // 数据持久化函数
+  const loadFromStorage = (key, defaultValue) => {
+    try {
+      const item = localStorage.getItem(`typing_${key}`)
+      return item ? JSON.parse(item) : defaultValue
+    } catch (error) {
+      console.error(`加载存储数据失败 ${key}:`, error)
+      return defaultValue
+    }
+  }
+  
+  const saveToStorage = (key, value) => {
+    try {
+      localStorage.setItem(`typing_${key}`, JSON.stringify(value))
+    } catch (error) {
+      console.error(`保存存储数据失败 ${key}:`, error)
+    }
+  }
+  
   // 状态
   const loading = ref(false)
   // 练习状态
@@ -92,14 +111,14 @@ export const useTypingStore = defineStore('typing', () => {
   const chapterCompletionData = ref(null)
   
   // 章节练习次数统计 ⭐ 新增
-  const chapterPracticeCounts = ref({})
+  const chapterPracticeCounts = ref(loadFromStorage('chapterPracticeCounts', {}))
   
   // 错题本功能 ⭐ 新增
-  const wrongWordsNotebook = ref([])
+  const wrongWordsNotebook = ref(loadFromStorage('wrongWordsNotebook', []))
   
   // 每日练习时长统计 ⭐ 新增
-  const dailyPracticeDuration = ref(0)
-  const dailyPracticeSessions = ref([])
+  const dailyPracticeDuration = ref(loadFromStorage('dailyPracticeDuration', 0))
+  const dailyPracticeSessions = ref(loadFromStorage('dailyPracticeSessions', []))
   
   // 错误单词收集 ⭐ 新增
   const wrongWordsInSession = ref([])
@@ -952,6 +971,7 @@ export const useTypingStore = defineStore('typing', () => {
       chapterPracticeCounts.value[chapterNumber] = 0
     }
     chapterPracticeCounts.value[chapterNumber]++
+    saveToStorage('chapterPracticeCounts', chapterPracticeCounts.value)
   }
 
   const getChapterPracticeCountDisplay = (chapterNumber) => {
@@ -978,17 +998,20 @@ export const useTypingStore = defineStore('typing', () => {
       // 添加新单词
       wrongWordsNotebook.value.push(wrongWord)
     }
+    saveToStorage('wrongWordsNotebook', wrongWordsNotebook.value)
   }
 
   const removeWrongWord = (word) => {
     const index = wrongWordsNotebook.value.findIndex(item => item.word === word)
     if (index >= 0) {
       wrongWordsNotebook.value.splice(index, 1)
+      saveToStorage('wrongWordsNotebook', wrongWordsNotebook.value)
     }
   }
 
   const clearWrongWordsNotebook = () => {
     wrongWordsNotebook.value = []
+    saveToStorage('wrongWordsNotebook', wrongWordsNotebook.value)
   }
 
   const getWrongWordsNotebookStats = () => {
@@ -1010,6 +1033,8 @@ export const useTypingStore = defineStore('typing', () => {
       duration,
       timestamp: new Date().toISOString()
     })
+    saveToStorage('dailyPracticeDuration', dailyPracticeDuration.value)
+    saveToStorage('dailyPracticeSessions', dailyPracticeSessions.value)
   }
 
   const getFormattedDailyPracticeDuration = () => {
@@ -1029,6 +1054,22 @@ export const useTypingStore = defineStore('typing', () => {
   const resetDailyPracticeDuration = () => {
     dailyPracticeDuration.value = 0
     dailyPracticeSessions.value = []
+    saveToStorage('dailyPracticeDuration', dailyPracticeDuration.value)
+    saveToStorage('dailyPracticeSessions', dailyPracticeSessions.value)
+  }
+  
+  // 检查并重置每日统计
+  const checkAndResetDailyStats = () => {
+    const today = new Date().toDateString()
+    const lastSession = dailyPracticeSessions.value[dailyPracticeSessions.value.length - 1]
+    
+    if (lastSession) {
+      const lastSessionDate = new Date(lastSession.timestamp).toDateString()
+      if (lastSessionDate !== today) {
+        // 新的一天，重置统计
+        resetDailyPracticeDuration()
+      }
+    }
   }
 
   // 章节完成数据生成 ⭐ 新增
@@ -1052,6 +1093,9 @@ export const useTypingStore = defineStore('typing', () => {
     }
   }
 
+  // 初始化时检查每日统计
+  checkAndResetDailyStats()
+  
   return {
     // 状态
     loading,
@@ -1172,6 +1216,7 @@ export const useTypingStore = defineStore('typing', () => {
     recordPracticeSession,
     getFormattedDailyPracticeDuration,
     resetDailyPracticeDuration,
+    checkAndResetDailyStats,
     
     // 章节完成数据生成 ⭐ 新增
     generateChapterCompletionData

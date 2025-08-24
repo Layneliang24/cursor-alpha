@@ -70,6 +70,12 @@ const routes = [
             meta: { title: '智能打字练习', requiresAuth: true }
         },
         {
+            path: '/english/wrong-words-notebook',
+            name: 'EnglishWrongWordsNotebook',
+            component: () => import('@/views/english/WrongWordsNotebook.vue'),
+            meta: { title: '错题本', requiresAuth: true }
+        },
+        {
             path: '/english/data-analysis',
             name: 'EnglishDataAnalysis',
             component: () => import('@/views/english/DataAnalysis.vue'),
