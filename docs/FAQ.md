@@ -179,6 +179,130 @@ expect(store.wordState.letterStates).toEqual(new Array(5).fill('normal'))
 
 ---
 
+##### 问题3：敲错字母后不显示红色和缺少抖动效果
+
+**问题描述**
+- 修复练习界面逻辑后，敲错字母不再显示红色
+- 缺少敲错字母后的视觉反馈（抖动效果）
+- 用户体验下降，无法直观看到错误状态
+
+**问题分析**
+1. **状态重置过快**：新逻辑中立即重置 `letterStates` 为 'normal'，没有显示错误状态
+2. **缺少抖动效果**：没有实现敲错字母后单词抖动的视觉反馈
+3. **错误反馈时间短**：用户无法看到错误状态，影响学习体验
+4. **CSS 动画缺失**：缺少抖动动画的 CSS 定义
+
+**解决方案**
+
+1. **优化错误处理逻辑，先显示错误状态再重置**
+```javascript
+} else {
+  // 输入错误，强制重新开始整个单词
+  console.log('输入错误，强制重新开始单词:', targetChar, '用户输入:', inputChar)
+  
+  // 记录按键错误...（省略）
+  
+  // 先显示错误状态（红色 + 抖动效果）
+  wordState.hasWrong = true
+  wordState.letterStates = new Array(wordState.displayWord.length).fill('wrong')
+  
+  // 触发抖动效果（通过设置一个临时状态）
+  wordState.shake = true
+  
+  // 延迟后重置状态，给用户时间看到错误反馈
+  setTimeout(() => {
+    // 强制重新开始：清空输入，重置状态
+    wordState.inputWord = ''
+    wordState.letterStates = new Array(wordState.displayWord.length).fill('normal')
+    wordState.hasWrong = false
+    wordState.shake = false
+    wordState.correctCount = 0
+    wordState.wrongCount++
+    
+    console.log('单词已重置，要求用户重新输入')
+  }, 800) // 800ms 让用户看到错误状态和抖动效果
+}
+```
+
+2. **添加 shake 状态到 wordState**
+```javascript
+const wordState = reactive({
+  displayWord: '',
+  inputWord: '',
+  letterStates: [], // 'normal' | 'correct' | 'wrong'
+  isFinished: false,
+  hasWrong: false,
+  correctCount: 0,
+  wrongCount: 0,
+  startTime: null,
+  endTime: null,
+  shake: false // 抖动效果状态
+})
+```
+
+3. **在 TypingPractice.vue 中添加抖动效果支持**
+```javascript
+// 获取单词容器类名，支持抖动效果
+getWordContainerClass: () => {
+  if (!typingStore.wordState) {
+    return 'current-word'
+  }
+  return typingStore.wordState.shake ? 'current-word shake' : 'current-word'
+}
+```
+
+4. **添加抖动动画 CSS**
+```css
+/* 抖动效果 */
+.current-word.shake {
+  animation: wordShake 0.6s ease-in-out;
+}
+
+@keyframes wordShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+```
+
+5. **更新测试用例验证新的错误处理流程**
+```javascript
+it('应该正确记录按键错误', async () => {
+  // 模拟输入错误按键
+  store.handleKeyInput('x')
+  
+  // 立即检查：应该显示错误状态
+  expect(store.wordState.hasWrong).toBe(true)
+  expect(store.wordState.letterStates).toEqual(new Array(5).fill('wrong'))
+  expect(store.wordState.shake).toBe(true)
+  
+  // 等待延迟重置完成
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  
+  // 延迟后检查：状态应该被重置
+  expect(store.wordState.hasWrong).toBe(false)
+  expect(store.wordState.inputWord).toBe('')
+  expect(store.wordState.letterStates).toEqual(new Array(5).fill('normal'))
+  expect(store.wordState.shake).toBe(false)
+})
+```
+
+**经验总结**
+1. **错误反馈时机**：错误状态应该先显示，给用户足够时间看到反馈，再重置
+2. **视觉反馈重要性**：抖动效果等视觉反馈能显著提升用户体验和学习效果
+3. **状态管理优化**：添加新的状态字段（如 shake）来支持更丰富的交互效果
+4. **CSS 动画设计**：抖动动画应该自然流畅，不会过于剧烈影响阅读
+5. **测试覆盖完整性**：异步操作的测试需要等待状态变化完成
+
+**相关文件**
+- `frontend/src/stores/typing.js`：错误处理逻辑和 shake 状态
+- `frontend/src/views/english/TypingPractice.vue`：抖动效果 CSS 和组件逻辑
+- `frontend/src/stores/__tests__/typing.spec.ts`：测试用例更新
+
+**解决时间**：2025-01-24
+
+---
+
 ##### 问题2：进度条首次加载时不显示
 
 **问题描述**
