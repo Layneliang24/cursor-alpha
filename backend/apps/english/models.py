@@ -634,3 +634,88 @@ class UserTypingStats(models.Model):
         return round((self.total_correct_words / self.total_words_practiced) * 100, 2)
 
 
+class ChapterPracticeRecord(TimeStampedModel):
+    """章节练习记录模型"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    dictionary_id = models.CharField(max_length=100, verbose_name="词典ID")
+    chapter_number = models.IntegerField(verbose_name="章节号")
+    practice_count = models.IntegerField(default=0, verbose_name="练习次数")
+    last_practice_date = models.DateTimeField(null=True, blank=True, verbose_name="最后练习时间")
+    
+    class Meta:
+        verbose_name = "章节练习记录"
+        verbose_name_plural = "章节练习记录"
+        db_table = 'english_chapter_practice_records'
+        unique_together = [('user', 'dictionary_id', 'chapter_number')]
+        indexes = [
+            models.Index(fields=['user', 'dictionary_id']),
+            models.Index(fields=['user', 'dictionary_id', 'chapter_number']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.dictionary_id} Ch{self.chapter_number} ({self.practice_count}次)"
+
+    def increment_practice_count(self):
+        """增加练习次数"""
+        from django.utils import timezone
+        self.practice_count += 1
+        self.last_practice_date = timezone.now()
+        self.save()
+
+
+class WrongWordRecord(TimeStampedModel):
+    """错题记录模型"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    word = models.CharField(max_length=100, verbose_name="单词")
+    translation = models.CharField(max_length=200, verbose_name="翻译")
+    dictionary_id = models.CharField(max_length=100, verbose_name="词典ID")
+    error_count = models.IntegerField(default=1, verbose_name="错误次数")
+    last_error_date = models.DateTimeField(auto_now=True, verbose_name="最后错误时间")
+    
+    class Meta:
+        verbose_name = "错题记录"
+        verbose_name_plural = "错题记录"
+        db_table = 'english_wrong_word_records'
+        unique_together = [('user', 'word', 'dictionary_id')]
+        indexes = [
+            models.Index(fields=['user', 'dictionary_id']),
+            models.Index(fields=['user', 'last_error_date']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.word} ({self.error_count}次)"
+
+    def increment_error_count(self):
+        """增加错误次数"""
+        self.error_count += 1
+        self.save()
+
+
+class DailyPracticeDuration(TimeStampedModel):
+    """每日练习时长统计模型"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="用户")
+    date = models.DateField(verbose_name="统计日期")
+    total_duration_minutes = models.IntegerField(default=0, verbose_name="总练习时长(分钟)")
+    session_count = models.IntegerField(default=0, verbose_name="练习会话数")
+    
+    class Meta:
+        verbose_name = "每日练习时长"
+        verbose_name_plural = "每日练习时长"
+        db_table = 'english_daily_practice_duration'
+        unique_together = [('user', 'date')]
+        indexes = [
+            models.Index(fields=['user', 'date']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date} ({self.total_duration_minutes}分钟)"
+
+    def add_session_duration(self, duration_minutes):
+        """添加会话时长"""
+        self.total_duration_minutes += duration_minutes
+        self.session_count += 1
+        self.save()
+
+
+
+

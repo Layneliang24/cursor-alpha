@@ -1856,6 +1856,296 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @action(detail=False, methods=['get'])
+    def chapter_stats(self, request):
+        """获取章节练习统计"""
+        try:
+            from .models import ChapterPracticeRecord
+            
+            # 获取查询参数
+            dictionary_id = request.query_params.get('dictionary_id')
+            
+            # 查询用户的章节练习记录
+            queryset = ChapterPracticeRecord.objects.filter(user=request.user)
+            if dictionary_id:
+                queryset = queryset.filter(dictionary_id=dictionary_id)
+            
+            # 构建返回数据
+            stats = {}
+            for record in queryset:
+                if record.dictionary_id not in stats:
+                    stats[record.dictionary_id] = {}
+                stats[record.dictionary_id][record.chapter_number] = record.practice_count
+            
+            return Response({
+                'success': True,
+                'message': '获取章节练习统计成功',
+                'data': stats
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': f'获取章节练习统计失败: {str(e)}',
+                'data': {}
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['post'])
+    def update_chapter_stats(self, request):
+        """更新章节练习统计"""
+        try:
+            from .models import ChapterPracticeRecord
+            
+            # 获取请求数据
+            stats_data = request.data
+            if not isinstance(stats_data, dict):
+                return Response({
+                    'success': False,
+                    'message': '数据格式错误'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 更新或创建章节练习记录
+            for dictionary_id, chapters in stats_data.items():
+                for chapter_number, practice_count in chapters.items():
+                    record, created = ChapterPracticeRecord.objects.get_or_create(
+                        user=request.user,
+                        dictionary_id=dictionary_id,
+                        chapter_number=int(chapter_number),
+                        defaults={'practice_count': 0}
+                    )
+                    record.practice_count = practice_count
+                    record.save()
+            
+            return Response({
+                'success': True,
+                'message': '更新章节练习统计成功'
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': f'更新章节练习统计失败: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['get'])
+    def wrong_words(self, request):
+        """获取错题记录"""
+        try:
+            from .models import WrongWordRecord
+            
+            # 获取查询参数
+            dictionary_id = request.query_params.get('dictionary_id')
+            
+            # 查询用户的错题记录
+            queryset = WrongWordRecord.objects.filter(user=request.user)
+            if dictionary_id:
+                queryset = queryset.filter(dictionary_id=dictionary_id)
+            
+            # 按最后错误时间排序
+            queryset = queryset.order_by('-last_error_date')
+            
+            # 序列化数据
+            wrong_words = []
+            for record in queryset:
+                wrong_words.append({
+                    'id': record.id,
+                    'word': record.word,
+                    'translation': record.translation,
+                    'dictionary_id': record.dictionary_id,
+                    'error_count': record.error_count,
+                    'last_error_date': record.last_error_date.isoformat()
+                })
+            
+            return Response({
+                'success': True,
+                'message': '获取错题记录成功',
+                'data': wrong_words
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': f'获取错题记录失败: {str(e)}',
+                'data': []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['post'])
+    def add_wrong_word(self, request):
+        """添加错题记录"""
+        try:
+            from .models import WrongWordRecord
+            
+            # 获取请求数据
+            word_data = request.data
+            required_fields = ['word', 'translation', 'dictionary_id']
+            for field in required_fields:
+                if field not in word_data:
+                    return Response({
+                        'success': False,
+                        'message': f'缺少必要字段: {field}'
+                    }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 查找或创建错题记录
+            record, created = WrongWordRecord.objects.get_or_create(
+                user=request.user,
+                word=word_data['word'],
+                dictionary_id=word_data['dictionary_id'],
+                defaults={
+                    'translation': word_data['translation'],
+                    'error_count': 1
+                }
+            )
+            
+            # 如果记录已存在，增加错误次数
+            if not created:
+                record.increment_error_count()
+            
+            return Response({
+                'success': True,
+                'message': '添加错题记录成功',
+                'data': {
+                    'id': record.id,
+                    'word': record.word,
+                    'translation': record.translation,
+                    'dictionary_id': record.dictionary_id,
+                    'error_count': record.error_count
+                }
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': f'添加错题记录失败: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['delete'])
+    def delete_wrong_word(self, request):
+        """删除错题记录"""
+        try:
+            from .models import WrongWordRecord
+            
+            # 获取记录ID
+            record_id = request.query_params.get('id')
+            if not record_id:
+                return Response({
+                    'success': False,
+                    'message': '缺少记录ID'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 查找并删除记录
+            try:
+                record = WrongWordRecord.objects.get(
+                    id=record_id,
+                    user=request.user
+                )
+                record.delete()
+                return Response({
+                    'success': True,
+                    'message': '删除错题记录成功'
+                })
+            except WrongWordRecord.DoesNotExist:
+                return Response({
+                    'success': False,
+                    'message': '记录不存在'
+                }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': f'删除错题记录失败: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['get'])
+    def daily_duration(self, request):
+        """获取每日练习时长"""
+        try:
+            from .models import DailyPracticeDuration
+            
+            # 获取查询参数
+            date_str = request.query_params.get('date')
+            if date_str:
+                from datetime import datetime
+                target_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+            else:
+                target_date = timezone.now().date()
+            
+            # 查询用户的每日练习时长记录
+            try:
+                record = DailyPracticeDuration.objects.get(
+                    user=request.user,
+                    date=target_date
+                )
+                data = {
+                    'date': record.date.isoformat(),
+                    'total_duration_minutes': record.total_duration_minutes,
+                    'session_count': record.session_count
+                }
+            except DailyPracticeDuration.DoesNotExist:
+                data = {
+                    'date': target_date.isoformat(),
+                    'total_duration_minutes': 0,
+                    'session_count': 0
+                }
+            
+            return Response({
+                'success': True,
+                'message': '获取每日练习时长成功',
+                'data': data
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': f'获取每日练习时长失败: {str(e)}',
+                'data': {}
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['post'])
+    def update_daily_duration(self, request):
+        """更新每日练习时长"""
+        try:
+            from .models import DailyPracticeDuration
+            
+            # 获取请求数据
+            duration_data = request.data
+            required_fields = ['duration_minutes']
+            for field in required_fields:
+                if field not in duration_data:
+                    return Response({
+                        'success': False,
+                        'message': f'缺少必要字段: {field}'
+                    }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 获取日期
+            date_str = duration_data.get('date')
+            if date_str:
+                from datetime import datetime
+                target_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+            else:
+                target_date = timezone.now().date()
+            
+            # 查找或创建每日练习时长记录
+            record, created = DailyPracticeDuration.objects.get_or_create(
+                user=request.user,
+                date=target_date,
+                defaults={
+                    'total_duration_minutes': 0,
+                    'session_count': 0
+                }
+            )
+            
+            # 添加会话时长
+            record.add_session_duration(duration_data['duration_minutes'])
+            
+            return Response({
+                'success': True,
+                'message': '更新每日练习时长成功',
+                'data': {
+                    'date': record.date.isoformat(),
+                    'total_duration_minutes': record.total_duration_minutes,
+                    'session_count': record.session_count
+                }
+            })
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': f'更新每日练习时长失败: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class DictionaryViewSet(viewsets.ReadOnlyModelViewSet):
     """词库视图集"""
@@ -2061,7 +2351,6 @@ class TypingWordViewSet(viewsets.ReadOnlyModelViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-    
 
 class DataAnalysisViewSet(viewsets.ModelViewSet):
     """数据分析API视图集"""

@@ -177,7 +177,92 @@ const handleGlobalKeydown = (event) => {
 
 ---
 
-##### 问题4：正确率统计逻辑需要重新设计
+##### 问题4：后端API URL解析错误和测试数据库问题
+
+**问题描述**
+- 新的`@action`方法无法通过`reverse()`函数解析URL
+- 测试执行时遇到`NoReverseMatch`错误
+- 测试数据库创建时遇到表已存在的错误
+- URL名称格式不一致（下划线和连字符混用）
+
+**问题分析**
+1. **方法放置位置错误**：新的`@action`方法被错误地放置在`TypingPracticeViewSet`类外部
+2. **URL名称格式问题**：DRF生成的URL名称使用连字符，但测试中使用下划线
+3. **测试数据库冲突**：之前的测试运行留下了数据库表，导致新测试无法创建表
+4. **Python模块缓存问题**：Python运行时没有正确识别新添加的方法
+
+**解决方案**
+
+1. **修复方法放置位置**
+```python
+# backend/apps/english/views.py
+class TypingPracticeViewSet(viewsets.ModelViewSet):
+    # ... 现有方法 ...
+    
+    @action(detail=False, methods=['get'])
+    def chapter_stats(self, request):
+        """获取章节练习统计"""
+        # 实现逻辑
+    
+    @action(detail=False, methods=['post'])
+    def update_chapter_stats(self, request):
+        """更新章节练习统计"""
+        # 实现逻辑
+    
+    # ... 其他新方法 ...
+```
+
+2. **修复URL名称格式**
+```python
+# tests/unit/test_typing_practice_api.py
+# 将所有URL名称从下划线格式改为连字符格式
+url = reverse('typing-practice-chapter-stats')  # 正确
+url = reverse('typing-practice-update-chapter-stats')  # 正确
+url = reverse('typing-practice-wrong-words')  # 正确
+```
+
+3. **清理测试数据库**
+```bash
+# 清理数据库
+python manage.py flush --noinput
+
+# 或者使用fake迁移
+python manage.py migrate english 0011 --fake
+```
+
+4. **验证API功能**
+```python
+# 验证API正常工作
+python manage.py shell -c "
+from django.test import Client
+from django.contrib.auth import get_user_model
+User = get_user_model()
+user = User.objects.create_user('testuser', 'test@example.com', 'testpass123')
+client = Client()
+client.force_login(user)
+response = client.get('/api/v1/english/typing-practice/chapter_stats/')
+print('Status:', response.status_code)
+print('Response:', response.json())
+"
+```
+
+**经验总结**
+1. **方法放置位置**：`@action`方法必须放在ViewSet类内部
+2. **URL名称规范**：DRF使用连字符格式生成URL名称
+3. **测试数据库管理**：需要正确管理测试数据库的创建和清理
+4. **API验证**：修复后需要验证API功能是否正常
+
+**相关文件**
+- `backend/apps/english/views.py`：方法放置位置修复
+- `tests/unit/test_typing_practice_api.py`：URL名称修复
+- `backend/apps/english/models.py`：数据模型
+- `backend/apps/english/urls.py`：URL配置
+
+**解决时间**：2025-01-17
+
+---
+
+##### 问题5：正确率统计逻辑需要重新设计
 
 **问题描述**
 - 练习界面和数据统计界面的正确率统计基于单词层面，不够精确
