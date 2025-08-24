@@ -20,6 +20,9 @@
         </div>
         <div class="chapter-stats">
           <span class="word-count">{{ chapter.wordCount }}词</span>
+          <span class="practice-count" v-if="chapter.practiceCount > 0">
+            练习{{ chapter.practiceCount }}次
+          </span>
         </div>
         <div class="chapter-progress" v-if="chapter.progress">
           <div class="progress-bar">
@@ -50,6 +53,10 @@ const props = defineProps({
   selectedChapter: {
     type: Number,
     default: 1
+  },
+  chapterPracticeCounts: {
+    type: Object,
+    default: () => ({})
   }
 })
 
@@ -77,7 +84,8 @@ const chapterList = computed(() => {
     chapters.push({
       number: i,
       wordCount,
-      progress: null // 这里可以添加用户进度数据
+      progress: null, // 这里可以添加用户进度数据
+      practiceCount: props.chapterPracticeCounts[i] || 0
     })
   }
   

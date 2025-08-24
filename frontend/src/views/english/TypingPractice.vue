@@ -57,7 +57,7 @@
             >
               第{{ chapter.number }}章 ({{ chapter.wordCount }}词)
               <span class="practice-count" v-if="getChapterPracticeCount(chapter.number) > 0">
-                {{ getChapterPracticeCountDisplay(chapter.number) }}
+                · 练习{{ getChapterPracticeCountDisplay(chapter.number) }}次
               </span>
             </div>
           </div>
@@ -1084,8 +1084,7 @@ export default {
       
       // 错题本相关方法 ⭐ 新增
       openWrongWordsNotebook: () => {
-        // TODO: 打开错题本页面或弹窗
-        console.log('打开错题本')
+        router.push('/english/wrong-words-notebook')
       },
       
       // 撒花效果相关方法 ⭐ 新增
