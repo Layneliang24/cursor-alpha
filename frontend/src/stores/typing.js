@@ -809,7 +809,9 @@ export const useTypingStore = defineStore('typing', () => {
       
       // 自动标记章节完成 ⭐ 新增
       const completionData = generateChapterCompletionData()
+      console.log('生成章节完成数据:', completionData)
       markChapterCompleted(completionData)
+      console.log('章节完成状态已设置:', chapterCompleted.value)
       
       // 异步更新统计
       loadTypingStats()
@@ -861,6 +863,15 @@ export const useTypingStore = defineStore('typing', () => {
   
   const resetPractice = () => {
     console.log('=== resetPractice 开始 ===')
+    console.log('当前章节完成状态:', chapterCompleted.value)
+    
+    // 如果章节已完成，询问用户是否确定要重置
+    if (chapterCompleted.value) {
+      console.log('章节已完成，询问用户是否确定要重置')
+      // 这里可以添加用户确认逻辑，或者直接返回
+      // 暂时直接返回，避免意外重置
+      return
+    }
     
     // 重置暂停状态
     isPaused.value = false
@@ -959,8 +970,15 @@ export const useTypingStore = defineStore('typing', () => {
 
   // 章节完成功能 ⭐ 新增
   const markChapterCompleted = (completionData) => {
+    console.log('=== markChapterCompleted 开始 ===')
+    console.log('传入的完成数据:', completionData)
+    console.log('设置前的章节完成状态:', chapterCompleted.value)
+    
     chapterCompleted.value = true
     chapterCompletionData.value = completionData
+    
+    console.log('设置后的章节完成状态:', chapterCompleted.value)
+    console.log('设置后的章节完成数据:', chapterCompletionData.value)
     
     // 增加章节练习次数
     if (selectedChapter.value) {
@@ -973,13 +991,17 @@ export const useTypingStore = defineStore('typing', () => {
     }
     
     // 将本次练习的错误单词添加到错题本 ⭐ 新增
+    console.log('当前会话错误单词数量:', wrongWordsInSession.value.length)
     wrongWordsInSession.value.forEach(wrongWord => {
+      console.log('添加错误单词到错题本:', wrongWord)
       addWrongWord({
         ...wrongWord,
         dictionary: selectedDictionary.value?.name || 'Unknown',
         lastErrorTime: new Date().toISOString()
       })
     })
+    
+    console.log('=== markChapterCompleted 结束 ===')
   }
 
   const resetChapterCompletion = () => {

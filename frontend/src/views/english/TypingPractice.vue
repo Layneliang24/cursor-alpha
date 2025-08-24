@@ -604,6 +604,15 @@ export default {
 
     const finishPractice = async () => {
       try {
+        console.log('=== finishPractice 开始 ===')
+        console.log('当前章节完成状态:', typingStore.chapterCompleted)
+        
+        // 如果章节已完成，不需要再次完成练习会话
+        if (typingStore.chapterCompleted) {
+          console.log('章节已完成，跳过API调用')
+          return
+        }
+        
         // 完成练习会话
         await englishAPI.completeTypingSession()
         
