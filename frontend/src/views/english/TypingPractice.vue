@@ -1,11 +1,11 @@
 <template>
   <div class="typing-practice-page">
-    <!-- 一体化练习区域 - 透明磨砂玻璃效果 -->
+    <!-- 一体化练习区域 - 扁平化风格 -->
     <div class="integrated-practice-container" v-if="!chapterCompleted">
-      <!-- 背景装饰 -->
+      <!-- 背景装饰 - 简化扁平化 -->
       <div class="background-decoration"></div>
       
-      <!-- 顶部控制区域 -->
+      <!-- 顶部控制区域 - 扁平化风格 -->
       <div class="top-control-section">
         <div class="left-section">
           <div class="logo">⌨️ Alpha Learner</div>
@@ -158,7 +158,7 @@
         </div>
       </div>
 
-      <!-- 底部统计区域 -->
+      <!-- 底部统计区域 - 扁平化风格 -->
       <div class="bottom-stats-section">
         <div class="stat-item">
           <div class="stat-value">{{ formatTime(sessionTime || 0) }}</div>
@@ -1081,9 +1081,9 @@ export default {
 
 <style scoped>
 .typing-practice-page {
-  height: calc(100vh - 180px);
+  height: 100vh;
   width: 100%;
-  background: #fafafa;
+  background: #f8fafc;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   display: flex;
   flex-direction: column;
@@ -1091,10 +1091,10 @@ export default {
   position: relative;
   z-index: 1;
   margin: 0;
-  padding: 5px;
+  padding: 0;
 }
 
-/* 一体化练习区域 */
+/* 一体化练习区域 - 扁平化风格 */
 .integrated-practice-container {
   flex: 1;
   display: flex;
@@ -1102,45 +1102,39 @@ export default {
   position: relative;
   overflow: hidden;
   z-index: 1;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  border-radius: 20px;
-  margin: 20px;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: #ffffff;
+  border: none;
+  margin: 0;
+  box-shadow: none;
+  /* 移除磨砂玻璃效果，采用扁平化设计 */
 }
 
-/* 背景装饰 */
+/* 背景装饰 - 简化扁平化 */
 .background-decoration {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
-  opacity: 0.8;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  opacity: 0.3;
   z-index: -1;
   pointer-events: none;
 }
 
-/* 顶部控制区域 */
+/* 顶部控制区域 - 扁平化风格 */
 .top-control-section {
   flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(15px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 20px 20px 0 0;
+  padding: 20px 30px;
+  background: #ffffff;
+  border-bottom: 2px solid #e2e8f0;
+  border-radius: 0;
   z-index: 10;
-  min-height: 60px;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+  min-height: 70px;
+  box-shadow: none;
 }
 
 .left-section {
@@ -1153,11 +1147,11 @@ export default {
   font-size: 24px;
   font-weight: 700;
   color: #1e293b;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
+  text-shadow: none;
 }
 
 .dict-chapter-section {
@@ -1181,34 +1175,33 @@ export default {
 }
 
 .dict-btn, .chapter-btn {
-  padding: 10px 16px;
-  border: 2px solid rgba(59, 130, 246, 0.2);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  color: #1e293b;
+  padding: 12px 20px;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #334155;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   min-width: 120px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
 }
 
 .dict-btn:hover, .chapter-btn:hover {
-  border-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.05);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  border-color: #64748b;
+  background: #f8fafc;
+  transform: none;
+  box-shadow: none;
 }
 
 .dict-btn.expanded, .chapter-btn.expanded {
   border-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.1);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  background: #eff6ff;
+  box-shadow: none;
 }
 
 .dict-btn .arrow, .chapter-btn .arrow {
@@ -1225,11 +1218,10 @@ export default {
   position: absolute;
   top: 100%;
   left: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: none;
   z-index: 10000;
   min-width: 240px;
   max-height: 300px;
@@ -1277,27 +1269,27 @@ export default {
   transition: background-color 0.2s ease;
 }
 
-.dict-item {
+.dict-item, .chapter-item {
   padding: 12px 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 12px;
+  transition: all 0.2s ease;
+  border-radius: 8px;
   margin-bottom: 6px;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
 }
 
-.dict-item:hover {
-  background: rgba(59, 130, 246, 0.08);
-  transform: translateX(4px);
-  border-color: rgba(59, 130, 246, 0.2);
+.dict-item:hover, .chapter-item:hover {
+  background: #f1f5f9;
+  transform: none;
+  border-color: #cbd5e1;
 }
 
-.dict-item.selected {
-  background: rgba(59, 130, 246, 0.15);
+.dict-item.selected, .chapter-item.selected {
+  background: #eff6ff;
   font-weight: 600;
   color: #1d4ed8;
   border-left: 3px solid #3b82f6;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+  box-shadow: none;
 }
 
 .dict-name {
@@ -1314,29 +1306,6 @@ export default {
   display: block;
 }
 
-.chapter-item {
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 12px;
-  margin-bottom: 6px;
-  border: 1px solid transparent;
-}
-
-.chapter-item:hover {
-  background: rgba(59, 130, 246, 0.08);
-  transform: translateX(4px);
-  border-color: rgba(59, 130, 246, 0.2);
-}
-
-.chapter-item.selected {
-  background: rgba(59, 130, 246, 0.15);
-  font-weight: 600;
-  color: #1d4ed8;
-  border-left: 3px solid #3b82f6;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-}
-
 .settings-bar {
   display: flex;
   align-items: center;
@@ -1348,35 +1317,35 @@ export default {
   color: #64748b;
   font-size: 14px;
   font-weight: 500;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.6);
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
   border-radius: 8px;
-  backdrop-filter: blur(5px);
+  backdrop-filter: none;
 }
 
 .analysis-btn, .notebook-btn {
-  padding: 10px 14px;
-  border: 2px solid rgba(16, 185, 129, 0.2);
-  border-radius: 12px;
+  padding: 12px 16px;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
   font-size: 16px;
-  color: #1e293b;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  color: #334155;
+  background: #ffffff;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  min-width: 44px;
-  height: 44px;
+  box-shadow: none;
+  min-width: 48px;
+  height: 48px;
 }
 
 .analysis-btn:hover, .notebook-btn:hover {
-  border-color: #10b981;
-  background: rgba(16, 185, 129, 0.05);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+  border-color: #64748b;
+  background: #f8fafc;
+  transform: none;
+  box-shadow: none;
 }
 
 .notebook-btn {
@@ -1396,32 +1365,31 @@ export default {
 }
 
 .control-btn {
-  padding: 10px 18px;
-  border: 2px solid rgba(59, 130, 246, 0.2);
-  border-radius: 12px;
+  padding: 12px 20px;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
   font-size: 14px;
-  color: #1e293b;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  color: #334155;
+  background: #ffffff;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   min-width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
   font-weight: 600;
 }
 
 .control-btn:hover {
-  border-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.05);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  border-color: #64748b;
+  background: #f8fafc;
+  transform: none;
+  box-shadow: none;
 }
 
 .control-btn.pause-btn {
-  background: rgba(59, 130, 246, 0.9);
+  background: #3b82f6;
   color: white;
   border-color: #3b82f6;
 }
@@ -1429,11 +1397,11 @@ export default {
 .control-btn.pause-btn:hover {
   background: #2563eb;
   border-color: #2563eb;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  box-shadow: none;
 }
 
 .control-btn.restart-btn {
-  background: rgba(16, 185, 129, 0.9);
+  background: #10b981;
   color: white;
   border-color: #10b981;
 }
@@ -1441,7 +1409,7 @@ export default {
 .control-btn.restart-btn:hover {
   background: #059669;
   border-color: #059669;
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+  box-shadow: none;
 }
 
 /* 主练习内容区域 */
@@ -1459,29 +1427,29 @@ export default {
   z-index: 1;
 }
 
-/* 开始状态 */
+/* 开始状态 - 扁平化风格 */
 .start-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 30px;
   padding: 60px 40px;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(15px);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: none;
 }
 
 .start-title {
   font-size: 42px;
   font-weight: 700;
-  background: linear-gradient(135deg, #1e293b, #3b82f6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #1e293b;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
   margin-bottom: 20px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: none;
 }
 
 .selection-hint {
@@ -1489,23 +1457,23 @@ export default {
   font-size: 18px;
   font-style: italic;
   padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 12px;
-  backdrop-filter: blur(5px);
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  backdrop-filter: none;
 }
 
-/* 打字状态 */
+/* 打字状态 - 扁平化风格 */
 .typing-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 30px;
   padding: 40px;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(15px);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: none;
   min-width: 500px;
 }
 
@@ -1526,11 +1494,11 @@ export default {
   line-height: 1.2;
   height: 1.2em;
   font-family: monospace;
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: none;
 }
 
 .letter {
@@ -1544,23 +1512,27 @@ export default {
   border-radius: 4px;
 }
 
+/* 字母样式 - 扁平化 */
 .letter.correct {
   color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
-  transform: scale(1.05);
+  background: #ecfdf5;
+  border: 2px solid #10b981;
+  transform: none;
 }
 
 .letter.incorrect {
   color: #ef4444;
-  background: rgba(239, 68, 68, 0.1);
+  background: #fef2f2;
+  border: 2px solid #ef4444;
   animation: letterShake 0.3s ease;
 }
 
 .letter.current {
   color: #3b82f6;
-  border-bottom: 4px solid #3b82f6;
-  background: rgba(59, 130, 246, 0.1);
-  transform: scale(1.1);
+  border-bottom: 3px solid #3b82f6;
+  background: #eff6ff;
+  border: 2px solid #3b82f6;
+  transform: none;
 }
 
 @keyframes letterShake {
@@ -1586,10 +1558,10 @@ export default {
   gap: 12px;
   margin-bottom: 40px;
   padding: 20px 30px;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  backdrop-filter: none;
 }
 
 .phonetic {
@@ -1605,7 +1577,7 @@ export default {
   font-weight: 600;
 }
 
-/* 进度条样式 */
+/* 进度条样式 - 扁平化 */
 .progress-section {
   width: 100%;
   max-width: 400px;
@@ -1619,18 +1591,18 @@ export default {
 .progress-bar {
   width: 100%;
   height: 8px;
-  background: rgba(226, 232, 240, 0.5);
+  background: #e2e8f0;
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+  background: #3b82f6;
   border-radius: 4px;
   transition: width 0.3s ease-in-out;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+  box-shadow: none;
 }
 
 .progress-text {
@@ -1638,9 +1610,10 @@ export default {
   font-weight: 600;
   color: #64748b;
   padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.7);
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
   border-radius: 8px;
-  backdrop-filter: blur(5px);
+  backdrop-filter: none;
 }
 
 .word-hints {
@@ -1649,23 +1622,25 @@ export default {
   margin-top: 30px;
 }
 
+/* 提示词样式 - 扁平化 */
 .hint-left, .hint-right {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  backdrop-filter: none;
+  box-shadow: none;
+  transition: all 0.2s ease;
 }
 
 .hint-left:hover, .hint-right:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: none;
+  box-shadow: none;
+  border-color: #64748b;
 }
 
 .hint-word {
@@ -1679,49 +1654,51 @@ export default {
   color: #64748b;
 }
 
-/* 底部统计区域 */
+/* 底部统计区域 - 扁平化风格 */
 .bottom-stats-section {
   flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 50px;
-  padding: 20px 30px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(15px);
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 0 0 20px 20px;
+  gap: 60px;
+  padding: 25px 35px;
+  background: #ffffff;
+  border-top: 2px solid #e2e8f0;
+  border-radius: 0;
   z-index: 10;
-  min-height: 70px;
-  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.05);
+  min-height: 80px;
+  box-shadow: none;
 }
 
+/* 统计项样式 - 扁平化 */
 .bottom-stats-section .stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   min-width: 100px;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 12px;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  backdrop-filter: none;
+  transition: all 0.2s ease;
 }
 
 .bottom-stats-section .stat-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: none;
+  box-shadow: none;
+  border-color: #64748b;
 }
 
 .bottom-stats-section .stat-value {
   font-size: 32px;
   font-weight: 700;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #3b82f6;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
 }
 
 .bottom-stats-section .stat-label {
