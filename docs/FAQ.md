@@ -99,6 +99,86 @@ const getComponentRef = () => {
 
 ---
 
+##### 问题2：练习界面逻辑不合理 - 敲错字母后允许继续输入
+
+**问题描述**
+- 练习界面中，用户敲错字母后，系统允许继续输入后面的字母
+- 错误状态1秒后自动重置，用户可以"跳过"错误的字母
+- 即使有错误，单词完成也算正确，无法强化用户对错误单词的记忆
+
+**问题分析**
+1. **原有逻辑缺陷**：错误后继续输入，无法强化记忆
+2. **跳过机制问题**：用户可以跳过错误位置，养成坏习惯
+3. **学习效果差**：错误没有被纠正，用户可能记住错误的拼写
+4. **不符合学习规律**：正确的打字练习应该要求用户重新输入错误的单词
+
+**解决方案**
+
+1. **修改错误处理逻辑**
+```javascript
+} else {
+  // 输入错误，强制重新开始整个单词
+  console.log('输入错误，强制重新开始单词:', targetChar, '用户输入:', inputChar)
+  
+  // 记录按键错误
+  const wrongKey = targetChar.toLowerCase()
+  if (!keyMistakes.value[wrongKey]) {
+    keyMistakes.value[wrongKey] = []
+  }
+  if (!cumulativeKeyMistakes.value[wrongKey]) {
+    cumulativeKeyMistakes.value[wrongKey] = []
+  }
+  keyMistakes.value[wrongKey].push(wrongKey)
+  cumulativeKeyMistakes.value[wrongKey].push(wrongKey)
+  
+  // 播放错误声音和发音
+  if (window.playWrongSound) {
+    window.playWrongSound()
+  }
+  
+  // 强制重新开始：清空输入，重置状态
+  wordState.inputWord = ''
+  wordState.letterStates = new Array(wordState.displayWord.length).fill('normal')
+  wordState.hasWrong = false
+  wordState.correctCount = 0
+  wordState.wrongCount++
+}
+```
+
+2. **移除原有的错误后继续逻辑**
+```javascript
+// 删除以下代码：
+// setTimeout(() => {
+//   // 重置错误状态，但保持输入位置
+//   wordState.letterStates[currentInputLength] = 'normal'
+//   wordState.hasWrong = false
+//   // 用户可以跳过错误的字符，继续输入后面的字符
+// }, 1000)
+```
+
+3. **更新测试用例**
+```javascript
+// 新逻辑：错误后立即重置状态，所以hasWrong应该是false
+expect(store.wordState.hasWrong).toBe(false)
+// 验证单词状态被重置
+expect(store.wordState.inputWord).toBe('')
+expect(store.wordState.letterStates).toEqual(new Array(5).fill('normal'))
+```
+
+**经验总结**
+1. **学习逻辑优先**：功能设计应该优先考虑学习效果，而不是用户体验的便利性
+2. **错误必须纠正**：打字练习中，错误应该立即纠正，不允许跳过
+3. **重新输入机制**：错误后重新开始输入，强化用户对正确拼写的记忆
+4. **测试驱动修复**：修复功能后，及时更新测试用例确保逻辑正确
+
+**相关文件**
+- `frontend/src/stores/typing.js`：主要修改文件，错误处理逻辑
+- `frontend/src/stores/__tests__/typing.spec.ts`：测试用例更新
+
+**解决时间**：2025-01-24
+
+---
+
 ##### 问题2：进度条首次加载时不显示
 
 **问题描述**

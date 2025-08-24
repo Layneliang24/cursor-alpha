@@ -98,7 +98,7 @@
       <!-- 打字状态 -->
       <div v-else-if="!practiceCompleted" class="typing-state">
         <div class="current-word-container">
-          <div class="current-word" v-if="wordState && wordState.displayWord">
+          <div :class="getWordContainerClass()" v-if="wordState && wordState.displayWord">
             <span 
               v-for="(letter, index) in wordState.displayWord" 
               :key="index"
@@ -964,6 +964,14 @@ export default {
           return '';
         }
       },
+      
+      // 获取单词容器类名，支持抖动效果
+      getWordContainerClass: () => {
+        if (!typingStore.wordState) {
+          return 'current-word'
+        }
+        return typingStore.wordState.shake ? 'current-word shake' : 'current-word'
+      },
 
       // 动态提示词
       previousWord: computed(() => typingStore.previousWord),
@@ -1439,6 +1447,17 @@ export default {
 .letter.current {
   color: #3b82f6;
   border-bottom: 3px solid #3b82f6;
+}
+
+/* 抖动效果 */
+.current-word.shake {
+  animation: wordShake 0.6s ease-in-out;
+}
+
+@keyframes wordShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
 }
 
 .word-info {
