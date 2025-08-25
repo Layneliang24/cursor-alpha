@@ -8,6 +8,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import App from './App.vue'
 import router from './router'
 import { useAuthStore } from '@/stores/auth'
+import { featureFlagService } from '@/services/featureFlags'
 
 const app = createApp(App)
 
@@ -25,4 +26,7 @@ app.use(ElementPlus)
 const authStore = useAuthStore()
 authStore.initAuth()
 
-app.mount('#app') 
+// 初始化特性开关服务
+featureFlagService.init()
+
+app.mount('#app')

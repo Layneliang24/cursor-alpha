@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import cache_page
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 from .pagination import CustomPageNumberPagination
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -165,6 +166,38 @@ class AuthView(APIView):
     permission_classes = [permissions.AllowAny]
     authentication_classes: list = []
     
+    @extend_schema(
+        request=UserLoginSerializer,
+        responses={
+            200: OpenApiResponse(
+                description="登录成功",
+                examples={
+                    "application/json": {
+                        "message": "登录成功",
+                        "user": {
+                            "id": 1,
+                            "username": "testuser",
+                            "email": "test@example.com"
+                        },
+                        "tokens": {
+                            "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+                            "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+                        }
+                    }
+                }
+            ),
+            400: OpenApiResponse(
+                description="登录失败",
+                examples={
+                    "application/json": {
+                        "error": "用户名或密码错误"
+                    }
+                }
+            )
+        },
+        summary="用户登录",
+        description="使用用户名和密码进行登录，成功后返回JWT令牌"
+    )
     def post(self, request):
         """用户登录"""
         serializer = UserLoginSerializer(data=request.data)
@@ -193,6 +226,38 @@ class RegisterView(APIView):
     """注册视图"""
     permission_classes = [permissions.AllowAny]
     
+    @extend_schema(
+        request=UserRegistrationSerializer,
+        responses={
+            201: OpenApiResponse(
+                description="注册成功",
+                examples={
+                    "application/json": {
+                        "message": "注册成功",
+                        "user": {
+                            "id": 1,
+                            "username": "newuser",
+                            "email": "newuser@example.com"
+                        },
+                        "tokens": {
+                            "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+                            "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+                        }
+                    }
+                }
+            ),
+            400: OpenApiResponse(
+                description="注册失败",
+                examples={
+                    "application/json": {
+                        "username": ["该用户名已存在"]
+                    }
+                }
+            )
+        },
+        summary="用户注册",
+        description="创建新用户账户，成功后返回JWT令牌"
+    )
     def post(self, request):
         """用户注册"""
         serializer = UserRegistrationSerializer(data=request.data)

@@ -26,6 +26,7 @@ from rest_framework import status
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework.permissions import AllowAny
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 
 @api_view(['GET'])
@@ -190,15 +191,20 @@ urlpatterns = [
     path('api/', api_root),  # API根路径
     path('api/test/', test_api),  # 测试API
     path('api/health/', health_view),  # 健康检查
-    # 文档
+    # Swagger文档 (drf-yasg)
     re_path(r'^api/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    # OpenAPI 3.0 文档 (drf-spectacular)
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('api/v1/', include('apps.api.urls')),  # API v1
     path('api/v1/', include('apps.jobs.urls')),  # Jobs
     path('api/v1/', include('apps.todos.urls')),  # Todos
     path('api/v1/', include('apps.ai.urls')),  # AI
     path('api/v1/', include('apps.search.urls')),  # Search
+    path('api/v1/feature-flags/', include('feature_flags.urls')),  # Feature Flags
     path('admin/', admin.site.urls),
 ]
 

@@ -17,21 +17,11 @@ taskkill /f /im "Cursor.exe" 2>nul
 echo ---------------------------------
 echo 正在清理以下缓存内容：
 
-:: 核弹级清理模式
-echo ██ 正在执行深度清理...
-
-echo [×] 用户配置文件
-rmdir /s /q "%APPDATA%\Cursor\User Data" 2>nul
-rmdir /s /q "%APPDATA%\Cursor\Local Storage" 2>nul
-
-echo [×] 浏览器扩展数据
-rmdir /s /q "%LOCALAPPDATA%\Cursor\Extensions" 2>nul
-rmdir /s /q "%LOCALAPPDATA%\Cursor\Extension State" 2>nul
-
-echo [×] 用户偏好设置
-reg delete "HKCU\Software\Cursor" /f >nul 2>&1
-reg delete "HKLM\SOFTWARE\Cursor" /f >nul 2>&1
-PowerShell -Command "Remove-Item -Path 'HKCU:\Environment\Cursor*' -Force" 2>nul
+:: 浏览器类型缓存
+echo [√] 浏览器缓存文件
+rmdir /s /q "%LOCALAPPDATA%\Cursor\Cache" 2>nul
+rmdir /s /q "%LOCALAPPDATA%\Cursor\Code Cache" 2>nul
+rmdir /s /q "%LOCALAPPDATA%\Cursor\GPUCache" 2>nul
 
 :: 应用程序日志
 echo [√] 程序日志文件
@@ -44,9 +34,8 @@ PowerShell -Command "Remove-Item -Path $env:TEMP\Cursor* -Recurse -Force -ErrorA
 
 echo ---------------------------------
 echo 操作安全提示：
-echo █ 已删除：用户配置/扩展数据/本地存储
-█ 已清除：注册表设置/环境变量
-█ 保留：软件安装目录与激活信息
+echo 1. 已保留用户配置文件和扩展程序
+echo 2. 已保留历史记录和自定义设置
 echo ---------------------------------
 
 start "" "%LOCALAPPDATA%\Programs\Cursor\Cursor.exe"

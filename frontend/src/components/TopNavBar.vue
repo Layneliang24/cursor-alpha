@@ -123,6 +123,9 @@
           <router-link v-if="isAdminUi" to="/admin/categories" class="action-btn" title="分类管理">
             <el-icon><Folder /></el-icon>
           </router-link>
+          <router-link v-if="isAdminUi" to="/admin/feature-flags" class="action-btn" title="特性开关管理">
+            <el-icon><SwitchButton /></el-icon>
+          </router-link>
           <button class="action-btn" title="通知" @click="showNotifications">
             <el-icon><Bell /></el-icon>
             <span class="notification-badge">3</span>
@@ -150,6 +153,11 @@
               <li v-if="isAdminUi">
                 <router-link class="dropdown-item" to="/admin/categories">
                   <el-icon class="me-2"><Folder /></el-icon>分类管理
+                </router-link>
+              </li>
+              <li v-if="isAdminUi">
+                <router-link class="dropdown-item" to="/admin/feature-flags">
+                  <el-icon class="me-2"><SwitchButton /></el-icon>特性开关管理
                 </router-link>
               </li>
               <li><a class="dropdown-item" href="#"><el-icon class="me-2"><Setting /></el-icon>设置</a></li>

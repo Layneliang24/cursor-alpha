@@ -106,11 +106,11 @@ body {
 
 .main-content {
   flex-grow: 1;
-  padding: 20px;
+  padding: 0;
   margin-top: 64px;
-  margin-bottom: 40px;
+  margin-bottom: 0;
   transition: margin-left 0.3s ease;
-  min-height: calc(100vh - 104px);
+  min-height: calc(100vh - 64px);
 }
 
 .main-content.with-sidebar {

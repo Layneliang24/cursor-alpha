@@ -2,10 +2,10 @@
   <div class="typing-practice-page">
     <!-- 一体化练习区域 - 扁平化风格 -->
     <div class="integrated-practice-container" v-if="!chapterCompleted">
-      <!-- 背景装饰 - 简化扁平化 -->
+      <!-- 背景装饰 - 彻底移除，强制隐藏 -->
       <div class="background-decoration"></div>
       
-      <!-- 顶部控制区域 - 扁平化风格 -->
+      <!-- 顶部控制区域 - 精确高度控制 -->
       <div class="top-control-section">
         <div class="left-section">
           <div class="logo">⌨️ Alpha Learner</div>
@@ -94,9 +94,9 @@
         </div>
       </div>
 
-      <!-- 主练习内容区域 - 全宽拉伸 -->
+      <!-- 主练习内容区域 - 精确高度计算 -->
       <div class="main-content-section">
-        <!-- 开始状态 - 全宽一体化 -->
+        <!-- 开始状态 - 修复尺寸 -->
         <div v-if="!practiceStarted" class="start-state">
           <div class="start-title">
             {{ selectedDictionary && selectedChapter ? '按任意键开始练习' : '请先选择词库和章节' }}
@@ -106,7 +106,7 @@
           </div>
         </div>
 
-        <!-- 打字状态 - 全宽一体化 -->
+        <!-- 打字状态 - 精确高度控制 -->
         <div v-else-if="practiceStarted && !practiceCompleted" class="typing-state">
           <div class="current-word-container">
             <div :class="getWordContainerClass()" v-if="wordState && wordState.displayWord">
@@ -133,8 +133,8 @@
             <span v-if="currentWord.translation" class="translation">{{ currentWord.translation }}</span>
           </div>
           
-          <!-- 进度条 -->
-          <div class="progress-section" v-show="shouldShowProgressBar">
+          <!-- 进度条 - 精确高度控制 -->
+          <div class="progress-section">
             <div class="progress-bar">
               <div 
                 class="progress-fill" 
@@ -158,7 +158,7 @@
         </div>
       </div>
 
-      <!-- 底部统计区域 - 扁平化风格 -->
+      <!-- 底部统计区域 - 精确高度控制 -->
       <div class="bottom-stats-section">
         <div class="stat-item">
           <div class="stat-value">{{ formatTime(sessionTime || 0) }}</div>
@@ -970,8 +970,11 @@ export default {
       
       progressBarText: computed(() => {
         if (!typingStore.words || typingStore.words.length === 0) return '0/0'
-        const text = `${typingStore.currentWordIndex + 1}/${typingStore.words.length}`
-        console.log('进度条文本:', text)
+        
+        // 确保索引不超出范围
+        const currentIndex = Math.min(typingStore.currentWordIndex + 1, typingStore.words.length)
+        const text = `${currentIndex}/${typingStore.words.length}`
+        console.log('进度条文本:', text, '当前索引:', typingStore.currentWordIndex, '总单词数:', typingStore.words.length)
         return text
       }),
       
@@ -1048,8 +1051,18 @@ export default {
       },
       
       backToPractice: () => {
+        console.log('=== backToPractice 开始 ===')
+        console.log('重置章节完成状态前:', typingStore.chapterCompleted)
+        
+        // 先重置章节完成状态
         typingStore.resetChapterCompletion()
-        // 不重置练习，只是返回练习界面
+        
+        console.log('重置章节完成状态后:', typingStore.chapterCompleted)
+        
+        // 然后重置练习状态
+        typingStore.resetPractice()
+        
+        console.log('重置练习状态完成')
       },
       
       // 错题本相关方法 ⭐ 新增
@@ -1081,53 +1094,64 @@ export default {
 
 <style scoped>
 .typing-practice-page {
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   background: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
   z-index: 1;
   margin: 0;
   padding: 0;
 }
 
-/* 一体化练习区域 - 真正的一体化设计 */
+/* 一体化练习区域 - 自适应高度布局 */
 .integrated-practice-container {
-  flex: 1;
+  min-height: 85vh;
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
   z-index: 1;
   background: #ffffff;
   border: none;
   margin: 0;
   box-shadow: none;
-  /* 完全一体化，无边界 */
 }
 
-/* 背景装饰 - 完全移除装饰性元素 */
+/* 背景装饰 - 彻底移除，强制隐藏 */
 .background-decoration {
-  display: none; /* 移除所有背景装饰 */
+  display: none !important; /* 强制隐藏 */
+  visibility: hidden !important; /* 双重保险 */
+  opacity: 0 !important; /* 三重保险 */
+  height: 0 !important; /* 确保不占用空间 */
+  width: 0 !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  z-index: -9999 !important;
+  /* 确保完全不占用空间 */
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  overflow: hidden !important;
 }
 
-/* 顶部控制区域 - 无缝一体化 */
+/* 顶部控制区域 - 固定高度 */
 .top-control-section {
+  height: 70px;
   flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px;
+  padding: 15px 20px;
   background: #ffffff;
-  border: none; /* 移除底部边框 */
+  border: none;
   border-radius: 0;
   z-index: 10;
-  min-height: 70px;
   box-shadow: none;
-  margin: 0; /* 移除所有外边距 */
+  margin: 0;
 }
 
 .left-section {
@@ -1349,7 +1373,7 @@ export default {
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   box-shadow: none;
   min-width: 48px;
@@ -1427,7 +1451,7 @@ export default {
   box-shadow: none;
 }
 
-/* 主练习内容区域 - 全宽拉伸 */
+/* 主练习内容区域 - 内容自适应 */
 .main-content-section {
   flex: 1;
   display: flex;
@@ -1436,245 +1460,173 @@ export default {
   justify-content: center;
   padding: 40px 20px;
   text-align: center;
-  min-height: 0;
-  overflow: hidden;
   position: relative;
   z-index: 1;
-  width: 100%; /* 确保全宽 */
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #ffffff;
 }
 
-/* 开始状态 - 全宽一体化 */
+
+
+/* 开始状态 - 修复尺寸 */
 .start-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
-  padding: 60px 40px;
+  gap: 20px; /* 减小间距 */
+  padding: 40px 20px; /* 减小内边距 */
   background: #ffffff;
-  border: none; /* 移除边框 */
-  border-radius: 0; /* 移除圆角 */
+  border: none;
+  border-radius: 0;
   box-shadow: none;
-  width: 100%; /* 全宽 */
-  max-width: none; /* 移除最大宽度限制 */
+  width: 100%;
+  max-width: 400px; /* 减小最大宽度 */
 }
 
-/* 打字状态 - 全宽一体化 */
+.start-title {
+  font-size: 28px; /* 减小字体 */
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 15px;
+}
+
+.selection-hint {
+  color: #64748b;
+  font-size: 14px; /* 减小字体 */
+  font-style: italic;
+  padding: 15px 20px; /* 减小内边距 */
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+/* 打字状态 - 减小高度，让内容紧凑 */
 .typing-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
-  padding: 40px;
+  gap: 4px;
+  padding: 5px;
   background: #ffffff;
-  border: none; /* 移除边框 */
-  border-radius: 0; /* 移除圆角 */
+  border: none;
+  border-radius: 0;
   box-shadow: none;
-  width: 100%; /* 全宽 */
-  min-width: auto; /* 移除最小宽度限制 */
-  max-width: none; /* 移除最大宽度限制 */
+  width: 100%;
+  max-width: 500px;
 }
 
+/* 单词容器 - 自然高度 */
 .current-word-container {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 30px;
+  gap: 12px;
+  margin-bottom: 15px;
   font-family: monospace;
+  min-height: 60px;
 }
 
-.current-word {
+/* 单词信息 - 自然高度 */
+.word-info {
   display: flex;
-  gap: 0;
-  font-size: 56px;
-  font-weight: 600;
-  padding: 20px 30px;
-  line-height: 1.2;
-  height: 1.2em;
-  font-family: monospace;
-  transition: all 0.2s ease;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+  padding: 8px 12px;
   background: #ffffff;
-  border: none; /* 移除边框 */
-  border-radius: 0; /* 移除圆角 */
-  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  min-width: 200px;
 }
 
+/* 字母样式 - 自然显示 */
 .letter {
   font-size: 56px;
   font-weight: 600;
-  padding: 0 6px;
+  padding: 0 4px;
   line-height: 1.2;
-  height: 1.2em;
   font-family: monospace;
   transition: all 0.3s ease;
   border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
 }
 
-/* 字母样式 - 完全一体化 */
 .letter.correct {
-  color: #10b981;
-  background: #ecfdf5;
-  border: none; /* 移除边框 */
+  color: #10b981; /* 保持原来的绿色 */
+  background: none; /* 无背景 */
+  border: none;
   transform: none;
 }
 
 .letter.incorrect {
-  color: #ef4444;
-  background: #fef2f2;
-  border: none; /* 移除边框 */
+  color: #ef4444; /* 保持原来的红色 */
+  background: none; /* 无背景 */
+  border: none;
   animation: letterShake 0.3s ease;
 }
 
 .letter.current {
-  color: #3b82f6;
-  border: none; /* 移除边框 */
-  background: #eff6ff;
+  color: #3b82f6; /* 保持原来的蓝色 */
+  background: none; /* 无背景 */
+  border: none;
   transform: none;
 }
 
-@keyframes letterShake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-2px); }
-  75% { transform: translateX(2px); }
-}
-
-/* 抖动效果 */
-.current-word.shake {
-  animation: wordShake 0.6s ease-in-out;
-}
-
-@keyframes wordShake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
-  20%, 40%, 60%, 80% { transform: translateX(6px); }
-}
-
-.word-info {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 40px;
-  padding: 20px 30px;
-  background: #ffffff;
-  border: none; /* 移除边框 */
-  border-radius: 0; /* 移除圆角 */
-  backdrop-filter: none;
-}
-
-.phonetic {
-  font-size: 20px;
-  color: #64748b;
-  font-style: italic;
-  font-weight: 500;
-}
-
-.translation {
+/* 发音按钮 - 自然尺寸 */
+.sound-icon {
+  background: none;
+  border: none;
   font-size: 24px;
-  color: #1e293b;
-  font-weight: 600;
-}
-
-/* 进度条样式 - 扁平化 */
-.progress-section {
-  width: 100%;
-  max-width: 400px;
-  margin: 30px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 8px;
-  background: #e2e8f0;
-  border-radius: 0; /* 移除圆角 */
-  overflow: hidden;
-  box-shadow: none;
-}
-
-.progress-fill {
-  height: 100%;
-  background: #3b82f6;
-  border-radius: 0; /* 移除圆角 */
-  transition: width 0.3s ease-in-out;
-  box-shadow: none;
-}
-
-.progress-text {
-  font-size: 16px;
-  font-weight: 600;
-  color: #64748b;
-  padding: 8px 16px;
-  background: #ffffff;
-  border: none; /* 移除边框 */
-  border-radius: 0; /* 移除圆角 */
-  backdrop-filter: none;
-}
-
-.word-hints {
-  display: flex;
-  gap: 50px;
-  margin-top: 30px;
-}
-
-/* 提示词样式 - 扁平化 */
-.hint-left, .hint-right {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 24px;
-  background: #ffffff;
-  border: none; /* 移除边框 */
-  border-radius: 0; /* 移除圆角 */
-  backdrop-filter: none;
-  box-shadow: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
   transition: all 0.2s ease;
-}
-
-.hint-left:hover, .hint-right:hover {
-  transform: none;
-  box-shadow: none;
-  border: none; /* 移除悬停时的边框 */
-}
-
-.hint-word {
-  font-size: 18px;
-  font-weight: 600;
   color: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
 }
 
-.hint-translation {
-  font-size: 14px;
-  color: #64748b;
+.sound-icon:hover {
+  background: #f0f9ff;
+  transform: scale(1.1);
 }
 
-/* 底部统计区域 - 扁平化风格 */
+.sound-icon:active {
+  transform: scale(0.95);
+}
+
+/* 底部统计区域 - 内容自适应 */
 .bottom-stats-section {
   flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 60px;
-  padding: 25px 35px;
+  gap: 30px;
+  padding: 20px;
   background: #ffffff;
-  border: none; /* 移除顶部边框 */
+  border: none;
   border-radius: 0;
   z-index: 10;
-  min-height: 80px;
   box-shadow: none;
-  margin: 0; /* 移除所有外边距 */
+  margin: 0;
 }
 
-/* 统计项样式 - 扁平化 */
+/* 统计项样式 - 修复尺寸 */
 .bottom-stats-section .stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  min-width: 100px;
-  padding: 16px 20px;
+  gap: 6px; /* 减小间距 */
+  min-width: 80px; /* 减小最小宽度 */
+  padding: 12px 16px; /* 减小内边距 */
   background: #ffffff;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
@@ -1689,7 +1641,7 @@ export default {
 }
 
 .bottom-stats-section .stat-value {
-  font-size: 32px;
+  font-size: 24px; /* 减小字体 */
   font-weight: 700;
   color: #3b82f6;
   background: none;
@@ -1699,7 +1651,7 @@ export default {
 }
 
 .bottom-stats-section .stat-label {
-  font-size: 12px;
+  font-size: 10px; /* 减小字体 */
   color: #64748b;
   font-weight: 600;
   text-transform: uppercase;
@@ -2078,5 +2030,157 @@ export default {
   margin-left: 8px;
   font-weight: 600;
   border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* 抖动效果 */
+.current-word.shake {
+  animation: wordShake 0.6s ease-in-out;
+}
+
+@keyframes letterShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+@keyframes wordShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+  20%, 40%, 60%, 80% { transform: translateX(6px); }
+}
+
+/* 当前单词显示 - 增大字体，提升用户体验 */
+.current-word {
+  display: flex;
+  gap: 0;
+  font-size: 56px; /* 增大字体，提升用户体验 */
+  font-weight: 600;
+  padding: 5px 8px;
+  line-height: 1.0;
+  height: 60px; /* 增大高度以适应更大字体 */
+  min-height: 60px;
+  max-height: 60px;
+  font-family: monospace;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  min-width: 200px; /* 增大最小宽度 */
+  justify-content: center;
+  align-items: center;
+}
+
+.phonetic {
+  font-size: 12px; /* 减小字体 */
+  color: #64748b;
+  font-style: italic;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  height: 15px; /* 强制固定高度 */
+  line-height: 15px; /* 强制行高 */
+}
+
+.translation {
+  font-size: 14px; /* 减小字体 */
+  color: #1e293b;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  height: 15px; /* 强制固定高度 */
+  line-height: 15px; /* 强制行高 */
+}
+
+/* 进度条 - 压缩空间 */
+.progress-section {
+  width: 100%;
+  max-width: 250px;
+  margin: 5px 0; /* 减小边距 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px; /* 减小间距 */
+  height: 20px; /* 强制固定高度 */
+  min-height: 20px; /* 强制最小高度 */
+  max-height: 20px; /* 强制最大高度 */
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px; /* 减小高度 */
+  background: #e2e8f0;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 0;
+  transition: width 0.3s ease-in-out;
+  box-shadow: none;
+}
+
+.progress-text {
+  font-size: 10px; /* 减小字体 */
+  font-weight: 600;
+  color: #64748b;
+  padding: 2px 6px; /* 减小内边距 */
+  background: #ffffff;
+  border: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  height: 16px; /* 强制固定高度 */
+  line-height: 16px; /* 强制行高 */
+}
+
+/* 提示词 - 精确高度控制 */
+.word-hints {
+  display: flex;
+  gap: 15px; /* 减小间距 */
+  margin-top: 5px; /* 减小上边距 */
+  width: 100%;
+  justify-content: center;
+  height: 15px; /* 强制固定高度 */
+  min-height: 15px; /* 强制最小高度 */
+  max-height: 15px; /* 强制最大高度 */
+}
+
+.hint-left, .hint-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px; /* 减小间距 */
+  padding: 8px 10px; /* 减小内边距 */
+  background: #ffffff;
+  border: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  box-shadow: none;
+  transition: all 0.2s ease;
+  min-width: 80px; /* 减小最小宽度 */
+}
+
+.hint-left:hover, .hint-right:hover {
+  transform: none;
+  box-shadow: none;
+  border: none;
+}
+
+.hint-word {
+  font-size: 16px; /* 增大字体 */
+  font-weight: 600;
+  color: #3b82f6;
+  height: 16px; /* 强制固定高度 */
+  line-height: 16px; /* 强制行高 */
+}
+
+.hint-translation {
+  font-size: 12px; /* 增大字体 */
+  color: #64748b;
+  height: 14px; /* 强制固定高度 */
+  line-height: 14px; /* 强制行高 */
 }
 </style>

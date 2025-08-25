@@ -74,12 +74,20 @@ export default {
       
       if (sound.value) {
         console.log('使用@vueuse/sound播放发音')
-        // 先停止当前播放，再播放新发音
-        stop()
-        // 延迟一点确保停止完成
-        setTimeout(() => {
-          play()
-        }, 50)
+        try {
+          // 先停止当前播放，再播放新发音
+          if (typeof stop === 'function') {
+            stop()
+          }
+          // 延迟一点确保停止完成
+          setTimeout(() => {
+            if (typeof play === 'function') {
+              play()
+            }
+          }, 50)
+        } catch (error) {
+          console.log('播放音频时出错:', error)
+        }
       } else {
         console.log('sound.value is null，@vueuse/sound不可用')
       }
@@ -92,12 +100,16 @@ export default {
 
     // 组件卸载时清理资源（参考qwerty learner的useEffect清理逻辑）
     onUnmounted(() => {
-      if (sound.value) {
-        stop()
+      try {
+        if (sound.value && typeof stop === 'function') {
+          stop()
+        }
         // 如果sound有unload方法，调用它
-        if (typeof sound.value.unload === 'function') {
+        if (sound.value && typeof sound.value.unload === 'function') {
           sound.value.unload()
         }
+      } catch (error) {
+        console.log('清理音频资源时出错:', error)
       }
     })
 

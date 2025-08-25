@@ -203,13 +203,21 @@ class DataAnalysisService:
         user_id = records.first().user.id if records.exists() else None
         if not user_id:
             return 0
-            
-        # 统计所有会话数量（包括进行中和已完成的）
-        all_sessions = TypingPracticeSession.objects.filter(
-            user_id=user_id
-        ).count()
         
-        return all_sessions
+        # 获取日期范围
+        if records.exists():
+            start_date = records.earliest('session_date').session_date
+            end_date = records.latest('session_date').session_date
+            
+            # 统计指定日期范围内的会话数量（包括进行中和已完成的）
+            sessions_in_range = TypingPracticeSession.objects.filter(
+                user_id=user_id,
+                session_date__range=[start_date, end_date]
+            ).count()
+            
+            return sessions_in_range
+        
+        return 0
     
     def get_monthly_calendar_data(self, user_id: int, year: int, month: int) -> Dict[str, Any]:
         """获取指定月份的日历热力图数据（Windows风格）"""
@@ -220,46 +228,30 @@ class DataAnalysisService:
         first_day = date(year, month, 1)
         last_day = date(year, month, calendar.monthrange(year, month)[1])
         
-        # 获取该月的所有练习记录
-        records = TypingPracticeRecord.objects.filter(
-            user_id=user_id,
-            session_date__range=[first_day, last_day]
-        )
-        
-        # 按日期分组统计练习单词数
-        daily_stats = records.values('session_date').annotate(
-            word_count=Count('id')  # 练习单词数（不去重）
-        ).order_by('session_date')
-        
-        # 按日期统计练习次数（基于完成的会话）
+        # 获取该月的所有练习会话（包括进行中和已完成的）
         from .models import TypingPracticeSession
-        daily_exercise_counts = {}
-        
-        # 获取该月完成的会话
-        completed_sessions = TypingPracticeSession.objects.filter(
+        sessions = TypingPracticeSession.objects.filter(
             user_id=user_id,
-            is_completed=True,
             session_date__range=[first_day, last_day]
         )
         
-        # 按日期统计会话数量
-        for session in completed_sessions:
-            session_date = session.session_date
-            if session_date in daily_exercise_counts:
-                daily_exercise_counts[session_date] += 1
-            else:
-                daily_exercise_counts[session_date] = 1
+        # 按日期分组统计会话数和单词数
+        daily_stats = sessions.values('session_date').annotate(
+            exercise_count=Count('id'),  # 练习会话数
+            word_count=Sum('total_words')  # 总单词数
+        ).order_by('session_date')
         
         # 创建日期到统计数据的映射
         stats_dict = {}
         for stat in daily_stats:
             date_str = stat['session_date'].strftime('%Y-%m-%d')
-            exercise_count = daily_exercise_counts.get(stat['session_date'], 0)
+            exercise_count = stat['exercise_count'] or 0
+            word_count = stat['word_count'] or 0
             stats_dict[date_str] = {
                 'exercise_count': exercise_count,
-                'word_count': stat['word_count'],
+                'word_count': word_count,
                 'exercise_level': self._get_heatmap_level(exercise_count),
-                'word_level': self._get_heatmap_level(stat['word_count'])
+                'word_level': self._get_heatmap_level(word_count)
             }
         
         # 生成完整的月历数据

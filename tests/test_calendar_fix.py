@@ -4,20 +4,12 @@
 验证是否从6行7列改为5行7列
 """
 
-import os
-import sys
-import django
-
-# 添加项目路径
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-# 设置Django环境
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
-django.setup()
-
-from backend.apps.english.services import DataAnalysisService
-from django.contrib.auth.models import User
+import pytest
 from datetime import datetime
+from django.contrib.auth import get_user_model
+from apps.english.services import DataAnalysisService
+
+User = get_user_model()
 
 def test_calendar_layout():
     """测试月历热力图布局"""
@@ -75,4 +67,4 @@ def test_calendar_layout():
         print(f"❌ 测试失败: {e}")
 
 if __name__ == "__main__":
-    test_calendar_layout() 
+    test_calendar_layout()
