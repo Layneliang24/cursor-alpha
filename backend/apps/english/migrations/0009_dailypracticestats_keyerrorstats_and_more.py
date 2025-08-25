@@ -8,7 +8,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("english", "0008_auto_20250817_1016"),
+        ("english", "0006_usertypingstats_typingword_typingsession"),
     ]
 
     operations = [
@@ -103,16 +103,7 @@ class Migration(migrations.Migration):
                 "db_table": "english_typing_practice_records",
             },
         ),
-        migrations.RenameIndex(
-            model_name="typingword",
-            new_name="english_typ_word_b37dfb_idx",
-            old_name="english_typ_word_7dc76d_idx",
-        ),
-        migrations.RenameIndex(
-            model_name="typingword",
-            new_name="english_typ_difficu_a3b70a_idx",
-            old_name="english_typ_difficu_a3b70d_idx",
-        ),
+
         migrations.AddIndex(
             model_name="typingsession",
             index=models.Index(

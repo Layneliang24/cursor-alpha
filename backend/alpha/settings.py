@@ -98,6 +98,7 @@ INSTALLED_APPS = [
     'apps.links',
     'apps.api',
     'apps.english',
+    'apps.idiomatic_expressions_requirement',
     'apps.jobs',
     'apps.todos',
     'apps.ai',
@@ -167,6 +168,13 @@ DATABASES = {
 
 # SQLite 配置（开发环境备用）
 # DATABASES = DATABASES_SQLITE
+
+# Test database configuration
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
