@@ -35,7 +35,13 @@ export default defineConfig({
         'src/**/__tests__/**',
         'src/**/*.spec.{js,ts}',
         'src/**/*.test.{js,ts}'
-      ]
+      ],
+      thresholds: {
+        lines: 20,
+        functions: 20,
+        branches: 10,
+        statements: 20
+      }
     }
   }
 })
