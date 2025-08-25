@@ -1,3 +1,12 @@
+import os
+import django
+from django.conf import settings
+
+# Configure Django settings before importing Django modules
+if not settings.configured:
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'alpha.test_settings')
+    django.setup()
+
 import pytest
 import requests
 from django.test import TransactionTestCase
