@@ -53,6 +53,51 @@ make req-example
 make req-template
 ```
 
+## AI增强流水线
+
+### 基本用法
+
+```bash
+# 使用AI增强流水线（默认使用所有AI任务）
+make req-pipeline-ai INPUT=scripts/templates/example_requirement.md
+
+# 指定AI提供商
+make req-pipeline-ai INPUT=scripts/templates/example_requirement.md AI_PROVIDER=openai
+
+# 只生成测试代码
+make req-pipeline-ai INPUT=scripts/templates/example_requirement.md AI_TASKS=generate_tests
+
+# 从文本输入运行
+make req-pipeline-ai-text TEXT="实现用户登录功能" AI_PROVIDER=claude
+```
+
+### 文件集成策略
+
+AI增强流水线会将生成的文件直接集成到项目现有的目录结构中：
+
+**测试文件位置：**
+- 后端单元测试：`backend/tests/test_{requirement_id}.py`
+- 后端集成测试：`backend/tests/integration/test_{requirement_id}_api.py`
+- 前端单元测试：`frontend/tests/unit/{requirement_id}.test.js`
+- E2E测试：`e2e/tests/{requirement_id}.spec.js`
+- 通用单元测试：`tests/unit/test_{requirement_id}.py`
+
+**代码文件位置：**
+- 后端应用：`backend/apps/{requirement_id}/`
+  - `models.py` - 数据模型
+  - `views.py` - 视图逻辑
+  - `serializers.py` - 序列化器
+  - `urls.py` - URL路由
+  - `apps.py` - 应用配置
+  - `__init__.py` - 包初始化
+- 前端组件：`frontend/src/components/{RequirementId}Component.vue`
+- 前端服务：`frontend/src/services/{requirement_id}Service.js`
+
+**文档位置：**
+- 代码审查报告：`docs/code_reviews/{requirement_id}_review.md`
+
+这种集成策略确保AI生成的代码能够直接融入现有项目结构，便于后续开发和维护。
+
 ### 高级用法
 
 ```bash
