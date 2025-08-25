@@ -1200,10 +1200,7 @@ class AIEnhancedPipelineManager(PipelineManager):
         req_dict = base_result['requirement']
         req = Requirement(**req_dict)
         
-        req_out = self.out_root / req.id
-        tests_dir = req_out / "tests"
-        code_dir = req_out / "code"
-        review_path = req_out / "code_review.md"
+        # 使用项目现有目录结构而不是创建新目录
         ai_outputs: Dict[str, Any] = {'tests': [], 'code': [], 'review': None}
         
         prompts = self.ai.config.get("prompts", {})
@@ -1217,11 +1214,26 @@ class AIEnhancedPipelineManager(PipelineManager):
             ).format(requirement=req_text)
             print("🤖 AI生成测试代码...")
             tests_content = self.ai.generate_code(prompt)
-            ai_outputs['tests'] = [
-                {'file_path': str((tests_dir / "unit_test.py").as_posix()), 'content': tests_content, 'test_type': 'unit'},
-                {'file_path': str((tests_dir / "integration_test.py").as_posix()), 'content': tests_content, 'test_type': 'integration'},
-                {'file_path': str((tests_dir / "e2e_test.py").as_posix()), 'content': tests_content, 'test_type': 'e2e'},
-            ]
+            
+            # 将测试文件放到项目现有的测试目录中
+            test_files = []
+            if 'backend' in req.components:
+                test_files.extend([
+                    {'file_path': f'backend/tests/test_{req.id}.py', 'content': tests_content, 'test_type': 'unit'},
+                    {'file_path': f'backend/tests/integration/test_{req.id}_api.py', 'content': tests_content, 'test_type': 'integration'},
+                ])
+            if 'frontend' in req.components:
+                 test_files.extend([
+                     {'file_path': f'frontend/tests/unit/{req.id}.test.js', 'content': tests_content, 'test_type': 'unit'},
+                     {'file_path': f'e2e/tests/{req.id}.spec.js', 'content': tests_content, 'test_type': 'e2e'},
+                 ])
+            if not test_files:  # 默认后端测试
+                test_files = [
+                    {'file_path': f'backend/tests/test_{req.id}.py', 'content': tests_content, 'test_type': 'unit'},
+                    {'file_path': f'tests/unit/test_{req.id}.py', 'content': tests_content, 'test_type': 'unit'},
+                ]
+            
+            ai_outputs['tests'] = test_files
             if not dry_run:
                 for item in ai_outputs['tests']:
                     path = Path(self.project_root) / item['file_path']
@@ -1245,11 +1257,32 @@ class AIEnhancedPipelineManager(PipelineManager):
             ).format(requirement=req_text, tests=tests_text or "无")
             print("🤖 AI实现功能代码...")
             code_content = self.ai.generate_code(prompt)
-            ai_outputs['code'] = [
-                {'file_path': str((code_dir / "models.py").as_posix()), 'content': code_content, 'template_type': 'model'},
-                {'file_path': str((code_dir / "views.py").as_posix()), 'content': code_content, 'template_type': 'view'},
-                {'file_path': str((code_dir / "components.py").as_posix()), 'content': code_content, 'template_type': 'component'},
-            ]
+            
+            # 将代码文件放到项目现有的应用目录中
+            code_files = []
+            if 'backend' in req.components:
+                app_dir = f'backend/apps/{req.id}'
+                code_files.extend([
+                    {'file_path': f'{app_dir}/models.py', 'content': code_content, 'template_type': 'model'},
+                    {'file_path': f'{app_dir}/views.py', 'content': code_content, 'template_type': 'view'},
+                    {'file_path': f'{app_dir}/serializers.py', 'content': code_content, 'template_type': 'serializer'},
+                    {'file_path': f'{app_dir}/urls.py', 'content': code_content, 'template_type': 'urls'},
+                    {'file_path': f'{app_dir}/__init__.py', 'content': '', 'template_type': 'init'},
+                    {'file_path': f'{app_dir}/apps.py', 'content': code_content, 'template_type': 'apps'},
+                ])
+            if 'frontend' in req.components:
+                code_files.extend([
+                    {'file_path': f'frontend/src/components/{req.id.title()}Component.vue', 'content': code_content, 'template_type': 'component'},
+                    {'file_path': f'frontend/src/services/{req.id}Service.js', 'content': code_content, 'template_type': 'service'},
+                ])
+            if not code_files:  # 默认后端代码
+                app_dir = f'backend/apps/{req.id}'
+                code_files = [
+                    {'file_path': f'{app_dir}/models.py', 'content': code_content, 'template_type': 'model'},
+                    {'file_path': f'{app_dir}/views.py', 'content': code_content, 'template_type': 'view'},
+                ]
+            
+            ai_outputs['code'] = code_files
             if not dry_run:
                 for item in ai_outputs['code']:
                     path = Path(self.project_root) / item['file_path']
@@ -1267,9 +1300,11 @@ class AIEnhancedPipelineManager(PipelineManager):
             ).format(code=code_text)
             print("🤖 AI进行代码审查...")
             review_content = self.ai.generate_code(prompt)
-            ai_outputs['review'] = str(review_path.as_posix())
+            # 将代码审查报告放到docs目录
+            review_file = f'docs/code_reviews/{req.id}_review.md'
+            ai_outputs['review'] = review_file
             if not dry_run:
-                path = Path(self.project_root) / ai_outputs['review']
+                path = Path(self.project_root) / review_file
                 path.parent.mkdir(parents=True, exist_ok=True)
                 with open(path, 'w', encoding='utf-8') as f:
                     f.write(review_content)
