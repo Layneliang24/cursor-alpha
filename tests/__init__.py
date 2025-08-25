@@ -1,0 +1,1 @@
+# Make tests a package so DJANGO_SETTINGS_MODULE='tests.test_settings' can be imported
