@@ -2,11 +2,25 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import WordPronunciationIcon from '../WordPronunciationIcon.vue'
 
+// TypeScript类型声明
+declare global {
+  interface Window {
+    stopAllPronunciations: () => void
+  }
+  var Audio: {
+    new (src?: string): HTMLAudioElement
+  }
+}
+
 // Mock @vueuse/sound
+const mockSound = {
+  unload: vi.fn()
+}
+
 const mockUseSound = {
   play: vi.fn(),
   stop: vi.fn(),
-  sound: { unload: vi.fn() },
+  sound: { value: mockSound },
   isPlaying: false
 }
 
@@ -31,7 +45,7 @@ global.Audio = vi.fn(() => mockAudio)
 
 // 确保Audio.play()返回Promise
 Object.defineProperty(mockAudio, 'play', {
-  value: vi.fn().mockResolvedValue(undefined),
+  value: vi.fn(() => Promise.resolve()),
   writable: true,
   configurable: true
 })
@@ -39,13 +53,6 @@ Object.defineProperty(mockAudio, 'play', {
 // 确保Audio构造函数本身也被正确mock
 Object.defineProperty(global, 'Audio', {
   value: vi.fn(() => mockAudio),
-  writable: true,
-  configurable: true
-})
-
-// 确保Promise.resolve()正常工作
-Object.defineProperty(mockAudio, 'play', {
-  value: vi.fn(() => Promise.resolve()),
   writable: true,
   configurable: true
 })
@@ -76,7 +83,7 @@ describe('WordPronunciationIcon Component', () => {
     // 重置useSound mock
     mockUseSound.play.mockClear()
     mockUseSound.stop.mockClear()
-    mockUseSound.sound.unload.mockClear()
+    mockSound.unload.mockClear()
     mockUseSound.isPlaying = false
     
     // 重置console spy
@@ -115,12 +122,18 @@ describe('WordPronunciationIcon Component', () => {
     })
 
     it('应用正确的CSS类', () => {
+      // 确保 isPlaying 为 false
+      mockUseSound.isPlaying = false
+      
+      // 清除之前的 console 调用
+      consoleSpy.log.mockClear()
+      
       wrapper = mount(WordPronunciationIcon, {
         props: {
           word: 'test'
         }
       })
-
+      
       const button = wrapper.find('.sound-icon')
       expect(button.classes()).toContain('sound-icon')
       expect(button.classes()).not.toContain('playing')
@@ -295,6 +308,57 @@ describe('WordPronunciationIcon Component', () => {
 
       // 检查是否仍然正常工作
       expect(wrapper.exists()).toBe(true)
+    })
+
+    it('处理 stop 方法抛出错误的情况', async () => {
+      // 重置 console spy
+      consoleSpy.log.mockClear()
+      
+      // 模拟 stop 方法抛出错误
+      mockUseSound.stop.mockImplementation(() => {
+        throw new Error('Cannot read properties of undefined (reading \'push\')')
+      })
+      
+      // 确保 sound.value 存在
+      mockUseSound.sound.value = mockSound
+
+      wrapper = mount(WordPronunciationIcon, {
+        props: {
+          word: 'test'
+        }
+      })
+
+      const button = wrapper.find('.sound-icon')
+      await button.trigger('click')
+
+      // 检查组件是否仍然正常工作，不会因为错误而崩溃
+      expect(wrapper.exists()).toBe(true)
+      expect(consoleSpy.log).toHaveBeenCalledWith('播放音频时出错:', expect.any(Error))
+    })
+
+    it('处理组件卸载时的错误', async () => {
+      // 重置 console spy
+      consoleSpy.log.mockClear()
+      
+      // 模拟 stop 方法在卸载时抛出错误
+      mockUseSound.stop.mockImplementation(() => {
+        throw new Error('Cannot read properties of undefined (reading \'push\')')
+      })
+      
+      // 确保 sound.value 存在
+      mockUseSound.sound.value = mockSound
+
+      wrapper = mount(WordPronunciationIcon, {
+        props: {
+          word: 'test'
+        }
+      })
+
+      // 卸载组件
+      await wrapper.unmount()
+
+      // 检查是否记录了错误日志
+      expect(consoleSpy.log).toHaveBeenCalledWith('清理音频资源时出错:', expect.any(Error))
     })
 
     it('处理无效的发音类型', () => {

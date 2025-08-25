@@ -166,6 +166,12 @@ const routes = [
     meta: { title: '分类管理', requiresAuth: true, adminOnly: true }
   },
   {
+    path: '/admin/feature-flags',
+    name: 'FeatureFlagsAdmin',
+    component: () => import('@/views/admin/FeatureFlagsAdmin.vue'),
+    meta: { title: '特性开关管理', requiresAuth: true, adminOnly: true }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/views/NotFound.vue'),

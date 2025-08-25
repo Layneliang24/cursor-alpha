@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Validate commit message format
+echo "🔍 Validating commit message format..."
+
+# Check if commitlint is available
+if command -v npx >/dev/null 2>&1; then
+    npx --no-install commitlint --edit "$1"
+else
+    echo "⚠️  commitlint not found, skipping commit message validation"
+fi
+
+# Basic conventional commits validation
+commit_regex='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?: .{1,50}'
+
+if ! grep -qE "$commit_regex" "$1"; then
+    echo "❌ Invalid commit message format!"
+    echo "📋 Commit message must follow Conventional Commits format:"
+    echo "   <type>[optional scope]: <description>"
+    echo ""
+    echo "📝 Examples:"
+    echo "   feat: add user authentication"
+    echo "   fix(api): resolve login endpoint error"
+    echo "   docs: update README with setup instructions"
+    echo "   test(frontend): add unit tests for components"
+    echo ""
+    echo "🔧 Use 'npm run commit' for interactive commit message creation"
+    exit 1
+fi
+
+echo "✅ Commit message format is valid!"

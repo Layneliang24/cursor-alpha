@@ -14,6 +14,38 @@ project_root = Path(__file__).parent.parent
 backend_dir = project_root / 'backend'
 sys.path.insert(0, str(backend_dir))
 
+# --- 新增：为历史导入路径创建模块别名，避免Django应用识别冲突 ---
+# 某些测试使用了 `backend.apps.xxx` 的导入路径，而项目的 INSTALLED_APPS 使用 `apps.xxx`
+# 这会导致模型模块名不匹配从而触发 "explicit app_label" 错误。
+# 在 Django 初始化前，创建到规范模块的别名，保证两种导入路径指向同一模块对象。
+
+def _alias_module(canonical: str, alias: str) -> None:
+    try:
+        # 先导入规范模块
+        module = __import__(canonical, fromlist=['*'])
+        # 将别名映射到同一模块对象（保持 __name__ 为规范模块名）
+        sys.modules[alias] = module
+    except Exception:
+        # 静默忽略未找到的模块，避免影响其它流程
+        pass
+
+# 规范根包：alpha / apps（依赖于将 backend 目录加入 sys.path）
+_alias_module('alpha', 'backend.alpha')
+_alias_module('alpha.settings', 'backend.alpha.settings')
+_alias_module('apps', 'backend.apps')
+
+# 需要支持的本地应用列表（与 INSTALLED_APPS 对齐）
+_local_apps = [
+    'users', 'articles', 'categories', 'links', 'api', 'english', 'jobs', 'todos', 'ai', 'search'
+]
+for app in _local_apps:
+    _alias_module(f'apps.{app}', f'backend.apps.{app}')
+    _alias_module(f'apps.{app}.models', f'backend.apps.{app}.models')
+    _alias_module(f'apps.{app}.views', f'backend.apps.{app}.views')
+    _alias_module(f'apps.{app}.serializers', f'backend.apps.{app}.serializers')
+
+# -------------------------------------------------------------
+
 # 设置环境变量
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tests.test_settings')
 os.environ.setdefault('TESTING', 'true')
@@ -26,12 +58,15 @@ from django.conf import settings
 if not settings.configured:
     django.setup()
 
-# 导入Django测试工具
+# 导入Django测试工具（必须在django.setup()之后）
 from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 
-User = get_user_model()
+# 延迟获取User模型，避免在模块级别调用
+def get_user_model_safe():
+    """安全获取User模型，确保Django应用已完全加载"""
+    return get_user_model()
 
 
 @pytest.fixture(scope='session')
@@ -53,6 +88,7 @@ def db_access_without_rollback_and_truncate(django_db_setup, django_db_blocker):
 @pytest.fixture(scope='function')
 def test_user():
     """测试用户fixture"""
+    User = get_user_model_safe()
     user = User.objects.create_user(
         username='test_user',
         email='test@example.com',
@@ -69,6 +105,7 @@ def test_user():
 @pytest.fixture(scope='function')
 def test_superuser():
     """测试超级用户fixture"""
+    User = get_user_model_safe()
     user = User.objects.create_superuser(
         username='test_superuser',
         email='super@example.com',

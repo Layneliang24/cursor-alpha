@@ -1,0 +1,76 @@
+[flake8]
+# 最大行长度
+max-line-length = 127
+
+# 排除的目录和文件
+exclude = 
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    .env,
+    env,
+    build,
+    dist,
+    *.egg-info,
+    migrations,
+    node_modules,
+    frontend
+
+# 忽略的错误代码
+ignore = 
+    # E203: whitespace before ':' (conflicts with black)
+    E203,
+    # W503: line break before binary operator (conflicts with black)
+    W503,
+    # E501: line too long (handled by black)
+    E501,
+    # F401: imported but unused (handled by isort)
+    F401,
+    # E231: missing whitespace after ',' (handled by black)
+    E231
+
+# 每个文件的最大复杂度
+max-complexity = 10
+
+# 导入顺序检查
+import-order-style = google
+application-import-names = backend,apps
+
+# 文档字符串检查
+docstring-convention = google
+
+# 启用的插件
+select = 
+    # pycodestyle errors
+    E,
+    # pycodestyle warnings  
+    W,
+    # pyflakes
+    F,
+    # mccabe
+    C,
+    # naming conventions
+    N,
+    # docstring conventions
+    D,
+    # import sorting
+    I
+
+# 针对特定文件类型的配置
+per-file-ignores =
+    # 测试文件可以有更长的行和更复杂的结构
+    tests/*.py:E501,C901,D,
+    # Django设置文件
+    */settings/*.py:E501,F405,F403,
+    # 初始化文件
+    __init__.py:F401,D,
+    # 迁移文件
+    */migrations/*.py:E501,F401,D,
+    # 管理命令
+    */management/commands/*.py:D,
+
+# 统计信息
+statistics = True
+count = True
+show-source = True

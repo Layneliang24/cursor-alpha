@@ -151,7 +151,7 @@ export default {
   left: 250px; /* 避开侧边栏区域 */
   width: calc(100vw - 250px); /* 减去侧边栏宽度 */
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -353,4 +353,4 @@ export default {
     flex-direction: column;
   }
 }
-</style> 
+</style>

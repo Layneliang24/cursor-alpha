@@ -53,6 +53,11 @@ jobs:
         bandit -r backend -f json -o security-report.json || true
         safety check --json --output safety-report.json || true
     
+    - name: API契约校验
+      if: matrix.check == 'security'
+      run: |
+        python scripts/api_contract_check.py --project-root . --fail-on-incompatible
+    
     - name: 上传安全报告
       if: matrix.check == 'security'
       uses: actions/upload-artifact@v3
@@ -99,13 +104,25 @@ jobs:
           sleep 2
         done
     
+    - name: Python代码风格检查
+      run: |
+        cd ${{ github.workspace }}
+        python -m flake8 backend --max-line-length=127 --exclude=migrations
+        python -m black backend --check
+        python -m isort backend --check-only
+    
+    - name: Python类型检查
+      run: |
+        cd ${{ github.workspace }}
+        python -m mypy backend/apps --ignore-missing-imports
+    
     - name: 运行冒烟测试
       env:
         DATABASE_URL: mysql://root:root@127.0.0.1:3306/test_alpha
         DJANGO_SETTINGS_MODULE: tests.test_settings_mysql
       run: |
         cd ${{ github.workspace }}
-        python tests/test_runner_optimized.py --level smoke --verbose
+        pytest tests/unit/test_basic.py -v --tb=short
 
   # 单元测试 - 核心功能测试
   unit-tests:
@@ -154,18 +171,13 @@ jobs:
         DJANGO_SETTINGS_MODULE: tests.test_settings_mysql
       run: |
         cd ${{ github.workspace }}
-        python tests/test_runner_optimized.py --level fast --parallel --coverage --verbose
+        pytest tests/unit/ -v --cov=backend/apps --cov-report=xml --cov-report=html --cov-fail-under=70
     
     - name: 生成测试报告
       if: always()
       run: |
         cd ${{ github.workspace }}
-        python -c "
-        from tests.utils.test_report_generator import generate_test_report
-        import os
-        if os.path.exists('tests/reports/junit.xml'):
-            generate_test_report('tests/reports/junit.xml', 'tests/reports')
-        "
+        # 测试报告已由pytest自动生成
     
     - name: 上传测试报告
       if: always()
@@ -174,13 +186,21 @@ jobs:
         name: test-reports
         path: tests/reports/
     
-    - name: 上传覆盖率报告
+    - name: 上传后端覆盖率报告
       if: always()
       uses: codecov/codecov-action@v3
       with:
-        file: tests/coverage_html/coverage.xml
+        file: coverage.xml
         flags: backend
         name: backend-coverage
+    
+    - name: 上传前端覆盖率报告
+      if: always()
+      uses: codecov/codecov-action@v3
+      with:
+        file: frontend/coverage/coverage-final.json
+        flags: frontend
+        name: frontend-coverage
 
   # 前端测试
   frontend-tests:
@@ -201,11 +221,21 @@ jobs:
         cd frontend
         npm ci
     
+    - name: 前端代码风格检查
+      run: |
+        cd frontend
+        npm run lint:check
+        npm run format:check
+    
+    - name: 前端类型检查
+      run: |
+        cd frontend
+        npm run type-check
+    
     - name: 运行前端测试
       run: |
         cd frontend
-        npm run test:unit
-        npm run test:e2e:headless
+        npm run test:coverage
     
     - name: 构建前端
       run: |
@@ -294,7 +324,7 @@ jobs:
         DJANGO_SETTINGS_MODULE: tests.test_settings_mysql
       run: |
         cd ${{ github.workspace }}
-        python tests/test_runner_optimized.py --level regression --verbose
+        pytest tests/integration/ -v --tb=short
 
   # 性能测试
   performance-tests:
@@ -332,7 +362,7 @@ jobs:
         DJANGO_SETTINGS_MODULE: tests.test_settings_mysql
       run: |
         cd ${{ github.workspace }}
-        python tests/test_runner_optimized.py --level performance --verbose
+        pytest tests/performance/ -v --tb=short
     
     - name: 上传性能报告
       uses: actions/upload-artifact@v3
@@ -390,12 +420,164 @@ jobs:
         # 这里添加实际的部署脚本
         echo "✅ 部署完成"
 
+  # Flaky测试检测
+  flaky-test-detection:
+    name: 🔄 Flaky测试检测
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || contains(github.event.head_commit.message, '[flaky-check]')
+    needs: [unit-tests, frontend-tests]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+    
+    - name: 设置Node.js环境
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: 安装依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/requirements.txt
+        cd frontend && npm ci
+    
+    - name: 设置Django环境
+      run: |
+        cd backend
+        python manage.py collectstatic --noinput
+        python manage.py migrate --noinput
+    
+    - name: 运行稳定性检查
+      run: |
+        python scripts/flaky_test_manager.py --action stability --iterations 10
+    
+    - name: 生成flaky测试报告
+      if: always()
+      run: |
+        python scripts/flaky_test_manager.py --action analyze
+    
+    - name: 上传flaky测试报告
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: flaky-test-reports
+        path: |
+          tests/reports/flaky/
+          backend/tests/reports/flaky/
+          frontend/tests/reports/flaky/
+        retention-days: 30
+    
+    - name: 评估测试稳定性
+      run: |
+        # 检查稳定性结果文件
+        if [ -f "tests/reports/flaky/stability_check_*.json" ]; then
+          STABILITY=$(python -c "
+          import json, glob
+          files = glob.glob('tests/reports/flaky/stability_check_*.json')
+          if files:
+              with open(files[-1]) as f:
+                  data = json.load(f)
+                  print(data['stability']['overall'])
+          else:
+              print('0.0')
+          ")
+          echo "Overall stability: $STABILITY"
+          if (( $(echo "$STABILITY < 0.8" | bc -l) )); then
+            echo "⚠️ 测试稳定性低于80%，需要关注flaky测试"
+            exit 1
+          fi
+        fi
+
+  # 语义化发布
+  release:
+    name: 🚀 语义化发布
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [quick-checks, smoke-tests, unit-tests, frontend-tests, integration-tests]
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: 设置Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: 设置Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: 安装根目录依赖
+      run: npm ci
+    
+    - name: 安装前端依赖
+      run: |
+        cd frontend
+        npm ci
+    
+    - name: 安装后端依赖
+      run: |
+        cd backend
+        pip install -r requirements.txt
+    
+    - name: 构建前端
+      run: |
+        cd frontend
+        npm run build
+    
+    - name: 收集静态文件
+      run: |
+        cd backend
+        python manage.py collectstatic --noinput
+    
+    - name: 生成CHANGELOG
+      run: |
+        npm run changelog
+    
+    - name: 语义化发布
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: |
+        npm run release
+    
+    - name: 上传构建产物
+      if: success()
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-artifacts
+        path: |
+          frontend/dist/
+          backend/staticfiles/
+          CHANGELOG.md
+        retention-days: 90
+
   # 测试结果通知
   notify:
     name: 📢 测试结果通知
     runs-on: ubuntu-latest
     if: always()
-    needs: [quick-checks, smoke-tests, unit-tests, frontend-tests, integration-tests]
+    needs: [quick-checks, smoke-tests, unit-tests, frontend-tests, integration-tests, flaky-test-detection, release]
     
     steps:
     - name: 计算测试结果

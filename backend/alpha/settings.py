@@ -80,12 +80,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # Third party apps
+    # Third-party apps
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
     'django_filters',
     'drf_yasg',
+    'drf_spectacular',
     'captcha',
     'mdeditor',
     'django_extensions',
@@ -102,6 +103,7 @@ INSTALLED_APPS = [
     'apps.todos',
     'apps.ai',
     'apps.search',
+    'feature_flags',
 ]
 
 MIDDLEWARE = [
@@ -267,7 +269,7 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
         'rest_framework.parsers.FormParser',
     ),
-    # 基础限流设置，防止接口被滥用
+    # Rate limiting
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
         'rest_framework.throttling.UserRateThrottle',
@@ -277,6 +279,25 @@ REST_FRAMEWORK = {
         'user': '240/minute',  # 登录用户
     },
     'EXCEPTION_HANDLER': 'apps.api.exceptions.custom_exception_handler',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# DRF Spectacular settings for OpenAPI schema generation
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Alpha Platform API',
+    'DESCRIPTION': 'Alpha 英语学习平台 API 文档',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': '/api/',
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SORT_OPERATIONS': False,
+    'ENUM_NAME_OVERRIDES': {
+        'ValidationErrorEnum': 'apps.api.serializers.ValidationErrorEnum.choices',
+    },
+    'POSTPROCESSING_HOOKS': [],
+    'PREPROCESSING_HOOKS': [],
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
+    'SERVE_AUTHENTICATION': [],
 }
 
 # JWT Settings

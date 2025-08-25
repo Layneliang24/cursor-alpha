@@ -1,0 +1,1262 @@
+<testsuites id="" name="" tests="305" failures="0" skipped="305" errors="0" time="0.22014599999999995">
+<testsuite name="tests\analytics.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="chromium" tests="20" failures="0" skipped="20" time="0" errors="0">
+<testcase name="数据分析功能 › 应该显示数据分析仪表板" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示所有统计卡片" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示所有图表" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够设置日期范围过滤" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够应用过滤器" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够刷新数据" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够导出数据" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示数据表格" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持分页功能" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持图表交互" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该处理加载状态" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该处理错误状态" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持响应式设计" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示实时数据更新" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持多种图表类型" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据钻取" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据比较" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持自定义图表配置" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据导出多种格式" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据缓存和离线查看" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\auth.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="chromium" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="用户认证功能 › 应该显示登录页面的所有必要元素" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够成功登录有效用户" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该拒绝无效的登录凭据" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该验证空表单提交" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够导航到注册页面" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够导航到忘记密码页面" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该处理网络错误" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该处理服务器错误" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该记住用户登录状态" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够退出登录" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该支持键盘导航" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该在多次失败登录后显示验证码" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该支持社交登录（如果可用）" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户注册功能 › 应该能够注册新用户" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户注册功能 › 应该验证密码确认匹配" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\dictionary.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="chromium" tests="17" failures="0" skipped="17" time="0" errors="0">
+<testcase name="词典功能 › 应该显示词典列表页面" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够搜索词典" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够创建新词典" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够开始词典练习" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够配置练习设置" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够完成单词练习流程" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够标记单词为不认识" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够在单词间导航" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够完成完整的练习轮次" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该显示练习进度和分数" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该处理练习中的错误" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持键盘快捷键" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持不同的练习模式" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该保存练习进度" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持批量操作" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持词典导入导出" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持移动端响应式设计" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\user-journey.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="chromium" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="完整用户旅程 › 完整的学习流程：注册 -&gt; 登录 -&gt; 创建词典 -&gt; 练习 -&gt; 查看分析" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 多设备学习同步流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习计划和目标设置流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 社交学习功能流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 离线学习和数据同步流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习路径推荐流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习成就和徽章系统流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 多语言学习切换流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习数据备份和恢复流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\analytics.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="firefox" tests="20" failures="0" skipped="20" time="0" errors="0">
+<testcase name="数据分析功能 › 应该显示数据分析仪表板" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示所有统计卡片" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示所有图表" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够设置日期范围过滤" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够应用过滤器" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够刷新数据" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够导出数据" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示数据表格" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持分页功能" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持图表交互" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该处理加载状态" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该处理错误状态" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持响应式设计" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示实时数据更新" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持多种图表类型" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据钻取" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据比较" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持自定义图表配置" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据导出多种格式" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据缓存和离线查看" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\auth.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="firefox" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="用户认证功能 › 应该显示登录页面的所有必要元素" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够成功登录有效用户" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该拒绝无效的登录凭据" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该验证空表单提交" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够导航到注册页面" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够导航到忘记密码页面" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该处理网络错误" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该处理服务器错误" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该记住用户登录状态" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够退出登录" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该支持键盘导航" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该在多次失败登录后显示验证码" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该支持社交登录（如果可用）" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户注册功能 › 应该能够注册新用户" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户注册功能 › 应该验证密码确认匹配" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\dictionary.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="firefox" tests="17" failures="0" skipped="17" time="0" errors="0">
+<testcase name="词典功能 › 应该显示词典列表页面" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够搜索词典" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够创建新词典" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够开始词典练习" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够配置练习设置" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够完成单词练习流程" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够标记单词为不认识" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够在单词间导航" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够完成完整的练习轮次" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该显示练习进度和分数" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该处理练习中的错误" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持键盘快捷键" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持不同的练习模式" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该保存练习进度" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持批量操作" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持词典导入导出" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持移动端响应式设计" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\user-journey.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="firefox" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="完整用户旅程 › 完整的学习流程：注册 -&gt; 登录 -&gt; 创建词典 -&gt; 练习 -&gt; 查看分析" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 多设备学习同步流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习计划和目标设置流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 社交学习功能流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 离线学习和数据同步流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习路径推荐流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习成就和徽章系统流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 多语言学习切换流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习数据备份和恢复流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\analytics.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="webkit" tests="20" failures="0" skipped="20" time="0" errors="0">
+<testcase name="数据分析功能 › 应该显示数据分析仪表板" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示所有统计卡片" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示所有图表" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够设置日期范围过滤" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够应用过滤器" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够刷新数据" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够导出数据" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示数据表格" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持分页功能" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持图表交互" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该处理加载状态" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该处理错误状态" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持响应式设计" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示实时数据更新" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持多种图表类型" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据钻取" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据比较" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持自定义图表配置" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据导出多种格式" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据缓存和离线查看" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\auth.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="webkit" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="用户认证功能 › 应该显示登录页面的所有必要元素" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够成功登录有效用户" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该拒绝无效的登录凭据" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该验证空表单提交" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够导航到注册页面" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够导航到忘记密码页面" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该处理网络错误" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该处理服务器错误" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该记住用户登录状态" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够退出登录" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该支持键盘导航" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该在多次失败登录后显示验证码" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该支持社交登录（如果可用）" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户注册功能 › 应该能够注册新用户" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户注册功能 › 应该验证密码确认匹配" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\dictionary.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="webkit" tests="17" failures="0" skipped="17" time="0" errors="0">
+<testcase name="词典功能 › 应该显示词典列表页面" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够搜索词典" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够创建新词典" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够开始词典练习" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够配置练习设置" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够完成单词练习流程" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够标记单词为不认识" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够在单词间导航" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够完成完整的练习轮次" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该显示练习进度和分数" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该处理练习中的错误" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持键盘快捷键" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持不同的练习模式" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该保存练习进度" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持批量操作" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持词典导入导出" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持移动端响应式设计" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\user-journey.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="webkit" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="完整用户旅程 › 完整的学习流程：注册 -&gt; 登录 -&gt; 创建词典 -&gt; 练习 -&gt; 查看分析" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 多设备学习同步流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习计划和目标设置流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 社交学习功能流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 离线学习和数据同步流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习路径推荐流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习成就和徽章系统流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 多语言学习切换流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习数据备份和恢复流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\analytics.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="Mobile Chrome" tests="20" failures="0" skipped="20" time="0" errors="0">
+<testcase name="数据分析功能 › 应该显示数据分析仪表板" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示所有统计卡片" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示所有图表" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够设置日期范围过滤" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够应用过滤器" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够刷新数据" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够导出数据" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示数据表格" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持分页功能" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持图表交互" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该处理加载状态" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该处理错误状态" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持响应式设计" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示实时数据更新" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持多种图表类型" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据钻取" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据比较" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持自定义图表配置" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据导出多种格式" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据缓存和离线查看" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\auth.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="Mobile Chrome" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="用户认证功能 › 应该显示登录页面的所有必要元素" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够成功登录有效用户" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该拒绝无效的登录凭据" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该验证空表单提交" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够导航到注册页面" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够导航到忘记密码页面" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该处理网络错误" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该处理服务器错误" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该记住用户登录状态" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够退出登录" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该支持键盘导航" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该在多次失败登录后显示验证码" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该支持社交登录（如果可用）" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户注册功能 › 应该能够注册新用户" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户注册功能 › 应该验证密码确认匹配" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\dictionary.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="Mobile Chrome" tests="17" failures="0" skipped="17" time="0" errors="0">
+<testcase name="词典功能 › 应该显示词典列表页面" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够搜索词典" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够创建新词典" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够开始词典练习" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够配置练习设置" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够完成单词练习流程" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够标记单词为不认识" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够在单词间导航" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够完成完整的练习轮次" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该显示练习进度和分数" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该处理练习中的错误" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持键盘快捷键" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持不同的练习模式" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该保存练习进度" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持批量操作" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持词典导入导出" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持移动端响应式设计" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\user-journey.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="Mobile Chrome" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="完整用户旅程 › 完整的学习流程：注册 -&gt; 登录 -&gt; 创建词典 -&gt; 练习 -&gt; 查看分析" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 多设备学习同步流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习计划和目标设置流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 社交学习功能流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 离线学习和数据同步流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习路径推荐流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习成就和徽章系统流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 多语言学习切换流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习数据备份和恢复流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\analytics.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="Mobile Safari" tests="20" failures="0" skipped="20" time="0" errors="0">
+<testcase name="数据分析功能 › 应该显示数据分析仪表板" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示所有统计卡片" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示所有图表" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够设置日期范围过滤" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够应用过滤器" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够刷新数据" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该能够导出数据" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示数据表格" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持分页功能" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持图表交互" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该处理加载状态" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该处理错误状态" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持响应式设计" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该显示实时数据更新" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持多种图表类型" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据钻取" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据比较" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持自定义图表配置" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据导出多种格式" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="数据分析功能 › 应该支持数据缓存和离线查看" classname="tests\analytics.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\auth.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="Mobile Safari" tests="15" failures="0" skipped="15" time="0" errors="0">
+<testcase name="用户认证功能 › 应该显示登录页面的所有必要元素" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够成功登录有效用户" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该拒绝无效的登录凭据" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该验证空表单提交" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够导航到注册页面" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够导航到忘记密码页面" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该处理网络错误" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该处理服务器错误" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该记住用户登录状态" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该能够退出登录" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该支持键盘导航" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该在多次失败登录后显示验证码" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户认证功能 › 应该支持社交登录（如果可用）" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户注册功能 › 应该能够注册新用户" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="用户注册功能 › 应该验证密码确认匹配" classname="tests\auth.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\dictionary.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="Mobile Safari" tests="17" failures="0" skipped="17" time="0" errors="0">
+<testcase name="词典功能 › 应该显示词典列表页面" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够搜索词典" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够创建新词典" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够开始词典练习" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够配置练习设置" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够完成单词练习流程" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够标记单词为不认识" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够在单词间导航" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该能够完成完整的练习轮次" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该显示练习进度和分数" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该处理练习中的错误" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持键盘快捷键" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持不同的练习模式" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该保存练习进度" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持批量操作" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持词典导入导出" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="词典功能 › 应该支持移动端响应式设计" classname="tests\dictionary.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\user-journey.spec.ts" timestamp="2025-08-25T03:08:06.269Z" hostname="Mobile Safari" tests="9" failures="0" skipped="9" time="0" errors="0">
+<testcase name="完整用户旅程 › 完整的学习流程：注册 -&gt; 登录 -&gt; 创建词典 -&gt; 练习 -&gt; 查看分析" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 多设备学习同步流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习计划和目标设置流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 社交学习功能流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 离线学习和数据同步流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习路径推荐流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习成就和徽章系统流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 多语言学习切换流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="完整用户旅程 › 学习数据备份和恢复流程" classname="tests\user-journey.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>
