@@ -1,0 +1,31 @@
+{
+  "providers": {
+    "openai": {
+      "api_key": "your-openai-api-key",
+      "base_url": "https://api.openai.com/v1",
+      "model": "gpt-4",
+      "max_tokens": 4000
+    },
+    "claude": {
+      "api_key": "your-claude-api-key",
+      "base_url": "https://api.anthropic.com",
+      "model": "claude-3-sonnet-20240229",
+      "max_tokens": 4000
+    },
+    "ollama": {
+      "base_url": "http://localhost:11434",
+      "model": "codellama:13b",
+      "max_tokens": 4000
+    },
+    "mock": {
+      "enabled": true,
+      "response_template": "# AI生成的代码\n# 这是模拟模式，实际使用时会调用真实AI"
+    }
+  },
+  "default_provider": "mock",
+  "prompts": {
+    "test_generation": "基于以下需求生成完整的测试代码：\n{requirement}\n\n请生成包含单元测试、集成测试的完整代码，使用pytest框架。",
+    "code_implementation": "基于以下需求和测试用例实现完整的功能代码：\n需求：{requirement}\n测试：{tests}\n\n请实现所有必要的模型、视图、序列化器等。",
+    "code_review": "请审查以下代码并提供改进建议：\n{code}\n\n重点关注代码质量、安全性和性能。"
+  }
+}

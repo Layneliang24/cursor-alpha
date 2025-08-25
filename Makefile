@@ -1,6 +1,6 @@
 # Alpha项目统一测试与构建
 
-.PHONY: help test test-backend test-frontend test-coverage lint clean install dev build flaky-test flaky-analyze flaky-stability flaky-isolate release release-dry-run release-debug changelog version-check commit commit-retry req-pipeline req-pipeline-dry req-pipeline-text req-example req-template
+.PHONY: help test test-backend test-frontend test-coverage lint clean install dev build flaky-test flaky-analyze flaky-stability flaky-isolate release release-dry-run release-debug changelog version-check commit commit-retry req-pipeline req-pipeline-dry req-pipeline-text req-example req-template req-pipeline-ai req-pipeline-ai-dry req-pipeline-ai-text req-example-ai
 
 # 默认目标
 help:
@@ -30,6 +30,10 @@ help:
 	@echo "  make req-pipeline-text - 从文本运行需求流水线"
 	@echo "  make req-example - 运行示例需求流水线"
 	@echo "  make req-template - 查看需求模板"
+	@echo "  make req-pipeline-ai - 运行AI增强流水线 (可选: PROVIDER, TASKS, OUT)"
+	@echo "  make req-pipeline-ai-dry - 预演AI增强流水线"
+	@echo "  make req-pipeline-ai-text - 从文本运行AI增强流水线"
+	@echo "  make req-example-ai - 运行示例AI增强流水线（mock提供商）"
 
 # 安装依赖
 install:
@@ -233,3 +237,45 @@ ci-build:
 	make ci-check
 	make build
 	@echo "✅ 生产环境构建完成"
+
+req-pipeline-ai:
+	@echo "🤖 运行AI增强需求→测试→实现流水线..."
+	@if [ -z "$(REQ)" ]; then \
+		echo "❌ 请指定需求文件: make req-pipeline-ai REQ=path/to/requirement.md [PROVIDER=mock] [TASKS=generate_tests,implement_code,review_code]"; \
+		exit 1; \
+	fi
+	@PROV_ARG=""; TASK_ARG=""; OUT_ARG=""; \
+	if [ -n "$(PROVIDER)" ]; then PROV_ARG="--ai-provider $(PROVIDER)"; fi; \
+	if [ -n "$(TASKS)" ]; then TASK_ARG="--ai-tasks $(TASKS)"; fi; \
+	if [ -n "$(OUT)" ]; then OUT_ARG="--ai-out-dir $(OUT)"; fi; \
+	python scripts/req_to_test_pipeline.py --input "$(REQ)" --ai-enabled $$PROV_ARG $$TASK_ARG $$OUT_ARG
+
+req-pipeline-ai-dry:
+	@echo "🔍 预演AI增强需求→测试→实现流水线..."
+	@if [ -z "$(REQ)" ]; then \
+		echo "❌ 请指定需求文件: make req-pipeline-ai-dry REQ=path/to/requirement.md"; \
+		exit 1; \
+	fi
+	@PROV_ARG=""; TASK_ARG=""; OUT_ARG=""; \
+	if [ -n "$(PROVIDER)" ]; then PROV_ARG="--ai-provider $(PROVIDER)"; fi; \
+	if [ -n "$(TASKS)" ]; then TASK_ARG="--ai-tasks $(TASKS)"; fi; \
+	if [ -n "$(OUT)" ]; then OUT_ARG="--ai-out-dir $(OUT)"; fi; \
+	python scripts/req_to_test_pipeline.py --input "$(REQ)" --ai-enabled --dry-run $$PROV_ARG $$TASK_ARG $$OUT_ARG
+
+req-pipeline-ai-text:
+	@echo "🤖 从文本运行AI增强需求→测试→实现流水线..."
+	@if [ -z "$(TEXT)" ]; then \
+		echo "❌ 请指定需求文本: make req-pipeline-ai-text TEXT='标题: 功能名称...' [PROVIDER=mock] [TASKS=generate_tests,implement_code,review_code]"; \
+		exit 1; \
+	fi
+	@PROV_ARG=""; TASK_ARG=""; OUT_ARG=""; \
+	if [ -n "$(PROVIDER)" ]; then PROV_ARG="--ai-provider $(PROVIDER)"; fi; \
+	if [ -n "$(TASKS)" ]; then TASK_ARG="--ai-tasks $(TASKS)"; fi; \
+	if [ -n "$(OUT)" ]; then OUT_ARG="--ai-out-dir $(OUT)"; fi; \
+	python scripts/req_to_test_pipeline.py --input "$(TEXT)" --input-type text --ai-enabled $$PROV_ARG $$TASK_ARG $$OUT_ARG
+
+req-example-ai:
+	@echo "📋 运行示例AI增强需求流水线..."
+	@PROV_ARG=""; \
+	if [ -n "$(PROVIDER)" ]; then PROV_ARG="--ai-provider $(PROVIDER)"; fi; \
+	python scripts/req_to_test_pipeline.py --input scripts/templates/example_requirement.md --ai-enabled --dry-run $$PROV_ARG

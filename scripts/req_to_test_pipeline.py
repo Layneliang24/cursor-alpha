@@ -19,9 +19,10 @@ import subprocess
 import tempfile
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass, asdict
 import re
+from ai_interface import AIInterface
 
 
 @dataclass
@@ -1142,6 +1143,161 @@ class PipelineManager:
         
         return report
 
+# === 新增: AI增强的流水线管理器 ===
+class AIEnhancedPipelineManager(PipelineManager):
+    """AI增强的流水线管理器"""
+    
+    def __init__(self, project_root: str, provider: Optional[str] = None, out_dir: str = "ai_generated"):
+        super().__init__(project_root)
+        self.ai = AIInterface()
+        if provider:
+            try:
+                self.ai.set_provider(provider)
+            except Exception as e:
+                print(f"⚠️ AI提供商设置失败: {e}")
+        self.out_root = Path(project_root) / out_dir
+    
+    def _format_requirement_text(self, req: Requirement) -> str:
+        parts = [
+            f"标题: {req.title}",
+            f"类型: {req.type}",
+            f"优先级: {req.priority}",
+            f"组件: {', '.join(req.components)}",
+            "描述:",
+            req.description or "",
+            "验收标准:",
+        ] + [f"- {c}" for c in (req.acceptance_criteria or [])]
+        return "\n".join(parts)
+    
+    def run_ai_pipeline(
+        self,
+        requirement_input: str,
+        input_type: str = 'file',
+        ai_tasks: Optional[List[str]] = None,
+        create_branch: bool = True,
+        create_issue: bool = True,
+        commit_changes: bool = False,
+        dry_run: bool = False
+    ) -> Dict:
+        """运行AI增强的流水线"""
+        if ai_tasks is None:
+            ai_tasks = ['generate_tests', 'implement_code', 'review_code']
+        
+        # 先运行基础流水线（不生成模板、避免重复）
+        base_result = super().run_pipeline(
+            requirement_input=requirement_input,
+            input_type=input_type,
+            create_branch=create_branch and not dry_run,
+            generate_tests=False,
+            generate_code=False,
+            create_issue=create_issue,
+            commit_changes=False
+        )
+        
+        if not base_result.get('success'):
+            return base_result
+        
+        req_dict = base_result['requirement']
+        req = Requirement(**req_dict)
+        
+        req_out = self.out_root / req.id
+        tests_dir = req_out / "tests"
+        code_dir = req_out / "code"
+        review_path = req_out / "code_review.md"
+        ai_outputs: Dict[str, Any] = {'tests': [], 'code': [], 'review': None}
+        
+        prompts = self.ai.config.get("prompts", {})
+        req_text = self._format_requirement_text(req)
+        
+        # 生成测试
+        if 'generate_tests' in ai_tasks:
+            prompt = prompts.get(
+                "test_generation",
+                "基于以下需求生成完整的测试代码：\n{requirement}\n请生成单元测试、集成测试和E2E测试。"
+            ).format(requirement=req_text)
+            print("🤖 AI生成测试代码...")
+            tests_content = self.ai.generate_code(prompt)
+            ai_outputs['tests'] = [
+                {'file_path': str((tests_dir / "unit_test.py").as_posix()), 'content': tests_content, 'test_type': 'unit'},
+                {'file_path': str((tests_dir / "integration_test.py").as_posix()), 'content': tests_content, 'test_type': 'integration'},
+                {'file_path': str((tests_dir / "e2e_test.py").as_posix()), 'content': tests_content, 'test_type': 'e2e'},
+            ]
+            if not dry_run:
+                for item in ai_outputs['tests']:
+                    path = Path(self.project_root) / item['file_path']
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    with open(path, 'w', encoding='utf-8') as f:
+                        f.write(item['content'])
+            print(f"✅ AI测试生成完成: {len(ai_outputs['tests'])} 个文件")
+        
+        tests_text = ""
+        if ai_outputs['tests']:
+            try:
+                tests_text = "\n\n".join([t['content'] for t in ai_outputs['tests']])[:5000]
+            except Exception:
+                tests_text = ""
+        
+        # 实现代码
+        if 'implement_code' in ai_tasks:
+            prompt = prompts.get(
+                "code_implementation",
+                "基于以下需求和测试用例实现完整的功能代码：\n需求：{requirement}\n测试：{tests}\n请实现所有必要的模型、视图、序列化器等。"
+            ).format(requirement=req_text, tests=tests_text or "无")
+            print("🤖 AI实现功能代码...")
+            code_content = self.ai.generate_code(prompt)
+            ai_outputs['code'] = [
+                {'file_path': str((code_dir / "models.py").as_posix()), 'content': code_content, 'template_type': 'model'},
+                {'file_path': str((code_dir / "views.py").as_posix()), 'content': code_content, 'template_type': 'view'},
+                {'file_path': str((code_dir / "components.py").as_posix()), 'content': code_content, 'template_type': 'component'},
+            ]
+            if not dry_run:
+                for item in ai_outputs['code']:
+                    path = Path(self.project_root) / item['file_path']
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    with open(path, 'w', encoding='utf-8') as f:
+                        f.write(item['content'])
+            print(f"✅ AI代码实现生成完成: {len(ai_outputs['code'])} 个文件")
+        
+        # 代码审查
+        if 'review_code' in ai_tasks:
+            code_text = "\n\n".join([c.get('content', '') for c in ai_outputs['code']]) or "暂无代码供审查"
+            prompt = prompts.get(
+                "code_review",
+                "请审查以下代码并提供改进建议：\n{code}\n重点关注代码质量、安全性和性能。"
+            ).format(code=code_text)
+            print("🤖 AI进行代码审查...")
+            review_content = self.ai.generate_code(prompt)
+            ai_outputs['review'] = str(review_path.as_posix())
+            if not dry_run:
+                path = Path(self.project_root) / ai_outputs['review']
+                path.parent.mkdir(parents=True, exist_ok=True)
+                with open(path, 'w', encoding='utf-8') as f:
+                    f.write(review_content)
+            print("✅ AI代码审查完成")
+        
+        # 提交变更（如需要）
+        if commit_changes and not dry_run:
+            commit_hash = self.git_manager.commit_changes(req, message=f"feat({req.id}): add AI generated artifacts")
+            base_result['commit'] = commit_hash
+            print(f"📦 AI生成内容已提交: {commit_hash[:8]}")
+        
+        base_result['ai'] = ai_outputs
+        return base_result
+    
+    def generate_summary_report(self, result: Dict) -> str:
+        # 先获取基础报告
+        report = super().generate_summary_report(result)
+        ai = result.get('ai')
+        if ai:
+            report += "\n🤖 AI生成产物:\n"
+            if ai.get('tests'):
+                report += "AI测试文件:\n" + chr(10).join([f"- {t['file_path']} ({t['test_type']})" for t in ai['tests']]) + "\n"
+            if ai.get('code'):
+                report += "AI代码文件:\n" + chr(10).join([f"- {c['file_path']} ({c['template_type']})" for c in ai['code']]) + "\n"
+            if ai.get('review'):
+                report += f"AI代码审查: {ai['review']}\n"
+        return report
+
 
 def main():
     """主函数"""
@@ -1224,24 +1380,56 @@ def main():
         help='输出报告文件路径'
     )
     
-    args = parser.parse_args()
+    # 新增AI相关参数
+    parser.add_argument(
+        '--ai-enabled',
+        action='store_true',
+        help='启用AI增强（使用AI生成测试、实现和审查）'
+    )
+    parser.add_argument(
+        '--ai-tasks',
+        help='AI任务列表，逗号分隔（可选: generate_tests,implement_code,review_code）'
+    )
+    parser.add_argument(
+        '--ai-provider',
+        choices=['openai', 'claude', 'ollama', 'mock'],
+        help='选择AI提供商（默认使用配置文件中的默认提供商）'
+    )
+    parser.add_argument(
+        '--ai-out-dir',
+        default='ai_generated',
+        help='AI生成产物的输出根目录（默认: ai_generated）'
+    )
     
-    # 创建流水线管理器
-    pipeline = PipelineManager(args.project_root)
+    args = parser.parse_args()
     
     if args.dry_run:
         print("🔍 预览模式，不会实际创建文件")
     
-    # 运行流水线
-    result = pipeline.run_pipeline(
-        requirement_input=args.input,
-        input_type=args.input_type,
-        create_branch=not args.no_branch and not args.dry_run,
-        generate_tests=not args.no_tests,
-        generate_code=not args.no_code,
-        create_issue=not args.no_issue,
-        commit_changes=not args.no_commit and not args.dry_run
-    )
+    # 运行流水线（根据是否启用AI选择不同管理器）
+    if args.ai_enabled:
+        pipeline = AIEnhancedPipelineManager(args.project_root, provider=args.ai_provider, out_dir=args.ai_out_dir)
+        ai_tasks = [t.strip() for t in args.ai_tasks.split(',')] if args.ai_tasks else None
+        result = pipeline.run_ai_pipeline(
+            requirement_input=args.input,
+            input_type=args.input_type,
+            ai_tasks=ai_tasks,
+            create_branch=not args.no_branch,
+            create_issue=not args.no_issue,
+            commit_changes=not args.no_commit,
+            dry_run=args.dry_run
+        )
+    else:
+        pipeline = PipelineManager(args.project_root)
+        result = pipeline.run_pipeline(
+            requirement_input=args.input,
+            input_type=args.input_type,
+            create_branch=not args.no_branch and not args.dry_run,
+            generate_tests=not args.no_tests,
+            generate_code=not args.no_code,
+            create_issue=not args.no_issue,
+            commit_changes=not args.no_commit and not args.dry_run
+        )
     
     # 生成报告
     report = pipeline.generate_summary_report(result)
