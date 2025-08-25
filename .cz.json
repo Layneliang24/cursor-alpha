@@ -1,0 +1,103 @@
+{
+  "$schema": "https://raw.githubusercontent.com/commitizen/cz-cli/master/docs/adapters/cz-conventional-changelog.json",
+  "path": "cz-conventional-changelog",
+  "types": {
+    "feat": {
+      "description": "A new feature",
+      "title": "Features",
+      "emoji": "✨"
+    },
+    "fix": {
+      "description": "A bug fix",
+      "title": "Bug Fixes",
+      "emoji": "🐛"
+    },
+    "docs": {
+      "description": "Documentation only changes",
+      "title": "Documentation",
+      "emoji": "📚"
+    },
+    "style": {
+      "description": "Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)",
+      "title": "Styles",
+      "emoji": "💄"
+    },
+    "refactor": {
+      "description": "A code change that neither fixes a bug nor adds a feature",
+      "title": "Code Refactoring",
+      "emoji": "♻️"
+    },
+    "perf": {
+      "description": "A code change that improves performance",
+      "title": "Performance Improvements",
+      "emoji": "⚡"
+    },
+    "test": {
+      "description": "Adding missing tests or correcting existing tests",
+      "title": "Tests",
+      "emoji": "✅"
+    },
+    "build": {
+      "description": "Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)",
+      "title": "Builds",
+      "emoji": "🏗️"
+    },
+    "ci": {
+      "description": "Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)",
+      "title": "Continuous Integrations",
+      "emoji": "👷"
+    },
+    "chore": {
+      "description": "Other changes that don't modify src or test files",
+      "title": "Chores",
+      "emoji": "🔧"
+    },
+    "revert": {
+      "description": "Reverts a previous commit",
+      "title": "Reverts",
+      "emoji": "⏪"
+    }
+  },
+  "scopes": [
+    "frontend",
+    "backend",
+    "api",
+    "auth",
+    "database",
+    "ui",
+    "ux",
+    "config",
+    "deps",
+    "security",
+    "performance",
+    "accessibility",
+    "i18n",
+    "analytics",
+    "feature-flags",
+    "tests",
+    "docs",
+    "ci",
+    "release"
+  ],
+  "allowTicketNumber": true,
+  "isTicketNumberRequired": false,
+  "ticketNumberPrefix": "TICKET-",
+  "ticketNumberRegExp": "\\d{1,5}",
+  "messages": {
+    "type": "Select the type of change that you're committing:",
+    "scope": "\nDenote the SCOPE of this change (optional):",
+    "customScope": "Denote the SCOPE of this change:",
+    "subject": "Write a SHORT, IMPERATIVE tense description of the change:\n",
+    "body": "Provide a LONGER description of the change (optional). Use '|' to break new line:\n",
+    "breaking": "List any BREAKING CHANGES (optional):\n",
+    "footer": "List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n",
+    "confirmCommit": "Are you sure you want to proceed with the commit above?"
+  },
+  "allowCustomScopes": true,
+  "allowBreakingChanges": ["feat", "fix"],
+  "skipQuestions": [],
+  "subjectLimit": 100,
+  "breaklineChar": "|",
+  "footerPrefix": "ISSUES CLOSED:",
+  "askForBreakingChangeFirst": true
+}
