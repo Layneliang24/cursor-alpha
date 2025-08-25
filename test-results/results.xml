@@ -1,2 +1,42 @@
-<testsuites id="" name="" tests="0" failures="0" skipped="0" errors="0" time="63.17669">
+<testsuites id="" name="" tests="15" failures="0" skipped="0" errors="0" time="7.753305">
+<testsuite name="idiomatic_expressions_requirement.spec.js" timestamp="2025-08-25T05:06:24.898Z" hostname="chromium" tests="3" failures="0" skipped="0" time="5.085" errors="0">
+<testcase name="地道表达模块 E2E 测试 › 应用首页可以正常访问" classname="idiomatic_expressions_requirement.spec.js" time="0.816">
+</testcase>
+<testcase name="地道表达模块 E2E 测试 › 后端API健康检查" classname="idiomatic_expressions_requirement.spec.js" time="2.965">
+</testcase>
+<testcase name="地道表达模块 E2E 测试 › 地道表达API端点测试" classname="idiomatic_expressions_requirement.spec.js" time="1.304">
+</testcase>
+</testsuite>
+<testsuite name="idiomatic_expressions_requirement.spec.js" timestamp="2025-08-25T05:06:24.898Z" hostname="firefox" tests="3" failures="0" skipped="0" time="9.59" errors="0">
+<testcase name="地道表达模块 E2E 测试 › 应用首页可以正常访问" classname="idiomatic_expressions_requirement.spec.js" time="3.959">
+</testcase>
+<testcase name="地道表达模块 E2E 测试 › 后端API健康检查" classname="idiomatic_expressions_requirement.spec.js" time="3.698">
+</testcase>
+<testcase name="地道表达模块 E2E 测试 › 地道表达API端点测试" classname="idiomatic_expressions_requirement.spec.js" time="1.933">
+</testcase>
+</testsuite>
+<testsuite name="idiomatic_expressions_requirement.spec.js" timestamp="2025-08-25T05:06:24.898Z" hostname="webkit" tests="3" failures="0" skipped="0" time="6.49" errors="0">
+<testcase name="地道表达模块 E2E 测试 › 应用首页可以正常访问" classname="idiomatic_expressions_requirement.spec.js" time="1.719">
+</testcase>
+<testcase name="地道表达模块 E2E 测试 › 后端API健康检查" classname="idiomatic_expressions_requirement.spec.js" time="3.499">
+</testcase>
+<testcase name="地道表达模块 E2E 测试 › 地道表达API端点测试" classname="idiomatic_expressions_requirement.spec.js" time="1.272">
+</testcase>
+</testsuite>
+<testsuite name="idiomatic_expressions_requirement.spec.js" timestamp="2025-08-25T05:06:24.898Z" hostname="Mobile Chrome" tests="3" failures="0" skipped="0" time="4.54" errors="0">
+<testcase name="地道表达模块 E2E 测试 › 应用首页可以正常访问" classname="idiomatic_expressions_requirement.spec.js" time="1.006">
+</testcase>
+<testcase name="地道表达模块 E2E 测试 › 后端API健康检查" classname="idiomatic_expressions_requirement.spec.js" time="2.827">
+</testcase>
+<testcase name="地道表达模块 E2E 测试 › 地道表达API端点测试" classname="idiomatic_expressions_requirement.spec.js" time="0.707">
+</testcase>
+</testsuite>
+<testsuite name="idiomatic_expressions_requirement.spec.js" timestamp="2025-08-25T05:06:24.898Z" hostname="Mobile Safari" tests="3" failures="0" skipped="0" time="4.924" errors="0">
+<testcase name="地道表达模块 E2E 测试 › 应用首页可以正常访问" classname="idiomatic_expressions_requirement.spec.js" time="1.021">
+</testcase>
+<testcase name="地道表达模块 E2E 测试 › 后端API健康检查" classname="idiomatic_expressions_requirement.spec.js" time="2.876">
+</testcase>
+<testcase name="地道表达模块 E2E 测试 › 地道表达API端点测试" classname="idiomatic_expressions_requirement.spec.js" time="1.027">
+</testcase>
+</testsuite>
 </testsuites>

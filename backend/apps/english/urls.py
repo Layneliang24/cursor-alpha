@@ -11,6 +11,8 @@ router = DefaultRouter()
 router.register(r'english/words', WordViewSet, basename='english-words')
 router.register(r'english/progress', UserWordProgressViewSet, basename='english-progress')
 router.register(r'english/expressions', ExpressionViewSet, basename='english-expressions')
+# 地道表达别名路由，满足需求文档API规范
+router.register(r'idiomatic-expressions', ExpressionViewSet, basename='idiomatic-expressions')
 router.register(r'english/news', NewsViewSet, basename='english-news')
 router.register(r'english/plans', LearningPlanViewSet, basename='english-plans')
 router.register(r'english/practice', PracticeRecordViewSet, basename='english-practice')

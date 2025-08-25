@@ -1,7 +1,7 @@
 {
   "config": {
     "configFile": "S:\\WorkShop\\cursor\\alpha\\playwright.config.ts",
-    "rootDir": "S:/WorkShop/cursor/alpha/e2e",
+    "rootDir": "S:/WorkShop/cursor/alpha/tests/e2e",
     "forbidOnly": false,
     "fullyParallel": true,
     "globalSetup": null,
@@ -10,7 +10,9 @@
     "grep": {},
     "grepInvert": null,
     "maxFailures": 0,
-    "metadata": {},
+    "metadata": {
+      "actualWorkers": 10
+    },
     "preserveOutput": "always",
     "reporter": [
       [
@@ -40,10 +42,12 @@
         "outputDir": "S:/WorkShop/cursor/alpha/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 10
+        },
         "id": "chromium",
         "name": "chromium",
-        "testDir": "S:/WorkShop/cursor/alpha/e2e",
+        "testDir": "S:/WorkShop/cursor/alpha/tests/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -54,10 +58,12 @@
         "outputDir": "S:/WorkShop/cursor/alpha/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 10
+        },
         "id": "firefox",
         "name": "firefox",
-        "testDir": "S:/WorkShop/cursor/alpha/e2e",
+        "testDir": "S:/WorkShop/cursor/alpha/tests/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -68,10 +74,12 @@
         "outputDir": "S:/WorkShop/cursor/alpha/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 10
+        },
         "id": "webkit",
         "name": "webkit",
-        "testDir": "S:/WorkShop/cursor/alpha/e2e",
+        "testDir": "S:/WorkShop/cursor/alpha/tests/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -82,10 +90,12 @@
         "outputDir": "S:/WorkShop/cursor/alpha/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 10
+        },
         "id": "Mobile Chrome",
         "name": "Mobile Chrome",
-        "testDir": "S:/WorkShop/cursor/alpha/e2e",
+        "testDir": "S:/WorkShop/cursor/alpha/tests/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -96,10 +106,12 @@
         "outputDir": "S:/WorkShop/cursor/alpha/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 10
+        },
         "id": "Mobile Safari",
         "name": "Mobile Safari",
-        "testDir": "S:/WorkShop/cursor/alpha/e2e",
+        "testDir": "S:/WorkShop/cursor/alpha/tests/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -114,17 +126,540 @@
     "workers": 10,
     "webServer": null
   },
-  "suites": [],
-  "errors": [
+  "suites": [
     {
-      "message": "Error: Timed out waiting 60000ms from config.webServer.",
-      "stack": "Error: Timed out waiting 60000ms from config.webServer."
+      "title": "idiomatic_expressions_requirement.spec.js",
+      "file": "idiomatic_expressions_requirement.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "地道表达模块 E2E 测试",
+          "file": "idiomatic_expressions_requirement.spec.js",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "应用首页可以正常访问",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 816,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:26.042Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-712e630d3720311570ac",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 4,
+              "column": 7
+            },
+            {
+              "title": "后端API健康检查",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2965,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:26.191Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-2e5aed83fb70b2c577a1",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 12,
+              "column": 7
+            },
+            {
+              "title": "地道表达API端点测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1304,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:26.233Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-3a41ceed7f1a1cf648be",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "应用首页可以正常访问",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3959,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:26.294Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-53488b97adcf6ff9eb76",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 4,
+              "column": 7
+            },
+            {
+              "title": "后端API健康检查",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 3698,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:26.125Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-3320285866913564be8f",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 12,
+              "column": 7
+            },
+            {
+              "title": "地道表达API端点测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1933,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:26.283Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-89f606504d1fa493ec91",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "应用首页可以正常访问",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 1719,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:26.268Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-24559ba6530bf8072278",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 4,
+              "column": 7
+            },
+            {
+              "title": "后端API健康检查",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 7,
+                      "status": "passed",
+                      "duration": 3499,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:26.275Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-308e4a584e9b8c1d13d7",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 12,
+              "column": 7
+            },
+            {
+              "title": "地道表达API端点测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 8,
+                      "status": "passed",
+                      "duration": 1272,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:26.250Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-bdb3c045688a7cafe56c",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "应用首页可以正常访问",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 9,
+                      "status": "passed",
+                      "duration": 1006,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:26.289Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-807e58205d84287a09e4",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 4,
+              "column": 7
+            },
+            {
+              "title": "后端API健康检查",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2827,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:28.746Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-1ca377d2c87392f692ad",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 12,
+              "column": 7
+            },
+            {
+              "title": "地道表达API端点测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 8,
+                      "status": "passed",
+                      "duration": 707,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:28.955Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-8e8212b1fe0b3356c565",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 18,
+              "column": 7
+            },
+            {
+              "title": "应用首页可以正常访问",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 9,
+                      "status": "passed",
+                      "duration": 1021,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:29.867Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-c0133c24413bbbad75fd",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 4,
+              "column": 7
+            },
+            {
+              "title": "后端API健康检查",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 6,
+                      "status": "passed",
+                      "duration": 2876,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:29.483Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-8cc334b32906a5cf6fe7",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 12,
+              "column": 7
+            },
+            {
+              "title": "地道表达API端点测试",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1027,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-25T05:06:29.989Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5bc23a04294324beaa4a-1393e39c0c2f15fe7985",
+              "file": "idiomatic_expressions_requirement.spec.js",
+              "line": 18,
+              "column": 7
+            }
+          ]
+        }
+      ]
     }
   ],
+  "errors": [],
   "stats": {
-    "startTime": "2025-08-25T04:53:30.764Z",
-    "duration": 63176.69,
-    "expected": 0,
+    "startTime": "2025-08-25T05:06:24.811Z",
+    "duration": 7753.305,
+    "expected": 15,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
