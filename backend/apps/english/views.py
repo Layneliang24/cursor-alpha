@@ -362,7 +362,7 @@ class UserWordProgressViewSet(viewsets.ModelViewSet):
 class ExpressionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Expression.objects.filter(is_deleted=False).order_by('id')
     serializer_class = ExpressionSerializer
-    permission_classes = [IsAuthenticated, EnglishAccessPermission]
+    permission_classes = [AllowAny]  # 允许匿名访问地道表达
     pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
