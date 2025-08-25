@@ -1200,8 +1200,11 @@ class AIEnhancedPipelineManager(PipelineManager):
         req_dict = base_result['requirement']
         req = Requirement(**req_dict)
         
+        # 标签用于可选预留触发
+        labels = set([l.lower() for l in (req.labels or [])])
+        
         # 使用项目现有目录结构而不是创建新目录
-        ai_outputs: Dict[str, Any] = {'tests': [], 'code': [], 'review': None}
+        ai_outputs: Dict[str, Any] = {'tests': [], 'code': [], 'docs': [], 'review': None}
         
         prompts = self.ai.config.get("prompts", {})
         req_text = self._format_requirement_text(req)
@@ -1241,6 +1244,55 @@ class AIEnhancedPipelineManager(PipelineManager):
                     with open(path, 'w', encoding='utf-8') as f:
                         f.write(item['content'])
             print(f"✅ AI测试生成完成: {len(ai_outputs['tests'])} 个文件")
+        
+        # 轻量级预留：性能/安全/回归测试（按需触发）
+        if ('generate_performance_tests' in (ai_tasks or [])) or ('performance' in labels):
+            prompt = prompts.get(
+                'performance_test_generation',
+                "基于以下需求生成性能测试：\n{requirement}\n请生成包含性能与并发场景的测试示例。"
+            ).format(requirement=req_text)
+            print("🤖 AI生成性能测试...")
+            perf_content = self.ai.generate_code(prompt)
+            perf_item = {'file_path': f'tests/performance/test_{req.id}_perf.py', 'content': perf_content, 'test_type': 'performance'}
+            ai_outputs['tests'].append(perf_item)
+            if not dry_run:
+                path = Path(self.project_root) / perf_item['file_path']
+                path.parent.mkdir(parents=True, exist_ok=True)
+                with open(path, 'w', encoding='utf-8') as f:
+                    f.write(perf_item['content'])
+            print("✅ 性能测试预留生成完成")
+        
+        if ('generate_security_tests' in (ai_tasks or [])) or ('security' in labels):
+            prompt = prompts.get(
+                'security_test_generation',
+                "基于以下需求生成安全测试：\n{requirement}\n请覆盖鉴权/越权/注入/CSRF等常见安全用例。"
+            ).format(requirement=req_text)
+            print("🤖 AI生成安全测试...")
+            sec_content = self.ai.generate_code(prompt)
+            sec_item = {'file_path': f'tests/security/test_{req.id}_sec.py', 'content': sec_content, 'test_type': 'security'}
+            ai_outputs['tests'].append(sec_item)
+            if not dry_run:
+                path = Path(self.project_root) / sec_item['file_path']
+                path.parent.mkdir(parents=True, exist_ok=True)
+                with open(path, 'w', encoding='utf-8') as f:
+                    f.write(sec_item['content'])
+            print("✅ 安全测试预留生成完成")
+        
+        if ('generate_regression_tests' in (ai_tasks or [])) or ('regression' in labels):
+            prompt = prompts.get(
+                'regression_test_generation',
+                "基于以下需求生成回归测试：\n{requirement}\n请根据验收标准列出关键回归路径并生成pytest用例。"
+            ).format(requirement=req_text)
+            print("🤖 AI生成回归测试...")
+            reg_content = self.ai.generate_code(prompt)
+            reg_item = {'file_path': f'tests/regression/test_{req.id}_reg.py', 'content': reg_content, 'test_type': 'regression'}
+            ai_outputs['tests'].append(reg_item)
+            if not dry_run:
+                path = Path(self.project_root) / reg_item['file_path']
+                path.parent.mkdir(parents=True, exist_ok=True)
+                with open(path, 'w', encoding='utf-8') as f:
+                    f.write(reg_item['content'])
+            print("✅ 回归测试预留生成完成")
         
         tests_text = ""
         if ai_outputs['tests']:
@@ -1291,6 +1343,98 @@ class AIEnhancedPipelineManager(PipelineManager):
                         f.write(item['content'])
             print(f"✅ AI代码实现生成完成: {len(ai_outputs['code'])} 个文件")
         
+        # 轻量级预留：后端/前端配套代码（按需触发）
+        if ('implement_backend_extras' in (ai_tasks or [])) or ('backend_extras' in labels):
+            prompt = prompts.get(
+                'backend_extras_generation',
+                "基于以下需求生成后端配套代码样板：权限/过滤/分页/signals/admin\n{requirement}\n请给出可直接放入对应文件的实现或占位。"
+            ).format(requirement=req_text)
+            print("🤖 AI生成后端配套代码...")
+            extras_content = self.ai.generate_code(prompt)
+            app_dir = f'backend/apps/{req.id}'
+            extra_files = [
+                {'file_path': f'{app_dir}/permissions.py', 'content': extras_content, 'template_type': 'permission'},
+                {'file_path': f'{app_dir}/filters.py', 'content': extras_content, 'template_type': 'filter'},
+                {'file_path': f'{app_dir}/pagination.py', 'content': extras_content, 'template_type': 'pagination'},
+                {'file_path': f'{app_dir}/signals.py', 'content': extras_content, 'template_type': 'signal'},
+                {'file_path': f'{app_dir}/admin.py', 'content': extras_content, 'template_type': 'admin'},
+            ]
+            ai_outputs['code'].extend(extra_files)
+            if not dry_run:
+                for item in extra_files:
+                    path = Path(self.project_root) / item['file_path']
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    with open(path, 'w', encoding='utf-8') as f:
+                        f.write(item['content'])
+            print("✅ 后端配套代码预留生成完成")
+        
+        # 前端 store（Pinia风格）、composable、view
+        name_pascal = ''.join([s.capitalize() for s in req.id.replace('-', '_').split('_')])
+        if ('frontend_store' in (ai_tasks or [])) or ('store' in labels):
+            prompt = prompts.get(
+                'frontend_store_generation',
+                "基于以下需求为前端生成状态store：\n{requirement}\n包含state/getters/actions与异步数据加载示例。"
+            ).format(requirement=req_text)
+            print("🤖 AI生成前端store...")
+            store_content = self.ai.generate_code(prompt)
+            store_item = {'file_path': f'frontend/src/stores/{req.id}.js', 'content': store_content, 'template_type': 'store'}
+            ai_outputs['code'].append(store_item)
+            if not dry_run:
+                path = Path(self.project_root) / store_item['file_path']
+                path.parent.mkdir(parents=True, exist_ok=True)
+                with open(path, 'w', encoding='utf-8') as f:
+                    f.write(store_item['content'])
+            print("✅ 前端store预留生成完成")
+        
+        if ('frontend_composable' in (ai_tasks or [])) or ('composable' in labels):
+            prompt = prompts.get(
+                'frontend_composable_generation',
+                "基于以下需求生成Vue 3组合式函数：\n{requirement}"
+            ).format(requirement=req_text)
+            print("🤖 AI生成前端composable...")
+            comp_content = self.ai.generate_code(prompt)
+            comp_item = {'file_path': f'frontend/src/composables/use{name_pascal}.js', 'content': comp_content, 'template_type': 'composable'}
+            ai_outputs['code'].append(comp_item)
+            if not dry_run:
+                path = Path(self.project_root) / comp_item['file_path']
+                path.parent.mkdir(parents=True, exist_ok=True)
+                with open(path, 'w', encoding='utf-8') as f:
+                    f.write(comp_item['content'])
+            print("✅ 前端composable预留生成完成")
+        
+        if ('frontend_route_view' in (ai_tasks or [])) or ('route' in labels) or ('view' in labels):
+            prompt = prompts.get(
+                'frontend_route_view_generation',
+                "基于以下需求生成视图页面：\n{requirement}"
+            ).format(requirement=req_text)
+            print("🤖 AI生成前端视图(View)...")
+            view_content = self.ai.generate_code(prompt)
+            view_item = {'file_path': f'frontend/src/views/{name_pascal}View.vue', 'content': view_content, 'template_type': 'view'}
+            ai_outputs['code'].append(view_item)
+            if not dry_run:
+                path = Path(self.project_root) / view_item['file_path']
+                path.parent.mkdir(parents=True, exist_ok=True)
+                with open(path, 'w', encoding='utf-8') as f:
+                    f.write(view_item['content'])
+            print("✅ 前端View预留生成完成")
+        
+        # 轻量级预留：验收规范文档（按需触发）
+        if ('generate_acceptance_specs' in (ai_tasks or [])) or ('acceptance' in labels):
+            prompt = prompts.get(
+                'acceptance_spec_generation',
+                "请将以下需求转化为验收规范文档：\n{requirement}"
+            ).format(requirement=req_text)
+            print("🤖 AI生成验收规范文档...")
+            spec_content = self.ai.generate_code(prompt)
+            spec_file = f'docs/spec/acceptance/{req.id}.md'
+            ai_outputs['docs'].append(spec_file)
+            if not dry_run:
+                path = Path(self.project_root) / spec_file
+                path.parent.mkdir(parents=True, exist_ok=True)
+                with open(path, 'w', encoding='utf-8') as f:
+                    f.write(spec_content)
+            print("✅ 验收规范文档预留生成完成")
+        
         # 代码审查
         if 'review_code' in ai_tasks:
             code_text = "\n\n".join([c.get('content', '') for c in ai_outputs['code']]) or "暂无代码供审查"
@@ -1329,6 +1473,8 @@ class AIEnhancedPipelineManager(PipelineManager):
                 report += "AI测试文件:\n" + chr(10).join([f"- {t['file_path']} ({t['test_type']})" for t in ai['tests']]) + "\n"
             if ai.get('code'):
                 report += "AI代码文件:\n" + chr(10).join([f"- {c['file_path']} ({c['template_type']})" for c in ai['code']]) + "\n"
+            if ai.get('docs'):
+                report += "AI文档文件:\n" + chr(10).join([f"- {d}" for d in ai['docs']]) + "\n"
             if ai.get('review'):
                 report += f"AI代码审查: {ai['review']}\n"
         return report

@@ -67,7 +67,15 @@ class AIInterface:
             "prompts": {
                 "test_generation": "基于以下需求生成完整的测试代码：\n{requirement}\n\n请生成包含单元测试、集成测试的完整代码，使用pytest框架。",
                 "code_implementation": "基于以下需求和测试用例实现完整的功能代码：\n需求：{requirement}\n测试：{tests}\n\n请实现所有必要的模型、视图、序列化器等。",
-                "code_review": "请审查以下代码并提供改进建议：\n{code}\n\n重点关注代码质量、安全性和性能。"
+                "code_review": "请审查以下代码并提供改进建议：\n{code}\n\n重点关注代码质量、安全性和性能。",
+                "performance_test_generation": "基于以下需求生成性能测试：\n{requirement}\n请生成包含性能基准/负载/并发场景的测试（例如pytest-benchmark或示例化的负载脚本），以可读示例为主。",
+                "security_test_generation": "基于以下需求生成安全测试：\n{requirement}\n请覆盖鉴权/越权/注入/CSRF等常见安全用例，并给出pytest + DRF客户端示例。",
+                "regression_test_generation": "基于以下需求生成回归测试：\n{requirement}\n请根据验收标准列出关键回归路径并生成可运行的pytest用例。",
+                "acceptance_spec_generation": "请将以下需求转化为验收规范文档（Gherkin或结构化清单）：\n{requirement}\n要求：条理清晰，包含Given/When/Then或检查项列表。",
+                "backend_extras_generation": "基于以下需求生成后端配套代码样板：权限classes、过滤filters、分页pagination、signals以及admin注册：\n{requirement}\n请给出可直接放入对应文件的实现或占位。",
+                "frontend_store_generation": "基于以下需求为前端生成Pinia风格的状态store（JS）：\n{requirement}\n包含state/getters/actions与异步数据加载示例。",
+                "frontend_composable_generation": "基于以下需求生成Vue 3组合式函数（composable，JS）：\n{requirement}\n包含参数、返回值说明以及最小示例。",
+                "frontend_route_view_generation": "基于以下需求生成一个视图页面（Vue 3 SFC），用于路由挂载：\n{requirement}\n页面包含基本布局与核心交互占位。"
             }
         }
         
