@@ -2023,4 +2023,207 @@ return {
 - 修改后：平均正确率显示88.99%（基于实际错误数据）
 - API测试通过：`/api/v1/english/data-analysis/overview/` 返回正确的统计数据
 
+---
+
+## 🔍 数据采集问题
+
+### 问题1：如何获取大量的地道表达数据？
+
+**问题描述**
+- 地道表达模块需要大量的中英文翻译、例句和用法数据
+- 手动收集数据效率低，质量难以保证
+- 需要自动化的数据采集解决方案
+
+**问题分析**
+1. **数据需求量大**：需要数千条高质量的地道表达数据
+2. **数据质量要求高**：需要准确的中英文翻译、例句、文化背景
+3. **数据来源多样**：需要从多个权威来源获取数据
+4. **数据格式统一**：需要统一的数据格式便于系统使用
+
+**解决方案**
+
+1. **多源数据采集系统**
+```bash
+# 使用项目提供的数据采集脚本
+python scripts/expression_data_collector.py
+```
+
+2. **数据来源优先级**
+- **免费API**：Urban Dictionary API、Free Dictionary API（优先级最高）
+- **网络爬虫**：权威词典网站（优先级高）
+- **AI生成**：使用GPT-4生成高质量表达（优先级中）
+- **用户贡献**：社区用户提交和审核（优先级低）
+
+3. **数据质量保证机制**
+- 来源可靠性评估
+- 内容格式验证
+- AI辅助质量检查
+- 人工抽样审核
+
+**经验总结**
+1. **自动化优先**：优先使用自动化工具减少人工工作量
+2. **质量第一**：确保数据质量比数量更重要
+3. **多源验证**：从多个来源验证数据的准确性
+4. **持续更新**：建立数据更新机制保持数据新鲜度
+
+**相关文件**
+- `scripts/expression_data_collector.py` - 数据采集脚本
+- `scripts/import_expressions_to_db.py` - 数据导入脚本
+- `docs/GUIDE.md#数据采集指南` - 详细使用指南
+- `docs/spec/requirements/idiomatic_expressions_enhancement.md` - 需求文档
+
+**解决时间**：2025-01-17
+
+**问题严重性**：⭐⭐⭐ 数据获取困难，影响功能开发
+
+**验证结果**
+- 成功采集6条地道表达数据
+- 数据格式统一，质量良好
+- 成功导入数据库，总计9条表达数据
+
+### 问题2：数据采集脚本运行失败
+
+**问题描述**
+- 运行 `python scripts/expression_data_collector.py` 时出现错误
+- 无法获取到数据或脚本崩溃
+
+**问题分析**
+1. **依赖缺失**：缺少必要的Python包
+2. **网络问题**：无法访问外部API
+3. **目录权限**：logs和data目录不存在或权限不足
+4. **API限制**：遇到API调用限制或反爬虫措施
+
+**解决方案**
+
+1. **检查依赖安装**
+```bash
+# 安装必要的Python包
+pip install requests openai
+
+# 检查依赖版本
+pip list | grep -E "(requests|openai)"
+```
+
+2. **检查网络连接**
+```bash
+# 测试网络连接
+curl https://api.dictionaryapi.dev/api/v2/entries/en/test
+
+# 检查防火墙设置
+ping api.dictionaryapi.dev
+```
+
+3. **创建必要目录**
+```bash
+# 创建日志和数据目录
+mkdir -p logs data/expressions
+
+# 检查目录权限
+ls -la logs/ data/
+```
+
+4. **处理API限制**
+```python
+# 添加请求延迟
+import time
+time.sleep(1)  # 1秒延迟
+
+# 轮换User-Agent
+user_agents = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+]
+```
+
+**经验总结**
+1. **环境检查**：运行脚本前先检查环境和依赖
+2. **错误处理**：添加完善的错误处理和日志记录
+3. **网络优化**：合理控制请求频率避免被限制
+4. **监控机制**：建立数据采集监控和告警机制
+
+**相关文件**
+- `logs/expression_collector.log` - 采集日志
+- `data/expressions/collection_stats.json` - 采集统计
+- `scripts/expression_data_collector.py` - 采集脚本
+
+**解决时间**：2025-01-17
+
+**问题严重性**：⭐⭐ 脚本运行失败，影响数据获取
+
+**验证结果**
+- 成功创建logs和data目录
+- 脚本正常运行，采集到6条数据
+- 日志记录完整，便于问题排查
+
+### 问题3：数据导入到数据库失败
+
+**问题描述**
+- 运行 `python scripts/import_expressions_to_db.py` 时出现错误
+- 数据无法正确导入到数据库
+
+**问题分析**
+1. **Django环境问题**：Django设置或路径配置错误
+2. **数据库连接问题**：数据库连接失败或权限不足
+3. **模型字段不匹配**：数据格式与模型字段不匹配
+4. **数据格式错误**：JSON数据格式不正确
+
+**解决方案**
+
+1. **检查Django环境**
+```bash
+# 确保在正确的目录
+cd /path/to/alpha
+
+# 检查Django设置
+python -c "import django; print(django.get_version())"
+
+# 检查Python路径
+python -c "import sys; print(sys.path)"
+```
+
+2. **检查数据库连接**
+```bash
+# 测试数据库连接
+python manage.py dbshell
+
+# 检查数据库状态
+python manage.py showmigrations
+```
+
+3. **检查模型字段**
+```python
+# 在Django shell中检查模型
+python manage.py shell
+>>> from apps.english.models import Expression
+>>> print(Expression._meta.get_fields())
+```
+
+4. **手动导入测试**
+```python
+# 在Django shell中测试导入
+python manage.py shell
+>>> from scripts.import_expressions_to_db import import_expressions_from_json
+>>> import_expressions_from_json('data/expressions/merged_expressions.json')
+```
+
+**经验总结**
+1. **环境隔离**：确保开发环境和生产环境的一致性
+2. **数据验证**：导入前验证数据格式和完整性
+3. **事务处理**：使用数据库事务确保数据一致性
+4. **错误恢复**：提供数据导入失败时的恢复机制
+
+**相关文件**
+- `backend/apps/english/models.py` - Expression模型
+- `scripts/import_expressions_to_db.py` - 导入脚本
+- `data/expressions/` - 数据文件目录
+
+**解决时间**：2025-01-17
+
+**问题严重性**：⭐⭐ 数据导入失败，影响功能使用
+
+**验证结果**
+- 成功导入4条新数据到数据库
+- 数据库中总计9条表达数据
+- 数据格式正确，字段匹配良好
+
 // ... existing code ...

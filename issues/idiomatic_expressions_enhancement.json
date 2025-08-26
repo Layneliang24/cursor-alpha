@@ -1,0 +1,13 @@
+{
+  "title": "[FEATURE] 需求 idiomatic_expressions_enhancement",
+  "body": "## 📋 需求描述\n\n暂无描述\n\n## 🎯 验收标准\n\n\n\n## 🔗 依赖关系\n\n无\n\n## ⏱️ 预估工时\n\n8 小时\n\n## 🏗️ 涉及组件\n\n- frontend\n- backend\n",
+  "labels": [
+    "feature",
+    "medium",
+    "frontend",
+    "backend"
+  ],
+  "assignees": [],
+  "milestone": null,
+  "projects": []
+}

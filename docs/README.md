@@ -24,6 +24,12 @@
 - **[用户系统模块](modules/USER_SYSTEM.md)** - 用户认证和权限
   - 附录：`modules/english/INTEGRATIONS.md`（英语学习相关整合）
 
+### 📋 产品文档
+- **[需求文档](spec/requirements/)** - 产品需求规格和功能设计
+  - [英语学习-地道表达模块完善](spec/requirements/idiomatic_expressions_enhancement.md)
+- **[设计文档](spec/design/)** - 产品设计文档和原型
+- **[规划文档](spec/planning/)** - 产品路线图和规划
+
 ### 🔧 运维文档
 - **[监控方案](operations/MONITORING.md)** - 系统监控和告警
 - **[备份策略](operations/BACKUP.md)** - 数据备份和恢复

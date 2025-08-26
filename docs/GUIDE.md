@@ -1003,3 +1003,164 @@ import NotificationPanel from '@/components/NotificationPanel.vue'
    - 预加载音频文件
    - 使用较小的音频文件
    - 优化音频格式
+
+## 📊 数据采集指南
+
+### 地道表达数据采集
+
+#### 概述
+本项目提供了完整的地道表达数据采集解决方案，支持多种数据源和采集方式。
+
+#### 数据来源
+1. **Urban Dictionary API** - 俚语和地道表达
+2. **Free Dictionary API** - 习语和成语
+3. **AI生成** - 使用GPT-4生成高质量表达
+4. **用户贡献** - 社区用户提交和审核
+
+#### 采集步骤
+
+##### 1. 运行数据采集脚本
+```bash
+# 进入项目根目录
+cd /path/to/alpha
+
+# 运行数据采集脚本
+python scripts/expression_data_collector.py
+```
+
+##### 2. 配置环境变量（可选）
+```bash
+# 设置OpenAI API密钥（用于AI生成）
+export OPENAI_API_KEY="your_openai_api_key"
+
+# 设置其他API密钥
+export URBAN_DICTIONARY_API_KEY="your_urban_dict_key"
+```
+
+##### 3. 查看采集结果
+```bash
+# 查看采集的数据文件
+ls data/expressions/
+
+# 查看统计报告
+cat data/expressions/collection_stats.json
+```
+
+##### 4. 导入数据到数据库
+```bash
+# 导入采集的数据
+python scripts/import_expressions_to_db.py
+```
+
+#### 数据文件说明
+
+##### 采集的数据文件
+- `urban_dictionary_expressions.json` - Urban Dictionary采集数据
+- `free_dictionary_expressions.json` - Free Dictionary API数据
+- `ai_generated_expressions.json` - AI生成数据
+- `merged_expressions.json` - 合并后的完整数据
+- `collection_stats.json` - 采集统计报告
+
+##### 数据格式
+```json
+{
+  "expression": "break the ice",
+  "meaning": "打破僵局，开始交谈",
+  "category": "idiom",
+  "difficulty_level": "intermediate",
+  "usage_examples": [
+    "I told a joke to break the ice at the meeting.",
+    "She used a funny story to break the ice with her new colleagues."
+  ],
+  "cultural_notes": "这个习语来源于破冰船，比喻打破人际交往中的冷漠和隔阂。",
+  "source": "urban_dictionary",
+  "quality_score": 0.9,
+  "collected_at": "2025-01-17T10:30:00"
+}
+```
+
+#### 自定义采集
+
+##### 添加新的数据源
+1. 在 `scripts/expression_data_collector.py` 中添加新的采集器类
+2. 实现 `collect_expressions()` 方法
+3. 在 `main()` 函数中调用新的采集器
+
+##### 修改采集参数
+```python
+# 修改采集数量
+urban_expressions = urban_collector.collect_trending_expressions(limit=100)
+
+# 修改AI生成类别
+categories = ['business', 'daily', 'academic', 'emotional', 'technology']
+
+# 修改习语列表
+common_idioms = [
+    "break the ice", "hit the nail on the head", 
+    "let the cat out of the bag", "piece of cake"
+]
+```
+
+#### 数据质量控制
+
+##### 质量评分标准
+- **0.9-1.0**: 高质量，来源可靠，内容准确
+- **0.7-0.8**: 中等质量，内容基本正确
+- **0.5-0.6**: 低质量，需要人工审核
+- **0.0-0.4**: 质量很差，建议删除
+
+##### 去重策略
+- 按表达内容去重（忽略大小写和空格）
+- 保留质量分数更高的版本
+- 合并不同来源的补充信息
+
+##### 数据验证
+```bash
+# 验证数据格式
+python -c "
+import json
+with open('data/expressions/merged_expressions.json', 'r') as f:
+    data = json.load(f)
+    print(f'总数据量: {len(data)}')
+    print(f'有效数据: {sum(1 for item in data if item.get(\"expression\") and item.get(\"meaning\"))}')
+"
+```
+
+#### 定时采集
+
+##### 设置定时任务
+```bash
+# 添加到crontab（每天凌晨2点采集）
+0 2 * * * cd /path/to/alpha && python scripts/expression_data_collector.py
+
+# 或者使用systemd定时器
+sudo systemctl enable expression-collector.timer
+sudo systemctl start expression-collector.timer
+```
+
+##### 监控采集状态
+```bash
+# 查看采集日志
+tail -f logs/expression_collector.log
+
+# 检查采集统计
+cat data/expressions/collection_stats.json | jq '.total_expressions'
+```
+
+#### 故障排除
+
+##### 常见问题
+1. **API限制**: 添加请求延迟，使用代理
+2. **网络超时**: 增加重试机制，设置超时时间
+3. **数据格式错误**: 检查API响应格式，添加异常处理
+4. **磁盘空间不足**: 定期清理旧数据文件
+
+##### 调试模式
+```bash
+# 启用详细日志
+export LOG_LEVEL=DEBUG
+python scripts/expression_data_collector.py
+
+# 只采集少量数据进行测试
+python scripts/expression_data_collector.py --test-mode
+```

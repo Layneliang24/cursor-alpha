@@ -2,6 +2,19 @@
 
 ## 进行中 🚧
 
+### 英语学习-地道表达模块完善 🆕
+- [ ] **地道表达学习系统完善** - 新需求
+  - **文档**: `docs/spec/requirements/idiomatic_expressions_enhancement.md`
+  - **状态**: 需求分析完成，数据采集方案已制定
+  - **优先级**: high
+  - **预估工时**: 16小时
+  - **功能范围**: 词库管理、学习模式、练习系统、进度跟踪、仪表盘集成
+  - **数据采集**: 
+    - [x] 数据采集脚本开发 (`scripts/expression_data_collector.py`)
+    - [x] 数据导入脚本开发 (`scripts/import_expressions_to_db.py`)
+    - [ ] 运行数据采集获取初始数据
+    - [ ] 数据质量验证和清洗
+
 ### 英语学习模块新功能开发 ✅
 - [x] ✅ **章节完成界面功能** - 已完成
   - **撒花效果和统计界面** - 独立的`ChapterCompletion.vue`组件 ✅
