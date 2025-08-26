@@ -199,6 +199,7 @@ urlpatterns = [
     path('api/v1/', include('apps.todos.urls')),  # Todos
     path('api/v1/', include('apps.ai.urls')),  # AI
     path('api/v1/', include('apps.search.urls')),  # Search
+    path('api/v1/', include('feature_flags.urls')),  # Feature Flags
     path('admin/', admin.site.urls),
 ]
 

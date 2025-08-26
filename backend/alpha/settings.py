@@ -102,6 +102,7 @@ INSTALLED_APPS = [
     'apps.todos',
     'apps.ai',
     'apps.search',
+    'feature_flags',
 ]
 
 MIDDLEWARE = [
