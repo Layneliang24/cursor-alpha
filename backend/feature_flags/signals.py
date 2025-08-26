@@ -19,7 +19,7 @@ def feature_flag_changed(sender, instance, created, **kwargs):
         # 新建特性开关
         FeatureFlagHistory.objects.create(
             feature_flag=instance,
-            action=FeatureFlagHistory.Action.CREATED,
+            action='CREATED',
             old_value=None,
             new_value=_serialize_flag(instance),
             reason=reason,
@@ -39,16 +39,16 @@ def feature_flag_changed(sender, instance, created, **kwargs):
         new_value = _serialize_flag(instance)
         if old_value != new_value:
             # 确定变更类型
-            action = FeatureFlagHistory.Action.UPDATED
+            action = 'UPDATED'
             
             # 检查状态变更
             if old_value and old_value.get('status') != new_value.get('status'):
                 if new_value.get('status') == FeatureFlag.Status.ENABLED:
-                    action = FeatureFlagHistory.Action.ENABLED
+                    action = 'ENABLED'
                 elif new_value.get('status') == FeatureFlag.Status.DISABLED:
-                    action = FeatureFlagHistory.Action.DISABLED
+                    action = 'DISABLED'
                 elif new_value.get('status') == FeatureFlag.Status.ROLLOUT:
-                    action = FeatureFlagHistory.Action.ROLLOUT_STARTED
+                    action = 'ROLLOUT_STARTED'
             
             FeatureFlagHistory.objects.create(
                 feature_flag=instance,
@@ -70,18 +70,12 @@ def feature_flag_deleted(sender, instance, **kwargs):
     
     FeatureFlagHistory.objects.create(
         feature_flag=None,  # 已删除，无法关联
-        action=FeatureFlagHistory.Action.DELETED,
+        action='DELETED',
         old_value=_serialize_flag(instance),
         new_value=None,
         reason=reason,
         changed_by=user,
-        environment=getattr(instance, '_environment', 'unknown'),
-        # 保存被删除的特性开关信息
-        metadata={
-            'deleted_flag_key': instance.key,
-            'deleted_flag_name': instance.name,
-            'deleted_flag_id': instance.id
-        }
+        environment=getattr(instance, '_environment', 'unknown')
     )
 
 
