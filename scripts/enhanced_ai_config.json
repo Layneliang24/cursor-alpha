@@ -1,0 +1,99 @@
+{
+  "ai_providers": {
+    "openai": {
+      "api_key": "your-openai-api-key",
+      "base_url": "https://api.openai.com/v1",
+      "model": "gpt-4",
+      "max_tokens": 4000,
+      "temperature": 0.1
+    },
+    "claude": {
+      "api_key": "your-claude-api-key",
+      "base_url": "https://api.anthropic.com",
+      "model": "claude-3-sonnet-20240229",
+      "max_tokens": 4000,
+      "temperature": 0.1
+    }
+  },
+  "default_provider": "openai",
+  "smart_features": {
+    "code_analysis": {
+      "enabled": true,
+      "scan_existing_models": true,
+      "scan_existing_views": true,
+      "scan_existing_serializers": true,
+      "scan_existing_components": true,
+      "scan_database_tables": true,
+      "scan_api_endpoints": true
+    },
+    "duplicate_prevention": {
+      "enabled": true,
+      "file_hash_check": true,
+      "content_diff_check": true,
+      "backup_existing_files": true,
+      "merge_strategy": "smart_merge"
+    },
+    "requirement_parsing": {
+      "enabled": true,
+      "extract_detailed_features": true,
+      "extract_technical_specs": true,
+      "extract_acceptance_criteria": true,
+      "validate_requirements": true
+    },
+    "code_generation": {
+      "enabled": true,
+      "generate_backend": true,
+      "generate_frontend": true,
+      "generate_tests": true,
+      "generate_docs": true,
+      "follow_best_practices": true,
+      "include_error_handling": true,
+      "include_validation": true
+    }
+  },
+  "prompts": {
+    "requirement_analysis": "请详细分析以下需求文档，提取所有关键信息：\n\n{content}\n\n请以JSON格式返回以下信息：\n{\n    \"id\": \"需求ID\",\n    \"title\": \"需求标题\",\n    \"description\": \"需求描述\",\n    \"detailed_features\": [\"功能1\", \"功能2\", ...],\n    \"technical_specs\": {\n        \"backend_requirements\": [\"后端要求1\", \"后端要求2\"],\n        \"frontend_requirements\": [\"前端要求1\", \"前端要求2\"],\n        \"database_requirements\": [\"数据库要求1\", \"数据库要求2\"],\n        \"api_requirements\": [\"API要求1\", \"API要求2\"]\n    },\n    \"acceptance_criteria\": [\"验收标准1\", \"验收标准2\", ...],\n    \"type\": \"feature|bugfix|enhancement\",\n    \"priority\": \"high|medium|low\",\n    \"components\": [\"frontend\", \"backend\", \"api\", \"database\"],\n    \"dependencies\": [\"依赖1\", \"依赖2\"],\n    \"estimated_hours\": 预估工时\n}",
+    "backend_generation": "基于以下需求和已有代码，生成高质量的后端代码：\n\n需求：{requirement}\n已有代码：{existing_code}\n\n请生成以下文件：\n1. models.py - 数据模型\n2. views.py - 视图和API\n3. serializers.py - 序列化器\n4. urls.py - URL配置\n\n要求：\n- 遵循Django最佳实践\n- 包含完整的CRUD操作\n- 包含权限控制\n- 包含数据验证\n- 避免与已有代码冲突\n- 生成高质量、可维护的代码\n\n请以JSON格式返回：\n{\n    \"models.py\": \"模型代码\",\n    \"views.py\": \"视图代码\", \n    \"serializers.py\": \"序列化器代码\",\n    \"urls.py\": \"URL配置代码\"\n}",
+    "frontend_generation": "基于以下需求，生成高质量的Vue 3前端代码：\n\n需求：{requirement}\n\n请生成以下文件：\n1. Component.vue - 主组件\n2. Service.js - 服务层\n3. Store.js - 状态管理\n\n要求：\n- 使用Vue 3 Composition API\n- 使用Element Plus UI组件\n- 包含完整的CRUD操作\n- 包含错误处理\n- 包含加载状态\n- 生成高质量、可维护的代码\n\n请以JSON格式返回：\n{\n    \"Component.vue\": \"组件代码\",\n    \"Service.js\": \"服务代码\",\n    \"Store.js\": \"状态管理代码\"\n}",
+    "test_generation": "基于以下需求，生成完整的测试代码：\n\n需求：{requirement}\n\n请生成以下测试文件：\n1. test_models.py - 模型测试\n2. test_views.py - 视图测试\n3. test_integration.py - 集成测试\n4. test_e2e.js - E2E测试\n\n要求：\n- 使用pytest框架\n- 包含单元测试、集成测试、E2E测试\n- 测试覆盖所有功能点\n- 包含边界条件测试\n- 包含错误处理测试\n- 生成高质量、可维护的测试代码\n\n请以JSON格式返回：\n{\n    \"test_models.py\": \"模型测试代码\",\n    \"test_views.py\": \"视图测试代码\",\n    \"test_integration.py\": \"集成测试代码\",\n    \"test_e2e.js\": \"E2E测试代码\"\n}",
+    "code_review": "请审查以下代码并提供改进建议：\n\n{code}\n\n重点关注：\n- 代码质量\n- 安全性\n- 性能\n- 可维护性\n- 最佳实践\n\n请提供具体的改进建议和示例代码。",
+    "smart_merge": "请智能合并以下代码：\n\n现有代码：\n{existing_code}\n\n新代码：\n{new_code}\n\n要求：\n- 保留现有功能\n- 添加新功能\n- 避免冲突\n- 保持代码质量\n- 遵循最佳实践\n\n请返回合并后的完整代码。"
+  },
+  "file_patterns": {
+    "backend": {
+      "models": "**/models.py",
+      "views": "**/views.py",
+      "serializers": "**/serializers.py",
+      "urls": "**/urls.py",
+      "admin": "**/admin.py",
+      "tests": "**/test_*.py"
+    },
+    "frontend": {
+      "components": "**/*.vue",
+      "services": "**/*Service.js",
+      "stores": "**/*Store.js",
+      "tests": "**/*.test.js"
+    }
+  },
+  "merge_strategies": {
+    "models": "extend_existing",
+    "views": "enhance_existing",
+    "serializers": "merge_fields",
+    "components": "enhance_existing",
+    "services": "extend_methods",
+    "tests": "add_new_only"
+  },
+  "backup_settings": {
+    "enabled": true,
+    "backup_dir": ".pipeline_backups",
+    "max_backups": 10,
+    "backup_format": "timestamp"
+  },
+  "validation": {
+    "enabled": true,
+    "syntax_check": true,
+    "import_check": true,
+    "dependency_check": true,
+    "test_coverage": true
+  }
+} 

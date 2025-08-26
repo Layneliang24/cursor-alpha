@@ -1,0 +1,284 @@
+# 英语学习-地道表达模块 Django 模型设计
+
+基于您的需求，我将设计一个完整的英语学习地道表达模块，包含数据采集、存储和展示功能。以下是完整的Django模型代码：
+
+```python
+from django.db import models
+from django.contrib.auth.models import User
+from django.utils import timezone
+from django.core.validators import MinLengthValidator, MaxLengthValidator
+from django.urls import reverse
+
+
+class Category(models.Model):
+    """
+    地道表达分类
+    """
+    name = models.CharField(max_length=50, unique=True, verbose_name="分类名称")
+    slug = models.SlugField(max_length=50, unique=True, verbose_name="URL标识")
+    description = models.TextField(blank=True, verbose_name="分类描述")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+    is_active = models.BooleanField(default=True, verbose_name="是否激活")
+
+    class Meta:
+        verbose_name = "分类"
+        verbose_name_plural = "分类"
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class Tag(models.Model):
+    """
+    地道表达标签
+    """
+    name = models.CharField(max_length=30, unique=True, verbose_name="标签名称")
+    slug = models.SlugField(max_length=30, unique=True, verbose_name="URL标识")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+
+    class Meta:
+        verbose_name = "标签"
+        verbose_name_plural = "标签"
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class IdiomaticExpression(models.Model):
+    """
+    地道表达内容
+    """
+    DIFFICULTY_CHOICES = [
+        ('beginner', '初级'),
+        ('intermediate', '中级'),
+        ('advanced', '高级'),
+    ]
+    SOURCE_CHOICES = [
+        ('book', '书籍'),
+        ('movie', '电影'),
+        ('tv_show', '电视剧'),
+        ('news', '新闻'),
+        ('other', '其他'),
+    ]
+
+    expression = models.CharField(max_length=200, verbose_name="地道表达")
+    slug = models.SlugField(max_length=200, unique=True, verbose_name="URL标识")
+    explanation = models.TextField(verbose_name="解释说明")
+    example = models.TextField(verbose_name="使用示例")
+    literal_translation = models.CharField(
+        max_length=200, 
+        blank=True, 
+        verbose_name="字面翻译"
+    )
+    equivalent_in_chinese = models.CharField(
+        max_length=200, 
+        blank=True, 
+        verbose_name="中文对应表达"
+    )
+    difficulty = models.CharField(
+        max_length=15, 
+        choices=DIFFICULTY_CHOICES, 
+        default='intermediate', 
+        verbose_name="难度级别"
+    )
+    source = models.CharField(
+        max_length=20, 
+        choices=SOURCE_CHOICES, 
+        blank=True, 
+        null=True, 
+        verbose_name="来源"
+    )
+    source_detail = models.CharField(
+        max_length=100, 
+        blank=True, 
+        null=True, 
+        verbose_name="来源详情"
+    )
+    categories = models.ManyToManyField(
+        Category, 
+        related_name='expressions', 
+        verbose_name="分类"
+    )
+    tags = models.ManyToManyField(
+        Tag, 
+        related_name='expressions', 
+        blank=True, 
+        verbose_name="标签"
+    )
+    created_by = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        related_name='created_expressions', 
+        verbose_name="创建者"
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+    is_approved = models.BooleanField(default=False, verbose_name="是否审核通过")
+    view_count = models.PositiveIntegerField(default=0, verbose_name="浏览次数")
+    likes = models.PositiveIntegerField(default=0, verbose_name="点赞数")
+
+    class Meta:
+        verbose_name = "地道表达"
+        verbose_name_plural = "地道表达"
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['expression']),
+            models.Index(fields=['slug']),
+            models.Index(fields=['difficulty']),
+            models.Index(fields=['is_approved']),
+        ]
+
+    def __str__(self):
+        return self.expression
+
+    def get_absolute_url(self):
+        return reverse('expression_detail', kwargs={'slug': self.slug})
+
+    def increment_view_count(self):
+        self.view_count += 1
+        self.save(update_fields=['view_count'])
+
+
+class UserExpressionNote(models.Model):
+    """
+    用户对地道表达的学习笔记
+    """
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='expression_notes', 
+        verbose_name="用户"
+    )
+    expression = models.ForeignKey(
+        IdiomaticExpression, 
+        on_delete=models.CASCADE, 
+        related_name='user_notes', 
+        verbose_name="地道表达"
+    )
+    note = models.TextField(verbose_name="学习笔记")
+    is_public = models.BooleanField(default=False, verbose_name="是否公开")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    class Meta:
+        verbose_name = "用户学习笔记"
+        verbose_name_plural = "用户学习笔记"
+        unique_together = ('user', 'expression')
+        ordering = ['-updated_at']
+
+    def __str__(self):
+        return f"{self.user.username} 的笔记: {self.expression.expression}"
+
+
+class ExpressionUsageExample(models.Model):
+    """
+    地道表达的使用示例补充
+    """
+    expression = models.ForeignKey(
+        IdiomaticExpression, 
+        on_delete=models.CASCADE, 
+        related_name='usage_examples', 
+        verbose_name="地道表达"
+    )
+    example = models.TextField(verbose_name="使用示例")
+    source = models.CharField(
+        max_length=100, 
+        blank=True, 
+        null=True, 
+        verbose_name="来源"
+    )
+    added_by = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        related_name='added_examples', 
+        verbose_name="添加者"
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    is_approved = models.BooleanField(default=False, verbose_name="是否审核通过")
+
+    class Meta:
+        verbose_name = "使用示例补充"
+        verbose_name_plural = "使用示例补充"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.expression.expression} 的示例"
+
+
+class ExpressionCollection(models.Model):
+    """
+    用户收藏的地道表达集合
+    """
+    VISIBILITY_CHOICES = [
+        ('private', '私有'),
+        ('public', '公开'),
+        ('shared', '共享'),
+    ]
+
+    name = models.CharField(max_length=100, verbose_name="收藏集名称")
+    description = models.TextField(blank=True, verbose_name="描述")
+    owner = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='expression_collections', 
+        verbose_name="拥有者"
+    )
+    expressions = models.ManyToManyField(
+        IdiomaticExpression, 
+        related_name='collections', 
+        verbose_name="地道表达"
+    )
+    visibility = models.CharField(
+        max_length=10, 
+        choices=VISIBILITY_CHOICES, 
+        default='private', 
+        verbose_name="可见性"
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    class Meta:
+        verbose_name = "表达收藏集"
+        verbose_name_plural = "表达收藏集"
+        ordering = ['-updated_at']
+        unique_together = ('owner', 'name')
+
+    def __str__(self):
+        return f"{self.owner.username} 的收藏集: {self.name}"
+
+
+class ExpressionComment(models.Model):
+    """
+    用户对地道表达的评论
+    """
+    expression = models.ForeignKey(
+        IdiomaticExpression, 
+        on_delete=models.CASCADE, 
+        related_name='comments', 
+        verbose_name="地道表达"
+    )
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='expression_comments', 
+        verbose_name="用户"
+    )
+    content = models.TextField(
+        validators=[
+            MinLengthValidator(10, "评论至少需要10个字符"),
+            MaxLengthValidator(1000, "评论最多1000个字符")
+        ],
+        verbose_name="评论内容"
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+    is_active = models.BooleanField(default=True, verbose_name="是否有效")
+
+    class Meta:
+        verbose_name = "表达评论"
+        verbose_name_plural =
