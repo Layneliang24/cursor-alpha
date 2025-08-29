@@ -7,12 +7,12 @@ from drf_spectacular.utils import extend_schema_view
 from django.conf import settings
 
 
-def preprocess_exclude_paths(result, generator, request, public):
+def preprocess_exclude_paths(endpoints):
     """
     预处理钩子：排除不需要在API文档中显示的路径
     """
     # 排除管理员接口和内部接口
-    excluded_paths = [
+    excluded_patterns = [
         '/admin/',
         '/api/v1/internal/',
         '/api/v1/debug/',
@@ -20,19 +20,23 @@ def preprocess_exclude_paths(result, generator, request, public):
     
     # 如果不是调试模式，排除调试相关接口
     if not settings.DEBUG:
-        excluded_paths.extend([
+        excluded_patterns.extend([
             '/api/v1/test/',
             '/api/v1/mock/',
         ])
     
-    # 过滤掉排除的路径
-    filtered_paths = {}
-    for path, path_info in result.get('paths', {}).items():
-        if not any(excluded in path for excluded in excluded_paths):
-            filtered_paths[path] = path_info
+    # 过滤端点 - 端点是元组列表，可能包含更多元素
+    filtered_endpoints = []
+    for endpoint in endpoints:
+        if len(endpoint) >= 3:
+            path = endpoint[0]
+            if not any(excluded in path for excluded in excluded_patterns):
+                filtered_endpoints.append(endpoint)
+        else:
+            # 保留格式不符合预期的端点
+            filtered_endpoints.append(endpoint)
     
-    result['paths'] = filtered_paths
-    return result
+    return filtered_endpoints
 
 
 def postprocess_schema_enhancements(result, generator, request, public):

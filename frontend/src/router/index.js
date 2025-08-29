@@ -34,6 +34,12 @@ const routes = [
     meta: { title: '地道表达', requiresAuth: true }
   },
   {
+    path: '/english/idiomatic-learning',
+    name: 'IdiomaticLearning',
+    component: () => import('@/views/idiomatic-expressions/ExpressionLearning.vue'),
+    meta: { title: '地道表达学习', requiresAuth: true }
+  },
+  {
     path: '/english/news-dashboard',
     name: 'EnglishNewsDashboard',
     component: () => import('@/views/english/NewsDashboard.vue'),

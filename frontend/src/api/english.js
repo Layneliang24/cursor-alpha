@@ -190,6 +190,35 @@ export const dataAnalysisAPI = {
   // 新增：获取月历热力图数据
   getMonthlyCalendar(params = {}) {
     return request.get('/english/data-analysis/monthly-calendar/', { params })
+  },
+
+  // Enhanced Idiomatic Expressions API
+  getIdiomaticExpressions(params = {}) {
+    return request.get('/api/v1/expressions/', { params })
+  },
+  getIdiomaticExpression(id) {
+    return request.get(`/api/v1/expressions/${id}/`)
+  },
+  getUserExpressionProgress(params = {}) {
+    return request.get('/api/v1/user-progress/', { params })
+  },
+  updateExpressionProgress(expressionId, data) {
+    return request.patch(`/api/v1/user-progress/${expressionId}/`, data)
+  },
+  createLearningSession(data) {
+    return request.post('/api/v1/learning-sessions/', data)
+  },
+  getLearningStatistics() {
+    return request.get('/api/v1/statistics/learning_overview/')
+  },
+  createLearningGoal(data) {
+    return request.post('/api/v1/learning-goals/', data)
+  },
+  updateLearningGoal(goalId, data) {
+    return request.patch(`/api/v1/learning-goals/${goalId}/`, data)
+  },
+  getLearningGoals(params = {}) {
+    return request.get('/api/v1/learning-goals/', { params })
   }
 }
 
