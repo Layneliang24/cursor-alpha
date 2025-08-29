@@ -23,8 +23,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from rest_framework.permissions import AllowAny
 
 
@@ -174,26 +173,17 @@ def health_view(request):
 
     return Response({'ok': ok, 'details': details})
 
-# Swagger / Redoc
-schema_view = get_schema_view(
-    openapi.Info(
-        title="Alpha API",
-        default_version='v1',
-        description="Alpha 技术共享平台 API 文档",
-    ),
-    public=True,
-    permission_classes=[AllowAny],
-)
+# 移除旧的drf-yasg配置，现在使用drf-spectacular
 
 urlpatterns = [
     path('', home_view),  # 首页
     path('api/', api_root),  # API根路径
     path('api/test/', test_api),  # 测试API
     path('api/health/', health_view),  # 健康检查
-    # 文档
-    re_path(r'^api/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    # API文档 (drf-spectacular)
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('api/v1/', include('apps.api.urls')),  # API v1
     path('api/v1/', include('apps.jobs.urls')),  # Jobs
     path('api/v1/', include('apps.todos.urls')),  # Todos

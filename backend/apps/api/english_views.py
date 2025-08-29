@@ -28,6 +28,7 @@ from apps.english.security import (
     EnglishManagementThrottle, EnglishAnonymousThrottle,
     SecurityAuditLogger, ContentSecurityValidator
 )
+from apps.english.cache_strategy import EnglishCacheManager, CacheMonitor
 from .english_serializers import (
     IdiomaticExpressionListSerializer, IdiomaticExpressionDetailSerializer,
     IdiomaticExpressionCreateSerializer, IdiomaticExpressionUpdateSerializer,
@@ -39,6 +40,8 @@ from .english_serializers import (
 )
 from .pagination import CustomPageNumberPagination
 from .permissions import IsAuthorOrAdminOrReadOnly
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
 
 import random
 import logging
@@ -47,6 +50,47 @@ User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
+@extend_schema_view(
+    list=extend_schema(
+        tags=['Expressions'],
+        summary='获取地道表达列表',
+        description='分页获取地道表达列表，支持搜索、过滤和排序',
+        parameters=[
+            OpenApiParameter('search', OpenApiTypes.STR, description='搜索关键词'),
+            OpenApiParameter('difficulty_level', OpenApiTypes.STR, description='难度级别'),
+            OpenApiParameter('tags', OpenApiTypes.STR, description='标签过滤'),
+            OpenApiParameter('ordering', OpenApiTypes.STR, description='排序字段'),
+        ],
+        examples=[
+            OpenApiExample(
+                'Basic Request',
+                summary='基本请求示例',
+                description='获取前10个表达',
+                value={'page': 1, 'page_size': 10}
+            ),
+        ]
+    ),
+    create=extend_schema(
+        tags=['Expressions'],
+        summary='创建地道表达',
+        description='创建新的地道表达，需要内容管理权限'
+    ),
+    retrieve=extend_schema(
+        tags=['Expressions'],
+        summary='获取地道表达详情',
+        description='根据ID获取地道表达的详细信息'
+    ),
+    update=extend_schema(
+        tags=['Expressions'],
+        summary='更新地道表达',
+        description='更新指定的地道表达，需要内容管理权限'
+    ),
+    destroy=extend_schema(
+        tags=['Expressions'],
+        summary='删除地道表达',
+        description='删除指定的地道表达，需要内容管理权限'
+    ),
+)
 class IdiomaticExpressionViewSet(viewsets.ModelViewSet):
     """地道表达ViewSet"""
     
@@ -107,6 +151,68 @@ class IdiomaticExpressionViewSet(viewsets.ModelViewSet):
         
         return queryset
     
+    def list(self, request, *args, **kwargs):
+        """获取表达式列表（带缓存）"""
+        # 检查是否有搜索参数
+        search_query = request.query_params.get('search', '').strip()
+        if search_query:
+            # 如果有搜索，使用搜索逻辑
+            return self.search(request)
+        
+        # 尝试从缓存获取
+        page = int(request.query_params.get('page', 1))
+        page_size = int(request.query_params.get('page_size', 20))
+        filters = {
+            'difficulty_level': request.query_params.get('difficulty_level'),
+            'tags': request.query_params.get('tags'),
+            'ordering': request.query_params.get('ordering'),
+            'source': request.query_params.getlist('source'),
+            'expression_type': request.query_params.get('expression_type'),
+            'formality_level': request.query_params.get('formality_level'),
+        }
+        # 移除None值和空列表
+        filters = {k: v for k, v in filters.items() if v}
+        
+        cached_data = EnglishCacheManager.get_expression_list(filters, page, page_size)
+        if cached_data:
+            logger.debug("返回缓存的表达列表")
+            return Response(cached_data)
+        
+        # 否则返回标准分页列表并缓存结果
+        response = super().list(request, *args, **kwargs)
+        if response.status_code == 200:
+            EnglishCacheManager.set_expression_list(response.data, filters, page, page_size)
+            logger.debug("缓存新的表达列表")
+        
+        return response
+    
+    def retrieve(self, request, *args, **kwargs):
+        """获取表达详情（带缓存）"""
+        expression_id = kwargs.get('pk')
+        
+        # 尝试从缓存获取
+        cached_data = EnglishCacheManager.get_expression_detail(expression_id)
+        if cached_data:
+            logger.debug(f"返回缓存的表达详情: {expression_id}")
+            return Response(cached_data)
+        
+        # 否则从数据库获取并缓存
+        response = super().retrieve(request, *args, **kwargs)
+        if response.status_code == 200:
+            EnglishCacheManager.set_expression_detail(expression_id, response.data)
+            logger.debug(f"缓存新的表达详情: {expression_id}")
+        
+        return response
+    
+    @extend_schema(
+        tags=['Expressions'],
+        summary='搜索地道表达',
+        description='根据关键词搜索地道表达，支持模糊匹配',
+        parameters=[
+            OpenApiParameter('q', OpenApiTypes.STR, description='搜索关键词', required=True),
+            OpenApiParameter('limit', OpenApiTypes.INT, description='返回数量限制，最大50'),
+        ]
+    )
     @action(detail=False, methods=['get'])
     def search(self, request):
         """高级搜索接口"""
@@ -161,6 +267,29 @@ class IdiomaticExpressionViewSet(viewsets.ModelViewSet):
         serializer = IdiomaticExpressionListSerializer(queryset, many=True)
         return Response(serializer.data)
     
+    @extend_schema(
+        tags=['Expressions'],
+        summary='获取随机地道表达',
+        description='随机返回一个地道表达，支持按难度级别过滤',
+        parameters=[
+            OpenApiParameter('difficulty_level', OpenApiTypes.STR, description='难度级别过滤')
+        ],
+        examples=[
+            OpenApiExample(
+                'Random Expression',
+                summary='随机表达示例',
+                description='随机获取一个中级难度表达',
+                request_only=False,
+                response_only=True,
+                value={
+                    'id': 1,
+                    'expression': 'break the ice',
+                    'meaning': '打破沉默，缓解尴尬气氛',
+                    'difficulty_level': 'intermediate'
+                }
+            )
+        ]
+    )
     @action(detail=False, methods=['get'])
     def random(self, request):
         """随机获取表达式"""
@@ -248,6 +377,33 @@ class IdiomaticExpressionViewSet(viewsets.ModelViewSet):
         logger.info(f"删除表达式: {instance.expression} (ID: {instance.id})")
         instance.delete()
     
+    @extend_schema(
+        tags=['Management'],
+        summary='批量创建地道表达',
+        description='批量创建多个地道表达，需要内容管理权限',
+        request=IdiomaticExpressionBatchSerializer,
+        examples=[
+            OpenApiExample(
+                'Batch Create',
+                summary='批量创建示例',
+                description='批量创建两个表达',
+                value={
+                    'expressions': [
+                        {
+                            'expression': 'break the ice',
+                            'meaning': '打破沉默',
+                            'difficulty_level': 'intermediate'
+                        },
+                        {
+                            'expression': 'piece of cake',
+                            'meaning': '小菜一碟',
+                            'difficulty_level': 'beginner'
+                        }
+                    ]
+                }
+            )
+        ]
+    )
     @action(detail=False, methods=['post'], 
             permission_classes=[EnglishContentManagerPermission],
             throttle_classes=[EnglishManagementThrottle])
@@ -366,6 +522,28 @@ class IdiomaticExpressionViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+@extend_schema_view(
+    list=extend_schema(
+        tags=['Learning'],
+        summary='获取用户学习进度',
+        description='获取当前用户的表达学习进度列表'
+    ),
+    create=extend_schema(
+        tags=['Learning'],
+        summary='记录学习进度',
+        description='记录用户对特定表达的学习进度'
+    ),
+    retrieve=extend_schema(
+        tags=['Learning'],
+        summary='获取单个学习进度',
+        description='获取用户对特定表达的详细学习进度'
+    ),
+    update=extend_schema(
+        tags=['Learning'],
+        summary='更新学习进度',
+        description='更新用户的学习进度和掌握程度'
+    ),
+)
 class UserExpressionProgressViewSet(viewsets.ModelViewSet):
     """用户表达式学习进度ViewSet"""
     
@@ -643,19 +821,47 @@ class ExpressionScenarioViewSet(viewsets.ReadOnlyModelViewSet):
     ordering = ['scenario_name']
 
 
+@extend_schema_view(
+    list=extend_schema(exclude=True),  # 不显示list方法
+)
 class StatisticsViewSet(viewsets.GenericViewSet):
     """学习数据统计ViewSet"""
     
     permission_classes = [EnglishLearnerPermission]
     throttle_classes = [EnglishLearningThrottle]
     
+    @extend_schema(
+        tags=['Statistics'],
+        summary='获取学习统计概览',
+        description='获取用户的学习统计数据概览',
+        examples=[
+            OpenApiExample(
+                'Statistics Overview',
+                summary='统计概览示例',
+                description='用户学习数据统计',
+                response_only=True,
+                value={
+                    'total_expressions': 150,
+                    'learned_expressions': 45,
+                    'mastery_distribution': {
+                        'beginner': 20,
+                        'intermediate': 15,
+                        'advanced': 10
+                    },
+                    'learning_streak': 7,
+                    'avg_mastery_level': 3.2
+                }
+            )
+        ]
+    )
     @action(detail=False, methods=['get'])
     def overview(self, request):
         """获取学习数据总览"""
-        cache_key = f'stats_overview_{request.user.id}'
-        cached_data = cache.get(cache_key)
+        # 使用缓存管理器
+        cached_data = EnglishCacheManager.get_statistics(request.user.id, 'overview')
         
         if cached_data:
+            logger.debug(f"返回缓存的统计数据: 用户 {request.user.id}")
             return Response(cached_data)
         
         user = request.user
@@ -821,8 +1027,8 @@ class StatisticsViewSet(viewsets.GenericViewSet):
             'total_analyzed': progress_queryset.count()
         }
         
-        # 缓存15分钟
-        cache.set(cache_key, data, 900)
+        # 缓存结果
+        EnglishCacheManager.set_statistics(request.user.id, 'overview', data)
         
         return Response(data)
     

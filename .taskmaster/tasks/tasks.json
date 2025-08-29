@@ -177,7 +177,7 @@
               "3.2"
             ],
             "details": "集成现有认证中间件，支持JWT Token、Session等多种认证方式。实现基于角色的权限控制（RBAC），定义不同用户级别的API访问权限。开发自定义权限类，实现资源级权限控制。配置API访问限流，防止恶意请求和DDoS攻击。实现API密钥管理，支持第三方应用接入。配置HTTPS强制访问，确保数据传输安全。实现审计日志记录用户API操作行为。设置CORS策略，支持跨域访问控制。",
-            "status": "in-progress",
+            "status": "done",
             "testStrategy": "测试各种认证方式的有效性和安全性。验证权限控制逻辑，测试不同角色用户的访问限制。测试API限流和安全防护机制。"
           },
           {
@@ -191,7 +191,7 @@
               "3.4"
             ],
             "details": "使用drf-spectacular生成符合OpenAPI 3.0规范的API文档，包含完整的接口描述、参数说明、响应示例。配置Swagger UI和ReDoc界面，提供交互式API文档。实现API版本化文档，支持多版本API并存。设计Redis缓存策略，缓存热点数据如热门表达、用户偏好等。实现缓存预热和失效机制，确保数据一致性。配置缓存分层策略，包括应用层缓存和数据库查询缓存。实现缓存监控和性能指标收集。配置API响应缓存，使用HTTP缓存头提升客户端性能。",
-            "status": "pending",
+            "status": "in-progress",
             "testStrategy": "验证API文档的完整性和准确性。测试缓存策略的有效性和数据一致性。进行API性能测试，验证缓存对响应时间的改善效果。"
           }
         ]
@@ -407,7 +407,7 @@
     ],
     "metadata": {
       "created": "2025-08-29T01:00:17.758Z",
-      "updated": "2025-08-29T15:31:13.818Z",
+      "updated": "2025-08-29T15:51:07.574Z",
       "description": "Tasks for feature-test_task_master context"
     }
   }
