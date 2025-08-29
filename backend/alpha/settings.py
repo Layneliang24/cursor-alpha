@@ -116,6 +116,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 缓存中间件
+    'apps.api.cache_middleware.CacheHeadersMiddleware',
+    'apps.api.cache_middleware.APICacheMiddleware',
     # 地道表达安全中间件
     'apps.english.middleware.EnglishSecurityMiddleware',
     'apps.english.middleware.ContentSecurityMiddleware',
@@ -531,6 +534,10 @@ SPECTACULAR_SETTINGS = {
         'tryItOutEnabled': True,
         'supportedSubmitMethods': ['get', 'post', 'put', 'delete', 'patch'],
         'oauth2RedirectUrl': '/api/v1/auth/oauth2-redirect/',
+        'docExpansion': 'list',  # 默认展开操作列表
+        'defaultModelRendering': 'schema',  # 默认显示模式
+        'showExtensions': True,
+        'showCommonExtensions': True,
     },
     'REDOC_UI_SETTINGS': {
         'hideDownloadButton': False,
@@ -544,13 +551,28 @@ SPECTACULAR_SETTINGS = {
                 'primary': {
                     'main': '#667eea'
                 }
+            },
+            'typography': {
+                'fontSize': '14px',
+                'lineHeight': '1.5em',
+                'code': {
+                    'fontSize': '13px',
+                    'fontFamily': 'Courier, monospace'
+                }
             }
+        },
+        'menu': {
+            'groupItems': True
         }
     },
     'COMPONENT_SPLIT_REQUEST': True,
     'COMPONENT_NO_READ_ONLY_REQUIRED': True,
     'SCHEMA_PATH_PREFIX': '/api/v1/',
     'SCHEMA_PATH_PREFIX_TRIM': True,
+    'SORT_OPERATION_PARAMETERS': True,
+    'ENUM_NAME_OVERRIDES': {
+        'ValidationErrorEnum': 'apps.api.enums.ValidationErrorEnum',
+    },
     'TAGS': [
         {'name': 'Authentication', 'description': '用户认证相关接口'},
         {'name': 'Expressions', 'description': '地道表达管理接口'},
@@ -559,11 +581,32 @@ SPECTACULAR_SETTINGS = {
         {'name': 'AI Assistant', 'description': 'AI助教功能接口'},
         {'name': 'Management', 'description': '系统管理接口'},
         {'name': 'Security', 'description': '安全管理接口'},
+        {'name': 'Cache', 'description': '缓存管理接口'},
+        {'name': 'Monitoring', 'description': '系统监控接口'},
     ],
-    'PREPROCESSING_HOOKS': [
-        'apps.api.schema_hooks.preprocess_exclude_paths'
-    ],
+    # 'PREPROCESSING_HOOKS': [
+    #     'apps.api.schema_hooks.preprocess_exclude_paths'
+    # ],
     'POSTPROCESSING_HOOKS': [
         'apps.api.schema_hooks.postprocess_schema_enhancements'
     ],
+    # API版本化支持
+    'SCHEMA_COERCE_METHOD_NAMES': {
+        'retrieve': 'get',
+        'destroy': 'delete',
+    },
+    # 自定义字段映射
+    'APPEND_COMPONENTS': {
+        'securitySchemes': {
+            'BearerAuth': {
+                'type': 'http',
+                'scheme': 'bearer',
+                'bearerFormat': 'JWT',
+                'description': 'JWT认证令牌，格式：Bearer <token>'
+            }
+        }
+    },
+    # 缓存设置
+    'ENABLE_DJANGO_DEPLOY_CHECK': False,
+    'DISABLE_ERRORS_AND_WARNINGS': False,
 }

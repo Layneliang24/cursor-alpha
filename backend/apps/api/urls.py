@@ -10,6 +10,7 @@ from .english_views import (
     IdiomaticExpressionViewSet, UserExpressionProgressViewSet, LearningSessionViewSet,
     ExpressionSourceViewSet, ExpressionScenarioViewSet, StatisticsViewSet, AIAssistantViewSet
 )
+from .cache_views import CacheViewSet
 from apps.english.api_management import APIKeyManagementViewSet, SecurityManagementViewSet
 
 router = DefaultRouter()
@@ -33,6 +34,9 @@ router.register(r'ai-assistant', AIAssistantViewSet, basename='aiassistant')
 # API管理和安全
 router.register(r'api-keys', APIKeyManagementViewSet, basename='apikey')
 router.register(r'security', SecurityManagementViewSet, basename='security')
+
+# 缓存管理
+router.register(r'cache', CacheViewSet, basename='cache')
 
 urlpatterns = [
     path('', include(router.urls)),

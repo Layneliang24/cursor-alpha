@@ -48,6 +48,40 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    assetsDir: 'assets'
+    assetsDir: 'assets',
+    // 代码分割和优化配置
+    rollupOptions: {
+      output: {
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        manualChunks: {
+          // 第三方库分离
+          'vendor': ['vue', 'vue-router', 'pinia'],
+          'ui': ['element-plus', '@element-plus/icons-vue'],
+          'charts': ['echarts'],
+          // 地道表达模块单独分包
+          'idiomatic': [
+            '/src/components/idiomatic-expressions',
+            '/src/stores/modules/expressionStore',
+            '/src/stores/modules/learningStore'
+          ]
+        }
+      }
+    },
+    // 压缩配置
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    // 构建性能优化
+    chunkSizeWarningLimit: 1000
+  },
+  // 优化配置
+  optimizeDeps: {
+    include: ['vue', 'vue-router', 'pinia', 'element-plus', 'echarts']
   }
 }) 

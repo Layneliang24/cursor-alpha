@@ -29,6 +29,7 @@ from apps.english.security import (
     SecurityAuditLogger, ContentSecurityValidator
 )
 from apps.english.cache_strategy import EnglishCacheManager, CacheMonitor
+from .cache_strategy import CacheDecorators, CacheStrategy
 from .english_serializers import (
     IdiomaticExpressionListSerializer, IdiomaticExpressionDetailSerializer,
     IdiomaticExpressionCreateSerializer, IdiomaticExpressionUpdateSerializer,
