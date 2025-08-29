@@ -6,6 +6,10 @@ from .views import (
     AuthView, RegisterView, LogoutView, UserProfileViewSet, upload_image, upload_avatar, update_avatar_url, verify_user_identity,
     password_reset_request, password_reset_confirm, get_home_stats, get_popular_articles, get_recent_articles, get_popular_tags
 )
+from .english_views import (
+    IdiomaticExpressionViewSet, UserExpressionProgressViewSet, LearningSessionViewSet,
+    ExpressionSourceViewSet, ExpressionScenarioViewSet
+)
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -15,6 +19,13 @@ router.register(r'articles', ArticleViewSet)
 router.register(r'comments', CommentViewSet)
 router.register(r'profiles', UserProfileViewSet)
 router.register(r'external-links', ExternalLinkViewSet)
+
+# 地道表达相关API
+router.register(r'expressions', IdiomaticExpressionViewSet, basename='idiomaticexpression')
+router.register(r'expression-progress', UserExpressionProgressViewSet, basename='userexpressionprogress')
+router.register(r'learning-sessions', LearningSessionViewSet, basename='learningsession')
+router.register(r'expression-sources', ExpressionSourceViewSet)
+router.register(r'expression-scenarios', ExpressionScenarioViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
