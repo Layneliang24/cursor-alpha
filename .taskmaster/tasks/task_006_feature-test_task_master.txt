@@ -1,0 +1,43 @@
+# Task ID: 6
+# Title: 学习数据统计与分析系统
+# Status: pending
+# Dependencies: 1, 3, 4
+# Priority: medium
+# Description: 实现全面的学习行为数据收集、分析和可视化展示
+# Details:
+构建学习分析系统，提供多维度数据统计和个性化学习洞察。技术实现：1) 扩展UserExpressionProgress模型，记录详细的学习行为数据 2) 实现LearningAnalyticsService服务类，计算学习指标：掌握度、遗忘曲线、学习效率等 3) 集成现有SM-2间隔重复算法，优化复习计划 4) 使用Django聚合函数和原生SQL优化复杂统计查询 5) 实现数据可视化API，返回ECharts格式的图表数据 6) 前端使用ECharts创建交互式图表：学习进度趋势、表达掌握分布、学习时间分析等 7) 建立学习报告生成系统，支持PDF导出。数据收集策略：实时收集用户操作数据，异步处理数据聚合，使用Redis缓存统计结果。实现学习目标设定和达成度追踪，提供个性化学习建议。
+
+# Test Strategy:
+创建模拟学习数据，测试统计算法的准确性。验证数据可视化API返回的图表数据格式。使用Selenium测试前端图表的交互功能。性能测试评估大数据量下的统计查询效率。
+
+# Subtasks:
+## 1. 扩展UserExpressionProgress模型记录学习行为数据 [pending]
+### Dependencies: None
+### Description: 扩展现有UserExpressionProgress模型，添加详细的学习行为数据字段，包括学习时间、答题准确率、复习次数等关键指标
+### Details:
+在backend/apps/english/models.py中扩展UserExpressionProgress模型，新增字段：study_duration（学习时长）、accuracy_rate（准确率）、review_count（复习次数）、last_review_time（最后复习时间）、difficulty_rating（难度评级）、learning_efficiency（学习效率）等。使用JSONField存储扩展的学习行为数据，确保与现有系统兼容。创建相应的数据库迁移文件，添加必要的索引优化查询性能。
+
+## 2. 实现LearningAnalyticsService服务类 [pending]
+### Dependencies: 6.1
+### Description: 创建LearningAnalyticsService服务类，实现核心学习指标计算算法，包括掌握度、遗忘曲线、学习效率等分析功能
+### Details:
+在backend/apps/english/services/目录下创建learning_analytics.py，实现LearningAnalyticsService类。核心方法包括：calculate_mastery_level()计算表达掌握度、analyze_forgetting_curve()分析遗忘曲线、compute_learning_efficiency()计算学习效率、generate_learning_insights()生成学习洞察。集成现有SM-2间隔重复算法，优化复习计划推荐。使用Django聚合函数和原生SQL优化复杂统计查询，提升计算性能。
+
+## 3. 开发数据可视化API接口 [pending]
+### Dependencies: 6.2
+### Description: 实现数据可视化API接口，返回ECharts格式的图表数据，支持学习进度趋势、表达掌握分布、学习时间分析等多种图表类型
+### Details:
+在backend/apps/english/views/目录下创建analytics_views.py，实现数据可视化API接口。主要接口包括：/api/analytics/progress-trend/返回学习进度趋势数据、/api/analytics/mastery-distribution/返回表达掌握分布、/api/analytics/time-analysis/返回学习时间分析。使用Django REST framework序列化器格式化数据，确保返回ECharts兼容的JSON格式。集成Redis缓存机制，缓存统计结果提升响应速度。实现数据权限控制，确保用户只能访问自己的学习数据。
+
+## 4. 前端ECharts交互式图表实现 [pending]
+### Dependencies: 6.3
+### Description: 使用ECharts库创建交互式学习数据图表，包括学习进度趋势图、表达掌握分布图、学习时间分析图等可视化组件
+### Details:
+在frontend/src/components/目录下创建LearningAnalytics组件目录，实现多个图表子组件：ProgressTrendChart.vue（学习进度趋势图）、MasteryDistributionChart.vue（掌握分布图）、TimeAnalysisChart.vue（时间分析图）。使用Vue 3 Composition API和ECharts 5.x版本，实现响应式图表和交互功能。支持图表数据实时更新、时间范围筛选、图表类型切换等交互特性。集成现有的API服务，实现数据自动加载和错误处理。
+
+## 5. 学习报告生成和目标追踪系统 [pending]
+### Dependencies: 6.2, 6.3
+### Description: 建立学习报告生成系统支持PDF导出，实现学习目标设定和达成度追踪功能，提供个性化学习建议
+### Details:
+创建ReportGenerationService服务类，使用ReportLab库生成PDF学习报告。报告内容包括：学习概览、进度统计、掌握度分析、时间分布、个性化建议等模块。实现学习目标管理功能：目标设定、进度追踪、达成度计算、提醒通知。在数据库中新增LearningGoal模型存储用户学习目标。集成现有的学习分析数据，生成个性化学习建议和复习计划。使用Celery异步处理PDF生成任务，避免阻塞用户界面。
+

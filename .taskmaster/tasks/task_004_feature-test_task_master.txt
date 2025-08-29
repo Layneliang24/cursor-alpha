@@ -1,0 +1,43 @@
+# Task ID: 4
+# Title: 前端界面与组件开发
+# Status: pending
+# Dependencies: 3
+# Priority: medium
+# Description: 基于Vue.js 3开发现代化的地道表达学习界面
+# Details:
+在现有前端架构下新增idiomatic-expressions模块，采用Vue.js 3 + TypeScript + Vite技术栈。核心组件包括：1) ExpressionCard.vue表达卡片组件，支持卡片翻转动画 2) ScenarioPlayer.vue场景播放器，集成音频播放和字幕显示 3) LearningDashboard.vue学习仪表板，使用ECharts展示学习进度 4) AIAssistantChat.vue AI对话界面。使用Pinia状态管理，创建expressionStore、learningStore管理数据。采用Vue Router实现页面路由，集成现有认证守卫。UI设计遵循Material Design 3规范，使用Vuetify或PrimeVue组件库。实现响应式布局，支持桌面端、平板、手机多端适配。使用Vite构建工具，配置代码分割和懒加载优化性能。
+
+# Test Strategy:
+使用Vitest进行组件单元测试，覆盖组件渲染、用户交互、状态变更等场景。使用Vue Test Utils模拟用户操作，验证组件行为。集成Playwright进行E2E测试，测试完整的用户学习流程。使用Lighthouse进行性能测试，确保页面加载速度和用户体验。
+
+# Subtasks:
+## 1. 项目结构搭建与开发环境配置 [pending]
+### Dependencies: None
+### Description: 在现有前端架构下创建idiomatic-expressions模块，配置Vue.js 3 + TypeScript + Vite开发环境
+### Details:
+在src目录下创建views/idiomatic-expressions文件夹结构，配置TypeScript编译选项，设置Vite构建配置包括代码分割和懒加载。安装必要依赖包：Vue 3、TypeScript、Vite、Vue Router、Pinia、ECharts、Vuetify/PrimeVue。配置ESLint和Prettier代码规范，设置开发服务器和热重载。创建基础路由配置，集成现有认证守卫系统。
+
+## 2. 核心Vue组件开发 [pending]
+### Dependencies: 4.1
+### Description: 开发ExpressionCard、ScenarioPlayer、LearningDashboard、AIAssistantChat四个核心组件
+### Details:
+实现ExpressionCard.vue表达卡片组件，包含卡片翻转动画、表达内容展示、收藏和标记功能。开发ScenarioPlayer.vue场景播放器，集成HTML5音频播放器、字幕同步显示、播放控制。创建LearningDashboard.vue学习仪表板，使用ECharts展示学习进度图表、掌握度分布、学习时间统计。实现AIAssistantChat.vue AI对话界面，支持实时消息、流式响应、对话历史。所有组件遵循Material Design 3设计规范。
+
+## 3. 状态管理与数据流设计 [pending]
+### Dependencies: 4.1
+### Description: 使用Pinia实现expressionStore和learningStore状态管理，设计数据流架构
+### Details:
+创建expressionStore管理地道表达数据，包括表达列表、搜索过滤、收藏状态、学习进度等。实现learningStore管理学习相关状态，包括用户学习记录、统计数据、AI对话历史、学习目标等。设计异步action处理API调用，实现数据缓存和错误处理机制。使用TypeScript定义严格的状态类型，确保类型安全。实现状态持久化，支持本地存储和会话恢复。
+
+## 4. 路由配置与页面集成 [pending]
+### Dependencies: 4.2, 4.3
+### Description: 配置Vue Router实现页面路由，集成现有认证守卫，实现页面间导航
+### Details:
+扩展现有Vue Router配置，添加地道表达学习相关路由：表达列表页、详情页、学习页、统计页、AI助教页。实现路由懒加载，优化首屏加载性能。集成现有用户认证守卫，确保学习页面需要登录访问。配置路由元信息，支持面包屑导航和页面标题。实现路由参数传递和查询参数处理，支持深度链接和页面刷新。添加路由过渡动画，提升用户体验。
+
+## 5. 响应式布局与性能优化 [pending]
+### Dependencies: 4.2, 4.4
+### Description: 实现响应式布局设计，支持多端适配，进行性能优化和构建配置
+### Details:
+使用CSS Grid和Flexbox实现响应式布局，支持桌面端（1200px+）、平板（768px-1199px）、手机（<768px）三种断点。使用Vuetify或PrimeVue组件库的响应式系统，确保组件在不同设备上的适配。配置Vite构建优化：代码分割、Tree Shaking、资源压缩、CDN配置。实现图片懒加载和虚拟滚动优化长列表性能。使用Web Workers处理复杂计算，避免主线程阻塞。配置PWA支持，实现离线缓存和应用安装。
+

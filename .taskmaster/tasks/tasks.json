@@ -3,110 +3,411 @@
     "tasks": [
       {
         "id": 1,
-        "title": "项目初始化与基础结构搭建",
-        "description": "创建项目基础文件结构，包括前端HTML/CSS/JavaScript文件和本地JSON数据存储文件。",
-        "details": "1. 创建项目根目录\n2. 初始化package.json（如果需要）\n3. 创建以下目录结构：\n   - public/index.html（前端入口）\n   - public/css/style.css（样式文件）\n   - public/js/app.js（主逻辑文件）\n   - data/tasks.json（初始化为空数组[]）\n4. 设置简单的HTTP服务器（如使用Node.js的http-server或Express）以提供前端文件和API接口\n\n伪代码（服务器设置示例）：\n```javascript\nconst express = require('express');\nconst app = express();\napp.use(express.static('public'));\napp.use(express.json());\n// API路由将在后续任务中实现\napp.listen(3000, () => console.log('Server running on port 3000'));\n```",
-        "testStrategy": "验证项目结构是否正确创建：\n- 检查目录和文件是否存在\n- 启动HTTP服务器，访问index.html应显示空白页面（无错误）\n- 检查tasks.json文件是否为空数组",
+        "title": "数据模型设计与数据库迁移",
+        "description": "扩展现有Django模型，设计地道表达相关数据表结构，创建数据库迁移文件",
+        "details": "基于现有Expression模型扩展IdiomaticExpression模型，新增ExpressionScenario、UserExpressionProgress、ExpressionSource、AIAssistantConfig等关联模型。使用Django 4.2+的JSONField存储扩展数据，保持与现有系统的兼容性。实现具体步骤：1) 在backend/apps/english/models.py中扩展现有模型 2) 添加地道表达特有字段：expression_type、frequency_score、formality_level等 3) 创建新模型：ExpressionScenario用于存储使用场景，ExpressionSource管理数据源 4) 使用Django migration系统创建数据库变更文件 5) 设计合理的数据库索引提升查询性能 6) 预留JSON字段支持未来扩展需求。技术要点：使用MySQL 8.0+的JSON数据类型，合理设计外键关系，确保数据一致性。",
+        "testStrategy": "编写模型单元测试验证字段约束、关系映射和数据验证逻辑。使用pytest-django测试框架，覆盖模型创建、更新、查询等核心操作。测试数据库迁移的正向和回滚操作，确保数据完整性。",
         "priority": "high",
         "dependencies": [],
-        "status": "pending",
-        "subtasks": []
+        "status": "in-progress",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "扩展Expression模型创建IdiomaticExpression",
+            "description": "基于现有Expression模型扩展创建IdiomaticExpression模型，添加地道表达特有字段",
+            "dependencies": [],
+            "details": "在backend/apps/english/models.py中扩展现有Expression模型，创建IdiomaticExpression子类。新增字段包括：expression_type（表达类型，如习语、俚语、固定搭配）、frequency_score（使用频率评分1-10）、formality_level（正式程度：informal/neutral/formal）、difficulty_level（难度等级1-5）、phonetic_transcription（音标）。使用Django的JSONField存储额外的元数据如变体形式、同义表达等。确保与现有Expression模型的兼容性，继承现有字段如content、translation、created_at等。\n<info added on 2025-08-29T12:50:29.594Z>\n开始分析现有Expression模型结构，为创建ExpressionScenario和ExpressionSource模型做准备。\n\n当前分析进展：\n1. 现有模型调研 - 需要先查看backend/apps/english/models.py中现有Expression模型的字段结构\n2. 新模型字段设计 - 计划设计ExpressionScenario和ExpressionSource模型的字段及关联关系\n3. 技术选型确认 - 使用Django 4.2+ JSONField存储元数据，MySQL 8.0+ JSON支持\n\n下一步行动：\n- 完成Expression模型结构分析\n- 设计ExpressionScenario和ExpressionSource模型的字段数据类型、约束条件及外键关联\n- 编写ExpressionScenario和ExpressionSource模型代码\n</info added on 2025-08-29T12:50:29.594Z>",
+            "status": "in-progress",
+            "testStrategy": "编写模型单元测试验证字段约束和默认值。测试模型继承关系和字段访问。验证JSONField的数据存储和查询功能。测试模型的字符串表示和基本CRUD操作。"
+          },
+          {
+            "id": 2,
+            "title": "创建ExpressionScenario和ExpressionSource模型",
+            "description": "设计并实现ExpressionScenario使用场景模型和ExpressionSource数据源管理模型",
+            "dependencies": [],
+            "details": "创建ExpressionScenario模型存储地道表达的使用场景，字段包括：scenario_name（场景名称）、context_description（上下文描述）、example_dialogue（示例对话）、scenario_type（场景类型：business/casual/academic等）。创建ExpressionSource模型管理数据来源，字段包括：source_name、source_url、source_type（dictionary/forum/news等）、reliability_score（可靠性评分）、last_updated（最后更新时间）。建立与IdiomaticExpression的多对多关系，使用through参数定义中间表存储关联的额外信息。",
+            "status": "pending",
+            "testStrategy": "测试模型间的多对多关系映射。验证中间表的数据完整性和级联操作。测试场景和表达的关联查询性能。验证模型字段的验证规则和约束条件。"
+          },
+          {
+            "id": 3,
+            "title": "创建UserExpressionProgress用户学习进度模型",
+            "description": "设计用户表达学习进度跟踪模型，实现个性化学习数据管理",
+            "dependencies": [],
+            "details": "创建UserExpressionProgress模型跟踪用户学习进度，字段包括：user（外键关联User模型）、expression（外键关联IdiomaticExpression）、mastery_level（掌握程度0-100）、review_count（复习次数）、correct_count（正确次数）、last_reviewed（最后复习时间）、next_review（下次复习时间）、learning_streak（连续学习天数）。使用JSONField存储详细的学习历史记录，包括每次学习的时间戳、答题结果、用时等。实现SM-2算法相关字段：easiness_factor（容易度因子）、interval（复习间隔）。",
+            "status": "pending",
+            "testStrategy": "测试用户学习进度的记录和更新逻辑。验证SM-2算法的实现和下次复习时间计算。测试学习历史数据的JSON存储和查询。验证用户和表达的关联完整性约束。"
+          },
+          {
+            "id": 4,
+            "title": "创建AIAssistantConfig AI助教配置模型",
+            "description": "设计AI助教服务配置模型，支持多种AI模型的参数管理",
+            "dependencies": [],
+            "details": "创建AIAssistantConfig模型管理AI服务配置，字段包括：config_name（配置名称）、ai_provider（AI提供商：openai/anthropic/local等）、model_name（模型名称如gpt-4、claude-3等）、api_endpoint（API端点）、max_tokens（最大令牌数）、temperature（温度参数）、system_prompt（系统提示词模板）。使用JSONField存储特定模型的扩展配置参数。实现配置的版本管理和激活状态控制。添加加密字段存储API密钥，使用Django的cryptography库确保安全性。建立配置的使用统计和性能监控字段。",
+            "status": "pending",
+            "testStrategy": "测试AI配置的创建、更新和激活逻辑。验证API密钥的加密存储和解密访问。测试配置参数的验证和序列化。验证不同AI提供商配置的兼容性处理。"
+          },
+          {
+            "id": 5,
+            "title": "创建数据库迁移文件和索引优化",
+            "description": "使用Django migration系统创建数据库变更文件，设计合理的数据库索引提升查询性能",
+            "dependencies": [],
+            "details": "使用python manage.py makemigrations命令生成所有新模型的迁移文件。创建自定义迁移优化数据库结构：为IdiomaticExpression的expression_type、frequency_score、difficulty_level字段创建复合索引；为UserExpressionProgress的user_id、last_reviewed、next_review字段创建组合索引；为ExpressionScenario的scenario_type字段创建索引。使用MySQL 8.0+的JSON数据类型优化JSONField存储。实现数据库表分区策略对UserExpressionProgress按用户ID分区。创建数据库约束确保数据一致性，如用户学习进度的唯一性约束。编写数据迁移脚本处理现有数据的转换和初始化。",
+            "status": "pending",
+            "testStrategy": "测试数据库迁移的正向执行和回滚操作。验证索引的创建和查询性能提升效果。测试约束条件的数据完整性保护。使用Django的数据库测试工具验证迁移的幂等性和安全性。"
+          }
+        ]
       },
       {
         "id": 2,
-        "title": "实现任务数据模型与核心逻辑",
-        "description": "根据PRD定义的任务数据模型，实现任务管理的核心逻辑（CRUD操作）和本地JSON存储的读写功能。",
-        "details": "1. 在app.js中定义任务数据模型（与PRD一致）\n2. 实现以下核心函数：\n   - loadTasks(): 从tasks.json读取任务数据\n   - saveTasks(tasks): 将任务数组写入tasks.json\n   - createTask(taskData): 创建新任务（生成id和时间戳）\n   - updateTask(id, updates): 更新指定任务\n   - deleteTask(id): 删除指定任务\n3. 注意：createdAt在创建时生成，updatedAt在更新时更新\n\n伪代码（核心函数示例）：\n```javascript\nfunction createTask(taskData) {\n  const newTask = {\n    id: Date.now().toString(), // 简单唯一ID\n    ...taskData,\n    status: 'pending', // 默认状态\n    createdAt: new Date().toISOString(),\n    updatedAt: new Date().toISOString()\n  };\n  const tasks = loadTasks();\n  tasks.push(newTask);\n  saveTasks(tasks);\n  return newTask;\n}\n```\n<info added on 2025-08-29T02:57:49.832Z>\n根据研究结果调整任务实现结构，采用模块化设计：\n\n1. 将核心逻辑拆分为两个模块：\n   - core/tasks.js：纯函数操作（创建/更新/删除任务对象），不涉及文件IO\n   - infra/tasksRepo.js：文件读写操作（loadTasks/saveTasks）\n\n2. core/tasks.js实现（命名导出）：\n```javascript\nexport function createTask(taskData) {\n  const now = new Date().toISOString();\n  return {\n    id: Date.now().toString(),\n    title: taskData.title?.trim() || '',\n    description: taskData.description || '',\n    priority: taskData.priority || 'medium',\n    status: 'pending',\n    createdAt: now,\n    updatedAt: now\n  };\n}\n\nexport function updateTask(task, updates) {\n  return { \n    ...task, \n    ...updates, \n    updatedAt: new Date().toISOString() \n  };\n}\n\nexport function deleteTask(tasks, id) {\n  return tasks.filter(task => task.id !== id);\n}\n```\n\n3. infra/tasksRepo.js实现：\n```javascript\nimport { promises as fs } from 'fs';\n\nconst filePath = './data/tasks.json';\n\nexport async function loadTasks() {\n  try {\n    const data = await fs.readFile(filePath, 'utf8');\n    return JSON.parse(data);\n  } catch (err) {\n    if (err.code === 'ENOENT') return [];\n    throw err;\n  }\n}\n\nexport async function saveTasks(tasks) {\n  await fs.writeFile(filePath, JSON.stringify(tasks, null, 2));\n}\n```\n\n4. 在server.js中组合使用：\n```javascript\nimport * as taskCore from './core/tasks.js';\nimport * as taskRepo from './infra/tasksRepo.js';\n\n// 创建任务示例\napp.post('/tasks', async (req, res) => {\n  const newTask = taskCore.createTask(req.body);\n  const tasks = await taskRepo.loadTasks();\n  tasks.push(newTask);\n  await taskRepo.saveTasks(tasks);\n  res.status(201).json(newTask);\n});\n```\n\n5. 单元测试调整：\n   - 单独测试core/tasks.js的时间戳生成和字段处理\n   - 单独测试infra/tasksRepo.js的文件读写异常处理\n   - 集成测试验证模块组合功能\n</info added on 2025-08-29T02:57:49.832Z>",
-        "testStrategy": "单元测试核心函数：\n- 创建任务后检查返回对象是否包含所有字段\n- 更新任务后检查updatedAt是否更新\n- 删除任务后检查数据中是否移除\n- 手动检查tasks.json文件内容是否正确",
+        "title": "智能数据采集系统开发",
+        "description": "基于现有爬虫架构扩展，实现多源地道表达数据采集系统",
+        "details": "扩展现有EnhancedNewsCrawler基类，创建BaseExpressionCrawler。实现多个专业爬虫类：CambridgeCrawler、CollinsCrawler、RedditCrawler、UrbanDictionaryCrawler等。技术实现：1) 继承现有爬虫的网络请求、错误处理、重试机制 2) 使用requests-html或Scrapy处理动态内容 3) 实现数据清洗和质量评估算法 4) 建立去重机制避免重复数据 5) 扩展crawl_news.py管理命令创建crawl_expressions.py 6) 使用Celery异步处理爬虫任务 7) 实现爬虫调度和监控机制。数据处理流程：原始数据获取→内容解析→质量评估→去重处理→入库存储。使用Redis缓存已处理的URL，提高爬虫效率。",
+        "testStrategy": "创建爬虫单元测试，mock外部网络请求，验证数据解析逻辑。使用pytest-mock模拟各种网络环境和响应状态。测试数据去重算法和质量评估机制。集成测试验证爬虫与数据库的交互。",
         "priority": "high",
         "dependencies": [
           1
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "基础爬虫架构扩展",
+            "description": "扩展现有EnhancedNewsCrawler基类，创建BaseExpressionCrawler基础爬虫类",
+            "dependencies": [],
+            "details": "继承现有EnhancedNewsCrawler的网络请求、错误处理、重试机制等核心功能。创建BaseExpressionCrawler抽象基类，定义表达式数据采集的通用接口和方法。实现通用的数据解析框架，支持HTML和JSON格式内容解析。集成requests-html库处理JavaScript渲染的动态内容。建立统一的异常处理机制和日志记录系统。",
+            "status": "pending",
+            "testStrategy": "创建BaseExpressionCrawler单元测试，验证继承关系和基础功能。使用mock模拟网络请求，测试错误处理和重试逻辑。验证动态内容解析功能的正确性。"
+          },
+          {
+            "id": 2,
+            "title": "专业爬虫类实现",
+            "description": "实现CambridgeCrawler、CollinsCrawler、RedditCrawler、UrbanDictionaryCrawler等专业爬虫类",
+            "dependencies": [
+              "2.1"
+            ],
+            "details": "基于BaseExpressionCrawler实现多个专业爬虫类。CambridgeCrawler采集剑桥词典的地道表达和例句。CollinsCrawler获取柯林斯词典的短语和用法。RedditCrawler抓取Reddit英语学习社区的真实对话。UrbanDictionaryCrawler采集城市词典的俚语表达。每个爬虫类实现特定的数据解析逻辑，处理不同网站的HTML结构和反爬虫机制。",
+            "status": "pending",
+            "testStrategy": "为每个爬虫类创建独立的单元测试，mock目标网站的HTML响应。测试数据解析逻辑的准确性和异常处理。验证反爬虫机制的应对策略。"
+          },
+          {
+            "id": 3,
+            "title": "数据处理与质量控制",
+            "description": "实现数据清洗、质量评估和去重机制",
+            "dependencies": [
+              "2.2"
+            ],
+            "details": "建立数据清洗流水线，去除HTML标签、特殊字符和无效内容。实现数据质量评估算法，基于内容长度、语法正确性、相关性等指标评分。建立基于内容哈希和语义相似度的去重机制，避免重复数据入库。使用Redis缓存已处理的URL和内容哈希，提高去重效率。实现数据标准化处理，统一格式和编码。",
+            "status": "pending",
+            "testStrategy": "创建数据清洗和质量评估的单元测试，验证算法的准确性。测试去重机制的效果，确保重复数据被正确识别。验证Redis缓存的性能和数据一致性。"
+          },
+          {
+            "id": 4,
+            "title": "异步任务与调度系统",
+            "description": "集成Celery实现爬虫任务的异步处理和调度管理",
+            "dependencies": [
+              "2.3"
+            ],
+            "details": "扩展现有crawl_news.py管理命令，创建crawl_expressions.py爬虫管理命令。集成Celery异步任务队列，实现爬虫任务的并发执行。建立任务调度系统，支持定时爬取和手动触发。实现爬虫任务的优先级管理和资源限制。建立任务监控机制，记录执行状态、成功率和错误信息。使用Redis作为消息代理和结果存储。",
+            "status": "pending",
+            "testStrategy": "测试Celery任务的创建、执行和状态管理。验证任务调度的准确性和可靠性。使用pytest-celery测试异步任务的执行逻辑。测试任务监控和错误恢复机制。"
+          },
+          {
+            "id": 5,
+            "title": "数据存储与性能优化",
+            "description": "实现高效的数据存储机制和系统性能优化",
+            "dependencies": [
+              "2.4"
+            ],
+            "details": "建立完整的数据处理流程：原始数据获取→内容解析→质量评估→去重处理→入库存储。优化数据库写入性能，使用批量插入和事务管理。实现数据库连接池管理，提高并发处理能力。建立数据备份和恢复机制，确保数据安全。使用数据库索引优化查询性能。实现爬虫效率监控，收集性能指标和统计数据。",
+            "status": "pending",
+            "testStrategy": "测试数据存储流程的完整性和性能。验证批量插入和事务处理的正确性。进行压力测试，评估系统在高并发下的表现。测试数据备份和恢复功能的可靠性。"
+          }
+        ]
       },
       {
         "id": 3,
-        "title": "实现API接口",
-        "description": "根据PRD定义的API规范，实现四个RESTful端点：GET /tasks, POST /tasks, PUT /tasks/:id, DELETE /tasks/:id。",
-        "details": "1. 在服务器代码（如server.js）中添加API路由\n2. 每个端点调用任务核心逻辑函数：\n   - GET /tasks → 返回所有任务（JSON格式）\n   - POST /tasks → 从请求体获取任务数据，调用createTask\n   - PUT /tasks/:id → 从请求体获取更新数据，调用updateTask\n   - DELETE /tasks/:id → 调用deleteTask\n3. 添加基本错误处理（如任务不存在返回404）\n\n伪代码（API示例）：\n```javascript\napp.get('/tasks', (req, res) => {\n  res.json(loadTasks());\n});\n\napp.post('/tasks', (req, res) => {\n  const newTask = createTask(req.body);\n  res.status(201).json(newTask);\n});\n```\n<info added on 2025-08-29T02:30:49.595Z>\n4. 扩展错误处理：实现统一的错误响应结构，所有错误返回标准JSON格式：\n```json\n{\n  \"error\": {\n    \"code\": 状态码,\n    \"message\": \"错误摘要\",\n    \"details\": \"具体错误信息\"\n  }\n}\n```\n添加全局错误处理中间件捕获异常。\n\n5. 规范状态码使用：\n   - 任务创建成功返回201\n   - 删除成功返回204\n   - 参数错误返回400\n   - 资源不存在返回404\n   - 服务器内部错误返回500\n\n6. 数据验证要求：\n   - 实现validateTask验证函数\n   - 必填字段：title（字符串类型，最大50字符）\n   - 优先级字段：仅接受high/medium/low枚举值\n   - 验证失败返回400错误及具体原因\n\n7. 安全性措施：\n   - 所有请求体必须为application/json格式\n   - 输入参数过滤特殊字符防XSS攻击\n   - 错误响应不暴露服务器内部细节\n\n8. 伪代码更新示例：\n```javascript\n// 错误处理中间件\napp.use((err, req, res, next) => {\n  const status = err.status || 500;\n  res.status(status).json({\n    error: { code: status, message: err.message, details: err.details }\n  });\n});\n\n// 带验证的POST端点\napp.post('/tasks', (req, res, next) => {\n  try {\n    validateTask(req.body); // 验证输入数据\n    const newTask = createTask(req.body);\n    res.status(201).json(newTask);\n  } catch (err) {\n    next({ status: 400, message: '数据验证失败', details: err.message });\n  }\n});\n\n// 带错误处理的DELETE端点\napp.delete('/tasks/:id', (req, res, next) => {\n  try {\n    const deleted = deleteTask(req.params.id);\n    if (!deleted) {\n      return next({ status: 404, message: '任务不存在' });\n    }\n    res.status(204).end();\n  } catch (err) {\n    next({ status: 500, message: '服务器内部错误' });\n  }\n});\n```\n</info added on 2025-08-29T02:30:49.595Z>",
-        "testStrategy": "使用Postman或curl测试API端点：\n- 创建任务并验证返回数据和状态码\n- 获取任务列表检查是否包含新任务\n- 更新任务后检查返回数据\n- 删除任务后验证列表是否移除\n- 测试不存在的任务ID返回404",
-        "priority": "high",
+        "title": "RESTful API接口开发",
+        "description": "设计并实现地道表达学习系统的核心API接口",
+        "details": "基于Django REST Framework扩展现有API系统，实现地道表达专用接口。核心接口包括：1) IdiomaticExpressionViewSet提供CRUD操作，支持分页、搜索、筛选 2) LearningSessionViewSet管理学习会话 3) StatisticsViewSet提供学习数据统计 4) AIAssistantViewSet处理AI对话。技术要点：使用DRF的ViewSet和Router实现RESTful设计，版本控制采用URL路径方式(api/v1/)。实现自定义序列化器处理复杂数据结构，使用select_related和prefetch_related优化数据库查询。集成现有认证中间件，实现细粒度权限控制。API设计遵循OpenAPI 3.0规范，提供完整的接口文档。实现接口缓存策略，使用Redis缓存热点数据，提升响应性能。",
+        "testStrategy": "使用DRF测试框架编写API测试，覆盖所有端点的CRUD操作。测试认证授权逻辑，验证权限控制的正确性。使用APIClient模拟各种请求场景，包括边界情况和异常处理。性能测试验证API响应时间和并发处理能力。",
+        "priority": "medium",
         "dependencies": [
-          2
+          1
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "DRF核心ViewSet开发",
+            "description": "实现IdiomaticExpressionViewSet和LearningSessionViewSet的完整CRUD操作",
+            "dependencies": [],
+            "details": "基于Django REST Framework开发核心ViewSet类。实现IdiomaticExpressionViewSet提供地道表达的创建、读取、更新、删除操作，支持分页、搜索和多字段筛选功能。开发LearningSessionViewSet管理用户学习会话，包括会话创建、进度更新、状态追踪。使用DRF的ViewSet基类，实现自定义action处理特殊业务逻辑。配置URL路由使用DRF Router自动生成RESTful接口。实现版本控制采用URL路径方式(api/v1/)，为未来API升级预留空间。",
+            "status": "pending",
+            "testStrategy": "使用DRF APIClient编写ViewSet测试用例，覆盖所有CRUD操作和自定义action。测试分页、搜索、筛选功能的正确性。验证HTTP状态码和响应数据格式。"
+          },
+          {
+            "id": 2,
+            "title": "统计与AI助教ViewSet实现",
+            "description": "开发StatisticsViewSet和AIAssistantViewSet，处理数据统计和AI对话功能",
+            "dependencies": [
+              "3.1"
+            ],
+            "details": "实现StatisticsViewSet提供学习数据统计接口，包括学习进度、掌握度分析、时间统计等。开发AIAssistantViewSet处理AI对话请求，支持流式响应和上下文管理。实现统计数据的聚合查询，使用Django ORM的aggregate和annotate功能。集成AI服务适配器，处理异步AI调用和响应流式传输。实现缓存策略优化统计查询性能，使用Redis缓存计算结果。配置CORS和WebSocket支持AI实时对话。",
+            "status": "pending",
+            "testStrategy": "测试统计接口返回的数据准确性和格式。Mock AI服务测试AIAssistantViewSet的响应处理。验证缓存机制的有效性和数据一致性。"
+          },
+          {
+            "id": 3,
+            "title": "序列化器与数据优化",
+            "description": "开发自定义序列化器和数据库查询优化",
+            "dependencies": [
+              "3.1"
+            ],
+            "details": "创建自定义序列化器处理复杂的嵌套数据结构，包括IdiomaticExpressionSerializer、LearningSessionSerializer等。实现序列化器字段验证和数据转换逻辑。使用select_related和prefetch_related优化数据库查询，减少N+1查询问题。实现动态字段序列化，支持客户端按需获取数据。开发序列化器缓存机制，提升序列化性能。配置序列化器支持多种数据格式（JSON、XML）。实现批量操作序列化器，支持批量创建和更新。",
+            "status": "pending",
+            "testStrategy": "验证序列化器的数据验证逻辑和错误处理。使用Django测试工具测试查询优化效果。测试动态字段和批量操作功能。"
+          },
+          {
+            "id": 4,
+            "title": "认证权限与安全控制",
+            "description": "集成认证中间件，实现细粒度权限控制和API安全机制",
+            "dependencies": [
+              "3.1",
+              "3.2"
+            ],
+            "details": "集成现有认证中间件，支持JWT Token、Session等多种认证方式。实现基于角色的权限控制（RBAC），定义不同用户级别的API访问权限。开发自定义权限类，实现资源级权限控制。配置API访问限流，防止恶意请求和DDoS攻击。实现API密钥管理，支持第三方应用接入。配置HTTPS强制访问，确保数据传输安全。实现审计日志记录用户API操作行为。设置CORS策略，支持跨域访问控制。",
+            "status": "pending",
+            "testStrategy": "测试各种认证方式的有效性和安全性。验证权限控制逻辑，测试不同角色用户的访问限制。测试API限流和安全防护机制。"
+          },
+          {
+            "id": 5,
+            "title": "API文档与缓存策略",
+            "description": "实现OpenAPI文档生成和Redis缓存系统",
+            "dependencies": [
+              "3.1",
+              "3.2",
+              "3.3",
+              "3.4"
+            ],
+            "details": "使用drf-spectacular生成符合OpenAPI 3.0规范的API文档，包含完整的接口描述、参数说明、响应示例。配置Swagger UI和ReDoc界面，提供交互式API文档。实现API版本化文档，支持多版本API并存。设计Redis缓存策略，缓存热点数据如热门表达、用户偏好等。实现缓存预热和失效机制，确保数据一致性。配置缓存分层策略，包括应用层缓存和数据库查询缓存。实现缓存监控和性能指标收集。配置API响应缓存，使用HTTP缓存头提升客户端性能。",
+            "status": "pending",
+            "testStrategy": "验证API文档的完整性和准确性。测试缓存策略的有效性和数据一致性。进行API性能测试，验证缓存对响应时间的改善效果。"
+          }
+        ]
       },
       {
         "id": 4,
-        "title": "构建前端任务列表视图",
-        "description": "创建HTML/CSS界面，显示任务列表，包括任务标题、优先级和状态，并提供操作按钮（查看、编辑、删除）。",
-        "details": "1. 在index.html中创建任务列表容器（如<ul id=\"task-list\">）\n2. 在app.js中实现函数fetchTasks()：调用GET /tasks获取任务\n3. 实现renderTaskList(tasks)：动态生成任务列表HTML\n   - 每个任务项显示标题、优先级、状态\n   - 包含操作按钮：查看详情、编辑、删除\n4. 添加基本样式（style.css）美化列表\n\n伪代码（渲染列表）：\n```javascript\nfunction renderTaskList(tasks) {\n  const listEl = document.getElementById('task-list');\n  listEl.innerHTML = tasks.map(task => `\n    <li data-id=\"${task.id}\">\n      <h3>${task.title}</h3>\n      <p>优先级：${task.priority} | 状态：${task.status}</p>\n      <button class=\"view-btn\">查看</button>\n      <button class=\"edit-btn\">编辑</button>\n      <button class=\"delete-btn\">删除</button>\n    </li>\n  `).join('');\n}\n```\n<info added on 2025-08-29T02:28:43.280Z>\n5. 根据现代前端架构设计建议进行优化：\n   - 任务项结构优化：使用`<article>`包裹任务内容，提高语义化\n   - 布局改进：采用Flexbox布局任务项（任务信息左对齐，操作按钮右对齐）\n   - 可访问性增强：为操作按钮添加`aria-label`属性（如`aria-label=\"删除任务\"`）\n   - 样式优化参考：\n     ```css\n     .task-item {\n       display: flex;\n       align-items: center;\n       justify-content: space-between;\n       background: #f9f9f9;\n       border-radius: 6px;\n       padding: 1rem;\n       margin-bottom: 0.5rem;\n     }\n     .task-info {\n       flex: 1;\n     }\n     .task-actions {\n       display: flex;\n       gap: 0.5rem;\n     }\n     ```\n   - 模块化重构：将`renderTaskList`移至独立UI模块(ui.js)中\n   - 状态管理准备：后续通过事件监听实现自动刷新（监听'tasks-updated'事件）\n\n6. 更新后的渲染函数伪代码：\n```javascript\nfunction renderTaskList(tasks) {\n  const listEl = document.getElementById('task-list');\n  listEl.innerHTML = tasks.map(task => `\n    <li class=\"task-item\" data-id=\"${task.id}\">\n      <article class=\"task-info\">\n        <h3>${task.title}</h3>\n        <p>优先级：${task.priority} | 状态：${task.status}</p>\n      </article>\n      <div class=\"task-actions\">\n        <button class=\"view-btn\" aria-label=\"查看详情\" title=\"查看\">查看</button>\n        <button class=\"edit-btn\" aria-label=\"编辑任务\" title=\"编辑\">编辑</button>\n        <button class=\"delete-btn\" aria-label=\"删除任务\" title=\"删除\">删除</button>\n      </div>\n    </li>\n  `).join('');\n}\n```\n</info added on 2025-08-29T02:28:43.280Z>",
-        "testStrategy": "手动测试：\n- 启动应用，确保任务列表正确显示（初始为空）\n- 通过API创建任务后刷新列表是否显示\n- 检查样式是否正常\n- 操作按钮是否可见（功能在后续任务实现）",
+        "title": "前端界面与组件开发",
+        "description": "基于Vue.js 3开发现代化的地道表达学习界面",
+        "details": "在现有前端架构下新增idiomatic-expressions模块，采用Vue.js 3 + TypeScript + Vite技术栈。核心组件包括：1) ExpressionCard.vue表达卡片组件，支持卡片翻转动画 2) ScenarioPlayer.vue场景播放器，集成音频播放和字幕显示 3) LearningDashboard.vue学习仪表板，使用ECharts展示学习进度 4) AIAssistantChat.vue AI对话界面。使用Pinia状态管理，创建expressionStore、learningStore管理数据。采用Vue Router实现页面路由，集成现有认证守卫。UI设计遵循Material Design 3规范，使用Vuetify或PrimeVue组件库。实现响应式布局，支持桌面端、平板、手机多端适配。使用Vite构建工具，配置代码分割和懒加载优化性能。",
+        "testStrategy": "使用Vitest进行组件单元测试，覆盖组件渲染、用户交互、状态变更等场景。使用Vue Test Utils模拟用户操作，验证组件行为。集成Playwright进行E2E测试，测试完整的用户学习流程。使用Lighthouse进行性能测试，确保页面加载速度和用户体验。",
         "priority": "medium",
         "dependencies": [
           3
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "项目结构搭建与开发环境配置",
+            "description": "在现有前端架构下创建idiomatic-expressions模块，配置Vue.js 3 + TypeScript + Vite开发环境",
+            "dependencies": [],
+            "details": "在src目录下创建views/idiomatic-expressions文件夹结构，配置TypeScript编译选项，设置Vite构建配置包括代码分割和懒加载。安装必要依赖包：Vue 3、TypeScript、Vite、Vue Router、Pinia、ECharts、Vuetify/PrimeVue。配置ESLint和Prettier代码规范，设置开发服务器和热重载。创建基础路由配置，集成现有认证守卫系统。",
+            "status": "pending",
+            "testStrategy": "验证项目结构完整性，测试开发服务器启动和热重载功能，检查TypeScript编译配置和代码规范工具运行状态。"
+          },
+          {
+            "id": 2,
+            "title": "核心Vue组件开发",
+            "description": "开发ExpressionCard、ScenarioPlayer、LearningDashboard、AIAssistantChat四个核心组件",
+            "dependencies": [
+              "4.1"
+            ],
+            "details": "实现ExpressionCard.vue表达卡片组件，包含卡片翻转动画、表达内容展示、收藏和标记功能。开发ScenarioPlayer.vue场景播放器，集成HTML5音频播放器、字幕同步显示、播放控制。创建LearningDashboard.vue学习仪表板，使用ECharts展示学习进度图表、掌握度分布、学习时间统计。实现AIAssistantChat.vue AI对话界面，支持实时消息、流式响应、对话历史。所有组件遵循Material Design 3设计规范。",
+            "status": "pending",
+            "testStrategy": "使用Vue Test Utils进行组件单元测试，测试组件渲染、props传递、事件触发。使用Vitest测试组件交互逻辑和状态变更。"
+          },
+          {
+            "id": 3,
+            "title": "状态管理与数据流设计",
+            "description": "使用Pinia实现expressionStore和learningStore状态管理，设计数据流架构",
+            "dependencies": [
+              "4.1"
+            ],
+            "details": "创建expressionStore管理地道表达数据，包括表达列表、搜索过滤、收藏状态、学习进度等。实现learningStore管理学习相关状态，包括用户学习记录、统计数据、AI对话历史、学习目标等。设计异步action处理API调用，实现数据缓存和错误处理机制。使用TypeScript定义严格的状态类型，确保类型安全。实现状态持久化，支持本地存储和会话恢复。",
+            "status": "pending",
+            "testStrategy": "测试store的state变更、action执行、getter计算。使用Pinia Testing工具模拟store状态，验证组件与store的交互。"
+          },
+          {
+            "id": 4,
+            "title": "路由配置与页面集成",
+            "description": "配置Vue Router实现页面路由，集成现有认证守卫，实现页面间导航",
+            "dependencies": [
+              "4.2",
+              "4.3"
+            ],
+            "details": "扩展现有Vue Router配置，添加地道表达学习相关路由：表达列表页、详情页、学习页、统计页、AI助教页。实现路由懒加载，优化首屏加载性能。集成现有用户认证守卫，确保学习页面需要登录访问。配置路由元信息，支持面包屑导航和页面标题。实现路由参数传递和查询参数处理，支持深度链接和页面刷新。添加路由过渡动画，提升用户体验。",
+            "status": "pending",
+            "testStrategy": "测试路由跳转功能，验证认证守卫拦截未登录用户。使用Vue Router测试工具验证路由配置和参数传递。"
+          },
+          {
+            "id": 5,
+            "title": "响应式布局与性能优化",
+            "description": "实现响应式布局设计，支持多端适配，进行性能优化和构建配置",
+            "dependencies": [
+              "4.2",
+              "4.4"
+            ],
+            "details": "使用CSS Grid和Flexbox实现响应式布局，支持桌面端（1200px+）、平板（768px-1199px）、手机（<768px）三种断点。使用Vuetify或PrimeVue组件库的响应式系统，确保组件在不同设备上的适配。配置Vite构建优化：代码分割、Tree Shaking、资源压缩、CDN配置。实现图片懒加载和虚拟滚动优化长列表性能。使用Web Workers处理复杂计算，避免主线程阻塞。配置PWA支持，实现离线缓存和应用安装。",
+            "status": "pending",
+            "testStrategy": "使用Cypress或Playwright进行多设备响应式测试。使用Lighthouse进行性能评估，确保页面加载速度和用户体验指标达标。测试PWA功能和离线访问能力。"
+          }
+        ]
       },
       {
         "id": 5,
-        "title": "实现任务详情视图与操作功能",
-        "description": "创建任务详情弹窗/页面，支持查看完整任务信息，并实现编辑、删除和状态切换功能。",
-        "details": "1. 在index.html中添加任务详情模态框（隐藏状态）\n2. 实现打开详情视图函数：根据任务ID获取任务详情（调用GET /tasks或本地数据）并填充模态框\n3. 实现以下操作：\n   - 删除：调用DELETE API，成功后刷新列表\n   - 状态切换：通过下拉菜单选择状态，调用PUT API更新\n   - 编辑：允许修改标题、描述、优先级，调用PUT API更新\n4. 为列表中的按钮绑定事件（查看→打开详情，编辑→打开编辑表单，删除→直接删除）\n\n伪代码（状态切换示例）：\n```javascript\n// 在详情视图中\nstatusSelect.addEventListener('change', (e) => {\n  updateTask(taskId, { status: e.target.value })\n    .then(updatedTask => {\n      // 更新详情视图\n    });\n});\n```",
-        "testStrategy": "手动测试：\n- 点击任务列表的查看按钮，模态框是否显示正确信息\n- 修改状态并保存，检查列表和详情是否更新\n- 编辑任务信息，验证更新是否持久化\n- 删除任务，验证列表是否移除",
+        "title": "AI助教系统集成",
+        "description": "集成多种AI模型，实现智能学习辅导功能",
+        "details": "设计AI助教服务架构，支持OpenAI GPT、Anthropic Claude等多种模型。技术实现：1) 创建BaseAIAdapter抽象类定义AI服务接口 2) 实现OpenAIAdapter、ClaudeAdapter等具体适配器 3) 使用适配器模式支持AI模型热插拔 4) 实现AI服务的负载均衡和故障转移 5) 建立API密钥安全管理，使用cryptography库加密存储 6) 实现智能对话上下文管理，维护对话历史 7) 集成流式响应处理，提升用户体验。核心功能包括：场景生成、用法纠错、学习建议、个性化推荐。使用async/await处理异步AI调用，集成现有Celery任务队列处理长时间AI任务。实现AI调用成本监控和限流机制，防止API过度使用。",
+        "testStrategy": "Mock AI API响应进行单元测试，验证适配器逻辑和错误处理。使用pytest-asyncio测试异步AI调用。集成测试验证AI服务与用户学习数据的交互。性能测试评估AI响应时间和并发处理能力。",
         "priority": "medium",
         "dependencies": [
-          4
+          1,
+          3
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "AI适配器架构设计与基础接口实现",
+            "description": "创建BaseAIAdapter抽象类，定义统一的AI服务接口规范，为多种AI模型集成奠定架构基础",
+            "dependencies": [],
+            "details": "设计并实现BaseAIAdapter抽象基类，定义标准化的AI服务接口方法：generate_response()、stream_response()、validate_config()等。创建AIModelConfig配置类管理模型参数。设计异常处理机制，定义AIServiceException、RateLimitException等自定义异常。实现基础的请求/响应数据结构，支持多种消息格式。建立AI服务的健康检查机制。",
+            "status": "pending",
+            "testStrategy": "编写抽象类接口的单元测试，验证方法签名和异常处理逻辑。使用Mock对象测试基础配置和健康检查功能。"
+          },
+          {
+            "id": 2,
+            "title": "具体AI模型适配器实现",
+            "description": "实现OpenAIAdapter、ClaudeAdapter等具体适配器类，支持不同AI模型的API调用和响应处理",
+            "dependencies": [
+              "5.1"
+            ],
+            "details": "基于BaseAIAdapter实现OpenAIAdapter，集成OpenAI GPT API，支持chat completions和streaming。实现ClaudeAdapter，集成Anthropic Claude API。每个适配器处理特定的API格式转换、错误码映射、令牌计算等。实现模型特定的参数配置：temperature、max_tokens、top_p等。添加重试机制和指数退避策略。实现API响应的标准化处理，统一返回格式。",
+            "status": "pending",
+            "testStrategy": "使用pytest-asyncio测试异步API调用。Mock各AI服务的API响应，验证适配器的数据转换和错误处理。测试重试机制和超时处理。"
+          },
+          {
+            "id": 3,
+            "title": "AI服务管理与负载均衡系统",
+            "description": "实现AI服务的动态管理、负载均衡、故障转移和API密钥安全管理功能",
+            "dependencies": [
+              "5.2"
+            ],
+            "details": "创建AIServiceManager管理类，实现AI模型的热插拔和动态切换。使用轮询、加权轮询等算法实现负载均衡。建立服务健康监控，自动检测故障并进行转移。使用cryptography库实现API密钥的AES加密存储。创建密钥轮换机制，支持多个API密钥的管理。实现服务降级策略，在高负载时自动调整服务质量。集成Django settings管理AI服务配置。",
+            "status": "pending",
+            "testStrategy": "测试负载均衡算法的分发效果。模拟服务故障场景，验证故障转移机制。测试API密钥的加密存储和解密使用。验证服务降级策略的触发条件。"
+          },
+          {
+            "id": 4,
+            "title": "智能对话上下文管理与流式响应处理",
+            "description": "实现对话历史管理、上下文维护和流式响应处理，提升AI交互体验",
+            "dependencies": [
+              "5.2"
+            ],
+            "details": "设计ConversationManager类管理对话上下文，支持多轮对话的历史记录。实现上下文压缩算法，在达到token限制时智能截断历史消息。使用Redis缓存对话状态，支持分布式部署。实现流式响应处理，使用Server-Sent Events (SSE)向前端推送实时数据。创建ResponseStreamer类处理流式数据的缓冲和分发。实现对话的持久化存储，支持对话恢复。添加对话质量评估机制，记录用户满意度。",
+            "status": "pending",
+            "testStrategy": "测试对话上下文的正确维护和压缩逻辑。验证流式响应的实时性和数据完整性。测试Redis缓存的读写性能和数据一致性。模拟网络中断场景，验证对话恢复功能。"
+          },
+          {
+            "id": 5,
+            "title": "AI助教核心功能与成本监控系统",
+            "description": "实现场景生成、用法纠错、学习建议等核心AI助教功能，并建立成本监控和限流机制",
+            "dependencies": [
+              "5.3",
+              "5.4"
+            ],
+            "details": "实现AITutorService核心服务类，提供场景生成、用法纠错、学习建议、个性化推荐等功能。创建专门的prompt模板管理系统，针对不同功能优化提示词。集成Celery任务队列处理长时间AI任务，避免阻塞用户界面。实现AI调用成本监控，记录token使用量和API调用费用。建立限流机制，使用Redis实现用户级别和全局级别的调用限制。创建成本预警系统，在费用超过阈值时发送通知。实现AI响应质量评估，收集用户反馈优化服务。",
+            "status": "pending",
+            "testStrategy": "测试各核心功能的AI响应质量和准确性。验证Celery任务的异步执行和结果返回。测试成本监控的准确性和限流机制的有效性。进行压力测试，验证系统在高并发下的稳定性。"
+          }
+        ]
       },
       {
         "id": 6,
-        "title": "添加任务创建表单与数据验证",
-        "description": "实现创建新任务的表单，包含标题、描述、优先级字段，并添加前端基本验证。",
-        "details": "1. 在index.html中添加任务创建表单（包含标题输入框、描述文本框、优先级下拉菜单）\n2. 在app.js中为表单添加提交事件处理：\n   - 阻止默认提交行为\n   - 收集表单数据\n   - 基本验证（如标题必填）\n   - 调用POST /tasks创建任务\n   - 成功后刷新任务列表并重置表单\n3. 优先级下拉菜单选项：high, medium, low\n\n伪代码（表单提交）：\n```javascript\ndocument.getElementById('create-form').addEventListener('submit', (e) => {\n  e.preventDefault();\n  const title = document.getElementById('title').value;\n  if (!title) { alert('标题必填'); return; }\n  const taskData = {\n    title,\n    description: document.getElementById('description').value,\n    priority: document.getElementById('priority').value\n  };\n  createTask(taskData)\n    .then(() => {\n      renderTaskList(); // 刷新列表\n      e.target.reset(); // 重置表单\n    });\n});\n```",
-        "testStrategy": "手动测试：\n- 提交空标题，是否显示错误\n- 填写有效数据，提交后任务是否出现在列表\n- 检查新任务的数据是否正确（包括默认状态和时间戳）",
+        "title": "学习数据统计与分析系统",
+        "description": "实现全面的学习行为数据收集、分析和可视化展示",
+        "details": "构建学习分析系统，提供多维度数据统计和个性化学习洞察。技术实现：1) 扩展UserExpressionProgress模型，记录详细的学习行为数据 2) 实现LearningAnalyticsService服务类，计算学习指标：掌握度、遗忘曲线、学习效率等 3) 集成现有SM-2间隔重复算法，优化复习计划 4) 使用Django聚合函数和原生SQL优化复杂统计查询 5) 实现数据可视化API，返回ECharts格式的图表数据 6) 前端使用ECharts创建交互式图表：学习进度趋势、表达掌握分布、学习时间分析等 7) 建立学习报告生成系统，支持PDF导出。数据收集策略：实时收集用户操作数据，异步处理数据聚合，使用Redis缓存统计结果。实现学习目标设定和达成度追踪，提供个性化学习建议。",
+        "testStrategy": "创建模拟学习数据，测试统计算法的准确性。验证数据可视化API返回的图表数据格式。使用Selenium测试前端图表的交互功能。性能测试评估大数据量下的统计查询效率。",
         "priority": "medium",
         "dependencies": [
+          1,
+          3,
           4
         ],
         "status": "pending",
-        "subtasks": []
-      },
-      {
-        "id": 7,
-        "title": "测试GPT-5主模型调用",
-        "description": "编写并执行一个简单的测试任务，以验证GPT-5主模型的API调用是否正常工作。",
-        "details": "1. 在项目中新增测试脚本（如test-gpt5.js），实现对GPT-5主模型API的基本调用。\n2. 脚本需构造一个简单的请求（如输入一段文本，期望返回合理的回复），并输出结果。\n3. 可使用fetch、axios或官方SDK进行API请求，需处理API密钥和基础错误（如网络异常、鉴权失败）。\n4. 输出API响应内容到控制台，便于人工检查。\n5. 可选：将测试脚本集成到CI流程，确保每次部署后自动验证主模型可用性。",
-        "testStrategy": "1. 运行测试脚本，观察控制台输出，确认API响应内容与预期一致。\n2. 模拟API密钥错误或断网，检查脚本能否捕获并输出错误信息。\n3. 若集成到CI，观察CI日志，确保测试步骤通过且无异常。",
-        "status": "pending",
-        "dependencies": [
-          2
-        ],
-        "priority": "low",
-        "subtasks": []
-      },
-      {
-        "id": 8,
-        "title": "验证GPT-5主模型API调用的自动化测试",
-        "description": "编写自动化测试用例，对GPT-5主模型API调用进行验证，确保接口稳定性和响应正确性。",
-        "details": "1. 在现有测试脚本基础上，使用Jest或Mocha等测试框架，编写自动化测试用例，覆盖GPT-5主模型API的常用调用场景。\n2. 包括但不限于：正常请求返回、异常输入处理、API密钥错误、网络异常等情况。\n3. 测试用例应断言API响应结构、内容合理性（如返回字段、回复内容非空等）。\n4. 可集成到CI流程，确保每次代码变更后自动执行该测试。\n5. 若API有速率限制或特殊鉴权，需模拟相关场景并验证系统表现。\n6. 输出详细测试报告，便于追踪问题。",
-        "testStrategy": "1. 运行自动化测试用例，确保所有断言均通过。\n2. 模拟API密钥错误、网络异常等边界情况，验证测试能正确捕获并报告错误。\n3. 检查测试报告，确认覆盖率和异常场景均被测试。\n4. 若集成到CI，观察CI日志确保测试自动执行且无失败。",
-        "status": "pending",
-        "dependencies": [
-          7
-        ],
-        "priority": "low",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "扩展UserExpressionProgress模型记录学习行为数据",
+            "description": "扩展现有UserExpressionProgress模型，添加详细的学习行为数据字段，包括学习时间、答题准确率、复习次数等关键指标",
+            "dependencies": [],
+            "details": "在backend/apps/english/models.py中扩展UserExpressionProgress模型，新增字段：study_duration（学习时长）、accuracy_rate（准确率）、review_count（复习次数）、last_review_time（最后复习时间）、difficulty_rating（难度评级）、learning_efficiency（学习效率）等。使用JSONField存储扩展的学习行为数据，确保与现有系统兼容。创建相应的数据库迁移文件，添加必要的索引优化查询性能。",
+            "status": "pending",
+            "testStrategy": "编写模型单元测试验证新增字段的约束和默认值。测试JSON字段的存储和查询功能。验证数据库迁移的正向和回滚操作。"
+          },
+          {
+            "id": 2,
+            "title": "实现LearningAnalyticsService服务类",
+            "description": "创建LearningAnalyticsService服务类，实现核心学习指标计算算法，包括掌握度、遗忘曲线、学习效率等分析功能",
+            "dependencies": [
+              "6.1"
+            ],
+            "details": "在backend/apps/english/services/目录下创建learning_analytics.py，实现LearningAnalyticsService类。核心方法包括：calculate_mastery_level()计算表达掌握度、analyze_forgetting_curve()分析遗忘曲线、compute_learning_efficiency()计算学习效率、generate_learning_insights()生成学习洞察。集成现有SM-2间隔重复算法，优化复习计划推荐。使用Django聚合函数和原生SQL优化复杂统计查询，提升计算性能。",
+            "status": "pending",
+            "testStrategy": "创建模拟学习数据测试各项指标计算的准确性。使用pytest验证算法逻辑和边界条件。性能测试评估大数据量下的计算效率。"
+          },
+          {
+            "id": 3,
+            "title": "开发数据可视化API接口",
+            "description": "实现数据可视化API接口，返回ECharts格式的图表数据，支持学习进度趋势、表达掌握分布、学习时间分析等多种图表类型",
+            "dependencies": [
+              "6.2"
+            ],
+            "details": "在backend/apps/english/views/目录下创建analytics_views.py，实现数据可视化API接口。主要接口包括：/api/analytics/progress-trend/返回学习进度趋势数据、/api/analytics/mastery-distribution/返回表达掌握分布、/api/analytics/time-analysis/返回学习时间分析。使用Django REST framework序列化器格式化数据，确保返回ECharts兼容的JSON格式。集成Redis缓存机制，缓存统计结果提升响应速度。实现数据权限控制，确保用户只能访问自己的学习数据。",
+            "status": "pending",
+            "testStrategy": "使用Django测试客户端验证API接口的响应格式和数据准确性。测试缓存机制的有效性和数据一致性。验证权限控制和错误处理逻辑。"
+          },
+          {
+            "id": 4,
+            "title": "前端ECharts交互式图表实现",
+            "description": "使用ECharts库创建交互式学习数据图表，包括学习进度趋势图、表达掌握分布图、学习时间分析图等可视化组件",
+            "dependencies": [
+              "6.3"
+            ],
+            "details": "在frontend/src/components/目录下创建LearningAnalytics组件目录，实现多个图表子组件：ProgressTrendChart.vue（学习进度趋势图）、MasteryDistributionChart.vue（掌握分布图）、TimeAnalysisChart.vue（时间分析图）。使用Vue 3 Composition API和ECharts 5.x版本，实现响应式图表和交互功能。支持图表数据实时更新、时间范围筛选、图表类型切换等交互特性。集成现有的API服务，实现数据自动加载和错误处理。",
+            "status": "pending",
+            "testStrategy": "使用Vue Test Utils和Jest测试组件渲染和交互功能。使用Selenium进行端到端测试，验证图表的交互性和数据展示。测试不同屏幕尺寸下的响应式布局。"
+          },
+          {
+            "id": 5,
+            "title": "学习报告生成和目标追踪系统",
+            "description": "建立学习报告生成系统支持PDF导出，实现学习目标设定和达成度追踪功能，提供个性化学习建议",
+            "dependencies": [
+              "6.2",
+              "6.3"
+            ],
+            "details": "创建ReportGenerationService服务类，使用ReportLab库生成PDF学习报告。报告内容包括：学习概览、进度统计、掌握度分析、时间分布、个性化建议等模块。实现学习目标管理功能：目标设定、进度追踪、达成度计算、提醒通知。在数据库中新增LearningGoal模型存储用户学习目标。集成现有的学习分析数据，生成个性化学习建议和复习计划。使用Celery异步处理PDF生成任务，避免阻塞用户界面。",
+            "status": "pending",
+            "testStrategy": "测试PDF报告生成的完整性和格式正确性。验证学习目标的CRUD操作和达成度计算逻辑。使用模拟数据测试个性化建议算法的有效性。"
+          }
+        ]
       }
     ],
     "metadata": {
       "created": "2025-08-29T01:00:17.758Z",
-      "updated": "2025-08-29T02:39:01.025Z",
+      "updated": "2025-08-29T12:46:43.833Z",
       "description": "Tasks for feature-test_task_master context"
     }
   }

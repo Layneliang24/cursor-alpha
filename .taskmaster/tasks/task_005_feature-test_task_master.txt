@@ -1,0 +1,43 @@
+# Task ID: 5
+# Title: AI助教系统集成
+# Status: pending
+# Dependencies: 1, 3
+# Priority: medium
+# Description: 集成多种AI模型，实现智能学习辅导功能
+# Details:
+设计AI助教服务架构，支持OpenAI GPT、Anthropic Claude等多种模型。技术实现：1) 创建BaseAIAdapter抽象类定义AI服务接口 2) 实现OpenAIAdapter、ClaudeAdapter等具体适配器 3) 使用适配器模式支持AI模型热插拔 4) 实现AI服务的负载均衡和故障转移 5) 建立API密钥安全管理，使用cryptography库加密存储 6) 实现智能对话上下文管理，维护对话历史 7) 集成流式响应处理，提升用户体验。核心功能包括：场景生成、用法纠错、学习建议、个性化推荐。使用async/await处理异步AI调用，集成现有Celery任务队列处理长时间AI任务。实现AI调用成本监控和限流机制，防止API过度使用。
+
+# Test Strategy:
+Mock AI API响应进行单元测试，验证适配器逻辑和错误处理。使用pytest-asyncio测试异步AI调用。集成测试验证AI服务与用户学习数据的交互。性能测试评估AI响应时间和并发处理能力。
+
+# Subtasks:
+## 1. AI适配器架构设计与基础接口实现 [pending]
+### Dependencies: None
+### Description: 创建BaseAIAdapter抽象类，定义统一的AI服务接口规范，为多种AI模型集成奠定架构基础
+### Details:
+设计并实现BaseAIAdapter抽象基类，定义标准化的AI服务接口方法：generate_response()、stream_response()、validate_config()等。创建AIModelConfig配置类管理模型参数。设计异常处理机制，定义AIServiceException、RateLimitException等自定义异常。实现基础的请求/响应数据结构，支持多种消息格式。建立AI服务的健康检查机制。
+
+## 2. 具体AI模型适配器实现 [pending]
+### Dependencies: 5.1
+### Description: 实现OpenAIAdapter、ClaudeAdapter等具体适配器类，支持不同AI模型的API调用和响应处理
+### Details:
+基于BaseAIAdapter实现OpenAIAdapter，集成OpenAI GPT API，支持chat completions和streaming。实现ClaudeAdapter，集成Anthropic Claude API。每个适配器处理特定的API格式转换、错误码映射、令牌计算等。实现模型特定的参数配置：temperature、max_tokens、top_p等。添加重试机制和指数退避策略。实现API响应的标准化处理，统一返回格式。
+
+## 3. AI服务管理与负载均衡系统 [pending]
+### Dependencies: 5.2
+### Description: 实现AI服务的动态管理、负载均衡、故障转移和API密钥安全管理功能
+### Details:
+创建AIServiceManager管理类，实现AI模型的热插拔和动态切换。使用轮询、加权轮询等算法实现负载均衡。建立服务健康监控，自动检测故障并进行转移。使用cryptography库实现API密钥的AES加密存储。创建密钥轮换机制，支持多个API密钥的管理。实现服务降级策略，在高负载时自动调整服务质量。集成Django settings管理AI服务配置。
+
+## 4. 智能对话上下文管理与流式响应处理 [pending]
+### Dependencies: 5.2
+### Description: 实现对话历史管理、上下文维护和流式响应处理，提升AI交互体验
+### Details:
+设计ConversationManager类管理对话上下文，支持多轮对话的历史记录。实现上下文压缩算法，在达到token限制时智能截断历史消息。使用Redis缓存对话状态，支持分布式部署。实现流式响应处理，使用Server-Sent Events (SSE)向前端推送实时数据。创建ResponseStreamer类处理流式数据的缓冲和分发。实现对话的持久化存储，支持对话恢复。添加对话质量评估机制，记录用户满意度。
+
+## 5. AI助教核心功能与成本监控系统 [pending]
+### Dependencies: 5.3, 5.4
+### Description: 实现场景生成、用法纠错、学习建议等核心AI助教功能，并建立成本监控和限流机制
+### Details:
+实现AITutorService核心服务类，提供场景生成、用法纠错、学习建议、个性化推荐等功能。创建专门的prompt模板管理系统，针对不同功能优化提示词。集成Celery任务队列处理长时间AI任务，避免阻塞用户界面。实现AI调用成本监控，记录token使用量和API调用费用。建立限流机制，使用Redis实现用户级别和全局级别的调用限制。创建成本预警系统，在费用超过阈值时发送通知。实现AI响应质量评估，收集用户反馈优化服务。
+

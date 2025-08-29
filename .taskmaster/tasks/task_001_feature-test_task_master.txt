@@ -1,0 +1,43 @@
+# Task ID: 1
+# Title: 数据模型设计与数据库迁移
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: 扩展现有Django模型，设计地道表达相关数据表结构，创建数据库迁移文件
+# Details:
+基于现有Expression模型扩展IdiomaticExpression模型，新增ExpressionScenario、UserExpressionProgress、ExpressionSource、AIAssistantConfig等关联模型。使用Django 4.2+的JSONField存储扩展数据，保持与现有系统的兼容性。实现具体步骤：1) 在backend/apps/english/models.py中扩展现有模型 2) 添加地道表达特有字段：expression_type、frequency_score、formality_level等 3) 创建新模型：ExpressionScenario用于存储使用场景，ExpressionSource管理数据源 4) 使用Django migration系统创建数据库变更文件 5) 设计合理的数据库索引提升查询性能 6) 预留JSON字段支持未来扩展需求。技术要点：使用MySQL 8.0+的JSON数据类型，合理设计外键关系，确保数据一致性。
+
+# Test Strategy:
+编写模型单元测试验证字段约束、关系映射和数据验证逻辑。使用pytest-django测试框架，覆盖模型创建、更新、查询等核心操作。测试数据库迁移的正向和回滚操作，确保数据完整性。
+
+# Subtasks:
+## 1. 扩展Expression模型创建IdiomaticExpression [pending]
+### Dependencies: None
+### Description: 基于现有Expression模型扩展创建IdiomaticExpression模型，添加地道表达特有字段
+### Details:
+在backend/apps/english/models.py中扩展现有Expression模型，创建IdiomaticExpression子类。新增字段包括：expression_type（表达类型，如习语、俚语、固定搭配）、frequency_score（使用频率评分1-10）、formality_level（正式程度：informal/neutral/formal）、difficulty_level（难度等级1-5）、phonetic_transcription（音标）。使用Django的JSONField存储额外的元数据如变体形式、同义表达等。确保与现有Expression模型的兼容性，继承现有字段如content、translation、created_at等。
+
+## 2. 创建ExpressionScenario和ExpressionSource模型 [pending]
+### Dependencies: None
+### Description: 设计并实现ExpressionScenario使用场景模型和ExpressionSource数据源管理模型
+### Details:
+创建ExpressionScenario模型存储地道表达的使用场景，字段包括：scenario_name（场景名称）、context_description（上下文描述）、example_dialogue（示例对话）、scenario_type（场景类型：business/casual/academic等）。创建ExpressionSource模型管理数据来源，字段包括：source_name、source_url、source_type（dictionary/forum/news等）、reliability_score（可靠性评分）、last_updated（最后更新时间）。建立与IdiomaticExpression的多对多关系，使用through参数定义中间表存储关联的额外信息。
+
+## 3. 创建UserExpressionProgress用户学习进度模型 [pending]
+### Dependencies: None
+### Description: 设计用户表达学习进度跟踪模型，实现个性化学习数据管理
+### Details:
+创建UserExpressionProgress模型跟踪用户学习进度，字段包括：user（外键关联User模型）、expression（外键关联IdiomaticExpression）、mastery_level（掌握程度0-100）、review_count（复习次数）、correct_count（正确次数）、last_reviewed（最后复习时间）、next_review（下次复习时间）、learning_streak（连续学习天数）。使用JSONField存储详细的学习历史记录，包括每次学习的时间戳、答题结果、用时等。实现SM-2算法相关字段：easiness_factor（容易度因子）、interval（复习间隔）。
+
+## 4. 创建AIAssistantConfig AI助教配置模型 [pending]
+### Dependencies: None
+### Description: 设计AI助教服务配置模型，支持多种AI模型的参数管理
+### Details:
+创建AIAssistantConfig模型管理AI服务配置，字段包括：config_name（配置名称）、ai_provider（AI提供商：openai/anthropic/local等）、model_name（模型名称如gpt-4、claude-3等）、api_endpoint（API端点）、max_tokens（最大令牌数）、temperature（温度参数）、system_prompt（系统提示词模板）。使用JSONField存储特定模型的扩展配置参数。实现配置的版本管理和激活状态控制。添加加密字段存储API密钥，使用Django的cryptography库确保安全性。建立配置的使用统计和性能监控字段。
+
+## 5. 创建数据库迁移文件和索引优化 [pending]
+### Dependencies: None
+### Description: 使用Django migration系统创建数据库变更文件，设计合理的数据库索引提升查询性能
+### Details:
+使用python manage.py makemigrations命令生成所有新模型的迁移文件。创建自定义迁移优化数据库结构：为IdiomaticExpression的expression_type、frequency_score、difficulty_level字段创建复合索引；为UserExpressionProgress的user_id、last_reviewed、next_review字段创建组合索引；为ExpressionScenario的scenario_type字段创建索引。使用MySQL 8.0+的JSON数据类型优化JSONField存储。实现数据库表分区策略对UserExpressionProgress按用户ID分区。创建数据库约束确保数据一致性，如用户学习进度的唯一性约束。编写数据迁移脚本处理现有数据的转换和初始化。
+

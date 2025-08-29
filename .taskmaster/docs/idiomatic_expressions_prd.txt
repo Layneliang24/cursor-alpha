@@ -1,0 +1,463 @@
+<context>
+# Overview  
+Alpha项目英语学习地道表达模块是基于现有英语学习系统的扩展模块，专注于提升英语学习者地道表达能力的沉浸式学习系统。该模块解决了传统英语学习中缺乏地道表达练习、缺少实际使用场景、学习效果难以量化等问题。目标用户是希望提升英语表达地道性的中高级英语学习者。通过智能数据采集、AI助教、场景化学习、数据统计分析等功能，为用户提供个性化、高效的地道表达学习体验。
+
+# Core Features  
+## 1. 智能数据采集与管理
+- **功能描述**: 基于现有爬虫架构，构建地道表达数据采集系统，包含习语、俚语、口语表达等
+- **重要性**: 为整个学习系统提供高质量、实时更新的学习内容基础
+- **实现方式**: 
+  - 扩展现有news_crawler.py爬虫系统，增加地道表达专用爬虫
+  - 集成多数据源：英语学习网站、语言交流论坛、社交媒体
+  - 利用现有fundus_crawler框架支持更多英语内容源
+  - 支持API接口、文件导入、人工审核的多元化数据获取方式
+
+## 2. 沉浸式场景学习
+- **功能描述**: 为每个地道表达提供真实使用场景和对话示例
+- **重要性**: 帮助学习者理解表达的实际应用语境，提升学习效果
+- **实现方式**: 场景分类管理，多媒体内容支持，互动式场景练习
+
+## 3. AI智能助教系统
+- **功能描述**: 通过配置API KEY集成AI模型，提供个性化学习指导和答疑
+- **重要性**: 提供24/7智能辅导，根据学习进度调整教学策略
+- **实现方式**: 支持多AI模型配置，智能对话接口，学习路径推荐
+
+## 4. 学习数据统计分析
+- **功能描述**: 全面记录和分析用户学习行为，生成学习报告和进度追踪
+- **重要性**: 量化学习效果，为个性化学习提供数据支撑
+- **实现方式**: 多维度数据收集，可视化图表展示，学习洞察生成
+
+## 5. 完善的API接口体系
+- **功能描述**: 提供标准化REST API，支持与其他模块和第三方系统集成
+- **重要性**: 确保模块的可扩展性和集成能力
+- **实现方式**: RESTful API设计，完整的接口文档，版本控制
+
+# User Experience  
+## 用户画像
+- **主要用户**: 中高级英语学习者，希望提升表达地道性
+- **次要用户**: 英语教师，需要教学资源和学生进度管理
+- **管理员**: 系统管理员，负责数据维护和系统配置
+
+## 核心用户流程
+1. **学习流程**: 登录 → 选择学习主题 → 浏览地道表达 → 查看场景示例 → AI助教互动 → 完成练习 → 查看进度
+2. **管理流程**: 登录管理后台 → 数据导入/编辑 → 用户管理 → 统计分析 → 系统配置
+
+## UI/UX设计要求
+- **现代化界面**: 采用Material Design或类似现代设计语言
+- **响应式设计**: 支持桌面端、平板、手机多端适配
+- **交互友好**: 直观的导航，流畅的动画效果，清晰的视觉层次
+</context>
+
+<PRD>
+# Technical Architecture  
+## 系统组件架构
+### 后端架构 (基于现有Django应用扩展)
+```
+backend/apps/english/
+├── models.py (扩展现有模型)
+│   ├── IdiomaticExpression          # 地道表达模型 (扩展现有Expression)
+│   ├── ExpressionScenario           # 场景数据模型 (新增)
+│   ├── UserExpressionProgress       # 学习记录模型 (基于UserWordProgress)
+│   ├── ExpressionSource             # 数据源管理模型 (新增)
+│   └── AIAssistantConfig            # AI助教配置模型 (新增)
+├── views.py (扩展现有视图)
+│   ├── IdiomaticExpressionViewSet   # 表达管理API视图
+│   ├── LearningSessionViewSet       # 学习会话API视图
+│   ├── StatisticsViewSet            # 统计分析API视图
+│   └── AIAssistantViewSet           # AI助教API视图
+├── serializers.py (扩展现有序列化器)
+│   ├── IdiomaticExpressionSerializer
+│   ├── ExpressionScenarioSerializer
+│   └── UserExpressionProgressSerializer
+├── services.py (扩展现有服务)
+│   ├── AIAssistantService           # AI集成服务
+│   ├── ExpressionCrawlerService     # 数据采集服务 (扩展现有crawler)
+│   ├── LearningAnalyticsService     # 学习分析服务
+│   └── RecommendationService        # 推荐算法服务
+├── crawlers/ (新增爬虫目录)
+│   ├── __init__.py
+│   ├── base_expression_crawler.py   # 基础表达爬虫 (继承EnhancedNewsCrawler)
+│   ├── cambridge_crawler.py         # 剑桥词典爬虫
+│   ├── collins_crawler.py           # 柯林斯词典爬虫
+│   ├── reddit_crawler.py            # Reddit英语学习社区爬虫
+│   ├── urban_dictionary_crawler.py  # Urban Dictionary俚语爬虫
+│   ├── phrasal_verbs_crawler.py     # 短语动词专用爬虫
+│   └── expression_crawler_service.py # 爬虫服务管理器
+├── management/commands/
+│   ├── crawl_expressions.py         # 地道表达爬取命令 (基于crawl_news.py)
+│   ├── import_expression_data.py    # 数据导入命令
+│   └── generate_scenarios.py       # 场景生成命令
+├── utils.py (扩展现有工具)
+│   ├── expression_parser.py         # 表达解析工具
+│   ├── scenario_generator.py        # 场景生成工具
+│   └── progress_calculator.py       # 进度计算工具
+└── tests/
+    ├── test_expression_models.py    # 表达模型测试
+    ├── test_expression_views.py     # 表达视图测试
+    ├── test_crawlers.py             # 爬虫测试
+    ├── test_ai_services.py          # AI服务测试
+    └── test_integration.py          # 集成测试
+```
+
+### 前端架构 (Vue.js)
+```
+frontend/src/modules/english/idiomatic-expressions/
+├── components/
+│   ├── ExpressionCard.vue            # 表达卡片组件
+│   ├── ScenarioPlayer.vue            # 场景播放器
+│   ├── AIAssistantChat.vue           # AI助教对话
+│   ├── ProgressChart.vue             # 进度图表
+│   └── LearningDashboard.vue         # 学习仪表板
+├── views/
+│   ├── ExpressionList.vue            # 表达列表页
+│   ├── LearningSession.vue           # 学习会话页
+│   ├── StatisticsView.vue            # 统计页面
+│   └── SettingsView.vue              # 设置页面
+├── stores/
+│   ├── expressionStore.js            # 表达数据状态
+│   ├── learningStore.js              # 学习状态管理
+│   └── aiAssistantStore.js           # AI助教状态
+├── services/
+│   ├── expressionApi.js              # 表达API服务
+│   ├── learningApi.js                # 学习API服务
+│   └── aiApi.js                      # AI API服务
+└── tests/
+    ├── components/                   # 组件测试
+    ├── views/                        # 页面测试
+    └── e2e/                          # E2E测试 (Playwright)
+```
+
+## 数据模型设计 (基于现有模型扩展)
+### 核心数据表扩展
+1. **english_expressions** - 扩展现有Expression模型
+   - 保留现有字段：expression, meaning, category, scenario, difficulty_level等
+   - 新增字段：
+     - expression_type (VARCHAR 50) - 类型(idiom/slang/colloquial/phrase)
+     - frequency_score (DECIMAL) - 使用频率分数
+     - origin_country (VARCHAR 50) - 来源国家/地区
+     - formality_level (VARCHAR 20) - 正式程度(formal/informal/neutral)
+     - age_group_usage (VARCHAR 50) - 适用年龄群体
+     - context_tags (JSON) - 上下文标签
+     - pronunciation_guide (TEXT) - 发音指导
+     - related_expressions (JSON) - 相关表达ID列表
+     - crawl_source (VARCHAR 100) - 爬取来源
+
+2. **english_expression_scenarios** - 使用场景表 (新增)
+   - id (Primary Key)
+   - expression_id (Foreign Key to english_expressions)
+   - scenario_title (VARCHAR 200)
+   - scenario_description (TEXT)
+   - dialogue_content (JSON) - 对话内容
+   - participant_roles (JSON) - 对话角色信息
+   - setting_context (VARCHAR 100) - 场景设置
+   - media_url (VARCHAR 500) - 多媒体链接
+   - created_at, updated_at
+
+3. **english_user_expression_progress** - 学习进度表 (基于现有UserWordProgress)
+   - 继承UserWordProgress的SM-2算法相关字段
+   - 新增表达特有字段：
+     - scenario_familiarity (JSON) - 各场景熟悉度
+     - usage_attempts (INT) - 使用尝试次数
+     - correct_usage_count (INT) - 正确使用次数
+     - last_used_in_context (TEXT) - 最后使用语境
+     - ai_feedback_history (JSON) - AI反馈历史
+
+4. **english_expression_sources** - 数据源管理表 (新增)
+   - id (Primary Key)
+   - source_name (VARCHAR 100) - 数据源名称
+   - source_type (VARCHAR 50) - 类型(crawler/api/manual/ai_generated)
+   - source_url (VARCHAR 500) - 源URL
+   - crawler_class (VARCHAR 100) - 爬虫类名
+   - last_crawl_time (DATETIME) - 最后爬取时间
+   - crawl_frequency (VARCHAR 20) - 爬取频率
+   - data_quality_score (DECIMAL) - 数据质量评分
+   - is_active (BOOLEAN) - 是否启用
+   - created_at, updated_at
+
+5. **english_ai_assistant_configs** - AI助教配置表 (新增)
+   - id (Primary Key)
+   - user_id (Foreign Key)
+   - ai_provider (VARCHAR 50) - AI提供商(openai/anthropic/custom)
+   - api_key_encrypted (TEXT) - 加密的API密钥
+   - model_name (VARCHAR 100) - 模型名称
+   - personality_settings (JSON) - 个性化设置
+   - teaching_style (VARCHAR 50) - 教学风格
+   - language_level (VARCHAR 20) - 语言水平设置
+   - is_active (BOOLEAN) - 是否启用
+   - created_at, updated_at
+
+## API接口规范
+### RESTful API设计 (api/v1/english/idiomatic-expressions/)
+- GET /expressions/ - 获取表达列表
+- POST /expressions/ - 创建新表达
+- GET /expressions/{id}/ - 获取表达详情
+- PUT /expressions/{id}/ - 更新表达
+- DELETE /expressions/{id}/ - 删除表达
+- GET /expressions/{id}/scenarios/ - 获取表达场景
+- POST /learning/sessions/ - 创建学习会话
+- GET /learning/progress/ - 获取学习进度
+- POST /ai-assistant/chat/ - AI助教对话
+- GET /statistics/dashboard/ - 获取统计数据
+
+## 基础设施要求
+- **数据库**: MySQL 8.0+ (主数据库), Redis (缓存)
+- **后端**: Django 4.2+, Django REST Framework
+- **前端**: Vue.js 3+, Vite, TypeScript
+- **AI集成**: 支持OpenAI、Claude等多种AI模型
+- **测试**: Pytest (后端), Vitest (前端), Playwright (E2E)
+- **部署**: Docker容器化，支持CI/CD
+
+# Development Roadmap  
+## Phase 1: 基础架构与数据层 (MVP核心) - 基于现有代码扩展
+### 后端基础 - 现有系统集成
+- 扩展现有Expression模型，增加地道表达特有字段
+- 新增ExpressionScenario、ExpressionSource等关联模型
+- 数据库迁移文件创建 (基于现有migration系统)
+- 扩展现有API视图，增加地道表达专用端点
+- 复用现有认证和权限控制系统
+
+### 数据采集系统 - 基于现有爬虫架构
+- 扩展EnhancedNewsCrawler基类，创建BaseExpressionCrawler
+- 实现多个专业爬虫：Cambridge、Collins、Reddit等
+- 扩展现有crawl_news.py管理命令，增加crawl_expressions.py
+- 复用现有爬虫的网络请求、错误处理、重试机制等基础设施
+- 建立数据质量评估和去重机制
+
+### 前端基础 - 集成现有Vue.js架构
+- 在现有frontend/src/modules/english/下新增idiomatic-expressions模块
+- 复用现有组件库和设计系统
+- 扩展现有路由配置，增加地道表达相关路由
+- 基于现有API服务模式，创建expressionApi.js
+
+### 测试基础 - 扩展现有测试框架
+- 基于现有pytest配置，增加地道表达模块测试
+- 扩展现有前端测试配置，增加组件和E2E测试
+- 利用现有CI/CD流水线，增加新模块的测试步骤
+
+## Phase 2: 核心学习功能
+### 场景化学习
+- 场景数据模型完善
+- 场景展示和互动组件
+- 学习会话管理系统
+- 进度跟踪和记录功能
+
+### 用户体验优化
+- 现代化UI界面实现
+- 学习路径推荐算法
+- 个性化设置功能
+- 离线学习支持
+
+## Phase 3: AI助教集成
+### AI服务集成
+- 多AI模型适配器设计
+- API密钥安全管理
+- 智能对话接口实现
+- 个性化助教配置
+
+### 智能功能
+- 学习内容推荐
+- 错误分析和纠正
+- 学习计划生成
+- 智能复习提醒
+
+## Phase 4: 数据分析与扩展
+### 学习分析
+- 多维度数据收集
+- 可视化图表组件
+- 学习报告生成
+- 学习效果评估
+
+### 系统扩展
+- 第三方系统集成接口
+- 插件化架构支持
+- 多语言国际化
+- 高级管理功能
+
+## Phase 5: 性能优化与高级功能
+### 性能优化
+- 数据库查询优化
+- 缓存策略实现
+- 前端性能优化
+- 移动端体验优化
+
+### 高级功能
+- 语音识别和发音评估
+- 社交学习功能
+- 游戏化学习元素
+- 高级统计分析
+
+# Logical Dependency Chain
+## 开发依赖顺序
+1. **数据基础** → 数据模型设计 → 数据库迁移 → 基础数据导入
+2. **API基础** → 核心API接口 → 认证授权 → API文档
+3. **前端基础** → 组件库 → 基础页面 → 路由配置
+4. **核心功能** → 表达浏览 → 场景学习 → 进度跟踪
+5. **AI集成** → AI服务适配 → 对话接口 → 智能推荐
+6. **数据分析** → 统计收集 → 可视化展示 → 报告生成
+7. **系统完善** → 测试覆盖 → 性能优化 → 部署上线
+
+## 快速可用性策略
+- Phase 1完成后即可提供基础的表达浏览和学习功能
+- 每个Phase都确保增量可用，用户可以立即体验新功能
+- 优先实现用户可见的前端功能，再完善后台管理
+
+## 原子化开发
+- 每个功能模块独立开发，可单独测试和部署
+- API接口设计考虑向后兼容性
+- 前端组件化设计，便于复用和扩展
+
+# Risks and Mitigations  
+## 技术挑战与解决方案
+### 风险1: 数据源获取和质量控制
+- **挑战描述**: 地道表达数据分散在各种网站和平台，质量参差不齐，存在版权和反爬虫限制
+- **解决方案**: 
+  - 基于现有爬虫架构，实现多层次数据获取策略
+  - 优先使用开放API和合法数据源（如开源词典、学术资源）
+  - 实现智能数据质量评估算法，结合人工审核
+  - 建立用户贡献和社区验证机制
+- **备选方案**: AI生成高质量示例数据，结合少量种子数据进行扩展
+
+### 风险2: 模型变更和系统扩展性
+- **挑战描述**: AI模型快速迭代，用户需求变化，系统需要具备强扩展性
+- **解决方案**:
+  - 采用适配器模式设计AI服务接口，支持热插拔
+  - 数据模型设计预留扩展字段(JSON类型)，支持动态属性
+  - 基于现有Django架构，利用成熟的ORM和migration系统
+  - 实现配置化的功能开关，支持渐进式功能发布
+- **技术实现**: 
+  ```python
+  # AI适配器接口设计
+  class BaseAIAdapter:
+      def generate_scenario(self, expression: str) -> dict
+      def evaluate_usage(self, expression: str, context: str) -> float
+      def get_related_expressions(self, expression: str) -> list
+  ```
+
+### 风险3: 性能和并发处理
+- **挑战描述**: 爬虫任务、AI调用、用户学习数据处理的并发性能要求
+- **解决方案**:
+  - 利用现有Celery任务队列处理异步爬虫和AI调用
+  - 基于现有Redis缓存系统，优化数据访问性能
+  - 实现数据库查询优化，建立合适的索引策略
+  - 采用分页和懒加载技术，优化前端性能
+- **扩展方案**: 预留微服务架构接口，支持未来水平扩展
+
+## MVP定义
+### 最小可行产品包含:
+1. 基础的地道表达数据管理
+2. 简单的表达浏览和搜索
+3. 基础的学习进度记录
+4. 基本的用户认证和权限
+5. 核心API接口和基础前端界面
+
+### 可以后续添加:
+- AI助教功能
+- 高级统计分析
+- 社交学习功能
+- 移动端优化
+
+## 资源约束
+### 开发资源
+- **风险**: 单人开发可能导致进度延迟
+- **缓解措施**: 合理的Phase划分，优先级明确，使用成熟技术栈
+
+### API成本控制
+- **风险**: AI API调用成本可能过高
+- **缓解措施**: 实现请求缓存，用量监控，成本预警机制
+
+# Appendix  
+## 技术规范
+### 命名规范
+- **数据库表**: 小写下划线命名 (idiomatic_expressions)
+- **模型类**: 大驼峰命名 (IdiomaticExpression)
+- **API端点**: 小写短横线命名 (idiomatic-expressions)
+- **前端组件**: 大驼峰命名 (ExpressionCard)
+- **函数/变量**: 小驼峰命名 (getUserProgress)
+
+### 文件组织规范
+- 按功能模块划分目录结构
+- 测试文件与源文件对应
+- 配置文件集中管理
+- 文档与代码同步维护
+
+## 现有系统集成策略
+### 与现有模块深度集成
+- **用户系统**: 复用现有User模型和认证中间件
+- **英语学习模块**: 扩展现有Word、Expression等模型
+- **爬虫系统**: 基于现有news_crawler的网络请求和错误处理架构
+- **统计分析**: 集成现有LearningStats和PracticeRecord系统
+- **AI集成**: 利用现有apps.ai模块的基础设施
+- **API框架**: 遵循现有DRF和API版本管理策略
+- **前端架构**: 集成现有Vue.js组件库和状态管理
+
+### 数据源多样化策略
+#### 1. 爬虫数据源 (优先级：高)
+- **词典网站**: Cambridge, Oxford, Collins等权威词典的习语页面
+- **俚语词典**: Urban Dictionary等俚语和口语表达集合
+- **语言学习平台**: 英语学习网站的短语和习语专区
+- **社交媒体**: Reddit英语学习社区、英语母语者讨论区
+- **新闻媒体**: 从现有新闻爬虫结果中提取地道表达（二次处理）
+
+#### 2. API数据源 (优先级：中)
+- **开放词典API**: Wordnik, Oxford Dictionary API
+- **语言学习API**: Quizlet, Anki等平台的开放接口
+- **社区贡献API**: Stack Exchange English Language & Usage
+
+#### 3. AI生成数据源 (优先级：中)
+- **场景生成**: 使用GPT/Claude生成使用场景和对话
+- **例句创建**: AI辅助生成高质量例句和语境
+- **难度评估**: AI辅助评估表达难度和使用频率
+
+#### 4. 人工贡献数据源 (优先级：低)
+- **用户贡献**: 允许用户提交和验证地道表达
+- **专家审核**: 邀请英语教师和母语者参与内容审核
+- **众包验证**: 社区投票验证表达的准确性和实用性
+
+### 扩展性与变更适应设计
+#### 模型扩展策略
+```python
+# 预留扩展字段设计
+class IdiomaticExpression(Expression):
+    # 基础字段继承自现有Expression模型
+    extended_metadata = models.JSONField(default=dict)  # 预留扩展数据
+    version = models.IntegerField(default=1)  # 版本控制
+    
+    class Meta:
+        db_table = 'english_expressions'  # 复用现有表
+```
+
+#### 配置化功能管理
+```python
+# 功能开关配置
+IDIOMATIC_EXPRESSIONS_CONFIG = {
+    'ai_assistant_enabled': True,
+    'crawler_sources': ['cambridge', 'reddit', 'ai_generated'],
+    'quality_threshold': 0.8,
+    'max_daily_crawl': 100,
+    'supported_ai_models': ['gpt-4', 'claude-3', 'local-model']
+}
+```
+
+#### 插件化爬虫架构
+```python
+# 可插拔爬虫设计
+class ExpressionCrawlerRegistry:
+    def register_crawler(self, name: str, crawler_class: Type[BaseExpressionCrawler])
+    def get_active_crawlers(self) -> List[BaseExpressionCrawler]
+    def enable_crawler(self, name: str, enabled: bool)
+```
+
+## 测试策略
+### 测试驱动开发
+- 单元测试: 覆盖所有核心业务逻辑
+- 集成测试: API接口和数据库交互
+- E2E测试: 使用Playwright进行完整用户流程测试
+- 性能测试: 数据库查询和API响应时间
+- 安全测试: 认证授权和数据安全
+
+### 质量保证
+- 代码覆盖率目标: 90%+
+- 自动化测试流水线
+- 代码审查机制
+- 性能监控和告警
+</PRD>

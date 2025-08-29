@@ -1,0 +1,43 @@
+# Task ID: 3
+# Title: RESTful API接口开发
+# Status: pending
+# Dependencies: 1
+# Priority: medium
+# Description: 设计并实现地道表达学习系统的核心API接口
+# Details:
+基于Django REST Framework扩展现有API系统，实现地道表达专用接口。核心接口包括：1) IdiomaticExpressionViewSet提供CRUD操作，支持分页、搜索、筛选 2) LearningSessionViewSet管理学习会话 3) StatisticsViewSet提供学习数据统计 4) AIAssistantViewSet处理AI对话。技术要点：使用DRF的ViewSet和Router实现RESTful设计，版本控制采用URL路径方式(api/v1/)。实现自定义序列化器处理复杂数据结构，使用select_related和prefetch_related优化数据库查询。集成现有认证中间件，实现细粒度权限控制。API设计遵循OpenAPI 3.0规范，提供完整的接口文档。实现接口缓存策略，使用Redis缓存热点数据，提升响应性能。
+
+# Test Strategy:
+使用DRF测试框架编写API测试，覆盖所有端点的CRUD操作。测试认证授权逻辑，验证权限控制的正确性。使用APIClient模拟各种请求场景，包括边界情况和异常处理。性能测试验证API响应时间和并发处理能力。
+
+# Subtasks:
+## 1. DRF核心ViewSet开发 [pending]
+### Dependencies: None
+### Description: 实现IdiomaticExpressionViewSet和LearningSessionViewSet的完整CRUD操作
+### Details:
+基于Django REST Framework开发核心ViewSet类。实现IdiomaticExpressionViewSet提供地道表达的创建、读取、更新、删除操作，支持分页、搜索和多字段筛选功能。开发LearningSessionViewSet管理用户学习会话，包括会话创建、进度更新、状态追踪。使用DRF的ViewSet基类，实现自定义action处理特殊业务逻辑。配置URL路由使用DRF Router自动生成RESTful接口。实现版本控制采用URL路径方式(api/v1/)，为未来API升级预留空间。
+
+## 2. 统计与AI助教ViewSet实现 [pending]
+### Dependencies: 3.1
+### Description: 开发StatisticsViewSet和AIAssistantViewSet，处理数据统计和AI对话功能
+### Details:
+实现StatisticsViewSet提供学习数据统计接口，包括学习进度、掌握度分析、时间统计等。开发AIAssistantViewSet处理AI对话请求，支持流式响应和上下文管理。实现统计数据的聚合查询，使用Django ORM的aggregate和annotate功能。集成AI服务适配器，处理异步AI调用和响应流式传输。实现缓存策略优化统计查询性能，使用Redis缓存计算结果。配置CORS和WebSocket支持AI实时对话。
+
+## 3. 序列化器与数据优化 [pending]
+### Dependencies: 3.1
+### Description: 开发自定义序列化器和数据库查询优化
+### Details:
+创建自定义序列化器处理复杂的嵌套数据结构，包括IdiomaticExpressionSerializer、LearningSessionSerializer等。实现序列化器字段验证和数据转换逻辑。使用select_related和prefetch_related优化数据库查询，减少N+1查询问题。实现动态字段序列化，支持客户端按需获取数据。开发序列化器缓存机制，提升序列化性能。配置序列化器支持多种数据格式（JSON、XML）。实现批量操作序列化器，支持批量创建和更新。
+
+## 4. 认证权限与安全控制 [pending]
+### Dependencies: 3.1, 3.2
+### Description: 集成认证中间件，实现细粒度权限控制和API安全机制
+### Details:
+集成现有认证中间件，支持JWT Token、Session等多种认证方式。实现基于角色的权限控制（RBAC），定义不同用户级别的API访问权限。开发自定义权限类，实现资源级权限控制。配置API访问限流，防止恶意请求和DDoS攻击。实现API密钥管理，支持第三方应用接入。配置HTTPS强制访问，确保数据传输安全。实现审计日志记录用户API操作行为。设置CORS策略，支持跨域访问控制。
+
+## 5. API文档与缓存策略 [pending]
+### Dependencies: 3.1, 3.2, 3.3, 3.4
+### Description: 实现OpenAPI文档生成和Redis缓存系统
+### Details:
+使用drf-spectacular生成符合OpenAPI 3.0规范的API文档，包含完整的接口描述、参数说明、响应示例。配置Swagger UI和ReDoc界面，提供交互式API文档。实现API版本化文档，支持多版本API并存。设计Redis缓存策略，缓存热点数据如热门表达、用户偏好等。实现缓存预热和失效机制，确保数据一致性。配置缓存分层策略，包括应用层缓存和数据库查询缓存。实现缓存监控和性能指标收集。配置API响应缓存，使用HTTP缓存头提升客户端性能。
+
