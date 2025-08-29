@@ -8,7 +8,7 @@ from .views import (
 )
 from .english_views import (
     IdiomaticExpressionViewSet, UserExpressionProgressViewSet, LearningSessionViewSet,
-    ExpressionSourceViewSet, ExpressionScenarioViewSet
+    ExpressionSourceViewSet, ExpressionScenarioViewSet, StatisticsViewSet, AIAssistantViewSet
 )
 
 router = DefaultRouter()
@@ -26,6 +26,8 @@ router.register(r'expression-progress', UserExpressionProgressViewSet, basename=
 router.register(r'learning-sessions', LearningSessionViewSet, basename='learningsession')
 router.register(r'expression-sources', ExpressionSourceViewSet)
 router.register(r'expression-scenarios', ExpressionScenarioViewSet)
+router.register(r'statistics', StatisticsViewSet, basename='statistics')
+router.register(r'ai-assistant', AIAssistantViewSet, basename='aiassistant')
 
 urlpatterns = [
     path('', include(router.urls)),
