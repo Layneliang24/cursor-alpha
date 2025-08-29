@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'drf_yasg',
+    'drf_spectacular',
     'captcha',
     'mdeditor',
     'django_extensions',
@@ -288,6 +289,7 @@ REST_FRAMEWORK = {
         'english_api': '100/minute',          # API密钥访问
     },
     'EXCEPTION_HANDLER': 'apps.api.exceptions.custom_exception_handler',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # JWT Settings
@@ -368,8 +370,26 @@ if DEBUG:
     ]
 
 # Cache Configuration
+REDIS_URL = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379/2')
+
 CACHES = {
     'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': REDIS_URL,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'CONNECTION_POOL_KWARGS': {
+                'max_connections': 50,
+                'retry_on_timeout': True,
+            },
+            'SERIALIZER': 'django_redis.serializers.json.JSONSerializer',
+            'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',
+        },
+        'KEY_PREFIX': 'alpha_cache',
+        'TIMEOUT': 300,  # 5分钟默认过期
+    },
+    # 本地内存缓存作为备用
+    'locmem': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'unique-snowflake',
     }
@@ -495,4 +515,55 @@ ENGLISH_SECURITY = {
     'EXPRESSION_MAX_LENGTH': 500,
     'ENABLE_CONTENT_VALIDATION': True,
     'ENABLE_AUDIT_LOGGING': True,
+}
+
+# DRF Spectacular (OpenAPI 3.0) Configuration
+SPECTACULAR_SETTINGS = {
+    'TITLE': '地道表达学习平台 API',
+    'DESCRIPTION': '提供地道英语表达学习、数据采集和管理功能的RESTful API',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+        'filter': True,
+        'tryItOutEnabled': True,
+        'supportedSubmitMethods': ['get', 'post', 'put', 'delete', 'patch'],
+        'oauth2RedirectUrl': '/api/v1/auth/oauth2-redirect/',
+    },
+    'REDOC_UI_SETTINGS': {
+        'hideDownloadButton': False,
+        'hideHostname': False,
+        'hideLoading': False,
+        'hideSchemaPattern': True,
+        'scrollYOffset': 0,
+        'suppressWarnings': True,
+        'theme': {
+            'colors': {
+                'primary': {
+                    'main': '#667eea'
+                }
+            }
+        }
+    },
+    'COMPONENT_SPLIT_REQUEST': True,
+    'COMPONENT_NO_READ_ONLY_REQUIRED': True,
+    'SCHEMA_PATH_PREFIX': '/api/v1/',
+    'SCHEMA_PATH_PREFIX_TRIM': True,
+    'TAGS': [
+        {'name': 'Authentication', 'description': '用户认证相关接口'},
+        {'name': 'Expressions', 'description': '地道表达管理接口'},
+        {'name': 'Learning', 'description': '学习功能接口'},
+        {'name': 'Statistics', 'description': '学习数据统计接口'},
+        {'name': 'AI Assistant', 'description': 'AI助教功能接口'},
+        {'name': 'Management', 'description': '系统管理接口'},
+        {'name': 'Security', 'description': '安全管理接口'},
+    ],
+    'PREPROCESSING_HOOKS': [
+        'apps.api.schema_hooks.preprocess_exclude_paths'
+    ],
+    'POSTPROCESSING_HOOKS': [
+        'apps.api.schema_hooks.postprocess_schema_enhancements'
+    ],
 }
