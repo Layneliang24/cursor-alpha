@@ -1,0 +1,77 @@
+{
+	"meta": {
+		"generatedAt": "2025-08-29T02:16:10.905Z",
+		"tasksAnalyzed": 8,
+		"totalTasks": 8,
+		"analysisCount": 8,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": true
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "项目初始化与基础结构搭建",
+			"complexityScore": 4,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "请将项目初始化与基础结构搭建任务细分为：1) 创建项目文件夹与目录结构，2) 初始化 Node.js 环境与 package.json，3) 配置基础文件（index.html, style.css, main.js, tasks.json），4) 设置 .gitignore 和权限，5) 本地运行环境验证。",
+			"reasoning": "该任务涉及基础环境搭建和文件结构配置，流程标准但需兼顾多项细节，建议细分以确保每一步可独立验证。"
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "任务数据模型设计与实现",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "请将任务数据模型设计与实现细分为：1) 设计 Task 类及属性，2) 集成 uuid 生成唯一标识，3) 实现 tasks.json 的读写逻辑，4) 集成 ajv 进行 JSON schema 校验，5) 编写单元测试验证模型。",
+			"reasoning": "涉及数据结构设计、第三方库集成及数据持久化，需保证数据一致性和可测试性，细分有助于逐步实现和验证。"
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "实现任务管理核心逻辑（CRUD）",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "请将任务管理核心逻辑（CRUD）细分为：1) 实现 addTask，2) 实现 getTasks，3) 实现 updateTask，4) 实现 deleteTask，5) 实现异常处理与结果返回，6) 编写边界测试用例。",
+			"reasoning": "CRUD 是核心业务逻辑，涉及异步处理、异常管理和数据一致性，建议细分每个操作及测试，确保健壮性。"
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "前端用户界面开发",
+			"complexityScore": 8,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "请将前端用户界面开发细分为：1) 设计主页面结构（HTML5 语义标签），2) 实现任务列表视图及动态渲染，3) 实现任务详情视图与编辑功能，4) 实现新建、编辑、删除、状态切换按钮，5) 编写 CSS（Flexbox/Grid），6) 交互逻辑与事件绑定，7) 手动测试与兼容性检查。",
+			"reasoning": "该任务涉及多视图、多交互、样式和动态渲染，前后端联动复杂，需细分以便并行开发和逐步测试。"
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "任务状态管理与优先级功能实现",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "请将任务状态管理与优先级功能实现细分为：1) 实现状态切换下拉菜单，2) 实现优先级选择器，3) 绑定状态/优先级变更到 updateTask，4) 前端按优先级排序展示，5) 状态变更后界面自动刷新与测试。",
+			"reasoning": "涉及 UI 控件、数据联动和排序逻辑，需保证前后端同步和界面实时更新，细分有助于逐步实现和验证。"
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "基础数据验证与错误处理",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "请将基础数据验证与错误处理细分为：1) 定义 JSON schema 及 ajv 校验逻辑，2) 前端表单基础校验实现，3) 错误提示与异常反馈机制，4) 编写无效数据测试用例。",
+			"reasoning": "数据校验和错误处理是保证系统健壮性的关键，需覆盖前后端及用户提示，细分便于分工和测试。"
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "单元测试与功能验证",
+			"complexityScore": 6,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "请将单元测试与功能验证细分为：1) 数据模型相关测试，2) CRUD 操作测试，3) 状态切换与优先级排序测试，4) 数据校验测试，5) 前端 DOM 交互测试，6) 测试覆盖率统计与报告。",
+			"reasoning": "单元测试需覆盖后端与前端核心逻辑，涉及多模块和用例，细分有助于保证覆盖率和测试质量。"
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "编写使用文档与测试报告",
+			"complexityScore": 4,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "请将编写使用文档与测试报告细分为：1) 项目简介与安装运行说明，2) 功能与 API 文档，3) 测试方法与覆盖率报告，4) 常见问题与用户反馈修订。",
+			"reasoning": "文档编写流程标准，内容较多但结构清晰，细分有助于分工和内容完整性检查。"
+		}
+	]
+}
