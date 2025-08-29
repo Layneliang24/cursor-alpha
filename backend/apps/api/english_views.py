@@ -19,6 +19,15 @@ from apps.english.models import (
     IdiomaticExpression, ExpressionSource, ExpressionScenario,
     ExpressionScenarioLink, UserExpressionProgress, AIAssistantConfig
 )
+from apps.english.permissions import (
+    EnglishLearnerPermission, EnglishContentManagerPermission,
+    EnglishAdminPermission, UserProgressOwnerPermission
+)
+from apps.english.security import (
+    EnglishExpressionsThrottle, EnglishLearningThrottle,
+    EnglishManagementThrottle, EnglishAnonymousThrottle,
+    SecurityAuditLogger, ContentSecurityValidator
+)
 from .english_serializers import (
     IdiomaticExpressionListSerializer, IdiomaticExpressionDetailSerializer,
     IdiomaticExpressionCreateSerializer, IdiomaticExpressionUpdateSerializer,
@@ -51,7 +60,8 @@ class IdiomaticExpressionViewSet(viewsets.ModelViewSet):
     ordering = ['-created_at']
     
     # 权限控制
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [EnglishLearnerPermission]
+    throttle_classes = [EnglishExpressionsThrottle]
     
     def get_serializer_class(self):
         """根据动作选择序列化器"""
@@ -238,7 +248,9 @@ class IdiomaticExpressionViewSet(viewsets.ModelViewSet):
         logger.info(f"删除表达式: {instance.expression} (ID: {instance.id})")
         instance.delete()
     
-    @action(detail=False, methods=['post'])
+    @action(detail=False, methods=['post'], 
+            permission_classes=[EnglishContentManagerPermission],
+            throttle_classes=[EnglishManagementThrottle])
     def batch_create(self, request):
         """批量创建表达式"""
         if not isinstance(request.data, list):
@@ -271,7 +283,9 @@ class IdiomaticExpressionViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
     
-    @action(detail=False, methods=['put'])
+    @action(detail=False, methods=['put'], 
+            permission_classes=[EnglishContentManagerPermission],
+            throttle_classes=[EnglishManagementThrottle])
     def batch_update(self, request):
         """批量更新表达式"""
         if not isinstance(request.data, list):
@@ -356,7 +370,8 @@ class UserExpressionProgressViewSet(viewsets.ModelViewSet):
     """用户表达式学习进度ViewSet"""
     
     serializer_class = UserExpressionProgressSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [UserProgressOwnerPermission]
+    throttle_classes = [EnglishLearningThrottle]
     pagination_class = CustomPageNumberPagination
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['last_reviewed', 'created_at', 'mastery_level']
@@ -489,7 +504,8 @@ class UserExpressionProgressViewSet(viewsets.ModelViewSet):
 class LearningSessionViewSet(viewsets.GenericViewSet):
     """学习会话ViewSet"""
     
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [EnglishLearnerPermission]
+    throttle_classes = [EnglishLearningThrottle]
     
     @action(detail=False, methods=['post'])
     def create_session(self, request):
@@ -610,7 +626,8 @@ class ExpressionSourceViewSet(viewsets.ReadOnlyModelViewSet):
     
     queryset = ExpressionSource.objects.all()
     serializer_class = ExpressionSourceSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [EnglishLearnerPermission]
+    throttle_classes = [EnglishExpressionsThrottle]
     pagination_class = CustomPageNumberPagination
     ordering = ['source_name']
 
@@ -620,7 +637,8 @@ class ExpressionScenarioViewSet(viewsets.ReadOnlyModelViewSet):
     
     queryset = ExpressionScenario.objects.all()
     serializer_class = ExpressionScenarioSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [EnglishLearnerPermission]
+    throttle_classes = [EnglishExpressionsThrottle]
     pagination_class = CustomPageNumberPagination
     ordering = ['scenario_name']
 
@@ -628,7 +646,8 @@ class ExpressionScenarioViewSet(viewsets.ReadOnlyModelViewSet):
 class StatisticsViewSet(viewsets.GenericViewSet):
     """学习数据统计ViewSet"""
     
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [EnglishLearnerPermission]
+    throttle_classes = [EnglishLearningThrottle]
     
     @action(detail=False, methods=['get'])
     def overview(self, request):
@@ -848,7 +867,8 @@ class StatisticsViewSet(viewsets.GenericViewSet):
 class AIAssistantViewSet(viewsets.GenericViewSet):
     """AI助教ViewSet"""
     
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [EnglishLearnerPermission]
+    throttle_classes = [EnglishLearningThrottle]
     
     @action(detail=False, methods=['post'])
     def chat(self, request):
