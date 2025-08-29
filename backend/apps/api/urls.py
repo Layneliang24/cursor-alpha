@@ -10,6 +10,7 @@ from .english_views import (
     IdiomaticExpressionViewSet, UserExpressionProgressViewSet, LearningSessionViewSet,
     ExpressionSourceViewSet, ExpressionScenarioViewSet, StatisticsViewSet, AIAssistantViewSet
 )
+from apps.english.api_management import APIKeyManagementViewSet, SecurityManagementViewSet
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -28,6 +29,10 @@ router.register(r'expression-sources', ExpressionSourceViewSet)
 router.register(r'expression-scenarios', ExpressionScenarioViewSet)
 router.register(r'statistics', StatisticsViewSet, basename='statistics')
 router.register(r'ai-assistant', AIAssistantViewSet, basename='aiassistant')
+
+# API管理和安全
+router.register(r'api-keys', APIKeyManagementViewSet, basename='apikey')
+router.register(r'security', SecurityManagementViewSet, basename='security')
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -115,6 +115,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 地道表达安全中间件
+    'apps.english.middleware.EnglishSecurityMiddleware',
+    'apps.english.middleware.ContentSecurityMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
@@ -276,6 +279,13 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '60/minute',   # 未登录用户
         'user': '240/minute',  # 登录用户
+        # 地道表达模块专用限流
+        'english_expressions': '120/minute',  # 表达式查询
+        'english_learning': '60/minute',      # 学习功能
+        'english_management': '30/minute',    # 管理功能
+        'english_crawler': '10/minute',       # 爬虫功能
+        'english_anon': '30/minute',          # 匿名用户访问英语模块
+        'english_api': '100/minute',          # API密钥访问
     },
     'EXCEPTION_HANDLER': 'apps.api.exceptions.custom_exception_handler',
 }
@@ -454,3 +464,35 @@ try:
 except Exception:
     # If settings are static above, ignore
     pass
+
+# 安全设置
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# 强制HTTPS（生产环境）
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False').lower() == 'true'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Session安全
+SESSION_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+# 地道表达安全配置
+ENGLISH_SECURITY = {
+    'API_KEY_EXPIRY_DAYS': 30,
+    'MAX_API_KEYS_PER_USER': 3,
+    'LOGIN_ATTEMPT_LIMIT': 5,
+    'LOGIN_ATTEMPT_WINDOW_MINUTES': 15,
+    'API_REQUEST_LIMIT_PER_HOUR': 1000,
+    'CONTENT_MAX_LENGTH': 2000,
+    'EXPRESSION_MAX_LENGTH': 500,
+    'ENABLE_CONTENT_VALIDATION': True,
+    'ENABLE_AUDIT_LOGGING': True,
+}
