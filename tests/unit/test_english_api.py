@@ -855,3 +855,193 @@ class AIAssistantAPITest(APITestCase):
         response = self.client.post(url, data)
         
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class SerializerOptimizationTest(APITestCase):
+    """序列化器优化功能测试"""
+    
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='test@example.com',
+            password='testpass123'
+        )
+        self.client.force_authenticate(user=self.user)
+        
+        # 创建测试数据源和场景
+        self.source = ExpressionSource.objects.create(
+            source_name='Test Dictionary',
+            source_url='https://test.com',
+            source_type='web',
+            reliability_score=8
+        )
+        
+        self.scenario = ExpressionScenario.objects.create(
+            scenario_name='business',
+            scenario_type='business',
+            context_description='Business scenarios'
+        )
+        
+        # 创建测试表达式
+        self.expressions = []
+        for i in range(3):
+            expression = IdiomaticExpression.objects.create(
+                expression=f'test expression {i}',
+                meaning=f'test meaning {i}',
+                expression_type='idiom',
+                formality_level='informal',
+                frequency_score=7.5,
+                usage_examples=[f'Example {i}']
+            )
+            self.expressions.append(expression)
+            
+            # 创建场景关联
+            ExpressionScenarioLink.objects.create(
+                expression=expression,
+                scenario=self.scenario
+            )
+    
+    def test_dynamic_fields_include(self):
+        """测试动态字段包含功能"""
+        url = reverse('idiomaticexpression-dynamic-fields')
+        response = self.client.get(url, {'fields': 'id,expression,meaning'})
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # 验证只包含指定字段
+        for item in response.data['results']:
+            self.assertIn('id', item)
+            self.assertIn('expression', item)
+            self.assertIn('meaning', item)
+            self.assertNotIn('expression_type', item)
+            self.assertNotIn('frequency_score', item)
+    
+    def test_dynamic_fields_exclude(self):
+        """测试动态字段排除功能"""
+        url = reverse('idiomaticexpression-dynamic-fields')
+        response = self.client.get(url, {'exclude': 'metadata,cultural_background'})
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # 验证排除了指定字段
+        for item in response.data['results']:
+            self.assertNotIn('metadata', item)
+            self.assertNotIn('cultural_background', item)
+            self.assertIn('id', item)
+            self.assertIn('expression', item)
+    
+    def test_batch_create_expressions(self):
+        """测试批量创建表达式"""
+        url = reverse('idiomaticexpression-batch-create')
+        data = [
+            {
+                'expression': 'piece of cake',
+                'meaning': 'very easy',
+                'expression_type': 'idiom',
+                'formality_level': 'informal',
+                'frequency_score': 8.0,
+                'usage_examples': ['This is a piece of cake.']
+            },
+            {
+                'expression': 'break a leg',
+                'meaning': 'good luck',
+                'expression_type': 'idiom',
+                'formality_level': 'informal',
+                'frequency_score': 7.0,
+                'usage_examples': ['Break a leg on your performance!']
+            }
+        ]
+        
+        response = self.client.post(url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['created_count'], 2)
+        self.assertEqual(len(response.data['expressions']), 2)
+        
+        # 验证表达式已创建
+        self.assertTrue(IdiomaticExpression.objects.filter(expression='piece of cake').exists())
+        self.assertTrue(IdiomaticExpression.objects.filter(expression='break a leg').exists())
+    
+    def test_batch_update_expressions(self):
+        """测试批量更新表达式"""
+        url = reverse('idiomaticexpression-batch-update')
+        data = [
+            {
+                'id': self.expressions[0].id,
+                'meaning': 'updated meaning 1',
+                'frequency_score': 9.0
+            },
+            {
+                'id': self.expressions[1].id,
+                'meaning': 'updated meaning 2',
+                'frequency_score': 8.5
+            }
+        ]
+        
+        response = self.client.put(url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['updated_count'], 2)
+        
+        # 验证更新生效
+        self.expressions[0].refresh_from_db()
+        self.expressions[1].refresh_from_db()
+        self.assertEqual(self.expressions[0].meaning, 'updated meaning 1')
+        self.assertEqual(self.expressions[1].meaning, 'updated meaning 2')
+    
+    def test_batch_update_user_progress(self):
+        """测试批量更新用户进度"""
+        # 先创建一些学习进度
+        for expr in self.expressions[:2]:
+            UserExpressionProgress.objects.create(
+                user=self.user,
+                expression=expr,
+                mastery_level=1,
+                review_count=1
+            )
+        
+        url = reverse('userexpressionprogress-batch-update-progress')
+        data = [
+            {
+                'expression_id': self.expressions[0].id,
+                'mastery_level': 4,
+                'is_favorite': True
+            },
+            {
+                'expression_id': self.expressions[1].id,
+                'mastery_level': 3,
+                'notes': 'Need more practice'
+            }
+        ]
+        
+        response = self.client.put(url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['updated_count'], 2)
+        
+        # 验证更新生效
+        progress1 = UserExpressionProgress.objects.get(
+            user=self.user, 
+            expression=self.expressions[0]
+        )
+        progress2 = UserExpressionProgress.objects.get(
+            user=self.user, 
+            expression=self.expressions[1]
+        )
+        
+        self.assertEqual(progress1.mastery_level, 4)
+        self.assertTrue(progress1.is_favorite)
+        self.assertEqual(progress2.mastery_level, 3)
+        self.assertEqual(progress2.notes, 'Need more practice')
+    
+    def test_batch_operation_limits(self):
+        """测试批量操作限制"""
+        # 测试超过100条记录的限制
+        url = reverse('idiomaticexpression-batch-create')
+        data = [{'expression': f'test {i}', 'meaning': f'meaning {i}'} for i in range(101)]
+        
+        response = self.client.post(url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('error', response.data)

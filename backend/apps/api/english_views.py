@@ -24,7 +24,9 @@ from .english_serializers import (
     IdiomaticExpressionCreateSerializer, IdiomaticExpressionUpdateSerializer,
     UserExpressionProgressSerializer, LearningSessionSerializer,
     AIAssistantConfigSerializer, ExpressionSearchSerializer,
-    ExpressionSourceSerializer, ExpressionScenarioSerializer
+    ExpressionSourceSerializer, ExpressionScenarioSerializer,
+    IdiomaticExpressionBatchSerializer, UserProgressBatchSerializer,
+    DynamicFieldExpressionSerializer
 )
 from .pagination import CustomPageNumberPagination
 from .permissions import IsAuthorOrAdminOrReadOnly
@@ -235,6 +237,119 @@ class IdiomaticExpressionViewSet(viewsets.ModelViewSet):
         """删除时的额外处理"""
         logger.info(f"删除表达式: {instance.expression} (ID: {instance.id})")
         instance.delete()
+    
+    @action(detail=False, methods=['post'])
+    def batch_create(self, request):
+        """批量创建表达式"""
+        if not isinstance(request.data, list):
+            return Response(
+                {'error': '批量创建需要提供列表数据'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if len(request.data) > 100:
+            return Response(
+                {'error': '批量操作最多支持100条记录'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            serializer = IdiomaticExpressionBatchSerializer()
+            expressions = serializer.create_batch(request.data)
+            
+            # 返回创建的表达式
+            result_serializer = IdiomaticExpressionListSerializer(expressions, many=True)
+            return Response({
+                'created_count': len(expressions),
+                'expressions': result_serializer.data
+            }, status=status.HTTP_201_CREATED)
+        
+        except Exception as e:
+            logger.error(f"批量创建表达式失败: {str(e)}")
+            return Response(
+                {'error': '批量创建失败，请检查数据格式'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+    
+    @action(detail=False, methods=['put'])
+    def batch_update(self, request):
+        """批量更新表达式"""
+        if not isinstance(request.data, list):
+            return Response(
+                {'error': '批量更新需要提供列表数据'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 提取ID列表
+        ids = [item.get('id') for item in request.data if item.get('id')]
+        if not ids:
+            return Response(
+                {'error': '批量更新需要提供表达式ID'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 获取要更新的实例
+        instances = list(IdiomaticExpression.objects.filter(id__in=ids))
+        if len(instances) != len(ids):
+            return Response(
+                {'error': '部分表达式不存在'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 排序实例以匹配输入数据顺序
+        instance_dict = {inst.id: inst for inst in instances}
+        ordered_instances = [instance_dict[item['id']] for item in request.data]
+        
+        try:
+            serializer = IdiomaticExpressionBatchSerializer()
+            updated_expressions = serializer.update_batch(ordered_instances, request.data)
+            
+            # 返回更新的表达式
+            result_serializer = IdiomaticExpressionListSerializer(updated_expressions, many=True)
+            return Response({
+                'updated_count': len(updated_expressions),
+                'expressions': result_serializer.data
+            })
+        
+        except Exception as e:
+            logger.error(f"批量更新表达式失败: {str(e)}")
+            return Response(
+                {'error': '批量更新失败，请检查数据格式'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+    
+    @action(detail=False, methods=['get'])
+    def dynamic_fields(self, request):
+        """动态字段接口"""
+        fields_param = request.query_params.get('fields', '')
+        exclude_param = request.query_params.get('exclude', '')
+        
+        # 清理字段列表
+        fields = [f.strip() for f in fields_param.split(',') if f.strip()] if fields_param else None
+        exclude = [f.strip() for f in exclude_param.split(',') if f.strip()] if exclude_param else None
+        
+        queryset = self.get_queryset().order_by('id')  # 添加排序避免分页警告
+        
+        # 分页
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = IdiomaticExpressionListSerializer(
+                page, 
+                many=True,
+                fields=fields,
+                exclude=exclude,
+                context={'request': request}
+            )
+            return self.get_paginated_response(serializer.data)
+        
+        serializer = IdiomaticExpressionListSerializer(
+            queryset,
+            many=True,
+            fields=fields,
+            exclude=exclude,
+            context={'request': request}
+        )
+        return Response(serializer.data)
 
 
 class UserExpressionProgressViewSet(viewsets.ModelViewSet):
@@ -342,6 +457,33 @@ class UserExpressionProgressViewSet(viewsets.ModelViewSet):
             'review_count': progress.review_count,
             'message': '掌握程度已更新'
         })
+    
+    @action(detail=False, methods=['put'])
+    def batch_update_progress(self, request):
+        """批量更新学习进度"""
+        if not isinstance(request.data, list):
+            return Response(
+                {'error': '批量更新需要提供列表数据'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            serializer = UserProgressBatchSerializer()
+            updated_progress = serializer.update_batch(request.user, request.data)
+            
+            # 返回更新结果
+            result_serializer = UserExpressionProgressSerializer(updated_progress, many=True)
+            return Response({
+                'updated_count': len(updated_progress),
+                'progress': result_serializer.data
+            })
+        
+        except Exception as e:
+            logger.error(f"批量更新学习进度失败: {str(e)}")
+            return Response(
+                {'error': '批量更新失败，请检查数据格式'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class LearningSessionViewSet(viewsets.GenericViewSet):
