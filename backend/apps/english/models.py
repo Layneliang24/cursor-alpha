@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class TimeStampedModel(models.Model):
@@ -717,5 +718,481 @@ class DailyPracticeDuration(TimeStampedModel):
         self.save()
 
 
+# ================================
+# 地道表达模块相关模型
+# ================================
+
+class IdiomaticExpression(Expression):
+    """地道表达模型 - 继承Expression模型"""
+    
+    # 表达类型选择
+    EXPRESSION_TYPE_CHOICES = [
+        ('idiom', '习语'),
+        ('slang', '俚语'),
+        ('collocation', '固定搭配'),
+        ('phrase', '短语'),
+        ('proverb', '谚语'),
+        ('metaphor', '隐喻表达'),
+    ]
+    
+    # 正式程度选择
+    FORMALITY_LEVEL_CHOICES = [
+        ('informal', '非正式'),
+        ('neutral', '中性'),
+        ('formal', '正式'),
+    ]
+    
+    expression_type = models.CharField(
+        max_length=20,
+        choices=EXPRESSION_TYPE_CHOICES,
+        default='phrase',
+        verbose_name='表达类型'
+    )
+    
+    frequency_score = models.IntegerField(
+        default=5,
+        validators=[MinValueValidator(1), MaxValueValidator(10)],
+        verbose_name='使用频率评分(1-10)',
+        help_text='1=极少使用, 10=极常使用'
+    )
+    
+    formality_level = models.CharField(
+        max_length=10,
+        choices=FORMALITY_LEVEL_CHOICES,
+        default='neutral',
+        verbose_name='正式程度'
+    )
+    
+    phonetic_transcription = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name='音标',
+        help_text='IPA音标记录'
+    )
+    
+    # 使用JSONField存储扩展数据
+    metadata = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name='扩展元数据',
+        help_text='存储变体形式、同义表达、相关表达等'
+    )
+    
+    class Meta:
+        db_table = 'english_idiomatic_expressions'
+        verbose_name = '地道表达'
+        verbose_name_plural = '地道表达'
+        indexes = [
+            models.Index(fields=['expression_type']),
+            models.Index(fields=['frequency_score']),
+            models.Index(fields=['formality_level']),
+            models.Index(fields=['expression_type', 'frequency_score']),
+        ]
+    
+    def __str__(self):
+        return f"{self.expression} ({self.get_expression_type_display()})"
+    
+    def save(self, *args, **kwargs):
+        """重写save方法，确保metadata字段的默认值"""
+        if not self.metadata:
+            self.metadata = {
+                'variants': [],  # 变体形式
+                'synonyms': [],  # 同义表达
+                'related_expressions': [],  # 相关表达
+                'etymology': '',  # 词源
+                'regional_usage': '',  # 地区使用情况
+            }
+        super().save(*args, **kwargs)
+
+
+class ExpressionScenario(TimeStampedModel, SoftDeleteModel):
+    """表达使用场景模型"""
+    
+    SCENARIO_TYPE_CHOICES = [
+        ('business', '商务场合'),
+        ('casual', '日常交流'),
+        ('academic', '学术场合'),
+        ('social', '社交场合'),
+        ('travel', '旅行出行'),
+        ('workplace', '职场环境'),
+        ('entertainment', '娱乐休闲'),
+    ]
+    
+    scenario_name = models.CharField(
+        max_length=100,
+        verbose_name='场景名称'
+    )
+    
+    context_description = models.TextField(
+        verbose_name='上下文描述',
+        help_text='详细描述该场景的使用背景'
+    )
+    
+    example_dialogue = models.TextField(
+        blank=True,
+        verbose_name='示例对话',
+        help_text='展示表达在实际对话中的使用'
+    )
+    
+    scenario_type = models.CharField(
+        max_length=20,
+        choices=SCENARIO_TYPE_CHOICES,
+        default='casual',
+        verbose_name='场景类型'
+    )
+    
+    # 与地道表达的多对多关系
+    expressions = models.ManyToManyField(
+        IdiomaticExpression,
+        through='ExpressionScenarioLink',
+        related_name='scenarios',
+        verbose_name='关联表达'
+    )
+    
+    class Meta:
+        db_table = 'english_expression_scenarios'
+        verbose_name = '表达场景'
+        verbose_name_plural = '表达场景'
+        indexes = [
+            models.Index(fields=['scenario_type']),
+            models.Index(fields=['scenario_name']),
+        ]
+    
+    def __str__(self):
+        return f"{self.scenario_name} ({self.get_scenario_type_display()})"
+
+
+class ExpressionSource(TimeStampedModel, SoftDeleteModel):
+    """表达数据源管理模型"""
+    
+    SOURCE_TYPE_CHOICES = [
+        ('dictionary', '词典'),
+        ('forum', '论坛'),
+        ('news', '新闻媒体'),
+        ('social_media', '社交媒体'),
+        ('academic', '学术资料'),
+        ('literature', '文学作品'),
+        ('movie_tv', '影视作品'),
+        ('manual', '人工录入'),
+    ]
+    
+    source_name = models.CharField(
+        max_length=100,
+        verbose_name='数据源名称'
+    )
+    
+    source_url = models.URLField(
+        blank=True,
+        verbose_name='数据源URL'
+    )
+    
+    source_type = models.CharField(
+        max_length=20,
+        choices=SOURCE_TYPE_CHOICES,
+        default='manual',
+        verbose_name='数据源类型'
+    )
+    
+    reliability_score = models.DecimalField(
+        max_digits=3,
+        decimal_places=2,
+        default=5.0,
+        validators=[MinValueValidator(0.0), MaxValueValidator(10.0)],
+        verbose_name='可靠性评分(0-10)',
+        help_text='数据源的可靠性和权威性评分'
+    )
+    
+    description = models.TextField(
+        blank=True,
+        verbose_name='数据源描述'
+    )
+    
+    last_updated = models.DateTimeField(
+        auto_now=True,
+        verbose_name='最后更新时间'
+    )
+    
+    # 与地道表达的外键关系
+    expressions = models.ManyToManyField(
+        IdiomaticExpression,
+        related_name='sources',
+        blank=True,
+        verbose_name='关联表达'
+    )
+    
+    class Meta:
+        db_table = 'english_expression_sources'
+        verbose_name = '表达数据源'
+        verbose_name_plural = '表达数据源'
+        indexes = [
+            models.Index(fields=['source_type']),
+            models.Index(fields=['reliability_score']),
+            models.Index(fields=['last_updated']),
+        ]
+    
+    def __str__(self):
+        return f"{self.source_name} ({self.get_source_type_display()})"
+
+
+class ExpressionScenarioLink(models.Model):
+    """表达-场景关联中间表"""
+    
+    expression = models.ForeignKey(
+        IdiomaticExpression,
+        on_delete=models.CASCADE,
+        verbose_name='表达'
+    )
+    
+    scenario = models.ForeignKey(
+        ExpressionScenario,
+        on_delete=models.CASCADE,
+        verbose_name='场景'
+    )
+    
+    relevance_score = models.DecimalField(
+        max_digits=3,
+        decimal_places=2,
+        default=5.0,
+        validators=[MinValueValidator(0.0), MaxValueValidator(10.0)],
+        verbose_name='相关性评分(0-10)',
+        help_text='表达在该场景中的相关性和适用性'
+    )
+    
+    usage_frequency = models.CharField(
+        max_length=10,
+        choices=[
+            ('rare', '很少'),
+            ('occasional', '偶尔'),
+            ('common', '常见'),
+            ('frequent', '频繁'),
+        ],
+        default='common',
+        verbose_name='在该场景中的使用频率'
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    
+    class Meta:
+        db_table = 'english_expression_scenario_links'
+        unique_together = [('expression', 'scenario')]
+        verbose_name = '表达-场景关联'
+        verbose_name_plural = '表达-场景关联'
+        indexes = [
+            models.Index(fields=['expression', 'relevance_score']),
+            models.Index(fields=['scenario', 'usage_frequency']),
+        ]
+    
+    def __str__(self):
+        return f"{self.expression.expression} - {self.scenario.scenario_name}"
+
+
+class UserExpressionProgress(TimeStampedModel, SoftDeleteModel):
+    """用户表达学习进度模型"""
+    
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name='用户'
+    )
+    
+    expression = models.ForeignKey(
+        IdiomaticExpression,
+        on_delete=models.CASCADE,
+        verbose_name='表达'
+    )
+    
+    mastery_level = models.IntegerField(
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        verbose_name='掌握程度(0-100)',
+        help_text='0=完全不会, 100=完全掌握'
+    )
+    
+    review_count = models.IntegerField(
+        default=0,
+        verbose_name='复习次数'
+    )
+    
+    correct_count = models.IntegerField(
+        default=0,
+        verbose_name='正确次数'
+    )
+    
+    last_reviewed = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='最后复习时间'
+    )
+    
+    next_review = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='下次复习时间'
+    )
+    
+    learning_streak = models.IntegerField(
+        default=0,
+        verbose_name='连续学习天数'
+    )
+    
+    # SM-2算法相关字段
+    easiness_factor = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        default=2.5,
+        verbose_name='容易度因子'
+    )
+    
+    interval = models.IntegerField(
+        default=1,
+        verbose_name='复习间隔(天)'
+    )
+    
+    # 学习历史记录
+    learning_history = models.JSONField(
+        default=list,
+        blank=True,
+        verbose_name='学习历史记录',
+        help_text='存储每次学习的详细记录'
+    )
+    
+    class Meta:
+        db_table = 'english_user_expression_progress'
+        unique_together = [('user', 'expression')]
+        verbose_name = '用户表达进度'
+        verbose_name_plural = '用户表达进度'
+        indexes = [
+            models.Index(fields=['user', 'next_review']),
+            models.Index(fields=['user', 'mastery_level']),
+            models.Index(fields=['user', 'last_reviewed']),
+        ]
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.expression.expression} ({self.mastery_level}%)"
+    
+    @property
+    def accuracy_rate(self):
+        """计算正确率"""
+        if self.review_count == 0:
+            return 0.0
+        return round((self.correct_count / self.review_count) * 100, 2)
+
+
+class AIAssistantConfig(TimeStampedModel, SoftDeleteModel):
+    """AI助教配置模型"""
+    
+    AI_PROVIDER_CHOICES = [
+        ('openai', 'OpenAI'),
+        ('anthropic', 'Anthropic'),
+        ('google', 'Google'),
+        ('azure', 'Azure OpenAI'),
+        ('local', '本地模型'),
+        ('custom', '自定义'),
+    ]
+    
+    config_name = models.CharField(
+        max_length=100,
+        unique=True,
+        verbose_name='配置名称'
+    )
+    
+    ai_provider = models.CharField(
+        max_length=20,
+        choices=AI_PROVIDER_CHOICES,
+        default='openai',
+        verbose_name='AI提供商'
+    )
+    
+    model_name = models.CharField(
+        max_length=100,
+        verbose_name='模型名称',
+        help_text='如gpt-4, claude-3-sonnet等'
+    )
+    
+    api_endpoint = models.URLField(
+        blank=True,
+        verbose_name='API端点',
+        help_text='自定义API端点URL'
+    )
+    
+    max_tokens = models.IntegerField(
+        default=2000,
+        validators=[MinValueValidator(1), MaxValueValidator(100000)],
+        verbose_name='最大令牌数'
+    )
+    
+    temperature = models.DecimalField(
+        max_digits=3,
+        decimal_places=2,
+        default=0.7,
+        validators=[MinValueValidator(0.0), MaxValueValidator(2.0)],
+        verbose_name='温度参数',
+        help_text='控制输出的随机性，0-2之间'
+    )
+    
+    system_prompt = models.TextField(
+        default='你是一个专业的英语学习助教，专门帮助学生学习地道表达。',
+        verbose_name='系统提示词模板'
+    )
+    
+    # 扩展配置参数
+    extended_config = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name='扩展配置参数',
+        help_text='存储特定模型的额外配置参数'
+    )
+    
+    # 加密存储API密钥（实际项目中应使用更安全的方式）
+    api_key_encrypted = models.TextField(
+        blank=True,
+        verbose_name='加密的API密钥',
+        help_text='请勿直接存储明文密钥'
+    )
+    
+    is_active = models.BooleanField(
+        default=False,
+        verbose_name='是否激活',
+        help_text='同时只能有一个配置处于激活状态'
+    )
+    
+    version = models.CharField(
+        max_length=20,
+        default='1.0',
+        verbose_name='配置版本'
+    )
+    
+    # 使用统计
+    usage_count = models.IntegerField(
+        default=0,
+        verbose_name='使用次数'
+    )
+    
+    last_used = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='最后使用时间'
+    )
+    
+    class Meta:
+        db_table = 'english_ai_assistant_configs'
+        verbose_name = 'AI助教配置'
+        verbose_name_plural = 'AI助教配置'
+        indexes = [
+            models.Index(fields=['ai_provider']),
+            models.Index(fields=['is_active']),
+            models.Index(fields=['last_used']),
+        ]
+    
+    def __str__(self):
+        status = "激活" if self.is_active else "未激活"
+        return f"{self.config_name} ({self.ai_provider}) - {status}"
+    
+    def save(self, *args, **kwargs):
+        """重写save方法，确保只有一个配置处于激活状态"""
+        if self.is_active:
+            # 将其他配置设为非激活状态
+            AIAssistantConfig.objects.filter(is_active=True).update(is_active=False)
+        super().save(*args, **kwargs)
 
 
