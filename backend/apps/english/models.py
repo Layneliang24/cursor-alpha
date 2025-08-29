@@ -88,18 +88,20 @@ class Expression(TimeStampedModel, SoftDeleteModel):
     category = models.CharField(max_length=100, null=True, blank=True, verbose_name='分类')
     scenario = models.CharField(max_length=100, null=True, blank=True, verbose_name='场景')
     difficulty_level = models.CharField(max_length=20, default='beginner', verbose_name='难度')
+    learning_difficulty = models.CharField(max_length=20, default='beginner', verbose_name='学习难度')
     usage_frequency = models.CharField(max_length=10, default='medium', verbose_name='使用频率')
     cultural_background = models.TextField(null=True, blank=True, verbose_name='文化背景')
     
     # 新增字段
     audio_url = models.URLField(blank=True, verbose_name='音频URL')
-    usage_examples = models.TextField(blank=True, verbose_name='使用示例')
+    usage_examples = models.JSONField(default=list, blank=True, verbose_name='使用示例')
 
     # provenance
     source_url = models.CharField(max_length=500, null=True, blank=True, verbose_name='来源URL')
     source_api = models.CharField(max_length=100, null=True, blank=True, verbose_name='来源API')
     license = models.CharField(max_length=100, null=True, blank=True, verbose_name='许可证')
     quality_score = models.DecimalField(max_digits=3, decimal_places=2, default=0.0, verbose_name='质量分')
+    popularity_score = models.DecimalField(max_digits=3, decimal_places=2, default=0.0, verbose_name='受欢迎度')
 
     class Meta:
         db_table = 'english_expressions'
@@ -940,6 +942,7 @@ class ExpressionScenarioLink(models.Model):
     expression = models.ForeignKey(
         IdiomaticExpression,
         on_delete=models.CASCADE,
+        related_name='scenario_links',
         verbose_name='表达'
     )
     
@@ -1054,6 +1057,17 @@ class UserExpressionProgress(TimeStampedModel, SoftDeleteModel):
         blank=True,
         verbose_name='学习历史记录',
         help_text='存储每次学习的详细记录'
+    )
+    
+    # 用户偏好设置
+    is_favorite = models.BooleanField(
+        default=False,
+        verbose_name='是否收藏'
+    )
+    
+    notes = models.TextField(
+        blank=True,
+        verbose_name='用户笔记'
     )
     
     class Meta:
