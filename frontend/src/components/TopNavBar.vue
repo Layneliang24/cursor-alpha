@@ -72,6 +72,10 @@
               <el-icon><ChatDotRound /></el-icon>
               <span>地道表达</span>
             </router-link>
+            <router-link to="/english/idiomatic-learning" class="dropdown-item" @click="closeEnglishDropdown">
+              <el-icon><Reading /></el-icon>
+              <span>地道表达学习</span>
+            </router-link>
             <router-link to="/english/api-integration" class="dropdown-item" @click="closeEnglishDropdown">
               <el-icon><Connection /></el-icon>
               <span>API集成</span>
