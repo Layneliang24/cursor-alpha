@@ -1,3 +1,4 @@
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     WordViewSet, UserWordProgressViewSet, ExpressionViewSet, NewsViewSet,
@@ -5,6 +6,10 @@ from .views import (
     LearningStatsViewSet, 
     TypingPracticeViewSet, DictionaryViewSet, TypingWordViewSet,
     DataAnalysisViewSet
+)
+from .analytics_views import (
+    progress_trend, mastery_distribution, time_analysis,
+    efficiency_analysis, learning_insights
 )
 
 router = DefaultRouter()
@@ -21,7 +26,13 @@ router.register(r'english/dictionaries', DictionaryViewSet, basename='english-di
 router.register(r'english/typing-words', TypingWordViewSet, basename='english-typing-words')
 router.register(r'english/data-analysis', DataAnalysisViewSet, basename='english-data-analysis')
 
-urlpatterns = router.urls
+# 分析API路由
+analytics_patterns = [
+    path('analytics/progress-trend/', progress_trend, name='analytics-progress-trend'),
+    path('analytics/mastery-distribution/', mastery_distribution, name='analytics-mastery-distribution'),
+    path('analytics/time-analysis/', time_analysis, name='analytics-time-analysis'),
+    path('analytics/efficiency-analysis/', efficiency_analysis, name='analytics-efficiency-analysis'),
+    path('analytics/learning-insights/', learning_insights, name='analytics-learning-insights'),
+]
 
-
-urlpatterns = router.urls
+urlpatterns = router.urls + analytics_patterns

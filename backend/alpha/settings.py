@@ -610,3 +610,79 @@ SPECTACULAR_SETTINGS = {
     'ENABLE_DJANGO_DEPLOY_CHECK': False,
     'DISABLE_ERRORS_AND_WARNINGS': False,
 }
+
+# AI服务配置
+AI_SERVICES = {
+    'openai-gpt4': {
+        'provider': 'openai',
+        'model': 'gpt-4',
+        'max_tokens': 4000,
+        'temperature': 0.7,
+        'timeout': 30,
+        'weight': 3,
+        'enabled': True
+    },
+    'openai-gpt35': {
+        'provider': 'openai',
+        'model': 'gpt-3.5-turbo',
+        'max_tokens': 4000,
+        'temperature': 0.7,
+        'timeout': 30,
+        'weight': 2,
+        'enabled': True
+    },
+    'claude-sonnet': {
+        'provider': 'anthropic',
+        'model': 'claude-3-sonnet-20240229',
+        'max_tokens': 4000,
+        'temperature': 0.7,
+        'timeout': 30,
+        'weight': 3,
+        'enabled': True
+    },
+    'claude-haiku': {
+        'provider': 'anthropic',
+        'model': 'claude-3-haiku-20240307',
+        'max_tokens': 4000,
+        'temperature': 0.7,
+        'timeout': 30,
+        'weight': 1,
+        'enabled': True
+    },
+    'google-gemini': {
+        'provider': 'google',
+        'model': 'gemini-pro',
+        'max_tokens': 4000,
+        'temperature': 0.7,
+        'timeout': 30,
+        'weight': 2,
+        'enabled': True
+    }
+}
+
+# AI服务降级配置
+AI_DEGRADATION_THRESHOLDS = {
+    'degraded_cpu_threshold': 80.0,
+    'degraded_memory_threshold': 85.0,
+    'degraded_response_time': 5.0,
+    'degraded_error_rate': 0.1,
+    'degraded_queue_size': 100,
+    'minimal_cpu_threshold': 95.0,
+    'minimal_memory_threshold': 95.0,
+    'minimal_response_time': 10.0,
+    'minimal_error_rate': 0.3,
+    'minimal_queue_size': 500,
+    'disabled_cpu_threshold': 98.0,
+    'disabled_memory_threshold': 98.0,
+    'disabled_error_rate': 0.8,
+    'disabled_queue_size': 1000,
+}
+
+# AI负载均衡配置
+AI_LOAD_BALANCER = {
+    'strategy': 'weighted_round_robin',  # 默认策略
+    'health_check_interval': 60,  # 健康检查间隔（秒）
+    'max_retries': 3,
+    'retry_delay': 1.0,
+    'connection_timeout': 30.0,
+}

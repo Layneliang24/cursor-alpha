@@ -1059,6 +1059,91 @@ class UserExpressionProgress(TimeStampedModel, SoftDeleteModel):
         help_text='存储每次学习的详细记录'
     )
     
+    # 扩展学习行为数据字段
+    study_duration = models.IntegerField(
+        default=0,
+        verbose_name='累计学习时长(秒)',
+        help_text='用户在该表达上花费的总学习时间'
+    )
+    
+    average_response_time = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=0.0,
+        verbose_name='平均响应时间(秒)',
+        help_text='用户回答问题的平均用时'
+    )
+    
+    difficulty_rating = models.IntegerField(
+        default=3,
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        verbose_name='难度评级(1-5)',
+        help_text='用户主观感受的难度等级'
+    )
+    
+    learning_efficiency = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=0.0,
+        verbose_name='学习效率',
+        help_text='基于时间和正确率计算的学习效率指标'
+    )
+    
+    mistake_patterns = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name='错误模式',
+        help_text='记录用户常犯错误的类型和频次'
+    )
+    
+    learning_context = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name='学习上下文',
+        help_text='记录学习环境、设备、时间段等上下文信息'
+    )
+    
+    retention_rate = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=0.0,
+        verbose_name='记忆保持率',
+        help_text='基于遗忘曲线计算的记忆保持率'
+    )
+    
+    engagement_score = models.IntegerField(
+        default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        verbose_name='参与度评分(0-100)',
+        help_text='基于学习行为计算的参与度指标'
+    )
+    
+    # 时间分析相关字段
+    best_learning_time = models.CharField(
+        max_length=20,
+        blank=True,
+        verbose_name='最佳学习时间段',
+        help_text='用户学习效果最好的时间段'
+    )
+    
+    total_attempts = models.IntegerField(
+        default=0,
+        verbose_name='总尝试次数',
+        help_text='包括正确和错误的总尝试次数'
+    )
+    
+    consecutive_correct = models.IntegerField(
+        default=0,
+        verbose_name='连续正确次数',
+        help_text='当前连续答对的次数'
+    )
+    
+    max_consecutive_correct = models.IntegerField(
+        default=0,
+        verbose_name='最大连续正确次数',
+        help_text='历史上连续答对的最高记录'
+    )
+    
     # 用户偏好设置
     is_favorite = models.BooleanField(
         default=False,
@@ -1079,6 +1164,11 @@ class UserExpressionProgress(TimeStampedModel, SoftDeleteModel):
             models.Index(fields=['user', 'next_review']),
             models.Index(fields=['user', 'mastery_level']),
             models.Index(fields=['user', 'last_reviewed']),
+            models.Index(fields=['user', 'learning_efficiency']),
+            models.Index(fields=['user', 'engagement_score']),
+            models.Index(fields=['user', 'difficulty_rating']),
+            models.Index(fields=['user', 'retention_rate']),
+            models.Index(fields=['user', 'study_duration']),
         ]
     
     def __str__(self):
@@ -1090,6 +1180,148 @@ class UserExpressionProgress(TimeStampedModel, SoftDeleteModel):
         if self.review_count == 0:
             return 0.0
         return round((self.correct_count / self.review_count) * 100, 2)
+    
+    @property
+    def error_rate(self):
+        """计算错误率"""
+        if self.total_attempts == 0:
+            return 0.0
+        return round(((self.total_attempts - self.correct_count) / self.total_attempts) * 100, 2)
+    
+    def update_learning_efficiency(self):
+        """更新学习效率指标"""
+        if self.study_duration == 0 or self.total_attempts == 0:
+            self.learning_efficiency = 0.0
+            return
+        
+        # 学习效率 = (正确率 * 掌握程度) / (学习时长 * 平均响应时间)
+        time_factor = max(self.study_duration / 3600, 0.1)  # 转换为小时，最小0.1小时
+        response_factor = max(float(self.average_response_time), 1.0)  # 最小1秒
+        
+        efficiency = (self.accuracy_rate * self.mastery_level) / (time_factor * response_factor)
+        self.learning_efficiency = round(efficiency, 2)
+    
+    def update_engagement_score(self):
+        """更新参与度评分"""
+        # 基于多个因素计算参与度：学习频率、连续学习、收藏状态等
+        score = 0
+        
+        # 基础参与度（基于掌握程度）
+        score += self.mastery_level * 0.3
+        
+        # 学习频率奖励
+        if self.review_count > 0:
+            score += min(self.review_count * 2, 30)
+        
+        # 连续学习奖励
+        score += min(self.learning_streak * 3, 20)
+        
+        # 连续正确答题奖励
+        score += min(self.consecutive_correct * 2, 15)
+        
+        # 收藏奖励
+        if self.is_favorite:
+            score += 5
+        
+        # 笔记奖励
+        if self.notes.strip():
+            score += 5
+        
+        self.engagement_score = min(int(score), 100)
+    
+    def add_learning_record(self, is_correct, response_time, context=None):
+        """添加学习记录"""
+        from django.utils import timezone
+        import json
+        
+        # 更新基础统计
+        self.total_attempts += 1
+        if is_correct:
+            self.correct_count += 1
+            self.consecutive_correct += 1
+            self.max_consecutive_correct = max(self.max_consecutive_correct, self.consecutive_correct)
+        else:
+            self.consecutive_correct = 0
+        
+        # 更新响应时间
+        if self.total_attempts == 1:
+            self.average_response_time = response_time
+        else:
+            # 计算移动平均
+            self.average_response_time = (
+                (self.average_response_time * (self.total_attempts - 1) + response_time) 
+                / self.total_attempts
+            )
+        
+        # 添加到学习历史
+        record = {
+            'timestamp': timezone.now().isoformat(),
+            'is_correct': is_correct,
+            'response_time': response_time,
+            'mastery_level': self.mastery_level,
+            'context': context or {}
+        }
+        
+        self.learning_history.append(record)
+        
+        # 保持历史记录在合理范围内（最近100条）
+        if len(self.learning_history) > 100:
+            self.learning_history = self.learning_history[-100:]
+        
+        # 更新计算字段
+        self.update_learning_efficiency()
+        self.update_engagement_score()
+    
+    def get_learning_trend(self, days=7):
+        """获取学习趋势"""
+        from datetime import datetime, timedelta
+        from django.utils import timezone
+        
+        if not self.learning_history:
+            return {'trend': 'no_data', 'recent_performance': 0}
+        
+        cutoff_date = timezone.now() - timedelta(days=days)
+        recent_records = []
+        
+        for record in self.learning_history:
+            try:
+                record_time = datetime.fromisoformat(record['timestamp'].replace('Z', '+00:00'))
+                if record_time >= cutoff_date:
+                    recent_records.append(record)
+            except (ValueError, KeyError):
+                continue
+        
+        if not recent_records:
+            return {'trend': 'no_recent_data', 'recent_performance': 0}
+        
+        # 计算最近表现
+        correct_count = sum(1 for r in recent_records if r.get('is_correct', False))
+        recent_performance = (correct_count / len(recent_records)) * 100
+        
+        # 分析趋势
+        if len(recent_records) < 3:
+            trend = 'insufficient_data'
+        else:
+            # 比较前半部分和后半部分的表现
+            mid_point = len(recent_records) // 2
+            first_half = recent_records[:mid_point]
+            second_half = recent_records[mid_point:]
+            
+            first_accuracy = sum(1 for r in first_half if r.get('is_correct', False)) / len(first_half)
+            second_accuracy = sum(1 for r in second_half if r.get('is_correct', False)) / len(second_half)
+            
+            if second_accuracy > first_accuracy + 0.1:
+                trend = 'improving'
+            elif second_accuracy < first_accuracy - 0.1:
+                trend = 'declining'
+            else:
+                trend = 'stable'
+        
+        return {
+            'trend': trend,
+            'recent_performance': round(recent_performance, 2),
+            'total_recent_attempts': len(recent_records)
+        }
 
 
 class AIAssistantConfig(TimeStampedModel, SoftDeleteModel):
