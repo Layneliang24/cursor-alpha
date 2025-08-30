@@ -346,7 +346,7 @@
           3,
           4
         ],
-        "status": "in-progress",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -387,7 +387,7 @@
               "6.3"
             ],
             "details": "在frontend/src/components/目录下创建LearningAnalytics组件目录，实现多个图表子组件：ProgressTrendChart.vue（学习进度趋势图）、MasteryDistributionChart.vue（掌握分布图）、TimeAnalysisChart.vue（时间分析图）。使用Vue 3 Composition API和ECharts 5.x版本，实现响应式图表和交互功能。支持图表数据实时更新、时间范围筛选、图表类型切换等交互特性。集成现有的API服务，实现数据自动加载和错误处理。",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "使用Vue Test Utils和Jest测试组件渲染和交互功能。使用Selenium进行端到端测试，验证图表的交互性和数据展示。测试不同屏幕尺寸下的响应式布局。"
           },
           {
@@ -399,7 +399,7 @@
               "6.3"
             ],
             "details": "创建ReportGenerationService服务类，使用ReportLab库生成PDF学习报告。报告内容包括：学习概览、进度统计、掌握度分析、时间分布、个性化建议等模块。实现学习目标管理功能：目标设定、进度追踪、达成度计算、提醒通知。在数据库中新增LearningGoal模型存储用户学习目标。集成现有的学习分析数据，生成个性化学习建议和复习计划。使用Celery异步处理PDF生成任务，避免阻塞用户界面。",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "测试PDF报告生成的完整性和格式正确性。验证学习目标的CRUD操作和达成度计算逻辑。使用模拟数据测试个性化建议算法的有效性。"
           }
         ]
@@ -407,7 +407,7 @@
     ],
     "metadata": {
       "created": "2025-08-29T01:00:17.758Z",
-      "updated": "2025-08-30T02:05:05.599Z",
+      "updated": "2025-08-30T13:43:33.516Z",
       "description": "Tasks for feature-test_task_master context"
     }
   }

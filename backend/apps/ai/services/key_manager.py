@@ -17,6 +17,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 from django.conf import settings
 from django.core.cache import cache
+from django.core.cache.backends.base import BaseCache
 
 from ..adapters.base import AIProviderType
 
@@ -40,9 +41,54 @@ class APIKeyManager:
         self._fernet = Fernet(self._encryption_key)
         self._key_cache = {}
         self._key_rotation_schedule = {}
+        self._cache_available = True
+        
+        # 测试缓存连接
+        try:
+            self._safe_cache_get('test_key')
+        except Exception as e:
+            logger.warning(f"缓存连接失败，将使用内存存储: {e}")
+            self._cache_available = False
         
         # 从环境变量和配置加载密钥
         self._load_keys_from_env()
+    
+    def _safe_cache_get(self, key: str, default=None):
+        """安全地从缓存获取数据"""
+        if not self._cache_available:
+            return self._key_cache.get(key, default)
+        
+        try:
+            return cache.get(key, default)
+        except Exception as e:
+            logger.warning(f"缓存读取失败: {e}")
+            return self._key_cache.get(key, default)
+    
+    def _safe_cache_set(self, key: str, value, timeout=None):
+        """安全地向缓存存储数据"""
+        # 始终存储到内存缓存
+        self._key_cache[key] = value
+        
+        if not self._cache_available:
+            return
+        
+        try:
+            self._safe_cache_set(key, value, timeout=timeout)
+        except Exception as e:
+            logger.warning(f"缓存写入失败: {e}")
+    
+    def _safe_cache_delete(self, key: str):
+        """安全地从缓存删除数据"""
+        # 从内存缓存删除
+        self._key_cache.pop(key, None)
+        
+        if not self._cache_available:
+            return
+        
+        try:
+            self._safe_cache_delete(key)
+        except Exception as e:
+            logger.warning(f"缓存删除失败: {e}")
     
     def _get_or_create_encryption_key(self) -> bytes:
         """获取或创建加密密钥"""
@@ -118,7 +164,7 @@ class APIKeyManager:
             
             # 缓存密钥信息（加密状态）
             cache_key = f"ai_key_{key_id}"
-            cache.set(cache_key, key_info, timeout=86400 * 30)  # 30天
+            self._safe_cache_set(cache_key, key_info, timeout=86400 * 30)  # 30天
             
             # 更新提供商的密钥列表
             provider_keys = self._get_provider_keys(provider)
@@ -161,7 +207,7 @@ class APIKeyManager:
             
             # 从缓存获取加密密钥
             cache_key = f"ai_key_{key_id}"
-            key_info = cache.get(cache_key)
+            key_info = self._safe_cache_get(cache_key)
             
             if not key_info:
                 logger.warning(f"密钥 {key_id} 不存在或已过期")
@@ -181,7 +227,7 @@ class APIKeyManager:
             # 更新使用统计
             key_info['usage_count'] += 1
             key_info['last_used'] = datetime.now().isoformat()
-            cache.set(cache_key, key_info, timeout=86400 * 30)
+            self._safe_cache_set(cache_key, key_info, timeout=86400 * 30)
             
             # 缓存解密后的密钥
             if key_info.get('is_primary'):
@@ -199,7 +245,7 @@ class APIKeyManager:
         
         for key_id in provider_keys:
             cache_key = f"ai_key_{key_id}"
-            key_info = cache.get(cache_key)
+            key_info = self._safe_cache_get(cache_key)
             
             if key_info and key_info.get('is_primary'):
                 return key_id
@@ -210,12 +256,12 @@ class APIKeyManager:
     def _get_provider_keys(self, provider: AIProviderType) -> List[str]:
         """获取提供商的所有密钥ID"""
         cache_key = f"ai_provider_keys_{provider.value}"
-        return cache.get(cache_key, [])
+        return self._safe_cache_get(cache_key, [])
     
     def _set_provider_keys(self, provider: AIProviderType, key_ids: List[str]):
         """设置提供商的密钥ID列表"""
         cache_key = f"ai_provider_keys_{provider.value}"
-        cache.set(cache_key, key_ids, timeout=86400 * 30)
+        self._safe_cache_set(cache_key, key_ids, timeout=86400 * 30)
     
     def add_key(
         self,
@@ -250,7 +296,7 @@ class APIKeyManager:
         """
         try:
             cache_key = f"ai_key_{key_id}"
-            key_info = cache.get(cache_key)
+            key_info = self._safe_cache_get(cache_key)
             
             if not key_info:
                 logger.warning(f"密钥 {key_id} 不存在")
@@ -265,7 +311,7 @@ class APIKeyManager:
                 self._set_provider_keys(provider, provider_keys)
             
             # 删除缓存
-            cache.delete(cache_key)
+            self._safe_cache_delete(cache_key)
             
             # 如果是主密钥，清除缓存
             if key_info.get('is_primary') and provider in self._key_cache:
@@ -298,7 +344,7 @@ class APIKeyManager:
             current_primary = None
             for key_id in provider_keys:
                 cache_key = f"ai_key_{key_id}"
-                key_info = cache.get(cache_key)
+                key_info = self._safe_cache_get(cache_key)
                 if key_info and key_info.get('is_primary'):
                     current_primary = key_id
                     break
@@ -330,11 +376,11 @@ class APIKeyManager:
     def _set_primary_key(self, key_id: str, is_primary: bool):
         """设置密钥的主密钥状态"""
         cache_key = f"ai_key_{key_id}"
-        key_info = cache.get(cache_key)
+        key_info = self._safe_cache_get(cache_key)
         
         if key_info:
             key_info['is_primary'] = is_primary
-            cache.set(cache_key, key_info, timeout=86400 * 30)
+            self._safe_cache_set(cache_key, key_info, timeout=86400 * 30)
     
     def get_key_stats(self, provider: Optional[AIProviderType] = None) -> Dict[str, any]:
         """
@@ -359,7 +405,7 @@ class APIKeyManager:
             
             for key_id in provider_keys:
                 cache_key = f"ai_key_{key_id}"
-                key_info = cache.get(cache_key)
+                key_info = self._safe_cache_get(cache_key)
                 
                 if key_info:
                     # 不返回实际密钥，只返回统计信息
@@ -486,7 +532,7 @@ class APIKeyManager:
                 
                 for key_id in provider_keys:
                     cache_key = f"ai_key_{key_id}"
-                    key_info = cache.get(cache_key)
+                    key_info = self._safe_cache_get(cache_key)
                     if key_info:
                         provider_data.append({
                             'key_id': key_id,
@@ -542,7 +588,7 @@ class APIKeyManager:
                         'last_used': None
                     }
                     
-                    cache.set(cache_key, key_info, timeout=86400 * 30)
+                    self._safe_cache_set(cache_key, key_info, timeout=86400 * 30)
                 
                 # 更新提供商密钥列表
                 provider_keys = [key_data['key_id'] for key_data in keys_data]
@@ -575,7 +621,7 @@ class APIKeyManager:
                 
                 for key_id in provider_keys:
                     cache_key = f"ai_key_{key_id}"
-                    key_info = cache.get(cache_key)
+                    key_info = self._safe_cache_get(cache_key)
                     
                     if key_info:
                         expires_at = key_info.get('expires_at')
@@ -583,7 +629,7 @@ class APIKeyManager:
                             expiry_time = datetime.fromisoformat(expires_at)
                             if now > expiry_time:
                                 # 密钥已过期，删除
-                                cache.delete(cache_key)
+                                self._safe_cache_delete(cache_key)
                                 cleaned_count += 1
                                 logger.info(f"清理过期密钥: {key_id}")
                                 continue
