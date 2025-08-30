@@ -1055,3 +1055,61 @@ class LearningAnalyticsService:
         
         priority = base_priority + forgetting_risk + confidence_adjustment
         return max(0, min(10, priority))
+    
+    def calculate_learning_efficiency(self, progress_record: UserExpressionProgress) -> float:
+        """
+        计算单个学习记录的学习效率
+        
+        Args:
+            progress_record: 用户表达学习进度记录
+            
+        Returns:
+            float: 学习效率分数 (0-100)
+        """
+        try:
+            if progress_record.total_attempts == 0:
+                return 0.0
+            
+            # 基础准确率
+            accuracy = progress_record.correct_count / progress_record.total_attempts
+            
+            # 时间效率（基于学习时长和成果）
+            if progress_record.study_duration > 0:
+                # 每分钟正确答题数
+                time_efficiency = (progress_record.correct_count * 60) / progress_record.study_duration
+                time_efficiency = min(time_efficiency, 1.0)  # 标准化
+            else:
+                time_efficiency = 0.5
+            
+            # 响应速度效率
+            if progress_record.average_response_time > 0:
+                # 理想响应时间为2秒，最长10秒
+                ideal_time = 2.0
+                max_time = 10.0
+                response_time = float(progress_record.average_response_time)
+                
+                if response_time <= ideal_time:
+                    speed_efficiency = 1.0
+                elif response_time >= max_time:
+                    speed_efficiency = 0.0
+                else:
+                    speed_efficiency = (max_time - response_time) / (max_time - ideal_time)
+            else:
+                speed_efficiency = 0.5
+            
+            # 记忆保持效率
+            retention_efficiency = float(progress_record.retention_rate) / 100
+            
+            # 综合效率计算
+            overall_efficiency = (
+                accuracy * 0.4 +           # 准确率权重40%
+                time_efficiency * 0.3 +   # 时间效率权重30%
+                speed_efficiency * 0.2 +  # 响应速度权重20%
+                retention_efficiency * 0.1 # 记忆保持权重10%
+            ) * 100
+            
+            return round(overall_efficiency, 2)
+            
+        except Exception as e:
+            self.logger.error(f"计算学习效率失败: {e}")
+            return 0.0

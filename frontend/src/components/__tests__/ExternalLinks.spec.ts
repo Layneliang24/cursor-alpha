@@ -6,11 +6,11 @@ import { createPinia, setActivePinia } from 'pinia'
 const mockElIcon = { template: '<span class="el-icon"></span>' }
 const mockElButton = { 
   template: '<button class="el-button" :class="type"><slot /></button>',
-  props: ['type', 'size', 'loading']
+  props: ['type', 'size', 'loading'],
 }
 const mockElDialog = { 
   template: '<div class="el-dialog" v-if="modelValue"><slot /><slot name="footer" /></div>',
-  props: ['modelValue', 'title', 'width', 'beforeClose']
+  props: ['modelValue', 'title', 'width', 'beforeClose'],
 }
 const mockElTable = { template: '<table class="el-table"><slot /></table>' }
 const mockElTableColumn = { template: '<th class="el-table-column"><slot /></th>' }
@@ -18,24 +18,24 @@ const mockElForm = { template: '<form class="el-form"><slot /></form>' }
 const mockElFormItem = { template: '<div class="el-form-item"><slot /></div>' }
 const mockElInput = { 
   template: '<input class="el-input" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />',
-  props: ['modelValue', 'placeholder', 'type', 'rows']
+  props: ['modelValue', 'placeholder', 'type', 'rows'],
 }
 const mockElSelect = { 
   template: '<select class="el-select"><slot /></select>',
-  props: ['modelValue']
+  props: ['modelValue'],
 }
 const mockElOption = { template: '<option class="el-option"><slot /></option>' }
 const mockElInputNumber = { 
   template: '<input type="number" class="el-input-number" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />',
-  props: ['modelValue', 'min', 'max']
+  props: ['modelValue', 'min', 'max'],
 }
 const mockElSwitch = { 
   template: '<input type="checkbox" class="el-switch" :checked="modelValue" @change="$emit(\'update:modelValue\', $event.target.checked)" />',
-  props: ['modelValue']
+  props: ['modelValue'],
 }
 const mockElTag = { 
   template: '<span class="el-tag" :class="type"><slot /></span>',
-  props: ['type']
+  props: ['type'],
 }
 const mockElMessage = { success: vi.fn(), error: vi.fn() }
 const mockElMessageBox = { confirm: vi.fn() }
@@ -45,7 +45,7 @@ const mockLinksAPI = {
   getLinks: vi.fn(),
   createLink: vi.fn(),
   updateLink: vi.fn(),
-  deleteLink: vi.fn()
+  deleteLink: vi.fn(),
 }
 
 // 模拟ExternalLinks组件
@@ -189,7 +189,7 @@ const mockExternalLinks = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       links: [],
       allLinks: [],
@@ -205,17 +205,17 @@ const mockExternalLinks = {
         icon: '',
         link_type: 'website',
         order: 0,
-        is_active: true
+        is_active: true,
       },
-      canManage: false
+      canManage: false,
     }
   },
   methods: {
-    getIconComponent(iconName) {
+    getIconComponent (iconName) {
       return 'Link'
     },
     
-    async fetchLinks() {
+    async fetchLinks () {
       try {
         this.loading = true
         const data = await mockLinksAPI.getLinks()
@@ -231,7 +231,7 @@ const mockExternalLinks = {
       }
     },
     
-    resetForm() {
+    resetForm () {
       Object.assign(this.linkForm, {
         title: '',
         url: '',
@@ -239,18 +239,18 @@ const mockExternalLinks = {
         icon: '',
         link_type: 'website',
         order: 0,
-        is_active: true
+        is_active: true,
       })
       this.editingLink = null
     },
     
-    editLink(link) {
+    editLink (link) {
       this.editingLink = link
       Object.assign(this.linkForm, link)
       this.showAddDialog = true
     },
     
-    async submitLink() {
+    async submitLink () {
       try {
         this.submitting = true
         
@@ -274,7 +274,7 @@ const mockExternalLinks = {
       }
     },
     
-    async deleteLink(link) {
+    async deleteLink (link) {
       try {
         await mockElMessageBox.confirm(
           `确定要删除链接"${link.title}"吗？`,
@@ -283,7 +283,7 @@ const mockExternalLinks = {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning',
-          }
+          },
         )
         
         await mockLinksAPI.deleteLink(link.id)
@@ -298,46 +298,46 @@ const mockExternalLinks = {
       }
     },
     
-    handleCloseManage() {
+    handleCloseManage () {
       this.showManageDialog = false
       this.resetForm()
     },
     
-    setCanManage(value) {
+    setCanManage (value) {
       this.canManage = value
     },
     
-    setLinks(links) {
+    setLinks (links) {
       this.links = links
     },
     
-    setAllLinks(links) {
+    setAllLinks (links) {
       this.allLinks = links
     },
     
-    setLoading(value) {
+    setLoading (value) {
       this.loading = value
     },
     
-    setShowManageDialog(value) {
+    setShowManageDialog (value) {
       this.showManageDialog = value
     },
     
-    setShowAddDialog(value) {
+    setShowAddDialog (value) {
       this.showAddDialog = value
     },
     
-    setEditingLink(link) {
+    setEditingLink (link) {
       this.editingLink = link
     },
     
-    setLinkForm(form) {
+    setLinkForm (form) {
       Object.assign(this.linkForm, form)
-    }
+    },
   },
-  mounted() {
+  mounted () {
     // 不在mounted时自动调用fetchLinks，避免测试时的状态问题
-  }
+  },
 }
 
 describe('ExternalLinks.vue Component', () => {
@@ -359,7 +359,7 @@ describe('ExternalLinks.vue Component', () => {
         icon: 'github',
         link_type: 'tool',
         order: 1,
-        is_active: true
+        is_active: true,
       },
       {
         id: 2,
@@ -369,8 +369,8 @@ describe('ExternalLinks.vue Component', () => {
         icon: 'stackoverflow',
         link_type: 'resource',
         order: 2,
-        is_active: true
-      }
+        is_active: true,
+      },
     ])
     
     mockLinksAPI.createLink.mockResolvedValue({ id: 3, title: 'New Link' })
@@ -396,9 +396,9 @@ describe('ExternalLinks.vue Component', () => {
           'el-option': mockElOption,
           'el-input-number': mockElInputNumber,
           'el-switch': mockElSwitch,
-          'el-tag': mockElTag
-        }
-      }
+          'el-tag': mockElTag,
+        },
+      },
     })
   })
 
@@ -621,7 +621,7 @@ describe('ExternalLinks.vue Component', () => {
         icon: 'test-icon',
         link_type: 'tool',
         order: 5,
-        is_active: false
+        is_active: false,
       }
       
       wrapper.vm.editLink(testLink)
@@ -688,7 +688,7 @@ describe('ExternalLinks.vue Component', () => {
     it('提交成功后显示成功消息', async () => {
       wrapper.vm.setLinkForm({
         title: 'Test Link',
-        url: 'https://test.com'
+        url: 'https://test.com',
       })
       
       await wrapper.vm.submitLink()
@@ -700,7 +700,7 @@ describe('ExternalLinks.vue Component', () => {
       wrapper.vm.setShowAddDialog(true)
       wrapper.vm.setLinkForm({
         title: 'Test Link',
-        url: 'https://test.com'
+        url: 'https://test.com',
       })
       
       await wrapper.vm.submitLink()
@@ -711,7 +711,7 @@ describe('ExternalLinks.vue Component', () => {
     it('提交成功后重置表单', async () => {
       wrapper.vm.setLinkForm({
         title: 'Test Link',
-        url: 'https://test.com'
+        url: 'https://test.com',
       })
       
       await wrapper.vm.submitLink()
@@ -725,7 +725,7 @@ describe('ExternalLinks.vue Component', () => {
       const fetchSpy = vi.spyOn(wrapper.vm, 'fetchLinks')
       wrapper.vm.setLinkForm({
         title: 'Test Link',
-        url: 'https://test.com'
+        url: 'https://test.com',
       })
       
       await wrapper.vm.submitLink()
@@ -752,7 +752,7 @@ describe('ExternalLinks.vue Component', () => {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
-        }
+        },
       )
     })
 
@@ -792,7 +792,7 @@ describe('ExternalLinks.vue Component', () => {
       wrapper.vm.setShowManageDialog(true)
       wrapper.vm.setLinkForm({
         title: 'Test',
-        url: 'https://test.com'
+        url: 'https://test.com',
       })
       
       wrapper.vm.handleCloseManage()
@@ -825,7 +825,7 @@ describe('ExternalLinks.vue Component', () => {
     it('正确处理API返回的数据', async () => {
       const mockData = [
         { id: 1, title: 'Link 1', is_active: true },
-        { id: 2, title: 'Link 2', is_active: false }
+        { id: 2, title: 'Link 2', is_active: false },
       ]
       mockLinksAPI.getLinks.mockResolvedValue(mockData)
       
@@ -881,7 +881,7 @@ describe('ExternalLinks.vue Component', () => {
         icon: 'test-icon',
         link_type: 'tool',
         order: 5,
-        is_active: false
+        is_active: false,
       })
       
       wrapper.vm.resetForm()
@@ -916,9 +916,9 @@ describe('ExternalLinks.vue Component', () => {
               'el-option': mockElOption,
               'el-input-number': mockElInputNumber,
               'el-switch': mockElSwitch,
-              'el-tag': mockElTag
-            }
-          }
+              'el-tag': mockElTag,
+            },
+          },
         })
       }).not.toThrow()
     })

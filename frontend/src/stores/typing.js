@@ -43,7 +43,7 @@ export const useTypingStore = defineStore('typing', () => {
     totalWrongLetters: 0, // 总错误字母数
     currentWordInputLetters: 0, // 当前单词已输入字母数
     currentWordCorrectLetters: 0, // 当前单词正确字母数
-    currentWordWrongLetters: 0 // 当前单词错误字母数
+    currentWordWrongLetters: 0, // 当前单词错误字母数
   })
   
   const words = ref([])
@@ -60,7 +60,7 @@ export const useTypingStore = defineStore('typing', () => {
     wrongCount: 0,
     startTime: null,
     endTime: null,
-    shake: false // 抖动效果状态
+    shake: false, // 抖动效果状态
   })
   
   // UI State
@@ -91,12 +91,12 @@ export const useTypingStore = defineStore('typing', () => {
     total_correct_words: 0,
     average_wpm: 0,
     total_practice_time: 0,
-    last_practice_date: null
+    last_practice_date: null,
   })
   
   const practiceSettings = reactive({
     wordCount: 20,
-    showPhonetic: true
+    showPhonetic: true,
   })
   
   // 词库和章节选择
@@ -199,7 +199,7 @@ export const useTypingStore = defineStore('typing', () => {
     error.value = {
       message: err.response?.data?.error || err.message || `${operation}失败，请重试`,
       operation,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     }
     
     if (retryCount.value < maxRetries) {
@@ -267,7 +267,7 @@ export const useTypingStore = defineStore('typing', () => {
       console.log('调用API获取单词...')
       const response = await englishAPI.getTypingWords({
         category: practiceSettings.dictionary,
-        limit: practiceSettings.wordCount
+        limit: practiceSettings.wordCount,
       })
       
       console.log('API响应:', response)
@@ -347,7 +347,7 @@ export const useTypingStore = defineStore('typing', () => {
       console.log('调用API获取指定词库和章节的单词...')
       const response = await englishAPI.getTypingWordsByDictionary({
         dictionary_id: targetDictionaryId,  // 修复：使用正确的参数名和值
-        chapter: chapter
+        chapter,
       })
       
       console.log('API响应:', response)
@@ -487,7 +487,7 @@ export const useTypingStore = defineStore('typing', () => {
       wrongCount: 0,
       startTime: Date.now(),
       endTime: null,
-      shake: false
+      shake: false,
     }
     
     // 强制触发响应式更新 - 使用reactive重新包装
@@ -618,7 +618,7 @@ export const useTypingStore = defineStore('typing', () => {
         // 收集错误单词 ⭐ 新增
         if (currentWord.value) {
           const existingIndex = wrongWordsInSession.value.findIndex(
-            item => item.word === currentWord.value.word
+            item => item.word === currentWord.value.word,
           )
           
           if (existingIndex >= 0) {
@@ -629,7 +629,7 @@ export const useTypingStore = defineStore('typing', () => {
             wrongWordsInSession.value.push({
               word: currentWord.value.word,
               translation: currentWord.value.translation || '',
-              errorCount: 1
+              errorCount: 1,
             })
           }
         }
@@ -681,7 +681,7 @@ export const useTypingStore = defineStore('typing', () => {
         typing_speed: wpm,
         response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0,
         mistakes: keyMistakes.value, // ⭐ 新增：包含按键错误数据
-        wrong_count: Object.values(keyMistakes.value).reduce((total, mistakes) => total + mistakes.length, 0) // ⭐ 新增：计算总错误次数
+        wrong_count: Object.values(keyMistakes.value).reduce((total, mistakes) => total + mistakes.length, 0), // ⭐ 新增：计算总错误次数
       }
       
       console.log('提交练习数据:', submitData)
@@ -743,7 +743,7 @@ export const useTypingStore = defineStore('typing', () => {
         typing_speed: currentWPM.value,
         response_time: wordStartTime.value ? (Date.now() - wordStartTime.value) / 1000 : 0,
         mistakes: keyMistakes.value, // ⭐ 新增：包含按键错误数据
-        wrong_count: Object.values(keyMistakes.value).reduce((total, mistakes) => total + mistakes.length, 0) // ⭐ 新增：计算总错误次数
+        wrong_count: Object.values(keyMistakes.value).reduce((total, mistakes) => total + mistakes.length, 0), // ⭐ 新增：计算总错误次数
       }
       
       console.log('提交练习数据:', submitData)
@@ -770,17 +770,17 @@ export const useTypingStore = defineStore('typing', () => {
     }, 1500)
   }
   
-     const skipWord = () => {
-     if (submitting.value) return
+  const skipWord = () => {
+    if (submitting.value) return
      
-     // 如果当前单词有输入，记录为跳过（不算正确，但算回答）
-     if (wordState.inputWord.length > 0) {
-       answeredCount.value++
-       // 不增加correctCount，因为跳过了
-     }
+    // 如果当前单词有输入，记录为跳过（不算正确，但算回答）
+    if (wordState.inputWord.length > 0) {
+      answeredCount.value++
+      // 不增加correctCount，因为跳过了
+    }
      
-     nextWord()
-   }
+    nextWord()
+  }
   
   const nextWord = () => {
     console.log('nextWord called')
@@ -846,8 +846,8 @@ export const useTypingStore = defineStore('typing', () => {
             wordIndex: currentWordIndex.value,
             word: temp.word,
             phonetic: temp.phonetic,
-            translation: temp.translation
-          } 
+            translation: temp.translation,
+          }, 
         }))
         
         // 自动播放新单词的发音 - 由组件处理，这里不需要
@@ -899,7 +899,7 @@ export const useTypingStore = defineStore('typing', () => {
       correctCount: 0,
       wrongCount: 0,
       startTime: null,
-      endTime: null
+      endTime: null,
     })
     
     // 重置其他状态
@@ -997,7 +997,7 @@ export const useTypingStore = defineStore('typing', () => {
       addWrongWord({
         ...wrongWord,
         dictionary: selectedDictionary.value?.name || 'Unknown',
-        lastErrorTime: new Date().toISOString()
+        lastErrorTime: new Date().toISOString(),
       })
     })
     
@@ -1096,7 +1096,7 @@ export const useTypingStore = defineStore('typing', () => {
   // 错题本功能 ⭐ 新增
   const addWrongWord = (wrongWord) => {
     const existingIndex = wrongWordsNotebook.value.findIndex(
-      item => item.word === wrongWord.word && item.dictionary === wrongWord.dictionary
+      item => item.word === wrongWord.word && item.dictionary === wrongWord.dictionary,
     )
     
     if (existingIndex >= 0) {
@@ -1131,7 +1131,7 @@ export const useTypingStore = defineStore('typing', () => {
     return {
       totalWords,
       totalErrors,
-      dictionaryCount: dictionaries.size
+      dictionaryCount: dictionaries.size,
     }
   }
 
@@ -1140,7 +1140,7 @@ export const useTypingStore = defineStore('typing', () => {
     dailyPracticeDuration.value += duration
     dailyPracticeSessions.value.push({
       duration,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     })
     saveToStorage('dailyPracticeDuration', dailyPracticeDuration.value)
     saveToStorage('dailyPracticeSessions', dailyPracticeSessions.value)
@@ -1189,7 +1189,7 @@ export const useTypingStore = defineStore('typing', () => {
     const wrongWords = wrongWordsInSession.value.map(item => ({
       word: item.word,
       translation: item.translation,
-      errorCount: item.errorCount
+      errorCount: item.errorCount,
     }))
     
     return {
@@ -1198,7 +1198,7 @@ export const useTypingStore = defineStore('typing', () => {
       wpm,
       wrongWords,
       dictionary: selectedDictionary.value?.name || 'Unknown',
-      chapter: selectedChapter.value
+      chapter: selectedChapter.value,
     }
   }
 
@@ -1336,6 +1336,6 @@ export const useTypingStore = defineStore('typing', () => {
     checkAndResetDailyStats,
     
     // 章节完成数据生成 ⭐ 新增
-    generateChapterCompletionData
+    generateChapterCompletionData,
   }
 })

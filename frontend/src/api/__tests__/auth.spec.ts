@@ -5,14 +5,14 @@ import { authAPI } from '../auth'
 vi.mock('../request', () => ({
   default: {
     post: vi.fn(),
-    get: vi.fn()
-  }
+    get: vi.fn(),
+  },
 }))
 
 vi.mock('axios', () => ({
   default: {
-    post: vi.fn()
-  }
+    post: vi.fn(),
+  },
 }))
 
 describe('authAPI', () => {
@@ -54,7 +54,7 @@ describe('authAPI', () => {
         email: 'new@example.com',
         first_name: 'New',
         password: 'newpass123',
-        password_confirm: 'newpass123'
+        password_confirm: 'newpass123',
       }
       const mockResponse = { data: { message: '注册成功' } }
       mockRequest.post.mockResolvedValue(mockResponse)
@@ -146,7 +146,7 @@ describe('authAPI', () => {
       const result = await authAPI.verifyUserIdentity(identityData)
 
       expect(mockAxios.post).toHaveBeenCalledWith('/api/v1/auth/verify-identity/', identityData, {
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
       })
       expect(result).toEqual(mockResponse.data)
     })
@@ -158,7 +158,7 @@ describe('authAPI', () => {
 
       await expect(authAPI.verifyUserIdentity(identityData)).rejects.toThrow('用户名或密码错误')
       expect(mockAxios.post).toHaveBeenCalledWith('/api/v1/auth/verify-identity/', identityData, {
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
       })
     })
   })
@@ -172,7 +172,7 @@ describe('authAPI', () => {
       const result = await authAPI.requestPasswordReset(email)
 
       expect(mockAxios.post).toHaveBeenCalledWith('/api/v1/auth/password-reset/', { email }, {
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
       })
       expect(result).toEqual(mockResponse.data)
     })
@@ -184,7 +184,7 @@ describe('authAPI', () => {
 
       await expect(authAPI.requestPasswordReset(email)).rejects.toThrow('邮箱不存在')
       expect(mockAxios.post).toHaveBeenCalledWith('/api/v1/auth/password-reset/', { email }, {
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
       })
     })
   })
@@ -194,7 +194,7 @@ describe('authAPI', () => {
       const resetData = {
         token: 'reset-token-123',
         password: 'newpassword123',
-        password_confirm: 'newpassword123'
+        password_confirm: 'newpassword123',
       }
       const mockResponse = { data: { message: '密码重置成功' } }
       mockAxios.post.mockResolvedValue(mockResponse)
@@ -202,7 +202,7 @@ describe('authAPI', () => {
       const result = await authAPI.confirmPasswordReset(resetData)
 
       expect(mockAxios.post).toHaveBeenCalledWith('/api/v1/auth/password-reset-confirm/', resetData, {
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
       })
       expect(result).toEqual(mockResponse.data)
     })
@@ -214,7 +214,7 @@ describe('authAPI', () => {
 
       await expect(authAPI.confirmPasswordReset(resetData)).rejects.toThrow('Token无效')
       expect(mockAxios.post).toHaveBeenCalledWith('/api/v1/auth/password-reset-confirm/', resetData, {
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
       })
     })
   })

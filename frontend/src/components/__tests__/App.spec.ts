@@ -12,8 +12,8 @@ const createMockRouter = async (path: string) => {
       { path: '/', name: 'home', component: { template: '<div>Home</div>' } },
       { path: '/login', name: 'login', component: { template: '<div>Login</div>' } },
       { path: '/register', name: 'register', component: { template: '<div>Register</div>' } },
-      { path: '/dashboard', name: 'dashboard', component: { template: '<div>Dashboard</div>' } }
-    ]
+      { path: '/dashboard', name: 'dashboard', component: { template: '<div>Dashboard</div>' } },
+    ],
   })
   
   // 设置当前路径并等待完成
@@ -30,7 +30,7 @@ const mockComponents = {
   TopNavBar: { template: '<div class="top-nav-bar">TopNavBar</div>' },
   SideMenu: { template: '<div class="side-menu">SideMenu</div>' },
   FooterComponent: { template: '<div class="footer-component">FooterComponent</div>' },
-  MouseEffects: { template: '<div class="mouse-effects">MouseEffects</div>' }
+  MouseEffects: { template: '<div class="mouse-effects">MouseEffects</div>' },
 }
 
 describe('App Component', () => {
@@ -42,9 +42,9 @@ describe('App Component', () => {
           plugins: [router, pinia],
           components: mockComponents,
           stubs: {
-            'router-view': true
-          }
-        }
+            'router-view': true,
+          },
+        },
       })
       
       await wrapper.vm.$nextTick()
@@ -61,9 +61,9 @@ describe('App Component', () => {
           plugins: [router, pinia],
           components: mockComponents,
           stubs: {
-            'router-view': true
-          }
-        }
+            'router-view': true,
+          },
+        },
       })
       
       await wrapper.vm.$nextTick()
@@ -82,9 +82,9 @@ describe('App Component', () => {
           plugins: [router, pinia],
           components: mockComponents,
           stubs: {
-            'router-view': true
-          }
-        }
+            'router-view': true,
+          },
+        },
       })
       
       await wrapper.vm.$nextTick()
@@ -103,9 +103,9 @@ describe('App Component', () => {
           plugins: [router, pinia],
           components: mockComponents,
           stubs: {
-            'router-view': true
-          }
-        }
+            'router-view': true,
+          },
+        },
       })
       
       await router.isReady()
@@ -125,9 +125,9 @@ describe('App Component', () => {
           plugins: [router, pinia],
           components: mockComponents,
           stubs: {
-            'router-view': true
-          }
-        }
+            'router-view': true,
+          },
+        },
       })
       
       await wrapper.vm.$nextTick()
@@ -145,9 +145,9 @@ describe('App Component', () => {
           plugins: [router, pinia],
           components: mockComponents,
           stubs: {
-            'router-view': true
-          }
-        }
+            'router-view': true,
+          },
+        },
       })
       
       await wrapper.vm.$nextTick()

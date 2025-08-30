@@ -18,7 +18,7 @@ vi.mock('marked', () => ({
       .replace(/^- (.*$)/gim, '<ul><li>$1</li></ul>')
       .replace(/^\d+\. (.*$)/gim, '<ol><li>$1</li></ol>')
   }),
-  setOptions: vi.fn()
+  setOptions: vi.fn(),
 }))
 
 // 模拟highlight.js
@@ -26,8 +26,8 @@ vi.mock('highlight.js', () => ({
   default: {
     highlight: vi.fn((code, options) => ({ value: code })),
     highlightAuto: vi.fn((code) => ({ value: code })),
-    getLanguage: vi.fn(() => true)
-  }
+    getLanguage: vi.fn(() => true),
+  },
 }))
 
 // 模拟MarkdownRenderer组件
@@ -38,16 +38,16 @@ const mockMarkdownRenderer = {
   props: {
     content: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
-  data() {
+  data () {
     return {
-      renderedContent: ''
+      renderedContent: '',
     }
   },
   methods: {
-    renderMarkdown(content) {
+    renderMarkdown (content) {
       if (!content) return ''
       
       // 简单的markdown渲染模拟
@@ -64,21 +64,21 @@ const mockMarkdownRenderer = {
         .replace(/^\d+\. (.*$)/gim, '<ol><li>$1</li></ol>')
     },
     
-    updateContent() {
+    updateContent () {
       this.renderedContent = this.renderMarkdown(this.content || '')
-    }
+    },
   },
   watch: {
     content: {
-      handler() {
+      handler () {
         this.updateContent()
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
-  mounted() {
+  mounted () {
     this.updateContent()
-  }
+  },
 }
 
 describe('MarkdownRenderer.vue Component', () => {
@@ -87,8 +87,8 @@ describe('MarkdownRenderer.vue Component', () => {
   beforeEach(() => {
     wrapper = mount(mockMarkdownRenderer, {
       props: {
-        content: '# Hello World\nThis is a test.'
-      }
+        content: '# Hello World\nThis is a test.',
+      },
     })
   })
 
@@ -119,63 +119,63 @@ describe('MarkdownRenderer.vue Component', () => {
   describe('Markdown渲染功能', () => {
     it('渲染标题', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '# Test Title' }
+        props: { content: '# Test Title' },
       })
       expect(wrapper.vm.renderedContent).toContain('<h1>Test Title</h1>')
     })
 
     it('渲染二级标题', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '## Test Subtitle' }
+        props: { content: '## Test Subtitle' },
       })
       expect(wrapper.vm.renderedContent).toContain('<h2>Test Subtitle</h2>')
     })
 
     it('渲染三级标题', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '### Test Subsubtitle' }
+        props: { content: '### Test Subsubtitle' },
       })
       expect(wrapper.vm.renderedContent).toContain('<h3>Test Subsubtitle</h3>')
     })
 
     it('渲染粗体文本', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: 'This is **bold** text' }
+        props: { content: 'This is **bold** text' },
       })
       expect(wrapper.vm.renderedContent).toContain('<strong>bold</strong>')
     })
 
     it('渲染斜体文本', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: 'This is *italic* text' }
+        props: { content: 'This is *italic* text' },
       })
       expect(wrapper.vm.renderedContent).toContain('<em>italic</em>')
     })
 
     it('渲染行内代码', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: 'Use `console.log()` to debug' }
+        props: { content: 'Use `console.log()` to debug' },
       })
       expect(wrapper.vm.renderedContent).toContain('<code>console.log()</code>')
     })
 
     it('渲染链接', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '[Click here](https://example.com)' }
+        props: { content: '[Click here](https://example.com)' },
       })
       expect(wrapper.vm.renderedContent).toContain('<a href="https://example.com">Click here</a>')
     })
 
     it('渲染引用', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '> This is a quote' }
+        props: { content: '> This is a quote' },
       })
       expect(wrapper.vm.renderedContent).toContain('<blockquote>This is a quote</blockquote>')
     })
 
     it('渲染无序列表', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '- Item 1\n- Item 2' }
+        props: { content: '- Item 1\n- Item 2' },
       })
       expect(wrapper.vm.renderedContent).toContain('<ul>')
       expect(wrapper.vm.renderedContent).toContain('<li>Item 1</li>')
@@ -184,7 +184,7 @@ describe('MarkdownRenderer.vue Component', () => {
 
     it('渲染有序列表', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '1. First item\n2. Second item' }
+        props: { content: '1. First item\n2. Second item' },
       })
       expect(wrapper.vm.renderedContent).toContain('<ol>')
       expect(wrapper.vm.renderedContent).toContain('<li>First item</li>')
@@ -210,7 +210,7 @@ This is a **bold** paragraph with *italic* text and \`code\`.
       `
       
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: complexContent }
+        props: { content: complexContent },
       })
       
       const rendered = wrapper.vm.renderedContent
@@ -226,21 +226,21 @@ This is a **bold** paragraph with *italic* text and \`code\`.
 
     it('处理空内容', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '' }
+        props: { content: '' },
       })
       expect(wrapper.vm.renderedContent).toBe('')
     })
 
     it('处理null内容', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: null }
+        props: { content: null },
       })
       expect(wrapper.vm.renderedContent).toBe('')
     })
 
     it('处理undefined内容', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: undefined }
+        props: { content: undefined },
       })
       expect(wrapper.vm.renderedContent).toBe('')
     })
@@ -249,7 +249,7 @@ This is a **bold** paragraph with *italic* text and \`code\`.
   describe('响应式更新', () => {
     it('内容变化时重新渲染', async () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '# Original Title' }
+        props: { content: '# Original Title' },
       })
       
       expect(wrapper.vm.renderedContent).toContain('<h1>Original Title</h1>')
@@ -298,7 +298,7 @@ This is a **bold** paragraph with *italic* text and \`code\`.
     it('组件挂载时不会抛出错误', () => {
       expect(() => {
         mount(mockMarkdownRenderer, {
-          props: { content: 'Test content' }
+          props: { content: 'Test content' },
         })
       }).not.toThrow()
     })
@@ -306,7 +306,7 @@ This is a **bold** paragraph with *italic* text and \`code\`.
     it('处理特殊字符', () => {
       const specialContent = 'Content with <script>alert("xss")</script>'
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: specialContent }
+        props: { content: specialContent },
       })
       
       expect(() => {
@@ -317,7 +317,7 @@ This is a **bold** paragraph with *italic* text and \`code\`.
     it('处理超长内容', () => {
       const longContent = '# Title\n'.repeat(1000)
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: longContent }
+        props: { content: longContent },
       })
       
       expect(() => {
@@ -335,7 +335,7 @@ This is a paragraph.
 Another paragraph.`
       
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: multilineContent }
+        props: { content: multilineContent },
       })
       
       expect(wrapper.vm.renderedContent).toContain('<h1>Title</h1>')
@@ -351,7 +351,7 @@ Another paragraph.`
 
     it('渲染的内容包含HTML标签', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '# Test' }
+        props: { content: '# Test' },
       })
       
       expect(wrapper.vm.renderedContent).toContain('<h1>')
@@ -360,7 +360,7 @@ Another paragraph.`
 
     it('v-html指令正确绑定', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '# Test Title' }
+        props: { content: '# Test Title' },
       })
       
       expect(wrapper.html()).toContain('<h1>Test Title</h1>')
@@ -372,7 +372,7 @@ Another paragraph.`
       const startTime = performance.now()
       
       for (let i = 0; i < 100; i++) {
-        wrapper.vm.renderMarkdown('# Test ' + i)
+        wrapper.vm.renderMarkdown(`# Test ${i}`)
       }
       
       const endTime = performance.now()
@@ -398,7 +398,7 @@ Another paragraph.`
   describe('可访问性', () => {
     it('渲染的HTML结构语义化正确', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '# Title\n## Subtitle\nThis is **bold** text' }
+        props: { content: '# Title\n## Subtitle\nThis is **bold** text' },
       })
       
       const rendered = wrapper.vm.renderedContent
@@ -409,7 +409,7 @@ Another paragraph.`
 
     it('链接包含正确的href属性', () => {
       wrapper = mount(mockMarkdownRenderer, {
-        props: { content: '[Link](https://example.com)' }
+        props: { content: '[Link](https://example.com)' },
       })
       
       expect(wrapper.vm.renderedContent).toContain('href="https://example.com"')

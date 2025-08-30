@@ -7,8 +7,8 @@ import FooterComponent from '../FooterComponent.vue'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/admin/categories', component: { template: '<div>Categories</div>' } }
-  ]
+    { path: '/admin/categories', component: { template: '<div>Categories</div>' } },
+  ],
 })
 
 describe('FooterComponent.vue Component', () => {
@@ -17,8 +17,8 @@ describe('FooterComponent.vue Component', () => {
   beforeEach(async () => {
     wrapper = mount(FooterComponent, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     await wrapper.vm.$nextTick()
   })
@@ -272,8 +272,8 @@ describe('FooterComponent.vue Component', () => {
       
       wrapper = mount(FooterComponent, {
         global: {
-          plugins: [router]
-        }
+          plugins: [router],
+        },
       })
       
       await wrapper.vm.$nextTick()
@@ -285,8 +285,8 @@ describe('FooterComponent.vue Component', () => {
     it('多次渲染保持一致性', () => {
       const wrapper2 = mount(FooterComponent, {
         global: {
-          plugins: [router]
-        }
+          plugins: [router],
+        },
       })
       
       expect(wrapper.html()).toBe(wrapper2.html())

@@ -44,17 +44,17 @@ export const useEnglishStore = defineStore('english', {
     practiceStats: {
       totalPractices: 0,
       correctRate: 0,
-      averageTime: 0
+      averageTime: 0,
     },
 
     // learning statistics
     learningStats: [],
     statsLoading: false,
-    todayStats: null
+    todayStats: null,
   }),
 
   actions: {
-    async fetchWords(params = {}) {
+    async fetchWords (params = {}) {
       this.wordsLoading = true
       try {
         const queryRaw = { ...this.wordsQuery, ...params }
@@ -64,7 +64,7 @@ export const useEnglishStore = defineStore('english', {
           // 前端 -> 后端参数名映射
           q: queryRaw.search,
           difficulty_level: queryRaw.difficulty,
-          ordering: queryRaw.ordering
+          ordering: queryRaw.ordering,
         }
         const resp = await englishAPI.getWords(query)
         // 兼容后端统一响应结构或直接返回DRF分页
@@ -77,7 +77,7 @@ export const useEnglishStore = defineStore('english', {
       }
     },
 
-    async fetchExpressions(params = {}) {
+    async fetchExpressions (params = {}) {
       this.expressionsLoading = true
       try {
         const queryRaw = { ...this.expressionsQuery, ...params }
@@ -85,7 +85,7 @@ export const useEnglishStore = defineStore('english', {
           page: this.expressionsPagination.page,
           page_size: this.expressionsPagination.pageSize,
           q: queryRaw.search,
-          ordering: queryRaw.ordering
+          ordering: queryRaw.ordering,
         }
         const resp = await englishAPI.getExpressions(query)
         const data = resp?.data || resp?.results || resp?.items || []
@@ -97,7 +97,7 @@ export const useEnglishStore = defineStore('english', {
       }
     },
 
-    async fetchNews(params = {}) {
+    async fetchNews (params = {}) {
       this.newsLoading = true
       try {
         const queryRaw = { ...this.newsQuery, ...params }
@@ -106,7 +106,7 @@ export const useEnglishStore = defineStore('english', {
           page_size: this.newsPagination.pageSize,
           q: queryRaw.search,
           category: queryRaw.category,
-          ordering: queryRaw.ordering
+          ordering: queryRaw.ordering,
         }
         const resp = await englishAPI.getNewsList(query)
         const data = resp?.data || resp?.results || resp?.items || []
@@ -119,7 +119,7 @@ export const useEnglishStore = defineStore('english', {
     },
 
     // Learning Progress Actions
-    async fetchUserProgress(params = {}) {
+    async fetchUserProgress (params = {}) {
       this.progressLoading = true
       try {
         const resp = await englishAPI.getProgress(params)
@@ -130,7 +130,7 @@ export const useEnglishStore = defineStore('english', {
       }
     },
 
-    async fetchDueReviews() {
+    async fetchDueReviews () {
       this.reviewsLoading = true
       try {
         const resp = await englishAPI.getDueReviews()
@@ -141,7 +141,7 @@ export const useEnglishStore = defineStore('english', {
       }
     },
 
-    async submitBatchReview(reviewData) {
+    async submitBatchReview (reviewData) {
       try {
         const resp = await englishAPI.batchReview(reviewData)
         // 更新本地状态
@@ -153,7 +153,7 @@ export const useEnglishStore = defineStore('english', {
       }
     },
 
-    async fetchLearningOverview(days = 7) {
+    async fetchLearningOverview (days = 7) {
       this.overviewLoading = true
       try {
         const resp = await englishAPI.getLearningOverview(days)
@@ -164,7 +164,7 @@ export const useEnglishStore = defineStore('english', {
     },
 
     // Learning Plans Actions
-    async fetchLearningPlans() {
+    async fetchLearningPlans () {
       this.plansLoading = true
       try {
         const resp = await englishAPI.getLearningPlans()
@@ -177,7 +177,7 @@ export const useEnglishStore = defineStore('english', {
       }
     },
 
-    async createLearningPlan(planData) {
+    async createLearningPlan (planData) {
       try {
         const resp = await englishAPI.createLearningPlan(planData)
         await this.fetchLearningPlans()
@@ -187,11 +187,11 @@ export const useEnglishStore = defineStore('english', {
       }
     },
 
-    async fetchDailyContent(planId) {
+    async fetchDailyContent (planId) {
       try {
         const [wordsResp, expressionsResp] = await Promise.all([
           englishAPI.getDailyWords(planId),
-          englishAPI.getDailyExpressions(planId)
+          englishAPI.getDailyExpressions(planId),
         ])
         this.dailyWords = wordsResp?.data || wordsResp?.results || []
         this.dailyExpressions = expressionsResp?.data || expressionsResp?.results || []
@@ -201,7 +201,7 @@ export const useEnglishStore = defineStore('english', {
     },
 
     // Practice System Actions
-    async fetchPracticeRecords(params = {}) {
+    async fetchPracticeRecords (params = {}) {
       this.practiceLoading = true
       try {
         const resp = await englishAPI.getPracticeRecords(params)
@@ -219,7 +219,7 @@ export const useEnglishStore = defineStore('english', {
       }
     },
 
-    async generatePracticeQuestions(type = 'word_spelling', count = 5) {
+    async generatePracticeQuestions (type = 'word_spelling', count = 5) {
       this.questionsLoading = true
       try {
         const resp = await englishAPI.generateQuestions(type, count)
@@ -230,7 +230,7 @@ export const useEnglishStore = defineStore('english', {
       }
     },
 
-    async submitPracticeAnswer(answerData) {
+    async submitPracticeAnswer (answerData) {
       try {
         const resp = await englishAPI.submitPractice(answerData)
         // 更新练习记录
@@ -242,7 +242,7 @@ export const useEnglishStore = defineStore('english', {
     },
 
     // Learning Statistics Actions
-    async fetchLearningStats(params = {}) {
+    async fetchLearningStats (params = {}) {
       this.statsLoading = true
       try {
         const resp = await englishAPI.getLearningStats(params)
@@ -257,7 +257,7 @@ export const useEnglishStore = defineStore('english', {
       }
     },
 
-    async updateTodayStats() {
+    async updateTodayStats () {
       try {
         const resp = await englishAPI.updateTodayStats()
         await this.fetchLearningStats({ page: 1, page_size: 30 })
@@ -268,7 +268,7 @@ export const useEnglishStore = defineStore('english', {
     },
 
     // Utility Actions
-    async triggerNewsCrawl(source = 'bbc') {
+    async triggerNewsCrawl (source = 'bbc') {
       try {
         const resp = await englishAPI.triggerNewsCrawl(source)
         // 可以显示通知
@@ -279,7 +279,7 @@ export const useEnglishStore = defineStore('english', {
     },
 
     // Reset state
-    resetState() {
+    resetState () {
       this.words = []
       this.expressions = []
       this.newsList = []
@@ -290,7 +290,7 @@ export const useEnglishStore = defineStore('english', {
       this.currentQuestions = []
       this.learningOverview = null
       this.todayStats = null
-    }
+    },
   },
 
   getters: {
@@ -305,7 +305,7 @@ export const useEnglishStore = defineStore('english', {
         wordsReviewed: state.todayStats.words_reviewed,
         practiceCount: state.todayStats.practice_count,
         accuracyRate: state.todayStats.accuracy_rate,
-        studyTime: state.todayStats.study_time_minutes
+        studyTime: state.todayStats.study_time_minutes,
       }
     },
     
@@ -313,8 +313,8 @@ export const useEnglishStore = defineStore('english', {
     activePlan: (state) => state.currentPlan,
     
     // 获取练习统计
-    practiceStatistics: (state) => state.practiceStats
-  }
+    practiceStatistics: (state) => state.practiceStats,
+  },
 })
 
 

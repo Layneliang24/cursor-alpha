@@ -6,19 +6,19 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src')
-    }
+      '@': resolve(__dirname, 'src'),
+    },
   },
   server: {
     port: 3000,
     historyApiFallback: true,
     hmr: {
       overlay: true, // 错误覆盖层
-      port: 24678   // HMR 端口
+      port: 24678,   // HMR 端口
     },
     watch: {
       usePolling: true, // Windows 环境优化
-      interval: 100
+      interval: 100,
     },
     proxy: {
       '/api': {
@@ -30,7 +30,7 @@ export default defineConfig({
             return path.replace('/api', '')
           }
           return path
-        }
+        },
       },
       '/pronunciation': {
         target: 'https://dict.youdao.com',
@@ -42,9 +42,9 @@ export default defineConfig({
             proxyReq.setHeader('Referer', 'https://dict.youdao.com')
             proxyReq.setHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
           })
-        }
-      }
-    }
+        },
+      },
+    },
   },
   build: {
     outDir: 'dist',
@@ -64,24 +64,24 @@ export default defineConfig({
           'idiomatic': [
             '/src/components/idiomatic-expressions',
             '/src/stores/modules/expressionStore',
-            '/src/stores/modules/learningStore'
-          ]
-        }
-      }
+            '/src/stores/modules/learningStore',
+          ],
+        },
+      },
     },
     // 压缩配置
     minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true
-      }
+        drop_debugger: true,
+      },
     },
     // 构建性能优化
-    chunkSizeWarningLimit: 1000
+    chunkSizeWarningLimit: 1000,
   },
   // 优化配置
   optimizeDeps: {
-    include: ['vue', 'vue-router', 'pinia', 'element-plus', 'echarts']
-  }
+    include: ['vue', 'vue-router', 'pinia', 'element-plus', 'echarts'],
+  },
 }) 

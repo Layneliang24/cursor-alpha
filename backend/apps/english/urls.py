@@ -11,6 +11,7 @@ from .analytics_views import (
     progress_trend, mastery_distribution, time_analysis,
     efficiency_analysis, learning_insights
 )
+from .report_views import LearningReportViewSet, LearningGoalViewSet
 
 router = DefaultRouter()
 router.register(r'english/words', WordViewSet, basename='english-words')
@@ -25,6 +26,8 @@ router.register(r'english/typing-practice', TypingPracticeViewSet, basename='typ
 router.register(r'english/dictionaries', DictionaryViewSet, basename='english-dictionaries')
 router.register(r'english/typing-words', TypingWordViewSet, basename='english-typing-words')
 router.register(r'english/data-analysis', DataAnalysisViewSet, basename='english-data-analysis')
+router.register(r'english/reports', LearningReportViewSet, basename='english-reports')
+router.register(r'english/goals', LearningGoalViewSet, basename='english-goals')
 
 # 分析API路由
 analytics_patterns = [

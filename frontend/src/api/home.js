@@ -4,7 +4,7 @@ import axios from 'axios'
 // 首页相关API
 export const homeAPI = {
   // 获取首页统计数据
-  async getStats() {
+  async getStats () {
     try {
       const response = await request.get('/home/stats/')
       return response
@@ -15,7 +15,7 @@ export const homeAPI = {
   },
 
   // 获取热门文章（用于轮播）
-  async getPopularArticles() {
+  async getPopularArticles () {
     try {
       const response = await request.get('/home/popular-articles/')
       return response
@@ -24,7 +24,7 @@ export const homeAPI = {
       // Fallback to regular articles API
       try {
         const fallback = await request.get('/articles/', { 
-          params: { page_size: 5, ordering: '-views' }
+          params: { page_size: 5, ordering: '-views' },
         })
         return fallback.results || []
       } catch (fallbackError) {
@@ -35,7 +35,7 @@ export const homeAPI = {
   },
 
   // 获取最新文章
-  async getRecentArticles() {
+  async getRecentArticles () {
     try {
       const response = await request.get('/home/recent-articles/')
       return response
@@ -44,7 +44,7 @@ export const homeAPI = {
       // Fallback to regular articles API
       try {
         const fallback = await request.get('/articles/', { 
-          params: { page_size: 6, ordering: '-created_at' }
+          params: { page_size: 6, ordering: '-created_at' },
         })
         return fallback.results || []
       } catch (fallbackError) {
@@ -55,7 +55,7 @@ export const homeAPI = {
   },
 
   // 获取热门标签
-  async getPopularTags() {
+  async getPopularTags () {
     try {
       const response = await request.get('/home/popular-tags/')
       return response
@@ -63,28 +63,28 @@ export const homeAPI = {
       console.error('Popular tags API error:', error)
       return []
     }
-  }
+  },
 }
 
 // 外链相关API
 export const linksAPI = {
   // 获取外链列表
-  getLinks() {
+  getLinks () {
     return request.get('external-links/').then(res => res.results || res)
   },
 
   // 创建外链
-  createLink(data) {
+  createLink (data) {
     return request.post('external-links/', data)
   },
 
   // 更新外链
-  updateLink(id, data) {
+  updateLink (id, data) {
     return request.put(`external-links/${id}/`, data)
   },
 
   // 删除外链
-  deleteLink(id) {
+  deleteLink (id) {
     return request.delete(`external-links/${id}/`)
-  }
+  },
 }

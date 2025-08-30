@@ -7,8 +7,8 @@ vi.mock('element-plus', () => ({
   ElMessage: {
     success: vi.fn(),
     warning: vi.fn(),
-    error: vi.fn()
-  }
+    error: vi.fn(),
+  },
 }))
 
 // Mock API
@@ -19,24 +19,24 @@ vi.mock('@/api/english', () => ({
     submitTypingPractice: vi.fn(),
     getTypingStats: vi.fn(),
     getTypingDailyProgress: vi.fn(),
-    getDictionaries: vi.fn()
-  }
+    getDictionaries: vi.fn(),
+  },
 }))
 
 // Mock window functions
 Object.defineProperty(window, 'playCorrectSound', {
   value: vi.fn(),
-  writable: true
+  writable: true,
 })
 
 Object.defineProperty(window, 'playWrongSound', {
   value: vi.fn(),
-  writable: true
+  writable: true,
 })
 
 Object.defineProperty(window, 'playCurrentWordPronunciation', {
   value: vi.fn(),
-  writable: true
+  writable: true,
 })
 
 describe('QWERTY Learner 逻辑测试', () => {
@@ -53,7 +53,7 @@ describe('QWERTY Learner 逻辑测试', () => {
       store.words = [
         { id: 1, word: 'hello' },
         { id: 2, word: 'world' },
-        { id: 3, word: 'test' }
+        { id: 3, word: 'test' },
       ]
       
       // 模拟用户完成了3个单词，其中2个有错误但最终完成
@@ -68,7 +68,7 @@ describe('QWERTY Learner 逻辑测试', () => {
       // 设置测试数据
       store.words = [
         { id: 1, word: 'hello' },
-        { id: 2, word: 'world' }
+        { id: 2, word: 'world' },
       ]
       
       // 模拟用户完成了2个单词，但都有按键错误
@@ -80,37 +80,37 @@ describe('QWERTY Learner 逻辑测试', () => {
       expect(store.correctRate).toBe(100)
     })
 
-         it('应该在部分完成的情况下显示正确的正确率', () => {
-       // 设置测试数据
-       store.words = [
-         { id: 1, word: 'hello' },
-         { id: 2, word: 'world' },
-         { id: 3, word: 'test' }
-       ]
+    it('应该在部分完成的情况下显示正确的正确率', () => {
+      // 设置测试数据
+      store.words = [
+        { id: 1, word: 'hello' },
+        { id: 2, word: 'world' },
+        { id: 3, word: 'test' },
+      ]
        
-       // 模拟用户完成了2个单词，跳过了1个
-       store.correctCount = 2  // 2个单词完成
-       store.answeredCount = 3 // 3个单词都处理了（包括跳过）
+      // 模拟用户完成了2个单词，跳过了1个
+      store.correctCount = 2  // 2个单词完成
+      store.answeredCount = 3 // 3个单词都处理了（包括跳过）
        
-       // 正确率应该是 66.67% (2/3)
-       expect(store.correctRate).toBe(67)
-     })
+      // 正确率应该是 66.67% (2/3)
+      expect(store.correctRate).toBe(67)
+    })
 
-     it('应该在跳过单词的情况下显示正确的正确率', () => {
-       // 设置测试数据
-       store.words = [
-         { id: 1, word: 'hello' },
-         { id: 2, word: 'world' },
-         { id: 3, word: 'test' }
-       ]
+    it('应该在跳过单词的情况下显示正确的正确率', () => {
+      // 设置测试数据
+      store.words = [
+        { id: 1, word: 'hello' },
+        { id: 2, word: 'world' },
+        { id: 3, word: 'test' },
+      ]
        
-       // 模拟用户完成了1个单词，跳过了2个
-       store.correctCount = 1  // 1个单词完成
-       store.answeredCount = 3 // 3个单词都处理了（包括跳过）
+      // 模拟用户完成了1个单词，跳过了2个
+      store.correctCount = 1  // 1个单词完成
+      store.answeredCount = 3 // 3个单词都处理了（包括跳过）
        
-       // 正确率应该是 33.33% (1/3)
-       expect(store.correctRate).toBe(33)
-     })
+      // 正确率应该是 33.33% (1/3)
+      expect(store.correctRate).toBe(33)
+    })
 
     it('应该在没有任何单词的情况下显示0%正确率', () => {
       store.correctCount = 0
@@ -180,28 +180,28 @@ describe('QWERTY Learner 逻辑测试', () => {
     })
   })
 
-     describe('业务逻辑 - QWERTY Learner 风格', () => {
-     it('应该允许跳过单词', () => {
-       // 初始化单词状态
-       store.words = [{ id: 1, word: 'hello' }]
-       store.initWordState(store.words[0])
+  describe('业务逻辑 - QWERTY Learner 风格', () => {
+    it('应该允许跳过单词', () => {
+      // 初始化单词状态
+      store.words = [{ id: 1, word: 'hello' }]
+      store.initWordState(store.words[0])
        
-       // 用户输入了部分内容
-       store.handleKeyInput('h')
-       store.handleKeyInput('e')
+      // 用户输入了部分内容
+      store.handleKeyInput('h')
+      store.handleKeyInput('e')
        
-       // 跳过当前单词
-       store.skipWord()
+      // 跳过当前单词
+      store.skipWord()
        
-       // 应该进入下一个单词
-       expect(store.currentWordIndex).toBe(1)
-       // 跳过不算正确，但算回答
-       expect(store.correctCount).toBe(0)
-       expect(store.answeredCount).toBe(1)
-       expect(store.correctRate).toBe(0)
-     })
+      // 应该进入下一个单词
+      expect(store.currentWordIndex).toBe(1)
+      // 跳过不算正确，但算回答
+      expect(store.correctCount).toBe(0)
+      expect(store.answeredCount).toBe(1)
+      expect(store.correctRate).toBe(0)
+    })
 
-     it('应该允许单词完成时存在按键错误', () => {
+    it('应该允许单词完成时存在按键错误', () => {
       // 初始化单词状态
       store.words = [{ id: 1, word: 'hello' }]
       store.initWordState(store.words[0])

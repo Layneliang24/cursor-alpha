@@ -116,7 +116,14 @@ module.exports = {
       files: ['**/__tests__/**/*', '**/*.{test,spec}.*'],
       env: {
         jest: true,
-        vitest: true,
+      },
+      globals: {
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        vi: 'readonly',
       },
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',

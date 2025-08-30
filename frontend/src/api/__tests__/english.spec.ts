@@ -7,8 +7,8 @@ vi.mock('../request', () => ({
     get: vi.fn(),
     post: vi.fn(),
     put: vi.fn(),
-    delete: vi.fn()
-  }
+    delete: vi.fn(),
+  },
 }))
 
 describe('englishAPI', () => {
@@ -27,7 +27,7 @@ describe('englishAPI', () => {
     it('应该获取单词列表', async () => {
       const mockResponse = [
         { id: 1, word: 'hello', translation: '你好' },
-        { id: 2, word: 'world', translation: '世界' }
+        { id: 2, word: 'world', translation: '世界' },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -82,7 +82,7 @@ describe('englishAPI', () => {
   describe('User Word Progress API', () => {
     it('应该获取学习进度', async () => {
       const mockResponse = [
-        { id: 1, word: 'hello', status: 'learning', next_review: '2024-01-01' }
+        { id: 1, word: 'hello', status: 'learning', next_review: '2024-01-01' },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -94,7 +94,7 @@ describe('englishAPI', () => {
 
     it('应该获取到期复习列表', async () => {
       const mockResponse = [
-        { id: 1, word: 'hello', due_date: '2024-01-01' }
+        { id: 1, word: 'hello', due_date: '2024-01-01' },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -118,7 +118,7 @@ describe('englishAPI', () => {
     it('应该批量提交复习', async () => {
       const data = [
         { id: 1, difficulty: 'easy' },
-        { id: 2, difficulty: 'hard' }
+        { id: 2, difficulty: 'hard' },
       ]
       const mockResponse = { success: true, updated_count: 2 }
       mockRequest.post.mockResolvedValue(mockResponse)
@@ -143,7 +143,7 @@ describe('englishAPI', () => {
   describe('Expressions API', () => {
     it('应该获取表达列表', async () => {
       const mockResponse = [
-        { id: 1, expression: 'How are you?', translation: '你好吗？' }
+        { id: 1, expression: 'How are you?', translation: '你好吗？' },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -198,7 +198,7 @@ describe('englishAPI', () => {
   describe('News API', () => {
     it('应该获取新闻列表', async () => {
       const mockResponse = [
-        { id: 1, title: 'Breaking News', source: 'BBC' }
+        { id: 1, title: 'Breaking News', source: 'BBC' },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -210,7 +210,7 @@ describe('englishAPI', () => {
 
     it('应该获取新闻管理列表', async () => {
       const mockResponse = [
-        { id: 1, title: 'Breaking News', status: 'published' }
+        { id: 1, title: 'Breaking News', status: 'published' },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -251,7 +251,7 @@ describe('englishAPI', () => {
         sources: ['BBC'],
         max_articles: 5,
         timeout: 60,
-        auto_crawl: true
+        auto_crawl: true,
       }, { timeout: 120000 })
       expect(result).toEqual(mockResponse)
     })
@@ -266,7 +266,7 @@ describe('englishAPI', () => {
         sources: ['uk.BBC'],
         max_articles: 3,
         timeout: 30,
-        auto_crawl: false
+        auto_crawl: false,
       }, { timeout: 120000 })
       expect(result).toEqual(mockResponse)
     })
@@ -294,7 +294,7 @@ describe('englishAPI', () => {
   describe('Dictionary and Chapter API', () => {
     it('应该获取词典列表', async () => {
       const mockResponse = [
-        { id: 1, name: 'Oxford 3000', description: 'Core vocabulary' }
+        { id: 1, name: 'Oxford 3000', description: 'Core vocabulary' },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -306,7 +306,7 @@ describe('englishAPI', () => {
 
     it('应该获取章节列表', async () => {
       const mockResponse = [
-        { id: 1, name: 'Chapter 1', word_count: 100 }
+        { id: 1, name: 'Chapter 1', word_count: 100 },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -323,7 +323,7 @@ describe('englishAPI', () => {
       const result = await englishAPI.getChapterWordCounts(1)
       
       expect(mockRequest.get).toHaveBeenCalledWith('/english/dictionaries/chapter_word_counts/', { 
-        params: { dictionary_id: 1 } 
+        params: { dictionary_id: 1 }, 
       })
       expect(result).toEqual(mockResponse)
     })
@@ -332,7 +332,7 @@ describe('englishAPI', () => {
   describe('Typing Practice API', () => {
     it('应该获取练习单词', async () => {
       const mockResponse = [
-        { id: 1, word: 'hello', difficulty: 'easy' }
+        { id: 1, word: 'hello', difficulty: 'easy' },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -344,14 +344,14 @@ describe('englishAPI', () => {
 
     it('应该根据词典获取打字单词', async () => {
       const mockResponse = [
-        { id: 1, word: 'hello', chapter: 1 }
+        { id: 1, word: 'hello', chapter: 1 },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
       const result = await englishAPI.getTypingWordsByDictionary({ dictionary_id: 1, chapter: 1 })
       
       expect(mockRequest.get).toHaveBeenCalledWith('/english/typing-words/by_dictionary/', { 
-        params: { dictionary_id: 1, chapter: 1 } 
+        params: { dictionary_id: 1, chapter: 1 }, 
       })
       expect(result).toEqual(mockResponse)
     })
@@ -368,7 +368,7 @@ describe('englishAPI', () => {
 
     it('应该获取每日进度', async () => {
       const mockResponse = [
-        { date: '2024-01-01', words_typed: 100, accuracy: 95 }
+        { date: '2024-01-01', words_typed: 100, accuracy: 95 },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -422,7 +422,7 @@ describe('englishAPI', () => {
 
     it('应该获取每日进度数据', async () => {
       const mockResponse = [
-        { date: '2024-01-01', words_typed: 100, accuracy: 95 }
+        { date: '2024-01-01', words_typed: 100, accuracy: 95 },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 

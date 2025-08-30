@@ -6,12 +6,12 @@ const localStorageMock = {
   getItem: vi.fn(),
   setItem: vi.fn(),
   removeItem: vi.fn(),
-  clear: vi.fn()
+  clear: vi.fn(),
 }
 
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
-  writable: true
+  writable: true,
 })
 
 // Mock auth API used inside the store（保留真实 store 导出）
@@ -20,16 +20,16 @@ vi.mock('@/api/auth', () => {
     authAPI: {
       login: vi.fn(async (credentials: any) => ({
         tokens: { access: 'access_token_mock', refresh: 'refresh_token_mock' },
-        user: { id: 1, username: credentials?.username || 'tester' }
+        user: { id: 1, username: credentials?.username || 'tester' },
       })),
       register: vi.fn(async () => ({
         tokens: { access: 'access_token_mock', refresh: 'refresh_token_mock' },
-        user: { id: 2, username: 'new_user' }
+        user: { id: 2, username: 'new_user' },
       })),
       logout: vi.fn(async () => ({})),
       getCurrentUser: vi.fn(async () => ({ id: 1, username: 'tester_updated' })),
-      refreshToken: vi.fn(async () => ({ access: 'new_access_token_mock' }))
-    }
+      refreshToken: vi.fn(async () => ({ access: 'new_access_token_mock' })),
+    },
   }
 })
 

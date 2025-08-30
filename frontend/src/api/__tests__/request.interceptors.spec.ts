@@ -10,7 +10,7 @@ import request from '@/api/request'
 // Mock auth store used by request
 vi.mock('@/stores/auth', () => {
   return {
-    useAuthStore: () => ({ token: 'token_mock', clearAuth: vi.fn() })
+    useAuthStore: () => ({ token: 'token_mock', clearAuth: vi.fn() }),
   }
 })
 
@@ -27,7 +27,7 @@ describe('axios request interceptors (frontend)', () => {
         // 断言拦截器注入了 Authorization
         expect(config.headers?.Authorization).toBe('Bearer token_mock')
         return { data: { ok: true }, status: 200, config } as any
-      }
+      },
     } as any)
     expect(res).toEqual({ ok: true })
     expect(spy).toHaveBeenCalled()

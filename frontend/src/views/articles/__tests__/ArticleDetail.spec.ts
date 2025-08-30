@@ -8,8 +8,8 @@ import ArticleDetail from '../ArticleDetail.vue'
 vi.mock('@/api/articles', () => ({
   articlesAPI: {
     getComments: vi.fn(),
-    createComment: vi.fn()
-  }
+    createComment: vi.fn(),
+  },
 }))
 
 // Mock stores
@@ -18,84 +18,84 @@ const mockArticlesStore = {
   currentArticle: null as any,
   fetchArticle: vi.fn(),
   likeArticle: vi.fn(),
-  bookmarkArticle: vi.fn()
+  bookmarkArticle: vi.fn(),
 }
 
 const mockAuthStore = {
   isAuthenticated: true,
-  user: { username: 'testuser', id: 1 }
+  user: { username: 'testuser', id: 1 },
 }
 
 vi.mock('@/stores/articles', () => ({
-  useArticlesStore: () => mockArticlesStore
+  useArticlesStore: () => mockArticlesStore,
 }))
 
 vi.mock('@/stores/auth', () => ({
-  useAuthStore: () => mockAuthStore
+  useAuthStore: () => mockAuthStore,
 }))
 
 // Mock 子组件
 const mockTableOfContents = {
   template: '<div class="table-of-contents">TableOfContents</div>',
   methods: {
-    generateTOC: vi.fn()
-  }
+    generateTOC: vi.fn(),
+  },
 }
 
 const mockMarkdownRenderer = {
   template: '<div class="markdown-renderer">{{ content }}</div>',
-  props: ['content']
+  props: ['content'],
 }
 
 // Mock Element Plus组件
 const mockElSkeleton = {
   template: '<div class="el-skeleton"><slot /></div>',
-  props: ['rows', 'animated']
+  props: ['rows', 'animated'],
 }
 
 const mockElBreadcrumb = {
-  template: '<nav class="el-breadcrumb"><slot /></nav>'
+  template: '<nav class="el-breadcrumb"><slot /></nav>',
 }
 
 const mockElBreadcrumbItem = {
   template: '<span class="el-breadcrumb-item"><slot /></span>',
-  props: ['to']
+  props: ['to'],
 }
 
 const mockElAvatar = {
   template: '<div class="el-avatar" :size="size"><slot /></div>',
-  props: ['size']
+  props: ['size'],
 }
 
 const mockElIcon = {
-  template: '<span class="el-icon"><slot /></span>'
+  template: '<span class="el-icon"><slot /></span>',
 }
 
 const mockElTag = {
   template: '<span class="el-tag" :size="size"><slot /></span>',
-  props: ['size']
+  props: ['size'],
 }
 
 const mockElButton = {
   template: '<button :type="type" :loading="loading" @click="$emit(\'click\')"><slot /></button>',
   props: ['type', 'loading'],
-  emits: ['click']
+  emits: ['click'],
 }
 
 const mockElInput = {
   template: '<textarea :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />',
   props: ['modelValue'],
-  emits: ['update:modelValue']
+  emits: ['update:modelValue'],
 }
 
 const mockElEmpty = {
   template: '<div class="el-empty"><slot /></div>',
-  props: ['description']
+  props: ['description'],
 }
 
 // Mock 路由
 const mockRoute = {
-  params: { id: '1' }
+  params: { id: '1' },
 }
 
 // Mock useRoute
@@ -105,8 +105,8 @@ vi.mock('vue-router', async () => {
     ...actual,
     useRoute: () => mockRoute,
     useRouter: () => ({
-      push: vi.fn()
-    })
+      push: vi.fn(),
+    }),
   }
 })
 
@@ -116,8 +116,8 @@ const router = createRouter({
     { path: '/', component: { template: '<div>Home</div>' } },
     { path: '/articles', component: { template: '<div>Articles</div>' } },
     { path: '/categories/:id', component: { template: '<div>Category</div>' } },
-    { path: '/login', component: { template: '<div>Login</div>' } }
-  ]
+    { path: '/login', component: { template: '<div>Login</div>' } },
+  ],
 })
 
 // Mock Pinia
@@ -126,10 +126,10 @@ const pinia = createPinia()
 // Mock navigator.clipboard
 Object.defineProperty(navigator, 'clipboard', {
   value: {
-    writeText: vi.fn(() => Promise.resolve())
+    writeText: vi.fn(() => Promise.resolve()),
   },
   writable: true,
-  configurable: true
+  configurable: true,
 })
 
 describe('ArticleDetail.vue Component', () => {
@@ -151,12 +151,12 @@ describe('ArticleDetail.vue Component', () => {
       author: { 
         username: 'testuser', 
         avatar: 'https://example.com/avatar.jpg',
-        id: 1
+        id: 1,
       },
       category: { id: 1, name: '技术' },
       tags: [
         { id: 1, name: 'Vue.js', color: '#409eff' },
-        { id: 2, name: 'JavaScript', color: '#67c23a' }
+        { id: 2, name: 'JavaScript', color: '#67c23a' },
       ],
       created_at: '2024-01-15T10:00:00Z',
       updated_at: '2024-01-15T10:00:00Z',
@@ -164,7 +164,7 @@ describe('ArticleDetail.vue Component', () => {
       likes: 25,
       comments_count: 8,
       reading_time: 5,
-      featured: true
+      featured: true,
     }
     
     mockArticlesStore.loading = false
@@ -183,9 +183,9 @@ describe('ArticleDetail.vue Component', () => {
           'el-tag': mockElTag,
           'el-button': mockElButton,
           'el-input': mockElInput,
-          'el-empty': mockElEmpty
-        }
-      }
+          'el-empty': mockElEmpty,
+        },
+      },
     })
     
     await router.isReady()
@@ -338,9 +338,9 @@ describe('ArticleDetail.vue Component', () => {
             'el-tag': mockElTag,
             'el-button': mockElButton,
             'el-input': mockElInput,
-            'el-empty': mockElEmpty
-          }
-        }
+            'el-empty': mockElEmpty,
+          },
+        },
       })
       
       await loadingWrapper.vm.$nextTick()
@@ -390,7 +390,7 @@ describe('ArticleDetail.vue Component', () => {
       const { articlesAPI } = await import('@/api/articles')
       expect(articlesAPI.createComment).toHaveBeenCalledWith({
         article: '1',
-        content: '测试评论内容'
+        content: '测试评论内容',
       })
     })
 
@@ -518,9 +518,9 @@ describe('ArticleDetail.vue Component', () => {
             'el-tag': mockElTag,
             'el-button': mockElButton,
             'el-input': mockElInput,
-            'el-empty': mockElEmpty
-          }
-        }
+            'el-empty': mockElEmpty,
+          },
+        },
       })
       
       await nullWrapper.vm.$nextTick()
@@ -550,9 +550,9 @@ describe('ArticleDetail.vue Component', () => {
             'el-tag': mockElTag,
             'el-button': mockElButton,
             'el-input': mockElInput,
-            'el-empty': mockElEmpty
-          }
-        }
+            'el-empty': mockElEmpty,
+          },
+        },
       })
       
       await noCoverWrapper.vm.$nextTick()
@@ -581,9 +581,9 @@ describe('ArticleDetail.vue Component', () => {
             'el-tag': mockElTag,
             'el-button': mockElButton,
             'el-input': mockElInput,
-            'el-empty': mockElEmpty
-          }
-        }
+            'el-empty': mockElEmpty,
+          },
+        },
       })
       
       await noTagsWrapper.vm.$nextTick()
@@ -612,9 +612,9 @@ describe('ArticleDetail.vue Component', () => {
             'el-tag': mockElTag,
             'el-button': mockElButton,
             'el-input': mockElInput,
-            'el-empty': mockElEmpty
-          }
-        }
+            'el-empty': mockElEmpty,
+          },
+        },
       })
       
       await noCategoryWrapper.vm.$nextTick()

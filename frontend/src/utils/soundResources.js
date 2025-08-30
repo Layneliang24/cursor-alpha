@@ -7,18 +7,18 @@ export const keySoundResources = [
   {
     key: 'Default',
     filename: 'key-default.wav',
-    name: '默认按键音'
+    name: '默认按键音',
   },
   {
     key: 'Mechanical',
     filename: 'key-mechanical.mp3', 
-    name: '机械键盘音'
+    name: '机械键盘音',
   },
   {
     key: 'Soft',
     filename: 'key-soft.mp3',
-    name: '轻柔按键音'
-  }
+    name: '轻柔按键音',
+  },
 ]
 
 // 提示声音资源
@@ -26,22 +26,22 @@ export const hintSoundResources = [
   {
     key: 'Default',
     filename: 'hint-default.mp3',
-    name: '默认提示音'
+    name: '默认提示音',
   },
   {
     key: 'Correct',
     filename: 'correct.wav',
-    name: '正确提示音'
+    name: '正确提示音',
   },
   {
     key: 'Wrong',
     filename: 'beep.wav',
-    name: '错误提示音'
-  }
+    name: '错误提示音',
+  },
 ]
 
 // 生成单词发音URL (使用有道词典API)
-export function generateWordSoundSrc(word, type = 'us') {
+export function generateWordSoundSrc (word, type = 'us') {
   const pronunciationApi = 'https://dict.youdao.com/dictvoice?audio='
   switch (type) {
     case 'uk':
@@ -56,5 +56,5 @@ export function generateWordSoundSrc(word, type = 'us') {
 export const defaultSounds = {
   keySound: '/sounds/key-default.wav',
   correctSound: '/sounds/correct.wav', 
-  wrongSound: '/sounds/beep.wav'
+  wrongSound: '/sounds/beep.wav',
 }

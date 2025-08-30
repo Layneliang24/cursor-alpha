@@ -8,7 +8,7 @@ const request = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-  }
+  },
 })
 
 // 请求拦截器 - 添加token
@@ -23,7 +23,7 @@ request.interceptors.request.use(
   error => {
     console.error('请求错误:', error)
     return Promise.reject(error)
-  }
+  },
 )
 
 // 响应拦截器 - 处理错误
@@ -71,7 +71,7 @@ request.interceptors.response.use(
     }
     
     return Promise.reject(error)
-  }
+  },
 )
 
 export default request

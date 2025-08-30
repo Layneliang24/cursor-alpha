@@ -115,7 +115,7 @@ const mockPronunciation = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       currentIndex: 0,
       isRecording: false,
@@ -126,42 +126,42 @@ const mockPronunciation = {
           phonetic: '/prəˌnʌnsiˈeɪʃn/',
           definition: '发音，读音',
           audio_url: null,
-          score: null
+          score: null,
         },
         {
           word: 'example',
           phonetic: '/ɪɡˈzæmpəl/',
           definition: '例子，实例',
           audio_url: null,
-          score: null
+          score: null,
         },
         {
           word: 'beautiful',
           phonetic: '/ˈbjuːtɪfʊl/',
           definition: '美丽的，漂亮的',
           audio_url: null,
-          score: 85
-        }
+          score: 85,
+        },
       ],
-      isLoading: false
+      isLoading: false,
     }
   },
   computed: {
-    currentWord() {
+    currentWord () {
       return this.words[this.currentIndex] || {}
     },
-    completedCount() {
+    completedCount () {
       return this.words.filter(w => w.score !== null).length
     },
-    averageScore() {
+    averageScore () {
       const scoredWords = this.words.filter(w => w.score !== null)
       if (scoredWords.length === 0) return null
       const total = scoredWords.reduce((sum, w) => sum + w.score, 0)
       return Math.round(total / scoredWords.length)
-    }
+    },
   },
   methods: {
-    async loadWords() {
+    async loadWords () {
       this.isLoading = true
       try {
         // Mock API call
@@ -172,25 +172,25 @@ const mockPronunciation = {
             phonetic: '/prəˌnʌnsiˈeɪʃn/',
             definition: '发音，读音',
             audio_url: null,
-            score: null
+            score: null,
           },
           {
             word: 'example',
             phonetic: '/ɪɡˈzæmpəl/',
             definition: '例子，实例',
             audio_url: null,
-            score: null
-          }
+            score: null,
+          },
         ]
       } finally {
         this.isLoading = false
       }
     },
-    playAudio() {
+    playAudio () {
       // Mock audio playback
       console.log('播放发音:', this.currentWord.word)
     },
-    startRecording() {
+    startRecording () {
       this.isRecording = true
       // Mock recording process
       setTimeout(() => {
@@ -198,41 +198,41 @@ const mockPronunciation = {
         this.pronunciationScore = Math.floor(Math.random() * 40) + 60 // 60-100
       }, 2000)
     },
-    previousWord() {
+    previousWord () {
       if (this.currentIndex > 0) {
         this.currentIndex--
         this.pronunciationScore = null
       }
     },
-    nextWord() {
+    nextWord () {
       if (this.currentIndex < this.words.length - 1) {
         this.currentIndex++
         this.pronunciationScore = null
       }
     },
-    getScoreClass() {
+    getScoreClass () {
       if (this.pronunciationScore >= 90) return 'excellent'
       if (this.pronunciationScore >= 80) return 'good'
       if (this.pronunciationScore >= 70) return 'fair'
       return 'poor'
     },
-    getScoreFeedback() {
+    getScoreFeedback () {
       if (this.pronunciationScore >= 90) return '优秀！发音非常标准'
       if (this.pronunciationScore >= 80) return '良好！发音比较准确'
       if (this.pronunciationScore >= 70) return '一般，需要继续练习'
       return '需要加强练习，注意发音细节'
-    }
+    },
   },
-  mounted() {
+  mounted () {
     // Auto load words on mount - disabled for testing
     // this.loadWords()
-  }
+  },
 }
 
 // Mock 路由
 const router = createRouter({
   history: createWebHistory(),
-  routes: []
+  routes: [],
 })
 
 // Mock Pinia
@@ -243,7 +243,7 @@ global.Audio = vi.fn().mockImplementation(() => ({
   play: vi.fn().mockResolvedValue(undefined),
   pause: vi.fn(),
   currentTime: 0,
-  duration: 0
+  duration: 0,
 }))
 
 describe('Pronunciation.vue Component', () => {
@@ -257,8 +257,8 @@ describe('Pronunciation.vue Component', () => {
 
     wrapper = mount(mockPronunciation, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     
     await router.isReady()

@@ -55,17 +55,17 @@ const mockPasswordReset = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       loading: false,
       resetForm: {
         newPassword: '',
-        confirmPassword: ''
+        confirmPassword: '',
       },
       resetRules: {
         newPassword: [
           { required: true, message: '请输入新密码', trigger: 'blur' },
-          { min: 6, max: 128, message: '密码长度在 6 到 128 个字符', trigger: 'blur' }
+          { min: 6, max: 128, message: '密码长度在 6 到 128 个字符', trigger: 'blur' },
         ],
         confirmPassword: [
           { required: true, message: '请确认密码', trigger: 'blur' },
@@ -77,14 +77,14 @@ const mockPasswordReset = {
                 callback()
               }
             },
-            trigger: 'blur'
-          }
-        ]
-      }
+            trigger: 'blur',
+          },
+        ],
+      },
     }
   },
   methods: {
-    async handleReset() {
+    async handleReset () {
       if (this.loading) return
       
       // 验证表单
@@ -114,29 +114,29 @@ const mockPasswordReset = {
       }
     },
     
-    async mockAPI() {
+    async mockAPI () {
       // 模拟API调用
       return new Promise((resolve) => {
         setTimeout(resolve, 100)
       })
     },
     
-    showSuccessMessage(message) {
+    showSuccessMessage (message) {
       // 模拟成功消息
       console.log('Success:', message)
     },
     
-    showErrorMessage(message) {
+    showErrorMessage (message) {
       // 模拟错误消息
       console.error('Error:', message)
     },
     
-    redirectToLogin() {
+    redirectToLogin () {
       // 模拟路由跳转
       console.log('Redirecting to login')
     },
     
-    validateForm() {
+    validateForm () {
       const errors = []
       
       if (!this.resetForm.newPassword) {
@@ -152,9 +152,9 @@ const mockPasswordReset = {
       }
       
       return errors
-    }
+    },
   },
-  mounted() {
+  mounted () {
     // 检查路由参数
     const uid = 'test-uid'
     const token = 'test-token'
@@ -163,7 +163,7 @@ const mockPasswordReset = {
       this.showErrorMessage('重置链接无效')
       this.redirectToLogin()
     }
-  }
+  },
 }
 
 // Mock vue-router
@@ -172,11 +172,11 @@ vi.mock('vue-router', async () => {
   return {
     ...actual,
     useRoute: () => ({
-      params: { uid: 'test-uid', token: 'test-token' }
+      params: { uid: 'test-uid', token: 'test-token' },
     }),
     useRouter: () => ({
-      push: vi.fn()
-    })
+      push: vi.fn(),
+    }),
   }
 })
 
@@ -194,8 +194,8 @@ describe('PasswordReset.vue Component', () => {
     
     wrapper = mount(mockPasswordReset, {
       global: {
-        plugins: [pinia]
-      }
+        plugins: [pinia],
+      },
     })
     
     await wrapper.vm.$nextTick()

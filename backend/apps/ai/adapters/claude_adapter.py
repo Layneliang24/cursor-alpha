@@ -324,3 +324,4 @@ class ClaudeAdapter(BaseAIAdapter):
                 error_message=str(e),
                 model_available=False
             )
+

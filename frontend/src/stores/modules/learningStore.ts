@@ -92,7 +92,7 @@ export const useLearningStore = defineStore('learning', () => {
     conversations: false,
     goals: false,
     sessions: false,
-    ai_response: false
+    ai_response: false,
   })
   
   // 学习配置
@@ -105,13 +105,13 @@ export const useLearningStore = defineStore('learning', () => {
     animation_enabled: true,
     auto_play_audio: false,
     show_pronunciation: true,
-    show_examples: true
+    show_examples: true,
   })
   
   // 缓存
   const cache = reactive({
     statistics: null as { data: LearningStatistics, timestamp: number } | null,
-    ttl: 10 * 60 * 1000 // 10分钟缓存
+    ttl: 10 * 60 * 1000, // 10分钟缓存
   })
   
   // 计算属性
@@ -164,7 +164,7 @@ export const useLearningStore = defineStore('learning', () => {
       // 更新缓存
       cache.statistics = {
         data: response,
-        timestamp: now
+        timestamp: now,
       }
       
     } catch (error) {
@@ -184,7 +184,7 @@ export const useLearningStore = defineStore('learning', () => {
       total_answers: 0,
       session_type: type,
       performance_score: 0,
-      notes: ''
+      notes: '',
     }
     
     currentSession.value = session
@@ -230,16 +230,16 @@ export const useLearningStore = defineStore('learning', () => {
       messages: [],
       context,
       created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     }
     
     if (expressionId && context === 'expression_help') {
       conversation.messages.push({
         id: `msg_${Date.now()}`,
         role: 'user',
-        content: `请帮我详细解释这个表达式的用法和含义`,
+        content: '请帮我详细解释这个表达式的用法和含义',
         timestamp: new Date().toISOString(),
-        expression_id: expressionId
+        expression_id: expressionId,
       })
     }
     
@@ -259,7 +259,7 @@ export const useLearningStore = defineStore('learning', () => {
       role: 'user' as const,
       content,
       timestamp: new Date().toISOString(),
-      expression_id: expressionId
+      expression_id: expressionId,
     }
     
     currentConversation.value!.messages.push(userMessage)
@@ -271,14 +271,14 @@ export const useLearningStore = defineStore('learning', () => {
         message: content,
         context: currentConversation.value!.context,
         expression_id: expressionId,
-        conversation_history: currentConversation.value!.messages.slice(-10) // 最近10条消息作为上下文
+        conversation_history: currentConversation.value!.messages.slice(-10), // 最近10条消息作为上下文
       })
       
       const aiMessage = {
         id: `msg_${Date.now() + 1}`,
         role: 'assistant' as const,
         content: response.message,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       }
       
       currentConversation.value!.messages.push(aiMessage)
@@ -359,7 +359,7 @@ export const useLearningStore = defineStore('learning', () => {
     try {
       await Promise.all([
         fetchStatistics(),
-        fetchUserProgress()
+        fetchUserProgress(),
       ])
     } catch (error) {
       console.error('学习数据初始化失败:', error)
@@ -397,6 +397,6 @@ export const useLearningStore = defineStore('learning', () => {
     updateSettings,
     loadSettings,
     clearAllData,
-    initialize
+    initialize,
   }
 })

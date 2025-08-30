@@ -17,14 +17,14 @@ import { createPinia, setActivePinia } from 'pinia'
 // Mock 外部依赖
 vi.mock('@/api/componentApi', () => ({
   fetchData: vi.fn(),
-  submitData: vi.fn()
+  submitData: vi.fn(),
 }))
 
 // Mock 路由
 const mockRouter = {
   push: vi.fn(),
   replace: vi.fn(),
-  go: vi.fn()
+  go: vi.fn(),
 }
 
 // Mock Element Plus
@@ -33,8 +33,8 @@ vi.mock('element-plus', () => ({
     success: vi.fn(),
     error: vi.fn(),
     warning: vi.fn(),
-    info: vi.fn()
-  }
+    info: vi.fn(),
+  },
 }))
 
 describe('ComponentName.vue Component', () => {
@@ -46,7 +46,7 @@ describe('ComponentName.vue Component', () => {
     id: 1,
     name: '测试数据',
     status: 'active',
-    ...overrides
+    ...overrides,
   })
 
   beforeEach(() => {

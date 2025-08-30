@@ -12,7 +12,7 @@ describe('Typing Store - 字母级别统计', () => {
     // 模拟单词数据
     store.words = [
       { id: 1, word: 'hello', phonetic: 'həˈloʊ', translation: '你好' },
-      { id: 2, word: 'world', phonetic: 'wɜːrld', translation: '世界' }
+      { id: 2, word: 'world', phonetic: 'wɜːrld', translation: '世界' },
     ]
   })
 

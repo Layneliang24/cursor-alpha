@@ -17,21 +17,21 @@ const FlakyComponent = {
       <div data-testid="status">{{ status }}</div>
     </div>
   `,
-  data() {
+  data () {
     return {
       count: 0,
-      status: 'ready'
+      status: 'ready',
     }
   },
   methods: {
-    async increment() {
+    async increment () {
       this.status = 'loading'
       // 模拟异步操作
       await new Promise(resolve => setTimeout(resolve, Math.random() * 100))
       this.count++
       this.status = 'ready'
-    }
-  }
+    },
+  },
 }
 
 describe('Flaky Test Examples', () => {
@@ -85,7 +85,7 @@ describe('Flaky Test Examples', () => {
     await nextTick()
     
     // 由于竞态条件，count可能不是期望的值
-    const count = wrapper.vm.count
+    const { count } = wrapper.vm
     
     // 添加随机性来模拟真实的竞态条件
     if (Math.random() < 0.4) { // 40%失败率
@@ -254,7 +254,7 @@ describe('Flaky Utility Functions', () => {
         data.push({
           id: i,
           value: Math.random() * 100,
-          active: Math.random() > 0.5
+          active: Math.random() > 0.5,
         })
       }
       
@@ -282,7 +282,7 @@ describe('Flaky Utility Functions', () => {
     const utils = {
       add: (a, b) => a + b,
       multiply: (a, b) => a * b,
-      isEven: (n) => n % 2 === 0
+      isEven: (n) => n % 2 === 0,
     }
     
     expect(utils.add(2, 3)).toBe(5)

@@ -17,18 +17,18 @@ describe('ChapterCompletion.vue Component', () => {
     wpm: 45,
     wrongWords: [
       { word: 'apple', translation: '苹果' },
-      { word: 'banana', translation: '香蕉' }
+      { word: 'banana', translation: '香蕉' },
     ],
     dictionary: 'TOEFL',
-    chapter: 1
+    chapter: 1,
   }
 
   describe('UI布局测试', () => {
     it('应该完全居中显示，不显示练习界面的顶部栏和底部栏', () => {
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: mockCompletionData
-        }
+          completionData: mockCompletionData,
+        },
       })
 
       // 验证组件结构
@@ -44,8 +44,8 @@ describe('ChapterCompletion.vue Component', () => {
     it('统计框应该完全居中显示', () => {
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: mockCompletionData
-        }
+          completionData: mockCompletionData,
+        },
       })
 
       const statsContainer = wrapper.find('.completion-stats')
@@ -62,8 +62,8 @@ describe('ChapterCompletion.vue Component', () => {
     it('撒花效果应该在统计框之上，不遮挡内容', () => {
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: mockCompletionData
-        }
+          completionData: mockCompletionData,
+        },
       })
 
       const confettiContainer = wrapper.find('.confetti-container')
@@ -82,8 +82,8 @@ describe('ChapterCompletion.vue Component', () => {
     it('应该正确显示所有统计数据', () => {
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: mockCompletionData
-        }
+          completionData: mockCompletionData,
+        },
       })
 
       // 验证正确率
@@ -106,8 +106,8 @@ describe('ChapterCompletion.vue Component', () => {
     it('应该正确显示错误单词列表', () => {
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: mockCompletionData
-        }
+          completionData: mockCompletionData,
+        },
       })
 
       const wrongWordsSection = wrapper.find('.wrong-words-section')
@@ -124,13 +124,13 @@ describe('ChapterCompletion.vue Component', () => {
     it('没有错误单词时应该隐藏错误单词列表', () => {
       const noWrongWordsData = {
         ...mockCompletionData,
-        wrongWords: []
+        wrongWords: [],
       }
 
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: noWrongWordsData
-        }
+          completionData: noWrongWordsData,
+        },
       })
 
       const wrongWordsSection = wrapper.find('.wrong-words-section')
@@ -142,8 +142,8 @@ describe('ChapterCompletion.vue Component', () => {
     it('应该显示所有必要的操作按钮', () => {
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: mockCompletionData
-        }
+          completionData: mockCompletionData,
+        },
       })
 
       const actionsContainer = wrapper.find('.completion-actions')
@@ -162,8 +162,8 @@ describe('ChapterCompletion.vue Component', () => {
     it('点击按钮应该触发正确的事件', async () => {
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: mockCompletionData
-        }
+          completionData: mockCompletionData,
+        },
       })
 
       // 测试重复本章按钮
@@ -187,8 +187,8 @@ describe('ChapterCompletion.vue Component', () => {
     it('应该在不同屏幕尺寸下保持居中', () => {
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: mockCompletionData
-        }
+          completionData: mockCompletionData,
+        },
       })
 
       const completionPage = wrapper.find('.chapter-completion-page')
@@ -203,8 +203,8 @@ describe('ChapterCompletion.vue Component', () => {
     it('撒花效果应该正确显示', () => {
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: mockCompletionData
-        }
+          completionData: mockCompletionData,
+        },
       })
 
       const confettiContainer = wrapper.find('.confetti-container')
@@ -218,8 +218,8 @@ describe('ChapterCompletion.vue Component', () => {
     it('撒花动画应该正确配置', () => {
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: mockCompletionData
-        }
+          completionData: mockCompletionData,
+        },
       })
 
       const confettiParticles = wrapper.findAll('.confetti')
@@ -243,13 +243,13 @@ describe('ChapterCompletion.vue Component', () => {
         wpm: 0,
         wrongWords: [],
         dictionary: '',
-        chapter: 0
+        chapter: 0,
       }
 
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: emptyData
-        }
+          completionData: emptyData,
+        },
       })
 
       // 验证组件仍然正常渲染
@@ -263,8 +263,8 @@ describe('ChapterCompletion.vue Component', () => {
     it('应该处理缺失的完成数据', () => {
       const wrapper = mount(ChapterCompletion, {
         props: {
-          completionData: {}
-        }
+          completionData: {},
+        },
       })
 
       // 验证组件仍然正常渲染

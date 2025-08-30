@@ -8,8 +8,8 @@ const mockStop = vi.fn()
 vi.mock('@vueuse/sound', () => ({
   useSound: vi.fn(() => ({
     play: mockPlay,
-    stop: mockStop
-  }))
+    stop: mockStop,
+  })),
 }))
 
 describe('useNotificationSound', () => {

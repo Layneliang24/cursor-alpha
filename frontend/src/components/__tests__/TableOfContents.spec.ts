@@ -31,14 +31,14 @@ const mockTableOfContents = {
       </nav>
     </div>
   `,
-  data() {
+  data () {
     return {
       headings: [],
-      activeId: ''
+      activeId: '',
     }
   },
   methods: {
-    generateTOC() {
+    generateTOC () {
       // 模拟生成目录
       const mockHeadings = [
         { id: 'heading-1', text: '介绍', level: 1 },
@@ -46,56 +46,56 @@ const mockTableOfContents = {
         { id: 'heading-3', text: '配置', level: 2 },
         { id: 'heading-4', text: '基本用法', level: 3 },
         { id: 'heading-5', text: '高级用法', level: 3 },
-        { id: 'heading-6', text: '总结', level: 1 }
+        { id: 'heading-6', text: '总结', level: 1 },
       ]
       this.headings = mockHeadings
     },
     
-    scrollToHeading(id) {
+    scrollToHeading (id) {
       // 模拟滚动到标题
       const element = document.getElementById(id)
       if (element && element.scrollIntoView) {
         element.scrollIntoView({ 
           behavior: 'smooth',
-          block: 'start'
+          block: 'start',
         })
       }
       this.activeId = id
     },
     
-    updateActiveHeading() {
+    updateActiveHeading () {
       // 模拟更新活跃标题
       if (this.headings.length > 0) {
         this.activeId = this.headings[0].id
       }
     },
     
-    addScrollListener() {
+    addScrollListener () {
       window.addEventListener('scroll', this.updateActiveHeading)
     },
     
-    removeScrollListener() {
+    removeScrollListener () {
       window.removeEventListener('scroll', this.updateActiveHeading)
     },
     
-    setMockHeadings(headings) {
+    setMockHeadings (headings) {
       this.headings = headings
     },
     
-    setActiveId(id) {
+    setActiveId (id) {
       this.activeId = id
-    }
+    },
   },
-  mounted() {
+  mounted () {
     setTimeout(() => {
       this.generateTOC()
       this.addScrollListener()
       this.updateActiveHeading()
     }, 100)
   },
-  unmounted() {
+  unmounted () {
     this.removeScrollListener()
-  }
+  },
 }
 
 describe('TableOfContents.vue Component', () => {
@@ -111,8 +111,8 @@ describe('TableOfContents.vue Component', () => {
           top: 0,
           bottom: 100,
           left: 0,
-          right: 100
-        })
+          right: 100,
+        }),
       }
       return mockElement
     })
@@ -125,15 +125,15 @@ describe('TableOfContents.vue Component', () => {
               id: 'heading-1', 
               textContent: '介绍', 
               tagName: 'H1',
-              getBoundingClientRect: mockGetBoundingClientRect
+              getBoundingClientRect: mockGetBoundingClientRect,
             },
             { 
               id: 'heading-2', 
               textContent: '安装', 
               tagName: 'H2',
-              getBoundingClientRect: mockGetBoundingClientRect
-            }
-          ])
+              getBoundingClientRect: mockGetBoundingClientRect,
+            },
+          ]),
         }
       }
       return null
@@ -152,7 +152,7 @@ describe('TableOfContents.vue Component', () => {
   describe('基础渲染', () => {
     it('有标题时显示目录容器', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test-1', text: 'Test Heading', level: 1 }
+        { id: 'test-1', text: 'Test Heading', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       
@@ -170,7 +170,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('显示目录标题', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test-1', text: 'Test Heading', level: 1 }
+        { id: 'test-1', text: 'Test Heading', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       
@@ -181,7 +181,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('显示导航容器', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test-1', text: 'Test Heading', level: 1 }
+        { id: 'test-1', text: 'Test Heading', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       
@@ -191,7 +191,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('显示目录列表', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test-1', text: 'Test Heading', level: 1 }
+        { id: 'test-1', text: 'Test Heading', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       
@@ -215,7 +215,7 @@ describe('TableOfContents.vue Component', () => {
         { id: 'heading-3', text: '配置', level: 2 },
         { id: 'heading-4', text: '基本用法', level: 3 },
         { id: 'heading-5', text: '高级用法', level: 3 },
-        { id: 'heading-6', text: '总结', level: 1 }
+        { id: 'heading-6', text: '总结', level: 1 },
       ])
     })
 
@@ -223,7 +223,7 @@ describe('TableOfContents.vue Component', () => {
       const testHeadings = [
         { id: 'h1', text: 'Heading 1', level: 1 },
         { id: 'h2', text: 'Heading 2', level: 2 },
-        { id: 'h3', text: 'Heading 3', level: 3 }
+        { id: 'h3', text: 'Heading 3', level: 3 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       await wrapper.vm.$nextTick()
@@ -235,7 +235,7 @@ describe('TableOfContents.vue Component', () => {
     it('正确显示标题文本', async () => {
       const testHeadings = [
         { id: 'h1', text: 'Introduction', level: 1 },
-        { id: 'h2', text: 'Getting Started', level: 2 }
+        { id: 'h2', text: 'Getting Started', level: 2 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       await wrapper.vm.$nextTick()
@@ -247,7 +247,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('正确设置标题链接href', async () => {
       const testHeadings = [
-        { id: 'intro', text: 'Introduction', level: 1 }
+        { id: 'intro', text: 'Introduction', level: 1 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       await wrapper.vm.$nextTick()
@@ -260,7 +260,7 @@ describe('TableOfContents.vue Component', () => {
   describe('层级样式', () => {
     it('一级标题有正确的样式类', async () => {
       const testHeadings = [
-        { id: 'h1', text: 'Level 1', level: 1 }
+        { id: 'h1', text: 'Level 1', level: 1 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       await wrapper.vm.$nextTick()
@@ -271,7 +271,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('二级标题有正确的样式类', async () => {
       const testHeadings = [
-        { id: 'h2', text: 'Level 2', level: 2 }
+        { id: 'h2', text: 'Level 2', level: 2 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       await wrapper.vm.$nextTick()
@@ -282,7 +282,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('三级标题有正确的样式类', async () => {
       const testHeadings = [
-        { id: 'h3', text: 'Level 3', level: 3 }
+        { id: 'h3', text: 'Level 3', level: 3 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       await wrapper.vm.$nextTick()
@@ -298,7 +298,7 @@ describe('TableOfContents.vue Component', () => {
         { id: 'h3', text: 'Level 3', level: 3 },
         { id: 'h4', text: 'Level 4', level: 4 },
         { id: 'h5', text: 'Level 5', level: 5 },
-        { id: 'h6', text: 'Level 6', level: 6 }
+        { id: 'h6', text: 'Level 6', level: 6 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       await wrapper.vm.$nextTick()
@@ -316,7 +316,7 @@ describe('TableOfContents.vue Component', () => {
   describe('激活状态', () => {
     it('活跃标题有active样式类', async () => {
       const testHeadings = [
-        { id: 'active-heading', text: 'Active Heading', level: 1 }
+        { id: 'active-heading', text: 'Active Heading', level: 1 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       wrapper.vm.setActiveId('active-heading')
@@ -329,7 +329,7 @@ describe('TableOfContents.vue Component', () => {
     it('非活跃标题没有active样式类', async () => {
       const testHeadings = [
         { id: 'heading-1', text: 'Heading 1', level: 1 },
-        { id: 'heading-2', text: 'Heading 2', level: 2 }
+        { id: 'heading-2', text: 'Heading 2', level: 2 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       wrapper.vm.setActiveId('heading-1')
@@ -361,7 +361,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('点击链接调用scrollToHeading', async () => {
       const testHeadings = [
-        { id: 'test-heading', text: 'Test Heading', level: 1 }
+        { id: 'test-heading', text: 'Test Heading', level: 1 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       await wrapper.vm.$nextTick()
@@ -380,7 +380,7 @@ describe('TableOfContents.vue Component', () => {
       expect(document.getElementById).toHaveBeenCalledWith('test-id')
       expect(mockScrollIntoView).toHaveBeenCalledWith({
         behavior: 'smooth',
-        block: 'start'
+        block: 'start',
       })
     })
 
@@ -418,7 +418,7 @@ describe('TableOfContents.vue Component', () => {
   describe('样式和布局', () => {
     it('目录容器有正确的样式类', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test', text: 'Test', level: 1 }
+        { id: 'test', text: 'Test', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       
@@ -428,7 +428,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('目录标题有正确的样式类', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test', text: 'Test', level: 1 }
+        { id: 'test', text: 'Test', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       
@@ -438,7 +438,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('导航容器有正确的样式类', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test', text: 'Test', level: 1 }
+        { id: 'test', text: 'Test', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       
@@ -448,7 +448,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('目录列表有正确的样式类', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test', text: 'Test', level: 1 }
+        { id: 'test', text: 'Test', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       
@@ -458,7 +458,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('目录项有正确的样式类', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test', text: 'Test', level: 1 }
+        { id: 'test', text: 'Test', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       
@@ -468,7 +468,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('目录链接有正确的样式类', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test', text: 'Test', level: 1 }
+        { id: 'test', text: 'Test', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       
@@ -504,7 +504,7 @@ describe('TableOfContents.vue Component', () => {
     it('处理无效的标题级别', async () => {
       const testHeadings = [
         { id: 'invalid', text: 'Invalid Level', level: 0 },
-        { id: 'invalid2', text: 'Invalid Level 2', level: 7 }
+        { id: 'invalid2', text: 'Invalid Level 2', level: 7 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       await wrapper.vm.$nextTick()
@@ -516,7 +516,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('处理没有scrollIntoView方法的元素', () => {
       global.document.getElementById = vi.fn().mockReturnValue({
-        id: 'test'
+        id: 'test',
         // 没有scrollIntoView方法
       })
       
@@ -537,7 +537,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('setMockHeadings方法正确设置标题', () => {
       const testHeadings = [
-        { id: 'test', text: 'Test', level: 1 }
+        { id: 'test', text: 'Test', level: 1 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       
@@ -556,7 +556,7 @@ describe('TableOfContents.vue Component', () => {
       const largeHeadingsList = Array.from({ length: 100 }, (_, i) => ({
         id: `heading-${i}`,
         text: `Heading ${i}`,
-        level: (i % 6) + 1
+        level: (i % 6) + 1,
       }))
       
       const startTime = performance.now()
@@ -583,7 +583,7 @@ describe('TableOfContents.vue Component', () => {
   describe('可访问性', () => {
     it('链接有正确的href属性', async () => {
       const testHeadings = [
-        { id: 'accessible-heading', text: 'Accessible Heading', level: 1 }
+        { id: 'accessible-heading', text: 'Accessible Heading', level: 1 },
       ]
       wrapper.vm.setMockHeadings(testHeadings)
       await wrapper.vm.$nextTick()
@@ -594,7 +594,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('使用语义化的nav元素', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test', text: 'Test', level: 1 }
+        { id: 'test', text: 'Test', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       
@@ -604,7 +604,7 @@ describe('TableOfContents.vue Component', () => {
 
     it('使用语义化的列表结构', async () => {
       wrapper.vm.setMockHeadings([
-        { id: 'test', text: 'Test', level: 1 }
+        { id: 'test', text: 'Test', level: 1 },
       ])
       await wrapper.vm.$nextTick()
       

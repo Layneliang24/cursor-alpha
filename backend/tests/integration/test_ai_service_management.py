@@ -573,3 +573,4 @@ class AsyncAIServiceTest:
         # 应该自动转移到备用服务
         response = await manager.generate_response(messages)
         assert "备用服务响应" in response.content
+

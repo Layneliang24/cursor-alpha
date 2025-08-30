@@ -68,7 +68,7 @@ export interface SearchResult {
 
 // 用户数据工厂
 export class UserFactory {
-  static create(overrides: Partial<User> = {}): User {
+  static create (overrides: Partial<User> = {}): User {
     return {
       id: Math.floor(Math.random() * 10000),
       username: `user_${Math.random().toString(36).substr(2, 9)}`,
@@ -79,36 +79,36 @@ export class UserFactory {
       preferences: {
         theme: 'light',
         language: 'zh-CN',
-        soundEnabled: true
+        soundEnabled: true,
       },
-      ...overrides
+      ...overrides,
     }
   }
 
-  static createAdmin(overrides: Partial<User> = {}): User {
+  static createAdmin (overrides: Partial<User> = {}): User {
     return this.create({
       isAdmin: true,
-      ...overrides
+      ...overrides,
     })
   }
 
-  static createGuest(): User {
+  static createGuest (): User {
     return this.create({
       isAuthenticated: false,
-      isAdmin: false
+      isAdmin: false,
     })
   }
 
-  static createMultiple(count: number, overrides: Partial<User> = {}): User[] {
+  static createMultiple (count: number, overrides: Partial<User> = {}): User[] {
     return Array.from({ length: count }, (_, index) => 
-      this.create({ id: index + 1, ...overrides })
+      this.create({ id: index + 1, ...overrides }),
     )
   }
 }
 
 // 文章数据工厂
 export class ArticleFactory {
-  static create(overrides: Partial<Article> = {}): Article {
+  static create (overrides: Partial<Article> = {}): Article {
     const author = overrides.author || UserFactory.create()
     
     return {
@@ -123,76 +123,76 @@ export class ArticleFactory {
       readTime: Math.floor(Math.random() * 20) + 5,
       coverImage: `https://picsum.photos/800/400?random=${Math.random()}`,
       isPublished: true,
-      ...overrides
+      ...overrides,
     }
   }
 
-  static createDraft(overrides: Partial<Article> = {}): Article {
+  static createDraft (overrides: Partial<Article> = {}): Article {
     return this.create({
       isPublished: false,
-      ...overrides
+      ...overrides,
     })
   }
 
-  static createMultiple(count: number, overrides: Partial<Article> = {}): Article[] {
+  static createMultiple (count: number, overrides: Partial<Article> = {}): Article[] {
     return Array.from({ length: count }, (_, index) => 
-      this.create({ id: index + 1, ...overrides })
+      this.create({ id: index + 1, ...overrides }),
     )
   }
 
-  static createByCategory(category: string, count: number = 5): Article[] {
+  static createByCategory (category: string, count: number = 5): Article[] {
     return this.createMultiple(count, { category })
   }
 }
 
 // 单词数据工厂
 export class WordFactory {
-  static create(overrides: Partial<Word> = {}): Word {
+  static create (overrides: Partial<Word> = {}): Word {
     return {
       id: Math.floor(Math.random() * 10000),
       word: `word_${Math.random().toString(36).substr(2, 6)}`,
       translation: `翻译_${Math.random().toString(36).substr(2, 6)}`,
-      phonetic: `[wɜːd]`,
+      phonetic: '[wɜːd]',
       difficulty: 'medium',
       category: '日常用语',
       examples: [
         `这是一个关于 ${overrides.word || 'word'} 的例句。`,
-        `另一个 ${overrides.word || 'word'} 的使用场景。`
+        `另一个 ${overrides.word || 'word'} 的使用场景。`,
       ],
       reviewCount: Math.floor(Math.random() * 10),
       lastReviewed: Math.random() > 0.5 ? new Date().toISOString() : undefined,
-      ...overrides
+      ...overrides,
     }
   }
 
-  static createEasy(overrides: Partial<Word> = {}): Word {
+  static createEasy (overrides: Partial<Word> = {}): Word {
     return this.create({
       difficulty: 'easy',
-      ...overrides
+      ...overrides,
     })
   }
 
-  static createHard(overrides: Partial<Word> = {}): Word {
+  static createHard (overrides: Partial<Word> = {}): Word {
     return this.create({
       difficulty: 'hard',
-      ...overrides
+      ...overrides,
     })
   }
 
-  static createMultiple(count: number, overrides: Partial<Word> = {}): Word[] {
+  static createMultiple (count: number, overrides: Partial<Word> = {}): Word[] {
     return Array.from({ length: count }, (_, index) => 
-      this.create({ id: index + 1, ...overrides })
+      this.create({ id: index + 1, ...overrides }),
     )
   }
 
-  static createByDifficulty(difficulty: Word['difficulty'], count: number = 5): Word[] {
+  static createByDifficulty (difficulty: Word['difficulty'], count: number = 5): Word[] {
     return this.createMultiple(count, { difficulty })
   }
 }
 
 // 打字会话数据工厂
 export class TypingSessionFactory {
-  static create(overrides: Partial<TypingSession> = {}): TypingSession {
+  static create (overrides: Partial<TypingSession> = {}): TypingSession {
     const word = overrides.word || WordFactory.create()
     
     return {
@@ -202,34 +202,34 @@ export class TypingSessionFactory {
       typingSpeed: Math.floor(Math.random() * 100) + 20,
       responseTime: Math.floor(Math.random() * 5000) + 500,
       timestamp: new Date().toISOString(),
-      ...overrides
+      ...overrides,
     }
   }
 
-  static createCorrect(overrides: Partial<TypingSession> = {}): TypingSession {
+  static createCorrect (overrides: Partial<TypingSession> = {}): TypingSession {
     return this.create({
       isCorrect: true,
-      ...overrides
+      ...overrides,
     })
   }
 
-  static createIncorrect(overrides: Partial<TypingSession> = {}): TypingSession {
+  static createIncorrect (overrides: Partial<TypingSession> = {}): TypingSession {
     return this.create({
       isCorrect: false,
-      ...overrides
+      ...overrides,
     })
   }
 
-  static createMultiple(count: number, overrides: Partial<TypingSession> = {}): TypingSession[] {
+  static createMultiple (count: number, overrides: Partial<TypingSession> = {}): TypingSession[] {
     return Array.from({ length: count }, (_, index) => 
-      this.create({ id: index + 1, ...overrides })
+      this.create({ id: index + 1, ...overrides }),
     )
   }
 }
 
 // 用户统计数据工厂
 export class UserStatsFactory {
-  static create(overrides: Partial<UserStats> = {}): UserStats {
+  static create (overrides: Partial<UserStats> = {}): UserStats {
     return {
       totalWordsPracticed: Math.floor(Math.random() * 1000) + 100,
       totalCorrectWords: Math.floor(Math.random() * 800) + 80,
@@ -237,36 +237,36 @@ export class UserStatsFactory {
       totalPracticeTime: Math.floor(Math.random() * 3600) + 600,
       lastPracticeDate: new Date().toISOString(),
       streakDays: Math.floor(Math.random() * 30) + 1,
-      ...overrides
+      ...overrides,
     }
   }
 
-  static createBeginner(overrides: Partial<UserStats> = {}): UserStats {
+  static createBeginner (overrides: Partial<UserStats> = {}): UserStats {
     return this.create({
       totalWordsPracticed: Math.floor(Math.random() * 100) + 10,
       totalCorrectWords: Math.floor(Math.random() * 80) + 8,
       averageWpm: Math.floor(Math.random() * 20) + 15,
       totalPracticeTime: Math.floor(Math.random() * 1800) + 300,
       streakDays: Math.floor(Math.random() * 7) + 1,
-      ...overrides
+      ...overrides,
     })
   }
 
-  static createAdvanced(overrides: Partial<UserStats> = {}): UserStats {
+  static createAdvanced (overrides: Partial<UserStats> = {}): UserStats {
     return this.create({
       totalWordsPracticed: Math.floor(Math.random() * 2000) + 1000,
       totalCorrectWords: Math.floor(Math.random() * 1800) + 900,
       averageWpm: Math.floor(Math.random() * 30) + 70,
       totalPracticeTime: Math.floor(Math.random() * 7200) + 3600,
       streakDays: Math.floor(Math.random() * 60) + 30,
-      ...overrides
+      ...overrides,
     })
   }
 }
 
 // 搜索结果数据工厂
 export class SearchResultFactory {
-  static create(overrides: Partial<SearchResult> = {}): SearchResult {
+  static create (overrides: Partial<SearchResult> = {}): SearchResult {
     return {
       id: Math.floor(Math.random() * 10000),
       type: 'article',
@@ -274,41 +274,41 @@ export class SearchResultFactory {
       description: '这是搜索结果的描述信息。',
       url: `/search/result/${Math.random().toString(36).substr(2, 9)}`,
       relevance: Math.random(),
-      ...overrides
+      ...overrides,
     }
   }
 
-  static createArticle(overrides: Partial<SearchResult> = {}): SearchResult {
+  static createArticle (overrides: Partial<SearchResult> = {}): SearchResult {
     return this.create({
       type: 'article',
-      ...overrides
+      ...overrides,
     })
   }
 
-  static createWord(overrides: Partial<SearchResult> = {}): SearchResult {
+  static createWord (overrides: Partial<SearchResult> = {}): SearchResult {
     return this.create({
       type: 'word',
-      ...overrides
+      ...overrides,
     })
   }
 
-  static createUser(overrides: Partial<SearchResult> = {}): SearchResult {
+  static createUser (overrides: Partial<SearchResult> = {}): SearchResult {
     return this.create({
       type: 'user',
-      ...overrides
+      ...overrides,
     })
   }
 
-  static createMultiple(count: number, overrides: Partial<SearchResult> = {}): SearchResult[] {
+  static createMultiple (count: number, overrides: Partial<SearchResult> = {}): SearchResult[] {
     return Array.from({ length: count }, (_, index) => 
-      this.create({ id: index + 1, ...overrides })
+      this.create({ id: index + 1, ...overrides }),
     )
   }
 }
 
 // 测试数据集工厂
 export class TestDataSetFactory {
-  static createCompleteDataset() {
+  static createCompleteDataset () {
     const users = UserFactory.createMultiple(3)
     const articles = ArticleFactory.createMultiple(5, { author: users[0] })
     const words = WordFactory.createMultiple(10)
@@ -322,19 +322,19 @@ export class TestDataSetFactory {
       words,
       typingSessions,
       userStats,
-      searchResults
+      searchResults,
     }
   }
 
-  static createEnglishLearningDataset() {
+  static createEnglishLearningDataset () {
     const words = [
       ...WordFactory.createByDifficulty('easy', 5),
       ...WordFactory.createByDifficulty('medium', 8),
-      ...WordFactory.createByDifficulty('hard', 3)
+      ...WordFactory.createByDifficulty('hard', 3),
     ]
     
     const typingSessions = words.flatMap(word => 
-      TypingSessionFactory.createMultiple(3, { word })
+      TypingSessionFactory.createMultiple(3, { word }),
     )
     
     const userStats = UserStatsFactory.createAdvanced()
@@ -342,21 +342,21 @@ export class TestDataSetFactory {
     return {
       words,
       typingSessions,
-      userStats
+      userStats,
     }
   }
 
-  static createBlogDataset() {
+  static createBlogDataset () {
     const users = UserFactory.createMultiple(2)
     const articles = [
       ...ArticleFactory.createByCategory('技术', 3),
       ...ArticleFactory.createByCategory('生活', 2),
-      ...ArticleFactory.createByCategory('学习', 2)
+      ...ArticleFactory.createByCategory('学习', 2),
     ]
     
     return {
       users,
-      articles
+      articles,
     }
   }
 }
@@ -369,5 +369,5 @@ export default {
   TypingSessionFactory,
   UserStatsFactory,
   SearchResultFactory,
-  TestDataSetFactory
+  TestDataSetFactory,
 } 

@@ -270,7 +270,7 @@ config.global.stubs = {
   'el-table-column-body-cell-checkbox-button': true,
   'el-table-column-header-cell-button-group': true,
   'el-table-column-footer-cell-button-group': true,
-  'el-table-column-body-cell-button-group': true
+  'el-table-column-body-cell-button-group': true,
 }
 
 // Mock全局对象
@@ -411,19 +411,19 @@ vi.mock('element-plus', () => ({
     success: vi.fn(),
     error: vi.fn(),
     warning: vi.fn(),
-    info: vi.fn()
+    info: vi.fn(),
   },
   ElMessageBox: {
     confirm: vi.fn(),
     alert: vi.fn(),
-    prompt: vi.fn()
+    prompt: vi.fn(),
   },
   ElNotification: {
     success: vi.fn(),
     error: vi.fn(),
     warning: vi.fn(),
-    info: vi.fn()
-  }
+    info: vi.fn(),
+  },
 }))
 
 // Mock @popperjs/core
@@ -431,8 +431,8 @@ vi.mock('@popperjs/core', () => ({
   placements: ['top', 'bottom', 'left', 'right'],
   createPopper: vi.fn(() => ({
     destroy: vi.fn(),
-    update: vi.fn()
-  }))
+    update: vi.fn(),
+  })),
 }))
 
 // 导出配置

@@ -15,7 +15,7 @@ import path from 'path'
 
 // Flaky测试追踪器
 class FlakyTestTracker {
-  constructor() {
+  constructor () {
     this.testResults = new Map()
     this.retryCount = new Map()
     this.maxRetries = 3
@@ -31,7 +31,7 @@ class FlakyTestTracker {
     this.loadHistory()
   }
   
-  loadHistory() {
+  loadHistory () {
     try {
       if (fs.existsSync(this.historyFile)) {
         const data = JSON.parse(fs.readFileSync(this.historyFile, 'utf-8'))
@@ -42,11 +42,11 @@ class FlakyTestTracker {
     }
   }
   
-  saveHistory() {
+  saveHistory () {
     try {
       const data = {
         testResults: Object.fromEntries(this.testResults),
-        lastUpdated: new Date().toISOString()
+        lastUpdated: new Date().toISOString(),
       }
       fs.writeFileSync(this.historyFile, JSON.stringify(data, null, 2))
     } catch (error) {
@@ -54,7 +54,7 @@ class FlakyTestTracker {
     }
   }
   
-  recordResult(testName, outcome, duration) {
+  recordResult (testName, outcome, duration) {
     if (!this.testResults.has(testName)) {
       this.testResults.set(testName, [])
     }
@@ -68,7 +68,7 @@ class FlakyTestTracker {
     }
   }
   
-  isFlaky(testName) {
+  isFlaky (testName) {
     const results = this.testResults.get(testName) || []
     if (results.length < 5) return false
     
@@ -77,7 +77,7 @@ class FlakyTestTracker {
     return successRate < this.flakyThreshold && successRate > 0
   }
   
-  getFlakyTests() {
+  getFlakyTests () {
     const flakyTests = []
     
     for (const [testName, results] of this.testResults) {
@@ -91,7 +91,7 @@ class FlakyTestTracker {
           successRate,
           totalRuns: results.length,
           avgDuration,
-          recentResults: results.slice(-10).map(r => r.outcome)
+          recentResults: results.slice(-10).map(r => r.outcome),
         })
       }
     }
@@ -99,7 +99,7 @@ class FlakyTestTracker {
     return flakyTests.sort((a, b) => a.successRate - b.successRate)
   }
   
-  generateReport() {
+  generateReport () {
     const flakyTests = this.getFlakyTests()
     
     // JSON报告
@@ -108,9 +108,9 @@ class FlakyTestTracker {
       summary: {
         totalFlakyTests: flakyTests.length,
         threshold: this.flakyThreshold,
-        maxRetries: this.maxRetries
+        maxRetries: this.maxRetries,
       },
-      flakyTests
+      flakyTests,
     }
     
     const jsonFile = path.join(this.reportDir, `flaky_report_${new Date().toISOString().replace(/[:.]/g, '-')}.json`)
@@ -133,7 +133,7 @@ class FlakyTestTracker {
     }
   }
   
-  generateHtmlReport(flakyTests) {
+  generateHtmlReport (flakyTests) {
     const timestamp = new Date().toLocaleString()
     
     let html = `
@@ -169,7 +169,7 @@ class FlakyTestTracker {
       html += '<p>No flaky tests detected! 🎉</p>'
     } else {
       flakyTests.forEach(test => {
-        const successRate = test.successRate
+        const { successRate } = test
         const rateClass = successRate < 0.5 ? 'low' : successRate < 0.8 ? 'medium' : 'high'
         
         html += `
@@ -197,11 +197,11 @@ const flakyTracker = new FlakyTestTracker()
 
 // 自定义reporter
 class FlakyReporter {
-  onInit() {
+  onInit () {
     console.log('Flaky test tracking enabled')
   }
   
-  onTestFinished(test) {
+  onTestFinished (test) {
     const testName = test.name || test.id
     const outcome = test.result?.state || 'unknown'
     const duration = test.result?.duration || 0
@@ -209,7 +209,7 @@ class FlakyReporter {
     flakyTracker.recordResult(testName, outcome, duration)
   }
   
-  onFinished() {
+  onFinished () {
     flakyTracker.saveHistory()
     flakyTracker.generateReport()
   }
@@ -235,9 +235,9 @@ export default defineConfig({
           branches: 80,
           functions: 80,
           lines: 80,
-          statements: 80
-        }
-      }
+          statements: 80,
+        },
+      },
     },
     // 启用重试机制
     retry: 3,
@@ -250,8 +250,8 @@ export default defineConfig({
     poolOptions: {
       threads: {
         maxThreads: 4,
-        minThreads: 1
-      }
-    }
+        minThreads: 1,
+      },
+    },
   },
 })

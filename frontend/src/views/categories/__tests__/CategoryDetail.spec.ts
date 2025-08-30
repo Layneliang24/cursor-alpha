@@ -124,7 +124,7 @@ const mockCategoryDetail = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       loading: false,
       articlesLoading: false,
@@ -132,7 +132,7 @@ const mockCategoryDetail = {
         id: 1,
         name: 'Vue.js',
         description: '渐进式JavaScript框架',
-        article_count: 25
+        article_count: 25,
       },
       articles: [
         {
@@ -144,7 +144,7 @@ const mockCategoryDetail = {
           author: { username: 'vueuser', avatar: 'https://example.com/avatar1.jpg' },
           views: 1250,
           likes: 89,
-          created_at: '2024-01-15T10:00:00Z'
+          created_at: '2024-01-15T10:00:00Z',
         },
         {
           id: 2,
@@ -155,19 +155,19 @@ const mockCategoryDetail = {
           author: { username: 'routeruser', avatar: null },
           views: 856,
           likes: 45,
-          created_at: '2024-01-10T14:30:00Z'
-        }
+          created_at: '2024-01-10T14:30:00Z',
+        },
       ],
       sortBy: '-created_at',
       pagination: {
         current: 1,
         pageSize: 20,
-        total: 2
-      }
+        total: 2,
+      },
     }
   },
   methods: {
-    async fetchCategory() {
+    async fetchCategory () {
       try {
         this.loading = true
         await new Promise(resolve => setTimeout(resolve, 100))
@@ -178,7 +178,7 @@ const mockCategoryDetail = {
         this.loading = false
       }
     },
-    async fetchCategoryArticles() {
+    async fetchCategoryArticles () {
       try {
         this.articlesLoading = true
         await new Promise(resolve => setTimeout(resolve, 100))
@@ -189,34 +189,34 @@ const mockCategoryDetail = {
         this.articlesLoading = false
       }
     },
-    handleSortChange() {
+    handleSortChange () {
       this.pagination.current = 1
       this.fetchCategoryArticles()
     },
-    handleSizeChange(size) {
+    handleSizeChange (size) {
       this.pagination.pageSize = size
       this.pagination.current = 1
       this.fetchCategoryArticles()
     },
-    handleCurrentChange(page) {
+    handleCurrentChange (page) {
       this.pagination.current = page
       this.fetchCategoryArticles()
     },
-    viewArticle(id) {
+    viewArticle (id) {
       this.$router.push({ name: 'ArticleDetail', params: { id } })
     },
-    formatDate(dateString) {
+    formatDate (dateString) {
       const date = new Date(dateString)
       return date.toLocaleDateString('zh-CN', {
         year: 'numeric',
         month: 'short',
-        day: 'numeric'
+        day: 'numeric',
       })
-    }
+    },
   },
-  mounted() {
+  mounted () {
     // 注释掉自动加载，避免测试中的加载状态问题
-  }
+  },
 }
 
 // Mock 路由
@@ -225,8 +225,8 @@ const router = createRouter({
   routes: [
     { name: 'ArticleDetail', path: '/articles/:id', component: { template: '<div>Detail</div>' } },
     { path: '/articles/create', component: { template: '<div>Create</div>' } },
-    { path: '/articles', component: { template: '<div>Articles</div>' } }
-  ]
+    { path: '/articles', component: { template: '<div>Articles</div>' } },
+  ],
 })
 
 router.push = vi.fn()
@@ -240,7 +240,7 @@ describe('CategoryDetail.vue Component', () => {
     vi.clearAllMocks()
 
     wrapper = mount(mockCategoryDetail, {
-      global: { plugins: [router] }
+      global: { plugins: [router] },
     })
     
     await router.isReady()

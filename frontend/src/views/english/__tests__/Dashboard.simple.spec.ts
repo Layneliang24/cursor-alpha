@@ -92,75 +92,75 @@ const mockDashboard = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       todayProgress: {
         wordsLearned: 15,
         wordsReviewed: 8,
         practiceCount: 5,
         studyTime: 45,
-        accuracyRate: 85
+        accuracyRate: 85,
       },
       dueReviewsCount: 12,
       practiceStatistics: {
-        correctRate: 78
+        correctRate: 78,
       },
       activePlan: {
         id: 1,
         name: '每日学习计划',
-        daily_word_target: 20
+        daily_word_target: 20,
       },
       learningOverview: {
         daily_data: [
           { date: '2024-01-15', words_learned: 15, words_reviewed: 8 },
-          { date: '2024-01-14', words_learned: 12, words_reviewed: 10 }
+          { date: '2024-01-14', words_learned: 12, words_reviewed: 10 },
         ],
         total_stats: {
-          study_time_minutes: 120
+          study_time_minutes: 120,
         },
         mastery_stats: {
           mastered_words: 150,
-          learning_words: 45
-        }
+          learning_words: 45,
+        },
       },
       dueReviews: [
         {
           id: 1,
           word: { word: 'apple', phonetic: '/ˈæpəl/' },
-          mastery_level: 0.7
+          mastery_level: 0.7,
         },
         {
           id: 2,
           word: { word: 'banana', phonetic: '/bəˈnɑːnə/' },
-          mastery_level: 0.3
-        }
+          mastery_level: 0.3,
+        },
       ],
       showPlanDialog: false,
-      showReviewDialog: false
+      showReviewDialog: false,
     }
   },
   methods: {
-    refreshAllData() {
+    refreshAllData () {
       // Mock implementation
     },
-    startBatchReview() {
+    startBatchReview () {
       this.showReviewDialog = true
     },
-    goToPractice() {
+    goToPractice () {
       this.$router.push('/english/practice')
     },
-    goToWords() {
+    goToWords () {
       this.$router.push('/english/words')
     },
-    goToNews() {
+    goToNews () {
       this.$router.push('/english/news')
     },
-    getProgressType(masteryLevel) {
+    getProgressType (masteryLevel) {
       if (masteryLevel >= 0.8) return 'success'
       if (masteryLevel >= 0.5) return 'warning'
       return 'danger'
-    }
-  }
+    },
+  },
 }
 
 // Mock 路由
@@ -169,8 +169,8 @@ const router = createRouter({
   routes: [
     { path: '/english/practice', component: { template: '<div>Practice</div>' } },
     { path: '/english/words', component: { template: '<div>Words</div>' } },
-    { path: '/english/news', component: { template: '<div>News</div>' } }
-  ]
+    { path: '/english/news', component: { template: '<div>News</div>' } },
+  ],
 })
 
 // Mock router.push
@@ -190,8 +190,8 @@ describe('Dashboard.vue Component (Simple)', () => {
 
     wrapper = mount(mockDashboard, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     
     await router.isReady()

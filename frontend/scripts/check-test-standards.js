@@ -15,10 +15,10 @@ const colors = {
   green: '\x1b[32m',
   yellow: '\x1b[33m',
   blue: '\x1b[34m',
-  reset: '\x1b[0m'
+  reset: '\x1b[0m',
 }
 
-function log(message, color = 'reset') {
+function log (message, color = 'reset') {
   console.log(`${colors[color]}${message}${colors.reset}`)
 }
 
@@ -27,19 +27,19 @@ const rules = {
   // 文件命名规范
   fileName: {
     pattern: /^[A-Z][a-zA-Z0-9]*\.spec\.ts$/,
-    message: '测试文件应该使用 PascalCase 并以 .spec.ts 结尾'
+    message: '测试文件应该使用 PascalCase 并以 .spec.ts 结尾',
   },
   
   // 测试套件命名规范
   describeName: {
     pattern: /^[A-Z][a-zA-Z0-9]*\.vue Component$|^[a-z][a-zA-Z0-9]*\.js API$|^[a-z][a-zA-Z0-9]* utility$/,
-    message: '测试套件应该使用正确的命名格式：ComponentName.vue Component 或 apiName.js API'
+    message: '测试套件应该使用正确的命名格式：ComponentName.vue Component 或 apiName.js API',
   },
   
   // 测试用例命名规范
   testName: {
     pattern: /^应该.*$/,
-    message: '测试用例应该使用中文描述，以"应该"开头'
+    message: '测试用例应该使用中文描述，以"应该"开头',
   },
   
   // 必需的结构
@@ -48,7 +48,7 @@ const rules = {
     'beforeEach(() => {',
     'afterEach(() => {',
     'vi.clearAllMocks()',
-    'wrapper.unmount()'
+    'wrapper.unmount()',
   ],
   
   // 必需的测试分组
@@ -58,12 +58,12 @@ const rules = {
     '用户交互',
     '边界情况',
     '数据流测试',  // ⭐ 新增
-    '集成测试'     // ⭐ 新增
-  ]
+    '集成测试',     // ⭐ 新增
+  ],
 }
 
 // 检查单个文件
-function checkTestFile(filePath) {
+function checkTestFile (filePath) {
   const content = fs.readFileSync(filePath, 'utf-8')
   const fileName = path.basename(filePath)
   const issues = []
@@ -136,7 +136,7 @@ function checkTestFile(filePath) {
 }
 
 // 主函数
-function main() {
+function main () {
   log('🔍 开始检查测试规范...', 'green')
   
   // 查找所有测试文件

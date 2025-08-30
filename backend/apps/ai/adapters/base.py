@@ -326,3 +326,4 @@ class MockAIAdapter(BaseAIAdapter):
             model_available=True,
             quota_remaining=1000
         )
+

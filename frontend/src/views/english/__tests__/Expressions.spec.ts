@@ -133,7 +133,7 @@ const mockExpressions = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       searchQuery: '',
       categoryFilter: '',
@@ -153,7 +153,7 @@ const mockExpressions = {
           usage_frequency: 'high',
           usage_examples: 'Good luck with your presentation! Break a leg!',
           cultural_background: '源自戏剧界，演员们认为说"good luck"会带来厄运，所以用"break a leg"代替。',
-          audio_url: 'audio1.mp3'
+          audio_url: 'audio1.mp3',
         },
         {
           id: 2,
@@ -165,19 +165,19 @@ const mockExpressions = {
           usage_frequency: 'high',
           usage_examples: 'Don\'t worry, this test will be a piece of cake.',
           cultural_background: '比喻某事像吃蛋糕一样简单愉快。',
-          audio_url: null
-        }
+          audio_url: null,
+        },
       ],
-      total: 2
+      total: 2,
     }
   },
   computed: {
-    totalPages() {
+    totalPages () {
       return Math.ceil(this.total / this.pageSize)
-    }
+    },
   },
   methods: {
-    async refreshData() {
+    async refreshData () {
       this.expressionsLoading = true
       try {
         // Mock API call
@@ -187,103 +187,103 @@ const mockExpressions = {
         this.expressionsLoading = false
       }
     },
-    handleSearch() {
+    handleSearch () {
       this.currentPage = 1
       this.refreshData()
     },
-    handleFilter() {
+    handleFilter () {
       this.currentPage = 1
       this.refreshData()
     },
-    getDifficultyType(level) {
+    getDifficultyType (level) {
       const types = {
         beginner: 'success',
         intermediate: 'warning',
-        advanced: 'danger'
+        advanced: 'danger',
       }
       return types[level] || 'info'
     },
-    getDifficultyLabel(level) {
+    getDifficultyLabel (level) {
       const labels = {
         beginner: '初级',
         intermediate: '中级',
-        advanced: '高级'
+        advanced: '高级',
       }
       return labels[level] || '未知'
     },
-    getFrequencyType(frequency) {
+    getFrequencyType (frequency) {
       const types = {
         high: 'success',
         medium: 'warning',
-        low: 'info'
+        low: 'info',
       }
       return types[frequency] || 'info'
     },
-    getFrequencyLabel(frequency) {
+    getFrequencyLabel (frequency) {
       const labels = {
         high: '高频',
         medium: '中频',
-        low: '低频'
+        low: '低频',
       }
       return labels[frequency] || '未知'
     },
-    getCategoryLabel(category) {
+    getCategoryLabel (category) {
       const labels = {
         daily: '日常对话',
         business: '商务英语',
         academic: '学术英语',
-        travel: '旅行'
+        travel: '旅行',
       }
       return labels[category] || '其他'
     },
-    getScenarioLabel(scenario) {
+    getScenarioLabel (scenario) {
       const labels = {
         casual: '非正式',
         formal: '正式',
-        professional: '专业'
+        professional: '专业',
       }
       return labels[scenario] || '通用'
     },
-    playAudio(expression) {
+    playAudio (expression) {
       if (expression.audio_url) {
         console.log('播放音频:', expression.audio_url)
       }
     },
-    addToCollection(expression) {
+    addToCollection (expression) {
       console.log('添加到收藏:', expression.expression)
     },
-    prevPage() {
+    prevPage () {
       if (this.currentPage > 1) {
         this.currentPage--
         this.refreshData()
       }
     },
-    nextPage() {
+    nextPage () {
       if (this.currentPage < this.totalPages) {
         this.currentPage++
         this.refreshData()
       }
     },
-    handleSizeChange(size) {
+    handleSizeChange (size) {
       this.pageSize = size
       this.currentPage = 1
       this.refreshData()
     },
-    handleCurrentChange(page) {
+    handleCurrentChange (page) {
       this.currentPage = page
       this.refreshData()
-    }
+    },
   },
-  mounted() {
+  mounted () {
     // Auto load data on mount - disabled for testing
     // this.refreshData()
-  }
+  },
 }
 
 // Mock 路由
 const router = createRouter({
   history: createWebHistory(),
-  routes: []
+  routes: [],
 })
 
 // Mock Pinia
@@ -300,8 +300,8 @@ describe('Expressions.vue Component', () => {
 
     wrapper = mount(mockExpressions, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     
     await router.isReady()

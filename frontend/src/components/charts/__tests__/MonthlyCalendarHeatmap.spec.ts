@@ -8,13 +8,13 @@ vi.mock('element-plus', () => ({
     success: vi.fn(),
     error: vi.fn(),
     warning: vi.fn(),
-    info: vi.fn()
+    info: vi.fn(),
   },
   ElButton: {
     template: '<button @click="$emit(\'click\')" :disabled="disabled"><slot /></button>',
     props: ['icon', 'size', 'disabled'],
-    emits: ['click']
-  }
+    emits: ['click'],
+  },
 }))
 
 describe('MonthlyCalendarHeatmap.vue Component', () => {
@@ -32,12 +32,12 @@ describe('MonthlyCalendarHeatmap.vue Component', () => {
           { date: '2024-01-03', day: 3, is_current_month: true, has_data: false, exercise_level: 0, exercise_count: 0, word_count: 0 },
           { date: '2024-01-04', day: 4, is_current_month: true, has_data: true, exercise_level: 1, exercise_count: 2, word_count: 8 },
           { date: '2024-01-05', day: 5, is_current_month: true, has_data: true, exercise_level: 4, exercise_count: 12, word_count: 40 },
-          { date: '2024-01-06', day: 6, is_current_month: true, has_data: false, exercise_level: 0, exercise_count: 0, word_count: 0 }
-        ]
-      ]
+          { date: '2024-01-06', day: 6, is_current_month: true, has_data: false, exercise_level: 0, exercise_count: 0, word_count: 0 },
+        ],
+      ],
     },
     initialYear: 2024,
-    initialMonth: 1
+    initialMonth: 1,
   }
 
   beforeEach(() => {
@@ -159,8 +159,8 @@ describe('MonthlyCalendarHeatmap.vue Component', () => {
         props: { 
           data: { year: currentYear, month: currentMonth, weeks_data: [] },
           initialYear: currentYear,
-          initialMonth: currentMonth
-        } 
+          initialMonth: currentMonth,
+        }, 
       })
       
       // 检查组件是否正确渲染
@@ -355,7 +355,7 @@ describe('MonthlyCalendarHeatmap.vue Component', () => {
       wrapper = mount(MonthlyCalendarHeatmap, { props: defaultProps })
       
       const noDataDays = wrapper.findAll('.calendar-day').filter(day => 
-        day.classes().includes('current-month') && !day.classes().includes('has-data')
+        day.classes().includes('current-month') && !day.classes().includes('has-data'),
       )
       noDataDays.forEach(day => {
         const tooltip = day.attributes('title')
@@ -411,7 +411,7 @@ describe('MonthlyCalendarHeatmap.vue Component', () => {
       const extremeData = {
         year: 9999,
         month: 12,
-        weeks_data: []
+        weeks_data: [],
       }
       
       wrapper = mount(MonthlyCalendarHeatmap, { props: { data: extremeData } })

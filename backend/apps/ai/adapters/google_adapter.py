@@ -355,3 +355,4 @@ class GoogleAdapter(BaseAIAdapter):
         
         estimated_tokens = (english_chars // 4) + (chinese_chars // 2)
         return int(estimated_tokens) + 5  # 加上buffer
+

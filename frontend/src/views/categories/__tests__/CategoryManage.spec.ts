@@ -93,7 +93,7 @@ const mockCategoryManage = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       loading: false,
       saving: false,
@@ -107,7 +107,7 @@ const mockCategoryManage = {
           order: 1,
           icon: '🟩',
           color: '#42b883',
-          article_count: 25
+          article_count: 25,
         },
         {
           id: 2,
@@ -118,7 +118,7 @@ const mockCategoryManage = {
           order: 2,
           icon: '⚛️',
           color: '#61dafb',
-          article_count: 18
+          article_count: 18,
         },
         {
           id: 3,
@@ -129,8 +129,8 @@ const mockCategoryManage = {
           order: 3,
           icon: '🐍',
           color: '#3776ab',
-          article_count: 32
-        }
+          article_count: 32,
+        },
       ],
       dialogVisible: false,
       isEdit: false,
@@ -142,17 +142,17 @@ const mockCategoryManage = {
         status: 'active',
         order: 0,
         icon: '',
-        color: '#409EFF'
-      }
+        color: '#409EFF',
+      },
     }
   },
   computed: {
-    parentOptions() {
+    parentOptions () {
       return this.categories.filter(c => !this.isEdit || c.id !== this.form.id)
-    }
+    },
   },
   methods: {
-    async fetchCategories() {
+    async fetchCategories () {
       this.loading = true
       try {
         // Mock API call
@@ -164,7 +164,7 @@ const mockCategoryManage = {
         this.loading = false
       }
     },
-    openCreate() {
+    openCreate () {
       this.isEdit = false
       this.form = {
         id: null,
@@ -174,16 +174,16 @@ const mockCategoryManage = {
         status: 'active',
         order: 0,
         icon: '',
-        color: '#409EFF'
+        color: '#409EFF',
       }
       this.dialogVisible = true
     },
-    openEdit(category) {
+    openEdit (category) {
       this.isEdit = true
       this.form = { ...category }
       this.dialogVisible = true
     },
-    async handleSave() {
+    async handleSave () {
       try {
         this.saving = true
         
@@ -198,7 +198,7 @@ const mockCategoryManage = {
           const newCategory = {
             ...this.form,
             id: Math.max(...this.categories.map(c => c.id)) + 1,
-            article_count: 0
+            article_count: 0,
           }
           this.categories.push(newCategory)
         }
@@ -210,24 +210,24 @@ const mockCategoryManage = {
         this.saving = false
       }
     },
-    confirmDelete(category) {
+    confirmDelete (category) {
       if (confirm(`确定删除分类「${category.name}」？此操作可能影响所属文章。`)) {
         const index = this.categories.findIndex(c => c.id === category.id)
         if (index !== -1) {
           this.categories.splice(index, 1)
         }
       }
-    }
+    },
   },
-  mounted() {
+  mounted () {
     // this.fetchCategories() // 注释掉自动加载，避免测试中的加载状态问题
-  }
+  },
 }
 
 // Mock 路由
 const router = createRouter({
   history: createWebHistory(),
-  routes: []
+  routes: [],
 })
 
 // Mock Pinia
@@ -241,7 +241,7 @@ describe('CategoryManage.vue Component', () => {
     vi.clearAllMocks()
 
     wrapper = mount(mockCategoryManage, {
-      global: { plugins: [router] }
+      global: { plugins: [router] },
     })
     
     await wrapper.vm.$nextTick()

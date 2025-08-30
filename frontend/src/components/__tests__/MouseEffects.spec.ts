@@ -63,7 +63,7 @@ const mockMouseEffects = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       currentEffect: 'flowers',
       flowerParticles: [],
@@ -75,11 +75,11 @@ const mockMouseEffects = {
       lastMouseX: 0,
       lastMouseY: 0,
       flowerSymbols: ['🌸', '🌺', '🌷', '🦋', '💫', '✨'],
-      effects: ['flowers', 'fish', 'stars']
+      effects: ['flowers', 'fish', 'stars'],
     }
   },
   methods: {
-    toggleEffect() {
+    toggleEffect () {
       const currentIndex = this.effects.indexOf(this.currentEffect)
       this.currentEffect = this.effects[(currentIndex + 1) % this.effects.length]
       
@@ -89,13 +89,13 @@ const mockMouseEffects = {
       this.starParticles = []
     },
     
-    getCurrentEffectIcon() {
+    getCurrentEffectIcon () {
       if (this.currentEffect === 'flowers') return '🌸'
       if (this.currentEffect === 'fish') return '🐠'
       return '✨'
     },
     
-    createFlowerParticle(x, y) {
+    createFlowerParticle (x, y) {
       const particle = {
         id: this.particleId++,
         x: x + (Math.random() - 0.5) * 20,
@@ -106,7 +106,7 @@ const mockMouseEffects = {
         symbol: this.flowerSymbols[Math.floor(Math.random() * this.flowerSymbols.length)],
         vx: (Math.random() - 0.5) * 1.5,
         vy: (Math.random() - 0.5) * 1.5,
-        life: 120
+        life: 120,
       }
       
       this.flowerParticles.push(particle)
@@ -115,7 +115,7 @@ const mockMouseEffects = {
       }
     },
     
-    createFishParticle(x, y) {
+    createFishParticle (x, y) {
       const dx = x - this.lastMouseX
       const dy = y - this.lastMouseY
       const angle = Math.atan2(dy, dx) * 180 / Math.PI
@@ -126,10 +126,10 @@ const mockMouseEffects = {
         y: y - 20 + Math.random() * 40,
         targetX: x,
         targetY: y,
-        angle: angle,
+        angle,
         scale: Math.random() * 0.5 + 0.8,
         speed: Math.random() * 2 + 1,
-        life: 120
+        life: 120,
       }
       
       this.fishParticles.push(fish)
@@ -138,7 +138,7 @@ const mockMouseEffects = {
       }
     },
     
-    createStarParticle(x, y) {
+    createStarParticle (x, y) {
       const particle = {
         id: this.particleId++,
         x: x + (Math.random() - 0.5) * 30,
@@ -147,7 +147,7 @@ const mockMouseEffects = {
         scale: Math.random() * 0.6 + 0.2,
         vx: (Math.random() - 0.5) * 1,
         vy: (Math.random() - 0.5) * 1,
-        life: 100
+        life: 100,
       }
       
       this.starParticles.push(particle)
@@ -156,7 +156,7 @@ const mockMouseEffects = {
       }
     },
     
-    handleMouseMove(e) {
+    handleMouseMove (e) {
       this.lastMouseX = this.mouseX
       this.lastMouseY = this.mouseY
       this.mouseX = e.clientX
@@ -171,7 +171,7 @@ const mockMouseEffects = {
       }
     },
     
-    updateParticles() {
+    updateParticles () {
       // 更新撒花粒子
       this.flowerParticles.forEach((particle, index) => {
         particle.x += particle.vx
@@ -216,8 +216,8 @@ const mockMouseEffects = {
           this.starParticles.splice(index, 1)
         }
       })
-    }
-  }
+    },
+  },
 }
 
 describe('MouseEffects.vue Component', () => {

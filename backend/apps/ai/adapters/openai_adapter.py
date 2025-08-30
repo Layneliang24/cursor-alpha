@@ -305,3 +305,4 @@ class OpenAIAdapter(BaseAIAdapter):
         
         estimated_tokens = (english_chars // 4) + (chinese_chars // 1.5)
         return int(estimated_tokens) + 10  # 加上一些buffer
+
