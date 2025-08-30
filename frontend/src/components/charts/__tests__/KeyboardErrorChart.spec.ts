@@ -8,14 +8,14 @@ vi.mock('echarts', () => ({
     init: vi.fn(() => ({
       dispose: vi.fn(),
       setOption: vi.fn(),
-      resize: vi.fn()
-    }))
+      resize: vi.fn(),
+    })),
   },
   init: vi.fn(() => ({
     dispose: vi.fn(),
     setOption: vi.fn(),
-    resize: vi.fn()
-  }))
+    resize: vi.fn(),
+  })),
 }))
 
 describe('KeyboardErrorChart.vue Component', () => {
@@ -27,9 +27,9 @@ describe('KeyboardErrorChart.vue Component', () => {
       { name: 'e', value: 12 },
       { name: 'i', value: 8 },
       { name: 'o', value: 3 },
-      { name: 'u', value: 15 }
+      { name: 'u', value: 15 },
     ],
-    title: '按键错误统计'
+    title: '按键错误统计',
   }
 
   beforeEach(() => {
@@ -157,7 +157,7 @@ describe('KeyboardErrorChart.vue Component', () => {
     it('大量数据时正确处理', () => {
       const largeData = Array.from({ length: 100 }, (_, i) => ({ 
         name: String.fromCharCode(97 + i), 
-        value: i 
+        value: i, 
       }))
       wrapper = mount(KeyboardErrorChart, { props: { data: largeData } })
       
@@ -185,7 +185,7 @@ describe('KeyboardErrorChart.vue Component', () => {
         { name: 'a', value: 0 },
         { name: 'b', value: 999999 },
         { name: 'c', value: -1000 },
-        { name: 'd', value: 0.0001 }
+        { name: 'd', value: 0.0001 },
       ]
       
       wrapper = mount(KeyboardErrorChart, { props: { data: extremeData } })
@@ -201,8 +201,8 @@ describe('KeyboardErrorChart.vue Component', () => {
       wrapper = mount(KeyboardErrorChart, { 
         props: { 
           data: defaultProps.data,
-          title: customTitle 
-        } 
+          title: customTitle, 
+        }, 
       })
       
       expect(wrapper.props().title).toBe(customTitle)
@@ -212,8 +212,8 @@ describe('KeyboardErrorChart.vue Component', () => {
       wrapper = mount(KeyboardErrorChart, { 
         props: { 
           data: defaultProps.data,
-          title: '' 
-        } 
+          title: '', 
+        }, 
       })
       
       expect(wrapper.props().title).toBe('')
@@ -224,8 +224,8 @@ describe('KeyboardErrorChart.vue Component', () => {
       wrapper = mount(KeyboardErrorChart, { 
         props: { 
           data: defaultProps.data,
-          title: longTitle 
-        } 
+          title: longTitle, 
+        }, 
       })
       
       expect(wrapper.props().title).toBe(longTitle)
@@ -236,7 +236,7 @@ describe('KeyboardErrorChart.vue Component', () => {
     it('数据项包含必要的字段', () => {
       wrapper = mount(KeyboardErrorChart, { props: defaultProps })
       
-      const data = wrapper.props().data
+      const { data } = wrapper.props()
       data.forEach(item => {
         expect(item).toHaveProperty('name')
         expect(item).toHaveProperty('value')
@@ -250,7 +250,7 @@ describe('KeyboardErrorChart.vue Component', () => {
         { name: ' ', value: 5 },      // 空格
         { name: '\n', value: 3 },     // 换行符
         { name: '!@#$%', value: 7 },  // 特殊符号
-        { name: '中文', value: 10 }    // 中文字符
+        { name: '中文', value: 10 },    // 中文字符
       ]
       
       wrapper = mount(KeyboardErrorChart, { props: { data: specialData } })

@@ -8,14 +8,14 @@ vi.mock('echarts', () => ({
     init: vi.fn(() => ({
       dispose: vi.fn(),
       setOption: vi.fn(),
-      resize: vi.fn()
-    }))
+      resize: vi.fn(),
+    })),
   },
   init: vi.fn(() => ({
     dispose: vi.fn(),
     setOption: vi.fn(),
-    resize: vi.fn()
-  }))
+    resize: vi.fn(),
+  })),
 }))
 
 describe('LineChart.vue Component', () => {
@@ -26,11 +26,11 @@ describe('LineChart.vue Component', () => {
       ['2024-01-01', 100],
       ['2024-01-02', 150],
       ['2024-01-03', 120],
-      ['2024-01-04', 200]
+      ['2024-01-04', 200],
     ],
     title: '测试趋势图',
     name: '销售额',
-    suffix: '元'
+    suffix: '元',
   }
 
   beforeEach(() => {
@@ -186,7 +186,7 @@ describe('LineChart.vue Component', () => {
       const testData = [
         ['2024-01-01', 100],
         ['2024-01-02', 150],
-        ['2024-01-03', 120]
+        ['2024-01-03', 120],
       ]
       
       wrapper = mount(LineChart, { props: { data: testData, title: '测试数据' } })
@@ -200,7 +200,7 @@ describe('LineChart.vue Component', () => {
       const mixedData = [
         ['2024-01-01', 100],
         ['2024-01-02', '150'],
-        ['2024-01-03', 120.5]
+        ['2024-01-03', 120.5],
       ]
       
       wrapper = mount(LineChart, { props: { data: mixedData, title: '混合数据' } })
@@ -214,8 +214,8 @@ describe('LineChart.vue Component', () => {
       wrapper = mount(LineChart, { 
         props: { 
           data: [['2024-01-01', 100]], 
-          title: '测试图表' 
-        } 
+          title: '测试图表', 
+        }, 
       })
       
       expect(wrapper.props().data).toEqual([['2024-01-01', 100]])
@@ -229,7 +229,7 @@ describe('LineChart.vue Component', () => {
         data: [['2024-01-01', 100]],
         title: '完整图表',
         name: '自定义名称',
-        suffix: '自定义后缀'
+        suffix: '自定义后缀',
       }
       
       wrapper = mount(LineChart, { props: fullProps })
@@ -245,8 +245,8 @@ describe('LineChart.vue Component', () => {
         props: { 
           data: [['2024-01-01', 100]], 
           title: '测试图表',
-          suffix: ''
-        } 
+          suffix: '',
+        }, 
       })
       
       expect(wrapper.props().suffix).toBe('')
@@ -260,8 +260,8 @@ describe('LineChart.vue Component', () => {
           props: { 
             data: [['2024-01-01', 100]], 
             title: '测试图表',
-            suffix: suffix
-          } 
+            suffix,
+          }, 
         })
         
         expect(wrapper.props().suffix).toBe(suffix)
@@ -322,7 +322,7 @@ describe('LineChart.vue Component', () => {
         await wrapper.setProps({ 
           title: `标题${i}`,
           name: `名称${i}`,
-          suffix: `后缀${i}`
+          suffix: `后缀${i}`,
         })
         
         expect(wrapper.exists()).toBe(true)
@@ -337,7 +337,7 @@ describe('LineChart.vue Component', () => {
         ['2024-01-01', 0],
         ['2024-01-02', -1000],
         ['2024-01-03', 999999],
-        ['2024-01-04', 0.0001]
+        ['2024-01-04', 0.0001],
       ]
       
       wrapper = mount(LineChart, { 
@@ -345,8 +345,8 @@ describe('LineChart.vue Component', () => {
           data: extremeData, 
           title: '极端数据',
           name: '极值',
-          suffix: '单位'
-        } 
+          suffix: '单位',
+        }, 
       })
       
       expect(wrapper.exists()).toBe(true)

@@ -5,7 +5,7 @@ import {
   keySoundResources, 
   hintSoundResources, 
   generateWordSoundSrc, 
-  defaultSounds 
+  defaultSounds, 
 } from '../soundResources.js'
 
 describe('Sound Resources', () => {
@@ -170,7 +170,7 @@ describe('Sound Resources', () => {
     it('所有声音文件都有对应的资源定义', () => {
       const allFilenames = [
         ...keySoundResources.map(r => r.filename),
-        ...hintSoundResources.map(r => r.filename)
+        ...hintSoundResources.map(r => r.filename),
       ]
       
       // 检查defaultSounds中的文件是否在资源定义中
@@ -186,7 +186,7 @@ describe('Sound Resources', () => {
     it('资源键名唯一性', () => {
       const allKeys = [
         ...keySoundResources.map(r => r.key),
-        ...hintSoundResources.map(r => r.key)
+        ...hintSoundResources.map(r => r.key),
       ]
       
       const uniqueKeys = [...new Set(allKeys)]

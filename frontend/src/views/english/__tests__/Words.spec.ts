@@ -87,19 +87,19 @@ const mockWords = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       localQuery: {
         search: '',
-        difficulty: ''
+        difficulty: '',
       },
       dialogVisible: false,
       dueList: [],
-      dueLoading: false
+      dueLoading: false,
     }
   },
   computed: {
-    englishStore() {
+    englishStore () {
       return {
         words: [
           {
@@ -109,7 +109,7 @@ const mockWords = {
             part_of_speech: 'n.',
             definition: '苹果',
             difficulty_level: '简单',
-            source_api: 'Oxford'
+            source_api: 'Oxford',
           },
           {
             id: 2,
@@ -118,34 +118,34 @@ const mockWords = {
             part_of_speech: 'n.',
             definition: '香蕉',
             difficulty_level: '简单',
-            source_api: 'Cambridge'
-          }
+            source_api: 'Cambridge',
+          },
         ],
         wordsLoading: false,
         wordsPagination: {
           total: 100,
           pageSize: 10,
-          page: 1
-        }
+          page: 1,
+        },
       }
-    }
+    },
   },
   methods: {
-    async fetchList() {
+    async fetchList () {
       // Mock implementation
     },
-    handleSearch() {
+    handleSearch () {
       this.englishStore.wordsPagination.page = 1
       this.fetchList()
     },
-    handlePageChange(page) {
+    handlePageChange (page) {
       this.englishStore.wordsPagination.page = page
       this.fetchList()
     },
-    goDetail(row) {
+    goDetail (row) {
       this.$router.push(`/english/words/${row.id}`)
     },
-    async startReview() {
+    async startReview () {
       this.dialogVisible = true
       this.dueLoading = true
       try {
@@ -153,18 +153,18 @@ const mockWords = {
         this.dueList = [
           {
             id: 1,
-            word: { word: 'apple', definition: '苹果' }
+            word: { word: 'apple', definition: '苹果' },
           },
           {
             id: 2,
-            word: { word: 'banana', definition: '香蕉' }
-          }
+            word: { word: 'banana', definition: '香蕉' },
+          },
         ]
       } finally {
         this.dueLoading = false
       }
     },
-    async submitReview(progressRow, quality) {
+    async submitReview (progressRow, quality) {
       try {
         // Mock API call
         this.$message.success('打卡成功')
@@ -173,19 +173,19 @@ const mockWords = {
       } catch (e) {
         console.error(e)
       }
-    }
+    },
   },
-  mounted() {
+  mounted () {
     this.fetchList()
-  }
+  },
 }
 
 // Mock 路由
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/english/words/:id', component: { template: '<div>WordDetail</div>' } }
-  ]
+    { path: '/english/words/:id', component: { template: '<div>WordDetail</div>' } },
+  ],
 })
 
 // Mock router.push
@@ -197,14 +197,14 @@ const pinia = createPinia()
 // Mock ElMessage
 const mockElMessage = {
   success: vi.fn(),
-  error: vi.fn()
+  error: vi.fn(),
 }
 
 vi.mock('element-plus', async () => {
   const actual = await vi.importActual('element-plus')
   return {
     ...actual,
-    ElMessage: mockElMessage
+    ElMessage: mockElMessage,
   }
 })
 
@@ -219,8 +219,8 @@ describe('Words.vue Component', () => {
 
     wrapper = mount(mockWords, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     
     await router.isReady()
@@ -378,7 +378,7 @@ describe('Words.vue Component', () => {
       wrapper.vm.dialogVisible = true
       wrapper.vm.dueList = [
         { id: 1, word: { word: 'apple', definition: '苹果' } },
-        { id: 2, word: { word: 'banana', definition: '香蕉' } }
+        { id: 2, word: { word: 'banana', definition: '香蕉' } },
       ]
       await wrapper.vm.$nextTick()
       

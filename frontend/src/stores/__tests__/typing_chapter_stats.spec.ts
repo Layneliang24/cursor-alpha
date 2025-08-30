@@ -6,8 +6,8 @@ import { useTypingStore } from '../typing'
 vi.mock('@/api/english', () => ({
   englishAPI: {
     getChapterStats: vi.fn(),
-    updateChapterStats: vi.fn()
-  }
+    updateChapterStats: vi.fn(),
+  },
 }))
 
 describe('章节练习次数统计功能测试', () => {
@@ -27,7 +27,7 @@ describe('章节练习次数统计功能测试', () => {
       // 模拟不同词典的章节练习次数
       const mockStats = {
         'toefl': { 1: 3, 2: 1, 3: 0 },
-        'ielts': { 1: 2, 2: 0, 3: 1 }
+        'ielts': { 1: 2, 2: 0, 3: 1 },
       }
       
       // 设置模拟数据
@@ -40,7 +40,7 @@ describe('章节练习次数统计功能测试', () => {
     it('应该能够获取特定词典特定章节的练习次数', () => {
       const mockStats = {
         'toefl': { 1: 3, 2: 1 },
-        'ielts': { 1: 2, 2: 0 }
+        'ielts': { 1: 2, 2: 0 },
       }
       store.setChapterPracticeStats(mockStats)
       
@@ -60,7 +60,7 @@ describe('章节练习次数统计功能测试', () => {
     it('应该能够增加特定词典特定章节的练习次数', () => {
       // 初始化数据
       store.setChapterPracticeStats({
-        'toefl': { 1: 2, 2: 1 }
+        'toefl': { 1: 2, 2: 1 },
       })
       
       // 增加练习次数
@@ -76,7 +76,7 @@ describe('章节练习次数统计功能测试', () => {
 
     it('应该能够重置特定词典特定章节的练习次数', () => {
       store.setChapterPracticeStats({
-        'toefl': { 1: 5, 2: 3 }
+        'toefl': { 1: 5, 2: 3 },
       })
       
       // 重置练习次数
@@ -91,7 +91,7 @@ describe('章节练习次数统计功能测试', () => {
   describe('显示格式', () => {
     it('应该正确格式化练习次数显示', () => {
       store.setChapterPracticeStats({
-        'toefl': { 1: 5, 2: 150, 3: 999, 4: 1000 }
+        'toefl': { 1: 5, 2: 150, 3: 999, 4: 1000 },
       })
       
       // 测试不同范围的数字
@@ -106,7 +106,7 @@ describe('章节练习次数统计功能测试', () => {
     it('应该能够保存和加载练习次数数据', () => {
       const mockStats = {
         'toefl': { 1: 3, 2: 1 },
-        'ielts': { 1: 2, 2: 0 }
+        'ielts': { 1: 2, 2: 0 },
       }
       
       // 保存数据
@@ -127,7 +127,7 @@ describe('章节练习次数统计功能测试', () => {
     it('应该能够从API获取练习次数数据', async () => {
       const mockApiResponse = {
         'toefl': { 1: 3, 2: 1 },
-        'ielts': { 1: 2, 2: 0 }
+        'ielts': { 1: 2, 2: 0 },
       }
       
       // Mock API调用
@@ -144,7 +144,7 @@ describe('章节练习次数统计功能测试', () => {
 
     it('应该能够向API提交练习次数更新', async () => {
       const mockStats = {
-        'toefl': { 1: 3, 2: 1 }
+        'toefl': { 1: 3, 2: 1 },
       }
       
       // Mock API调用

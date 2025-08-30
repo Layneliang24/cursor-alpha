@@ -5,7 +5,7 @@ import { useSound } from '@vueuse/sound'
 const pronunciationApi = 'https://dict.youdao.com/dictvoice?audio='
 
 // 生成发音URL（参考qwerty learner）
-function generateWordSoundSrc(word, pronunciationType = 'us') {
+function generateWordSoundSrc (word, pronunciationType = 'us') {
   const wordStr = unref(word) || ''
   if (!wordStr) return ''
   
@@ -15,7 +15,7 @@ function generateWordSoundSrc(word, pronunciationType = 'us') {
 }
 
 // 使用@vueuse/sound库的发音hook（专门为Vue设计）
-export default function usePronunciation(word, pronunciationType = 'us') {
+export default function usePronunciation (word, pronunciationType = 'us') {
   const soundSrc = computed(() => generateWordSoundSrc(word, pronunciationType))
   
   const { play, stop, sound, isPlaying } = useSound(soundSrc, {
@@ -30,12 +30,12 @@ export default function usePronunciation(word, pronunciationType = 'us') {
     play,
     stop,
     isPlaying,
-    sound
+    sound,
   }
 }
 
 // 预加载发音（参考qwerty learner的usePrefetchPronunciationSound）
-export function usePrefetchPronunciation(word) {
+export function usePrefetchPronunciation (word) {
   const soundSrc = computed(() => generateWordSoundSrc(word, 'us'))
   
   // 预加载音频

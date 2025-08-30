@@ -10,48 +10,48 @@ vi.mock('@/stores/auth', () => ({
   useAuthStore: vi.fn(() => ({
     register: mockRegister,
     user: null,
-    isAuthenticated: false
-  }))
+    isAuthenticated: false,
+  })),
 }))
 
 // Mock Element Plus components
 const mockElCard = {
   name: 'el-card',
   template: '<div class="card"><slot name="header" /><slot /></div>',
-  props: ['class']
+  props: ['class'],
 }
 
 const mockElForm = {
   name: 'el-form',
   template: '<form><slot /></form>',
   props: ['model', 'rules', 'label-width'],
-  emits: ['submit']
+  emits: ['submit'],
 }
 
 const mockElFormItem = {
   name: 'el-form-item',
   template: '<div class="form-item"><label v-if="label">{{ label }}</label><slot /></div>',
-  props: ['label', 'prop']
+  props: ['label', 'prop'],
 }
 
 const mockElInput = {
   name: 'el-input',
   template: '<input :value="modelValue" :placeholder="placeholder" :type="type" @input="$emit(\'update:modelValue\', $event.target.value)" />',
   props: ['modelValue', 'placeholder', 'type', 'prefix-icon', 'size', 'show-password'],
-  emits: ['update:modelValue', 'keyup.enter']
+  emits: ['update:modelValue', 'keyup.enter'],
 }
 
 const mockElButton = {
   name: 'el-button',
   template: '<button :type="type" :size="size" :loading="loading" @click="$emit(\'click\')"><slot /></button>',
   props: ['type', 'size', 'loading'],
-  emits: ['click']
+  emits: ['click'],
 }
 
 const mockRouterLink = {
   name: 'router-link',
   template: '<a :to="to" class="router-link"><slot /></a>',
-  props: ['to']
+  props: ['to'],
 }
 
 describe('Register.vue', () => {
@@ -68,8 +68,8 @@ describe('Register.vue', () => {
       routes: [
         { path: '/', component: { template: '<div>Home</div>' } },
         { path: '/register', component: { template: '<div>Register</div>' } },
-        { path: '/login', component: { template: '<div>Login</div>' } }
-      ]
+        { path: '/login', component: { template: '<div>Login</div>' } },
+      ],
     })
 
     // Setup mocks
@@ -86,9 +86,9 @@ describe('Register.vue', () => {
           'el-form-item': mockElFormItem,
           'el-input': mockElInput,
           'el-button': mockElButton,
-          'router-link': mockRouterLink
-        }
-      }
+          'router-link': mockRouterLink,
+        },
+      },
     })
   })
 
@@ -144,7 +144,7 @@ describe('Register.vue', () => {
   describe('密码确认验证', () => {
     it('应该验证密码确认与密码一致', async () => {
       // 直接测试验证函数，不依赖setData
-      const validatePasswordConfirm = wrapper.vm.validatePasswordConfirm
+      const { validatePasswordConfirm } = wrapper.vm
       const callback = vi.fn()
       
       // 模拟不同的密码
@@ -155,7 +155,7 @@ describe('Register.vue', () => {
     })
 
     it('应该通过密码确认验证', async () => {
-      const validatePasswordConfirm = wrapper.vm.validatePasswordConfirm
+      const { validatePasswordConfirm } = wrapper.vm
       const callback = vi.fn()
       
       // 模拟相同的密码
@@ -191,7 +191,7 @@ describe('Register.vue', () => {
         email: 'new@example.com',
         first_name: 'New',
         password: 'newpass123',
-        password_confirm: 'newpass123'
+        password_confirm: 'newpass123',
       })
     })
 
@@ -208,8 +208,8 @@ describe('Register.vue', () => {
       error.response = {
         data: {
           username: ['用户名已存在'],
-          email: ['邮箱已被使用']
-        }
+          email: ['邮箱已被使用'],
+        },
       }
       mockRegister.mockRejectedValue(error)
 
@@ -237,7 +237,7 @@ describe('Register.vue', () => {
         email: '',
         first_name: '',
         password: '',
-        password_confirm: ''
+        password_confirm: '',
       }
 
       expect(wrapper.vm.registerForm).toEqual(initialForm)
@@ -289,8 +289,8 @@ describe('Register.vue', () => {
       error.response = {
         data: {
           username: ['用户名已存在'],
-          email: ['邮箱格式不正确']
-        }
+          email: ['邮箱格式不正确'],
+        },
       }
 
       // 模拟错误处理逻辑
@@ -313,8 +313,8 @@ describe('Register.vue', () => {
       const error = new Error('注册失败')
       error.response = {
         data: {
-          error: '服务器错误'
-        }
+          error: '服务器错误',
+        },
       }
 
       const errors = error.response.data

@@ -10,26 +10,26 @@ export const useArticlesStore = defineStore('articles', {
     pagination: {
       current: 1,
       pageSize: 10,
-      total: 0
-    }
+      total: 0,
+    },
   }),
 
   getters: {
     getArticleById: (state) => (id) => {
       return state.articles.find(article => article.id === id)
-    }
+    },
   },
 
   actions: {
     // 获取文章列表
-    async fetchArticles(params = {}) {
+    async fetchArticles (params = {}) {
       this.loading = true
       try {
         // 如果params中没有page和page_size，则使用store中的值
         const requestParams = {
           page: params.page || this.pagination.current,
           page_size: params.page_size || this.pagination.pageSize,
-          ...params
+          ...params,
         }
         
         console.log('发送API请求参数:', requestParams)
@@ -54,7 +54,7 @@ export const useArticlesStore = defineStore('articles', {
     },
 
     // 获取文章详情
-    async fetchArticle(id) {
+    async fetchArticle (id) {
       this.loading = true
       try {
         const article = await articlesAPI.getArticle(id)
@@ -70,7 +70,7 @@ export const useArticlesStore = defineStore('articles', {
     },
 
     // 创建文章
-    async createArticle(articleData) {
+    async createArticle (articleData) {
       try {
         const article = await articlesAPI.createArticle(articleData)
         this.articles.unshift(article)
@@ -84,7 +84,7 @@ export const useArticlesStore = defineStore('articles', {
     },
 
     // 更新文章
-    async updateArticle(id, articleData) {
+    async updateArticle (id, articleData) {
       try {
         const article = await articlesAPI.updateArticle(id, articleData)
         const index = this.articles.findIndex(a => a.id === id)
@@ -104,7 +104,7 @@ export const useArticlesStore = defineStore('articles', {
     },
 
     // 删除文章
-    async deleteArticle(id) {
+    async deleteArticle (id) {
       try {
         await articlesAPI.deleteArticle(id)
         this.articles = this.articles.filter(a => a.id !== id)
@@ -120,7 +120,7 @@ export const useArticlesStore = defineStore('articles', {
     },
 
     // 点赞文章
-    async likeArticle(id) {
+    async likeArticle (id) {
       try {
         const response = await articlesAPI.likeArticle(id)
         ElMessage.success(response.message)
@@ -135,7 +135,7 @@ export const useArticlesStore = defineStore('articles', {
     },
 
     // 收藏文章
-    async bookmarkArticle(id) {
+    async bookmarkArticle (id) {
       try {
         const response = await articlesAPI.bookmarkArticle(id)
         ElMessage.success(response.message)
@@ -143,6 +143,6 @@ export const useArticlesStore = defineStore('articles', {
         console.error('收藏失败:', error)
         throw error
       }
-    }
-  }
+    },
+  },
 })

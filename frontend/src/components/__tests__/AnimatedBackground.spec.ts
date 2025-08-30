@@ -11,13 +11,13 @@ const mockAnimatedBackground = {
       <div class="gradient-overlay"></div>
     </div>
   `,
-  data() {
+  data () {
     return {
-      shapeCount: 20
+      shapeCount: 20,
     }
   },
   methods: {
-    getShapeStyle(index) {
+    getShapeStyle (index) {
       const size = Math.random() * 100 + 50
       const delay = Math.random() * 20
       const duration = Math.random() * 10 + 15
@@ -25,15 +25,15 @@ const mockAnimatedBackground = {
       const opacity = Math.random() * 0.3 + 0.1
       
       return {
-        width: size + 'px',
-        height: size + 'px',
-        left: left + '%',
-        animationDelay: delay + 's',
-        animationDuration: duration + 's',
-        opacity: opacity
+        width: `${size}px`,
+        height: `${size}px`,
+        left: `${left}%`,
+        animationDelay: `${delay}s`,
+        animationDuration: `${duration}s`,
+        opacity,
       }
-    }
-  }
+    },
+  },
 }
 
 describe('AnimatedBackground.vue Component', () => {

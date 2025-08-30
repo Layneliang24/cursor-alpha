@@ -90,23 +90,23 @@ const mockNavBar = {
       </template>
     </div>
   `,
-  data() {
+  data () {
     return {
       activeIndex: '/',
       showEnglishMenu: false,
       showUserMenu: false,
       isAuthenticated: false,
       userName: 'testuser',
-      userAvatar: 'T'
+      userAvatar: 'T',
     }
   },
   methods: {
-    updateActiveIndex() {
+    updateActiveIndex () {
       // 模拟路由变化更新激活菜单项
       this.activeIndex = this.currentRoute || '/'
     },
     
-    async handleLogout() {
+    async handleLogout () {
       try {
         // 模拟确认对话框
         if (await this.confirmLogout()) {
@@ -120,14 +120,14 @@ const mockNavBar = {
       }
     },
     
-    async confirmLogout() {
+    async confirmLogout () {
       // 模拟确认对话框
       return new Promise((resolve) => {
         setTimeout(() => resolve(true), 10)
       })
     },
     
-    async logout() {
+    async logout () {
       // 模拟登出逻辑
       this.isAuthenticated = false
       this.userName = ''
@@ -135,34 +135,34 @@ const mockNavBar = {
       console.log('User logged out')
     },
     
-    redirectToHome() {
+    redirectToHome () {
       // 模拟路由跳转
       console.log('Redirecting to home')
     },
     
-    initAuth() {
+    initAuth () {
       // 模拟初始化认证状态
       console.log('Auth initialized')
     },
     
-    toggleEnglishMenu() {
+    toggleEnglishMenu () {
       this.showEnglishMenu = !this.showEnglishMenu
     },
     
-    toggleUserMenu() {
+    toggleUserMenu () {
       this.showUserMenu = !this.showUserMenu
     },
     
-    setAuthenticatedState(authenticated, username = 'testuser') {
+    setAuthenticatedState (authenticated, username = 'testuser') {
       this.isAuthenticated = authenticated
       this.userName = username
       this.userAvatar = username.charAt(0).toUpperCase()
-    }
+    },
   },
-  mounted() {
+  mounted () {
     this.updateActiveIndex()
     this.initAuth()
-  }
+  },
 }
 
 // Mock vue-router
@@ -171,12 +171,12 @@ vi.mock('vue-router', async () => {
   return {
     ...actual,
     useRoute: () => ({
-      path: '/'
+      path: '/',
     }),
     useRouter: () => ({
       push: vi.fn(),
-      afterEach: vi.fn()
-    })
+      afterEach: vi.fn(),
+    }),
   }
 })
 
@@ -186,19 +186,19 @@ vi.mock('@/stores/auth', () => ({
     isAuthenticated: false,
     user: null,
     initAuth: vi.fn(),
-    logout: vi.fn()
-  })
+    logout: vi.fn(),
+  }),
 }))
 
 // Mock Element Plus
 vi.mock('element-plus', () => ({
   ElMessage: {
     success: vi.fn(),
-    error: vi.fn()
+    error: vi.fn(),
   },
   ElMessageBox: {
-    confirm: vi.fn().mockResolvedValue('confirm')
-  }
+    confirm: vi.fn().mockResolvedValue('confirm'),
+  },
 }))
 
 const pinia = createPinia()
@@ -214,8 +214,8 @@ describe('NavBar.vue Component', () => {
     
     wrapper = mount(mockNavBar, {
       global: {
-        plugins: [pinia]
-      }
+        plugins: [pinia],
+      },
     })
     
     await wrapper.vm.$nextTick()

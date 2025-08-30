@@ -23,7 +23,7 @@ describe('章节完成功能测试', () => {
         wpm: 45,
         wrongWords: ['apple', 'banana'],
         dictionary: 'TOEFL',
-        chapter: 1
+        chapter: 1,
       }
 
       store.markChapterCompleted(mockCompletionData)
@@ -40,7 +40,7 @@ describe('章节完成功能测试', () => {
         wpm: 50,
         wrongWords: [],
         dictionary: 'TOEFL',
-        chapter: 1
+        chapter: 1,
       })
 
       // 重置状态
@@ -104,7 +104,7 @@ describe('章节完成功能测试', () => {
         dictionary: 'TOEFL',
         chapter: 1,
         errorCount: 1,
-        lastErrorTime: new Date().toISOString()
+        lastErrorTime: new Date().toISOString(),
       }
 
       store.addWrongWord(wrongWord)
@@ -120,7 +120,7 @@ describe('章节完成功能测试', () => {
         dictionary: 'TOEFL',
         chapter: 1,
         errorCount: 1,
-        lastErrorTime: new Date().toISOString()
+        lastErrorTime: new Date().toISOString(),
       }
 
       store.addWrongWord(wrongWord)
@@ -137,7 +137,7 @@ describe('章节完成功能测试', () => {
         dictionary: 'TOEFL',
         chapter: 1,
         errorCount: 1,
-        lastErrorTime: new Date().toISOString()
+        lastErrorTime: new Date().toISOString(),
       }
 
       store.addWrongWord(wrongWord)
@@ -154,7 +154,7 @@ describe('章节完成功能测试', () => {
         dictionary: 'TOEFL',
         chapter: 1,
         errorCount: 1,
-        lastErrorTime: new Date().toISOString()
+        lastErrorTime: new Date().toISOString(),
       }
 
       const wrongWord2 = {
@@ -163,7 +163,7 @@ describe('章节完成功能测试', () => {
         dictionary: 'TOEFL',
         chapter: 1,
         errorCount: 1,
-        lastErrorTime: new Date().toISOString()
+        lastErrorTime: new Date().toISOString(),
       }
 
       store.addWrongWord(wrongWord1)
@@ -181,7 +181,7 @@ describe('章节完成功能测试', () => {
         dictionary: 'TOEFL',
         chapter: 1,
         errorCount: 2,
-        lastErrorTime: new Date().toISOString()
+        lastErrorTime: new Date().toISOString(),
       }
 
       const wrongWord2 = {
@@ -190,7 +190,7 @@ describe('章节完成功能测试', () => {
         dictionary: 'CET4',
         chapter: 2,
         errorCount: 1,
-        lastErrorTime: new Date().toISOString()
+        lastErrorTime: new Date().toISOString(),
       }
 
       store.addWrongWord(wrongWord1)

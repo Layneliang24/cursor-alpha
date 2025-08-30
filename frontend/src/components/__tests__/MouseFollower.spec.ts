@@ -24,18 +24,18 @@ const mockMouseFollower = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       particles: [],
       particleId: 0,
       mouseX: 0,
       mouseY: 0,
       symbols: ['🌸', '🌺', '🌻', '🌷', '🌹', '💐', '🦋', '✨', '⭐', '💫', '🌟', '💖'],
-      colors: ['#ff6b9d', '#ffa726', '#66bb6a', '#42a5f5', '#ab47bc', '#ef5350']
+      colors: ['#ff6b9d', '#ffa726', '#66bb6a', '#42a5f5', '#ab47bc', '#ef5350'],
     }
   },
   methods: {
-    createParticle(x, y) {
+    createParticle (x, y) {
       const particle = {
         id: this.particleId++,
         x: x + (Math.random() - 0.5) * 20,
@@ -47,7 +47,7 @@ const mockMouseFollower = {
         color: this.colors[Math.floor(Math.random() * this.colors.length)],
         vx: (Math.random() - 0.5) * 2,
         vy: (Math.random() - 0.5) * 2,
-        life: 60
+        life: 60,
       }
       
       this.particles.push(particle)
@@ -58,7 +58,7 @@ const mockMouseFollower = {
       }
     },
     
-    updateParticles() {
+    updateParticles () {
       this.particles.forEach((particle, index) => {
         particle.x += particle.vx
         particle.y += particle.vy
@@ -73,7 +73,7 @@ const mockMouseFollower = {
       })
     },
     
-    handleMouseMove(e) {
+    handleMouseMove (e) {
       this.mouseX = e.clientX
       this.mouseY = e.clientY
       
@@ -83,39 +83,39 @@ const mockMouseFollower = {
       }
     },
     
-    animate() {
+    animate () {
       this.updateParticles()
       mockRequestAnimationFrame(this.animate)
     },
     
-    addMouseListener() {
+    addMouseListener () {
       document.addEventListener('mousemove', this.handleMouseMove)
     },
     
-    removeMouseListener() {
+    removeMouseListener () {
       document.removeEventListener('mousemove', this.handleMouseMove)
     },
     
-    setParticles(particles) {
+    setParticles (particles) {
       this.particles = particles
     },
     
-    setMousePosition(x, y) {
+    setMousePosition (x, y) {
       this.mouseX = x
       this.mouseY = y
     },
     
-    clearParticles() {
+    clearParticles () {
       this.particles = []
-    }
+    },
   },
-  mounted() {
+  mounted () {
     this.addMouseListener()
     this.animate()
   },
-  unmounted() {
+  unmounted () {
     this.removeMouseListener()
-  }
+  },
 }
 
 describe('MouseFollower.vue Component', () => {
@@ -460,7 +460,7 @@ describe('MouseFollower.vue Component', () => {
 
     it('setParticles正确设置粒子', () => {
       const testParticles = [
-        { id: 1, x: 100, y: 100, symbol: '🌸' }
+        { id: 1, x: 100, y: 100, symbol: '🌸' },
       ]
       wrapper.vm.setParticles(testParticles)
       

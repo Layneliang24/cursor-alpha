@@ -102,34 +102,34 @@ const mockDataAnalysis = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       overview: {
         total_exercises: 150,
         total_words: 2500,
         avg_wpm: 45,
-        avg_accuracy: 85
+        avg_accuracy: 85,
       },
       wpmTrend: [
         { date: '2024-01', value: 40 },
         { date: '2024-02', value: 42 },
-        { date: '2024-03', value: 45 }
+        { date: '2024-03', value: 45 },
       ],
       accuracyTrend: [
         { date: '2024-01', value: 80 },
         { date: '2024-02', value: 82 },
-        { date: '2024-03', value: 85 }
+        { date: '2024-03', value: 85 },
       ],
       keyErrorStats: [
         { key: 'A', errors: 5 },
         { key: 'E', errors: 12 },
         { key: 'I', errors: 8 },
-        { key: 'O', errors: 15 }
+        { key: 'O', errors: 15 },
       ],
       monthlyCalendarData: {
         '2024-03-01': 5,
         '2024-03-02': 8,
-        '2024-03-03': 12
+        '2024-03-03': 12,
       },
       currentYear: 2024,
       currentMonth: 3,
@@ -139,15 +139,15 @@ const mockDataAnalysis = {
       calendarDays: [
         { date: '2024-03-01', day: 1, value: 5 },
         { date: '2024-03-02', day: 2, value: 8 },
-        { date: '2024-03-03', day: 3, value: 12 }
-      ]
+        { date: '2024-03-03', day: 3, value: 12 },
+      ],
     }
   },
   methods: {
-    goBack() {
+    goBack () {
       this.$router.push('/english/dashboard')
     },
-    async refreshData() {
+    async refreshData () {
       this.loading = true
       try {
         // Mock API call
@@ -158,11 +158,11 @@ const mockDataAnalysis = {
         this.loading = false
       }
     },
-    handleDateChange() {
+    handleDateChange () {
       // Mock date change handler
       console.log('日期范围改变:', this.dateRangeText)
     },
-    prevMonth() {
+    prevMonth () {
       if (this.currentMonth > 1) {
         this.currentMonth--
       } else {
@@ -170,7 +170,7 @@ const mockDataAnalysis = {
         this.currentYear--
       }
     },
-    nextMonth() {
+    nextMonth () {
       if (this.currentMonth < 12) {
         this.currentMonth++
       } else {
@@ -178,64 +178,64 @@ const mockDataAnalysis = {
         this.currentYear++
       }
     },
-    handleDayClick(day) {
+    handleDayClick (day) {
       console.log('点击日期:', day.date, '练习次数:', day.value)
     },
-    async loadData() {
+    async loadData () {
       this.loading = true
       try {
         // Mock API calls
         await Promise.all([
           this.loadOverview(),
           this.loadTrends(),
-          this.loadCalendarData()
+          this.loadCalendarData(),
         ])
       } finally {
         this.loading = false
       }
     },
-    async loadOverview() {
+    async loadOverview () {
       // Mock overview data
       this.overview = {
         total_exercises: 150,
         total_words: 2500,
         avg_wpm: 45,
-        avg_accuracy: 85
+        avg_accuracy: 85,
       }
     },
-    async loadTrends() {
+    async loadTrends () {
       // Mock trend data
       this.wpmTrend = [
         { date: '2024-01', value: 40 },
         { date: '2024-02', value: 42 },
-        { date: '2024-03', value: 45 }
+        { date: '2024-03', value: 45 },
       ]
       this.accuracyTrend = [
         { date: '2024-01', value: 80 },
         { date: '2024-02', value: 82 },
-        { date: '2024-03', value: 85 }
+        { date: '2024-03', value: 85 },
       ]
     },
-    async loadCalendarData() {
+    async loadCalendarData () {
       // Mock calendar data
       this.monthlyCalendarData = {
         '2024-03-01': 5,
         '2024-03-02': 8,
-        '2024-03-03': 12
+        '2024-03-03': 12,
       }
-    }
+    },
   },
-  mounted() {
+  mounted () {
     this.loadData()
-  }
+  },
 }
 
 // Mock 路由
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/english/dashboard', component: { template: '<div>Dashboard</div>' } }
-  ]
+    { path: '/english/dashboard', component: { template: '<div>Dashboard</div>' } },
+  ],
 })
 
 // Mock router.push
@@ -255,8 +255,8 @@ describe('DataAnalysis.vue Component', () => {
 
     wrapper = mount(mockDataAnalysis, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     
     await router.isReady()

@@ -5,7 +5,7 @@ import { useNotificationSound } from '../hooks/useNotificationSound'
  * 用于在开发流程中自动触发声音提示
  */
 class NotificationManager {
-  constructor() {
+  constructor () {
     this.sound = useNotificationSound()
     this.isEnabled = true
     this.notificationHistory = []
@@ -14,7 +14,7 @@ class NotificationManager {
   /**
    * 启用/禁用声音提示
    */
-  toggleSound(enabled = null) {
+  toggleSound (enabled = null) {
     if (enabled !== null) {
       this.isEnabled = enabled
     } else {
@@ -27,12 +27,12 @@ class NotificationManager {
   /**
    * 记录通知历史
    */
-  logNotification(type, message, timestamp = new Date()) {
+  logNotification (type, message, timestamp = new Date()) {
     this.notificationHistory.push({
       type,
       message,
       timestamp,
-      id: Date.now() + Math.random()
+      id: Date.now() + Math.random(),
     })
     
     // 保持历史记录在合理范围内
@@ -44,7 +44,7 @@ class NotificationManager {
   /**
    * 一般通知（用于信息提示）
    */
-  notify(message = '有新通知') {
+  notify (message = '有新通知') {
     if (!this.isEnabled) return
     
     this.logNotification('notify', message)
@@ -56,7 +56,7 @@ class NotificationManager {
   /**
    * 确认通知（用于需要确认的操作）
    */
-  confirm(message = '需要确认操作') {
+  confirm (message = '需要确认操作') {
     if (!this.isEnabled) return
     
     this.logNotification('confirm', message)
@@ -68,7 +68,7 @@ class NotificationManager {
   /**
    * 警告通知（用于需要授权的操作）
    */
-  alert(message = '需要授权操作') {
+  alert (message = '需要授权操作') {
     if (!this.isEnabled) return
     
     this.logNotification('alert', message)
@@ -80,7 +80,7 @@ class NotificationManager {
   /**
    * 紧急通知（用于重要操作）
    */
-  urgent(message = '紧急操作需要处理', times = 3) {
+  urgent (message = '紧急操作需要处理', times = 3) {
     if (!this.isEnabled) return
     
     this.logNotification('urgent', message)
@@ -130,27 +130,27 @@ class NotificationManager {
     // 错误发生
     errorOccurred: (error, context) => {
       this.urgent(`错误发生: ${error} - 上下文: ${context}`, 4)
-    }
+    },
   }
 
   /**
    * 获取通知历史
    */
-  getHistory(limit = 10) {
+  getHistory (limit = 10) {
     return this.notificationHistory.slice(-limit)
   }
 
   /**
    * 清除通知历史
    */
-  clearHistory() {
+  clearHistory () {
     this.notificationHistory = []
   }
 
   /**
    * 停止所有声音
    */
-  stopAll() {
+  stopAll () {
     this.sound.stopAll()
   }
 }

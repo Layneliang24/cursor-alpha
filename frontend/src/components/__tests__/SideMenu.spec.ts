@@ -97,66 +97,66 @@ const mockSideMenu = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       currentRoute: '/',
       isAuthenticated: false,
       categories: [],
       stats: {
         total_articles: 0,
-        total_users: 0
-      }
+        total_users: 0,
+      },
     }
   },
   methods: {
-    handleNewsClick() {
+    handleNewsClick () {
       // 处理英语新闻点击
       console.log('英语新闻链接被点击')
       console.log('当前路由:', this.currentRoute)
       console.log('目标路由: /english/news-dashboard')
     },
     
-    fetchCategories() {
+    fetchCategories () {
       // 模拟获取分类数据
       this.categories = [
         { id: 1, name: '技术', article_count: 15, status: 'active' },
         { id: 2, name: '生活', article_count: 8, status: 'active' },
-        { id: 3, name: '学习', article_count: 12, status: 'active' }
+        { id: 3, name: '学习', article_count: 12, status: 'active' },
       ]
       console.log('分类数据:', this.categories)
     },
     
-    fetchStats() {
+    fetchStats () {
       // 模拟获取统计数据
       this.stats = {
         total_articles: 35,
-        total_users: 128
+        total_users: 128,
       }
       console.log('侧边栏统计数据:', this.stats)
     },
     
-    setRoute(route) {
+    setRoute (route) {
       this.currentRoute = route
     },
     
-    setAuthenticatedState(authenticated) {
+    setAuthenticatedState (authenticated) {
       this.isAuthenticated = authenticated
     },
     
-    setCategories(categories) {
+    setCategories (categories) {
       this.categories = categories
     },
     
-    setStats(stats) {
+    setStats (stats) {
       this.stats = stats
-    }
+    },
   },
-  mounted() {
+  mounted () {
     // 初始化组件
     this.fetchCategories()
     this.fetchStats()
     console.log('SideMenu mounted')
-  }
+  },
 }
 
 // Mock vue-router
@@ -165,29 +165,29 @@ vi.mock('vue-router', async () => {
   return {
     ...actual,
     useRoute: () => ({
-      path: '/'
-    })
+      path: '/',
+    }),
   }
 })
 
 // Mock Pinia store
 vi.mock('@/stores/auth', () => ({
   useAuthStore: () => ({
-    isAuthenticated: false
-  })
+    isAuthenticated: false,
+  }),
 }))
 
 // Mock API
 vi.mock('@/api/categories', () => ({
   categoriesAPI: {
-    getCategories: vi.fn()
-  }
+    getCategories: vi.fn(),
+  },
 }))
 
 vi.mock('@/api/home', () => ({
   homeAPI: {
-    getStats: vi.fn()
-  }
+    getStats: vi.fn(),
+  },
 }))
 
 const pinia = createPinia()
@@ -203,8 +203,8 @@ describe('SideMenu.vue Component', () => {
     
     wrapper = mount(mockSideMenu, {
       global: {
-        plugins: [pinia]
-      }
+        plugins: [pinia],
+      },
     })
     
     await wrapper.vm.$nextTick()
@@ -496,7 +496,7 @@ describe('SideMenu.vue Component', () => {
 
     it('fetchCategories方法正确设置分类数据', () => {
       const newCategories = [
-        { id: 4, name: '新分类', article_count: 5, status: 'active' }
+        { id: 4, name: '新分类', article_count: 5, status: 'active' },
       ]
       wrapper.vm.setCategories(newCategories)
       

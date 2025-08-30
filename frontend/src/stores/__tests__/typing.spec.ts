@@ -10,8 +10,8 @@ vi.mock('@/api/english', () => ({
     getTypingDailyProgress: vi.fn(),
     getTypingWords: vi.fn(),
     getTypingWordsByDictionary: vi.fn(),
-    getDictionaries: vi.fn()
-  }
+    getDictionaries: vi.fn(),
+  },
 }))
 
 // Mock Element Plus
@@ -20,8 +20,8 @@ vi.mock('element-plus', () => ({
     success: vi.fn(),
     error: vi.fn(),
     warning: vi.fn(),
-    info: vi.fn()
-  }
+    info: vi.fn(),
+  },
 }))
 
 describe('Typing Store', () => {
@@ -38,15 +38,15 @@ describe('Typing Store', () => {
     // Mock window 对象
     Object.defineProperty(window, 'playCorrectSound', {
       value: vi.fn(),
-      writable: true
+      writable: true,
     })
     Object.defineProperty(window, 'playWrongSound', {
       value: vi.fn(),
-      writable: true
+      writable: true,
     })
     Object.defineProperty(window, 'playCurrentWordPronunciation', {
       value: vi.fn(),
-      writable: true
+      writable: true,
     })
   })
 
@@ -110,13 +110,13 @@ describe('Typing Store', () => {
       store.keyMistakes = {
         'x': ['x', 'x'],
         'y': ['y'],
-        'z': ['z', 'z', 'z']
+        'z': ['z', 'z', 'z'],
       }
       
       // 验证错误总数计算
       const totalErrors = (Object.values(store.keyMistakes) as string[][]).reduce(
         (total: number, mistakes: string[]) => total + mistakes.length, 
-        0
+        0,
       )
       expect(totalErrors).toBe(6)
     })
@@ -125,7 +125,7 @@ describe('Typing Store', () => {
       // 模拟按键错误
       store.keyMistakes = {
         'x': ['x', 'x'],
-        'y': ['y']
+        'y': ['y'],
       }
       
       // 重置练习
@@ -141,7 +141,7 @@ describe('Typing Store', () => {
       // 模拟按键错误
       store.keyMistakes = {
         'x': ['x', 'x'],
-        'y': ['y']
+        'y': ['y'],
       }
       
       // 模拟当前单词
@@ -160,8 +160,8 @@ describe('Typing Store', () => {
       expect(englishAPI.submitTypingPractice).toHaveBeenCalledWith(
         expect.objectContaining({
           mistakes: { 'x': ['x', 'x'], 'y': ['y'] },
-          wrong_count: 3
-        })
+          wrong_count: 3,
+        }),
       )
     })
   })

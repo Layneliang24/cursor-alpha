@@ -25,15 +25,15 @@ vi.mock('@/stores/auth', () => {
   const state: any = { token: null, isLoggedIn: false, user: null }
   return {
     useAuthStore: () => ({
-      get token() { return state.token },
-      set token(v) { state.token = v },
-      get isLoggedIn() { return state.isLoggedIn },
-      set isLoggedIn(v) { state.isLoggedIn = v },
-      get isAuthenticated() { return !!state.token && !!state.user },
-      get user() { return state.user },
-      set user(v) { state.user = v },
-      initAuth: vi.fn(async () => { state.isLoggedIn = !!state.token })
-    })
+      get token () { return state.token },
+      set token (v) { state.token = v },
+      get isLoggedIn () { return state.isLoggedIn },
+      set isLoggedIn (v) { state.isLoggedIn = v },
+      get isAuthenticated () { return !!state.token && !!state.user },
+      get user () { return state.user },
+      set user (v) { state.user = v },
+      initAuth: vi.fn(async () => { state.isLoggedIn = !!state.token }),
+    }),
   }
 })
 

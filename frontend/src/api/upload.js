@@ -11,8 +11,8 @@ export const uploadImage = (file) => {
   
   return request.post('/upload/image/', formData, {
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+      'Content-Type': 'multipart/form-data',
+    },
   })
 }
 
@@ -22,19 +22,19 @@ export const uploadAvatar = (file) => {
   
   return request.post('/upload/avatar/', formData, {
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+      'Content-Type': 'multipart/form-data',
+    },
   })
 }
 
 export const updateAvatarUrl = (avatarUrl) => {
   return request.post('/update-avatar-url/', {
-    avatar_url: avatarUrl
+    avatar_url: avatarUrl,
   })
 }
 
 export default {
   uploadImage,
   uploadAvatar,
-  updateAvatarUrl
+  updateAvatarUrl,
 }

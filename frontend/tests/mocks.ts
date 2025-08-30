@@ -1,11 +1,11 @@
 import { vi } from 'vitest'
 
 // 全局mock配置
-export function setupGlobalMocks() {
+export function setupGlobalMocks () {
   // Mock marked库
   vi.mock('marked', () => ({
     default: vi.fn((text: string) => `<div>${text}</div>`),
-    __esModule: true
+    __esModule: true,
   }))
 
   // Mock highlight.js
@@ -13,9 +13,9 @@ export function setupGlobalMocks() {
     default: {
       getLanguage: vi.fn(() => true),
       highlight: vi.fn(() => ({ value: 'highlighted code' })),
-      highlightAuto: vi.fn(() => ({ value: 'auto highlighted code' }))
+      highlightAuto: vi.fn(() => ({ value: 'auto highlighted code' })),
     },
-    __esModule: true
+    __esModule: true,
   }))
 
   // Mock CSS导入
@@ -30,7 +30,7 @@ export function setupGlobalMocks() {
     Menu: { template: '<div class="el-icon-menu">☰</div>' },
     Link: { template: '<div class="el-icon-link">🔗</div>' },
     Picture: { template: '<div class="el-icon-picture">🖼️</div>' },
-    Grid: { template: '<div class="el-icon-grid">⊞</div>' }
+    Grid: { template: '<div class="el-icon-grid">⊞</div>' },
   }))
 
   // Mock Audio API
@@ -42,27 +42,27 @@ export function setupGlobalMocks() {
     volume: 1,
     playbackRate: 1,
     addEventListener: vi.fn(),
-    removeEventListener: vi.fn()
+    removeEventListener: vi.fn(),
   }))
 
   // Mock window对象
   Object.defineProperty(window, 'stopAllPronunciations', {
     value: vi.fn(),
-    writable: true
+    writable: true,
   })
 
   // Mock console方法
   const consoleSpy = {
     log: vi.spyOn(console, 'log').mockImplementation(() => {}),
     warn: vi.spyOn(console, 'warn').mockImplementation(() => {}),
-    error: vi.spyOn(console, 'error').mockImplementation(() => {})
+    error: vi.spyOn(console, 'error').mockImplementation(() => {}),
   }
 
   return { consoleSpy }
 }
 
 // 清理mock
-export function cleanupMocks() {
+export function cleanupMocks () {
   vi.clearAllMocks()
   vi.resetAllMocks()
 } 

@@ -9,7 +9,7 @@ describe('Letter.vue Component', () => {
     letter: 'A',
     state: 'normal',
     visible: true,
-    fontSize: 48
+    fontSize: 48,
   }
 
   beforeEach(() => {
@@ -50,8 +50,8 @@ describe('Letter.vue Component', () => {
           letter: 'X', 
           state: 'correct', 
           visible: true, 
-          fontSize: 32 
-        } 
+          fontSize: 32, 
+        }, 
       })
       
       expect(wrapper.text()).toBe('X')
@@ -189,8 +189,8 @@ describe('Letter.vue Component', () => {
         props: { 
           ...defaultProps, 
           visible: false, 
-          state: 'correct' 
-        } 
+          state: 'correct', 
+        }, 
       })
       
       expect(wrapper.text()).toBe('_')
@@ -251,7 +251,7 @@ describe('Letter.vue Component', () => {
       const stateClassMap = {
         normal: 'letter-normal',
         correct: 'letter-correct',
-        wrong: 'letter-wrong'
+        wrong: 'letter-wrong',
       }
 
       Object.entries(stateClassMap).forEach(([state, expectedClass]) => {
@@ -366,7 +366,7 @@ describe('Letter.vue Component', () => {
       const combinations = [
         { letter: 'B', state: 'normal' },
         { letter: 'C', state: 'wrong' },
-        { letter: '!', state: 'correct' }
+        { letter: '!', state: 'correct' },
       ]
       
       combinations.forEach(({ letter, state }) => {
@@ -448,7 +448,7 @@ describe('Letter.vue Component', () => {
         letter: 'Z',
         state: 'wrong',
         visible: false,
-        fontSize: 72
+        fontSize: 72,
       })
       
       expect(wrapper.text()).toBe('_')

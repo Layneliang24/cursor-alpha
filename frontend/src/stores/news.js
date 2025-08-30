@@ -14,7 +14,7 @@ export const useNewsStore = defineStore('news', {
       maxArticles: 3,
       timeout: 300, // 默认300秒超时
       sources: [],
-      autoCrawl: false
+      autoCrawl: false,
     },
 
     // 爬取状态
@@ -34,7 +34,7 @@ export const useNewsStore = defineStore('news', {
 
   actions: {
     // 获取新闻列表
-    async fetchNews(params = {}) {
+    async fetchNews (params = {}) {
       this.newsLoading = true
       try {
         const queryRaw = { ...this.newsQuery, ...params }
@@ -43,7 +43,7 @@ export const useNewsStore = defineStore('news', {
           page_size: this.newsPagination.pageSize,
           q: queryRaw.search,
           source: queryRaw.source,
-          ordering: queryRaw.ordering
+          ordering: queryRaw.ordering,
         }
         const resp = await englishAPI.getNewsList(query)
         const data = resp?.data || resp?.results || resp?.items || []
@@ -57,7 +57,7 @@ export const useNewsStore = defineStore('news', {
     },
 
     // 获取新闻详情
-    async fetchNewsDetail(newsId) {
+    async fetchNewsDetail (newsId) {
       this.newsDetailLoading = true
       try {
         const resp = await englishAPI.getNewsDetail(newsId)
@@ -69,7 +69,7 @@ export const useNewsStore = defineStore('news', {
     },
 
     // 爬取新闻
-    async crawlNews(settings = null) {
+    async crawlNews (settings = null) {
       this.crawling = true
       this.crawlProgress = 0
       this.crawlStatus = '开始爬取...'
@@ -100,7 +100,7 @@ export const useNewsStore = defineStore('news', {
         
         return resp
       } catch (error) {
-        this.crawlStatus = '爬取失败：' + error.message
+        this.crawlStatus = `爬取失败：${error.message}`
         throw error
       } finally {
         this.crawling = false
@@ -113,7 +113,7 @@ export const useNewsStore = defineStore('news', {
     },
 
     // 删除新闻
-    async deleteNews(newsId) {
+    async deleteNews (newsId) {
       try {
         await englishAPI.deleteNews(newsId)
         // 从本地列表中移除
@@ -126,7 +126,7 @@ export const useNewsStore = defineStore('news', {
     },
 
     // 批量删除新闻
-    async batchDeleteNews(newsIds) {
+    async batchDeleteNews (newsIds) {
       try {
         const deletePromises = newsIds.map(id => englishAPI.deleteNews(id))
         await Promise.all(deletePromises)
@@ -144,7 +144,7 @@ export const useNewsStore = defineStore('news', {
 
 
     // 保存爬取设置
-    async saveCrawlSettings(settings) {
+    async saveCrawlSettings (settings) {
       try {
         this.crawlSettings = { ...this.crawlSettings, ...settings }
         localStorage.setItem('crawlSettings', JSON.stringify(this.crawlSettings))
@@ -159,7 +159,7 @@ export const useNewsStore = defineStore('news', {
     },
 
     // 加载爬取设置
-    loadCrawlSettings() {
+    loadCrawlSettings () {
       try {
         const savedSettings = localStorage.getItem('crawlSettings')
         if (savedSettings) {
@@ -171,31 +171,31 @@ export const useNewsStore = defineStore('news', {
     },
 
     // 搜索新闻
-    async searchNews(keyword) {
+    async searchNews (keyword) {
       this.newsQuery.search = keyword
       return await this.fetchNews()
     },
 
     // 按来源筛选新闻
-    async filterNewsBySource(source) {
+    async filterNewsBySource (source) {
       this.newsQuery.source = source
       return await this.fetchNews()
     },
 
     // 重置查询
-    resetQuery() {
+    resetQuery () {
       this.newsQuery = { search: '', source: '', ordering: '-published_at' }
       this.newsPagination.page = 1
     },
 
     // 获取管理界面新闻列表
-    async fetchManagementNews(params = {}) {
+    async fetchManagementNews (params = {}) {
       this.managementNewsLoading = true
       try {
         const query = {
           page: 1,
           page_size: 100, // 管理界面显示更多新闻
-          ...params
+          ...params,
         }
         const resp = await englishAPI.getNewsList(query)
         const data = resp?.data || resp?.results || resp?.items || []
@@ -207,7 +207,7 @@ export const useNewsStore = defineStore('news', {
     },
 
     // 重置状态
-    resetState() {
+    resetState () {
       this.news = []
       this.newsLoading = false
       this.newsPagination = { page: 1, pageSize: 20, total: 0 }
@@ -219,7 +219,7 @@ export const useNewsStore = defineStore('news', {
       this.newsDetailLoading = false
       this.managementNews = []
       this.managementNewsLoading = false
-    }
+    },
   },
 
   getters: {
@@ -260,7 +260,7 @@ export const useNewsStore = defineStore('news', {
       return {
         isCrawling: state.crawling,
         progress: state.crawlProgress,
-        status: state.crawlStatus
+        status: state.crawlStatus,
       }
     },
 
@@ -278,8 +278,8 @@ export const useNewsStore = defineStore('news', {
         total,
         visible,
         hidden: total - visible,
-        bySource
+        bySource,
       }
-    }
-  }
+    },
+  },
 })

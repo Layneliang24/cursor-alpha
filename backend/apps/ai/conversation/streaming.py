@@ -453,3 +453,4 @@ class StreamingResponse:
     async def close(self):
         """关闭响应"""
         await self.streamer.close_stream(self.stream_id)
+

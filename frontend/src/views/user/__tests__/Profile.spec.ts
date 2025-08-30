@@ -223,18 +223,18 @@ const mockProfile = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       userProfile: {
         username: 'testuser',
         email: 'test@example.com',
         avatar: null,
-        date_joined: '2024-01-01T00:00:00Z'
+        date_joined: '2024-01-01T00:00:00Z',
       },
       userStats: {
         articles: 15,
         likes: 128,
-        views: 2048
+        views: 2048,
       },
       profileForm: {
         username: 'testuser',
@@ -249,13 +249,13 @@ const mockProfile = {
         skills: 'JavaScript, Vue.js, Python',
         github: 'https://github.com/testuser',
         linkedin: 'https://linkedin.com/in/testuser',
-        twitter: 'https://twitter.com/testuser'
+        twitter: 'https://twitter.com/testuser',
       },
       profileRules: {
         email: [
           { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
-        ]
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
+        ],
       },
       updating: false,
       showAvatarUpload: false,
@@ -265,21 +265,21 @@ const mockProfile = {
       animatedAvatars: [
         { id: 1, name: '机器人', url: 'avatar1.png' },
         { id: 2, name: '猫咪', url: 'avatar2.png' },
-        { id: 3, name: '狗狗', url: 'avatar3.png' }
+        { id: 3, name: '狗狗', url: 'avatar3.png' },
       ],
       cartoonAvatars: [
         { id: 4, name: '卡通男', url: 'cartoon1.png' },
         { id: 5, name: '卡通女', url: 'cartoon2.png' },
-        { id: 6, name: '卡通动物', url: 'cartoon3.png' }
-      ]
+        { id: 6, name: '卡通动物', url: 'cartoon3.png' },
+      ],
     }
   },
   methods: {
-    formatDate(date) {
+    formatDate (date) {
       if (!date) return '未知'
       return new Date(date).toLocaleDateString('zh-CN')
     },
-    async updateProfile() {
+    async updateProfile () {
       this.updating = true
       try {
         // Mock API call
@@ -289,7 +289,7 @@ const mockProfile = {
         this.updating = false
       }
     },
-    resetForm() {
+    resetForm () {
       this.profileForm = {
         username: 'testuser',
         email: 'test@example.com',
@@ -303,10 +303,10 @@ const mockProfile = {
         skills: 'JavaScript, Vue.js, Python',
         github: 'https://github.com/testuser',
         linkedin: 'https://linkedin.com/in/testuser',
-        twitter: 'https://twitter.com/testuser'
+        twitter: 'https://twitter.com/testuser',
       }
     },
-    beforeAvatarUpload(file) {
+    beforeAvatarUpload (file) {
       const isImage = file.type.startsWith('image/')
       const isLt2M = file.size / 1024 / 1024 < 2
       
@@ -320,18 +320,18 @@ const mockProfile = {
       }
       return true
     },
-    uploadAvatar(options) {
-      const file = options.file
+    uploadAvatar (options) {
+      const { file } = options
       const reader = new FileReader()
       reader.onload = (e) => {
         this.newAvatar = e.target.result
       }
       reader.readAsDataURL(file)
     },
-    selectAnimatedAvatar(url) {
+    selectAnimatedAvatar (url) {
       this.selectedAnimatedAvatar = url
     },
-    async confirmAvatarChange() {
+    async confirmAvatarChange () {
       if (this.selectedAnimatedAvatar) {
         this.userProfile.avatar = this.selectedAnimatedAvatar
       } else if (this.newAvatar) {
@@ -341,27 +341,27 @@ const mockProfile = {
       this.selectedAnimatedAvatar = null
       this.newAvatar = null
     },
-    async loadUserProfile() {
+    async loadUserProfile () {
       // Mock API call
       await new Promise(resolve => setTimeout(resolve, 50))
       // Data is already loaded in data()
     },
-    async loadUserStats() {
+    async loadUserStats () {
       // Mock API call
       await new Promise(resolve => setTimeout(resolve, 50))
       // Data is already loaded in data()
-    }
+    },
   },
-  mounted() {
+  mounted () {
     this.loadUserProfile()
     this.loadUserStats()
-  }
+  },
 }
 
 // Mock 路由
 const router = createRouter({
   history: createWebHistory(),
-  routes: []
+  routes: [],
 })
 
 // Mock Pinia
@@ -378,8 +378,8 @@ describe('Profile.vue Component', () => {
 
     wrapper = mount(mockProfile, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     
     await router.isReady()
@@ -604,7 +604,7 @@ describe('Profile.vue Component', () => {
     it('头像上传验证', () => {
       const mockFile = {
         type: 'image/jpeg',
-        size: 1024 * 1024 // 1MB
+        size: 1024 * 1024, // 1MB
       }
       const result = wrapper.vm.beforeAvatarUpload(mockFile)
       expect(result).toBe(true)

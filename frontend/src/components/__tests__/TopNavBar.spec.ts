@@ -137,7 +137,7 @@ const mockTopNavBar = {
     </div>
   </nav>
   `,
-  data() {
+  data () {
     return {
       searchQuery: '',
       searchFocused: false,
@@ -148,27 +148,27 @@ const mockTopNavBar = {
       userName: 'testuser',
       userEmail: 'test@example.com',
       userAvatar: 'https://example.com/avatar.jpg',
-      isAdminUi: false
+      isAdminUi: false,
     }
   },
   methods: {
-    handleSearch() {
+    handleSearch () {
       if (this.searchQuery.trim()) {
         this.redirectToSearch(this.searchQuery)
       }
     },
     
-    redirectToSearch(query) {
+    redirectToSearch (query) {
       // 模拟路由跳转
       console.log('Searching for:', query)
     },
     
-    async handleLogout() {
+    async handleLogout () {
       await this.logout()
       this.redirectToLogin()
     },
     
-    async logout() {
+    async logout () {
       // 模拟登出逻辑
       this.isAuthenticated = false
       this.userName = ''
@@ -176,67 +176,67 @@ const mockTopNavBar = {
       console.log('User logged out')
     },
     
-    redirectToLogin() {
+    redirectToLogin () {
       // 模拟路由跳转
       console.log('Redirecting to login')
     },
     
-    toggleBlogDropdown() {
+    toggleBlogDropdown () {
       this.blogDropdownOpen = !this.blogDropdownOpen
       if (this.blogDropdownOpen) {
         this.englishDropdownOpen = false
       }
     },
     
-    toggleEnglishDropdown() {
+    toggleEnglishDropdown () {
       this.englishDropdownOpen = !this.englishDropdownOpen
       if (this.englishDropdownOpen) {
         this.blogDropdownOpen = false
       }
     },
     
-    closeBlogDropdown() {
+    closeBlogDropdown () {
       this.blogDropdownOpen = false
     },
     
-    closeEnglishDropdown() {
+    closeEnglishDropdown () {
       this.englishDropdownOpen = false
     },
     
-    closeAllDropdowns() {
+    closeAllDropdowns () {
       this.blogDropdownOpen = false
       this.englishDropdownOpen = false
       this.userDropdownOpen = false
     },
     
-    toggleUserDropdown() {
+    toggleUserDropdown () {
       this.userDropdownOpen = !this.userDropdownOpen
     },
     
-    showNotifications() {
+    showNotifications () {
       // 显示通知列表
       console.log('显示通知')
     },
     
-    setAuthenticatedState(authenticated, username = 'testuser', email = 'test@example.com', isAdmin = false) {
+    setAuthenticatedState (authenticated, username = 'testuser', email = 'test@example.com', isAdmin = false) {
       this.isAuthenticated = authenticated
       this.userName = username
       this.userEmail = email
       this.isAdminUi = isAdmin
     },
     
-    setSearchQuery(query) {
+    setSearchQuery (query) {
       this.searchQuery = query
     },
     
-    setSearchFocus(focused) {
+    setSearchFocus (focused) {
       this.searchFocused = focused
-    }
+    },
   },
-  mounted() {
+  mounted () {
     // 初始化组件
     console.log('TopNavBar mounted')
-  }
+  },
 }
 
 // Mock vue-router
@@ -245,8 +245,8 @@ vi.mock('vue-router', async () => {
   return {
     ...actual,
     useRouter: () => ({
-      push: vi.fn()
-    })
+      push: vi.fn(),
+    }),
   }
 })
 
@@ -255,8 +255,8 @@ vi.mock('@/stores/auth', () => ({
   useAuthStore: () => ({
     isAuthenticated: false,
     user: null,
-    logout: vi.fn()
-  })
+    logout: vi.fn(),
+  }),
 }))
 
 const pinia = createPinia()
@@ -272,8 +272,8 @@ describe('TopNavBar.vue Component', () => {
     
     wrapper = mount(mockTopNavBar, {
       global: {
-        plugins: [pinia]
-      }
+        plugins: [pinia],
+      },
     })
     
     await wrapper.vm.$nextTick()

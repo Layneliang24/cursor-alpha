@@ -323,3 +323,4 @@ class HealthMonitor:
             health.last_check = datetime.now()
             
             logger.info(f"强制设置服务 {service_name} 健康状态: {is_healthy}")
+

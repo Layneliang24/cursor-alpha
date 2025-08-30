@@ -9,15 +9,15 @@ vi.mock('element-plus', () => ({
     success: vi.fn(),
     error: vi.fn(),
     warning: vi.fn(),
-    info: vi.fn()
-  }
+    info: vi.fn(),
+  },
 }))
 
 describe('MarkdownEditor.vue Component', () => {
   let wrapper: any
 
   const defaultProps = {
-    modelValue: '# 测试标题\n这是测试内容'
+    modelValue: '# 测试标题\n这是测试内容',
   }
 
   beforeEach(() => {
@@ -39,10 +39,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.find('.markdown-editor').exists()).toBe(true)
@@ -56,10 +56,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.find('.markdown-editor').exists()).toBe(true)
@@ -74,10 +74,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.props().modelValue).toBe(defaultProps.modelValue)
@@ -92,10 +92,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.props().modelValue).toBe('')
@@ -108,10 +108,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       const textarea = wrapper.find('.markdown-input')
@@ -126,10 +126,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.exists()).toBe(true)
@@ -145,10 +145,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.exists()).toBe(true)
@@ -166,10 +166,10 @@ describe('MarkdownEditor.vue Component', () => {
               'el-button': {
                 template: '<button class="el-button"><slot /></button>',
                 props: ['size', 'title', 'type'],
-                emits: ['click']
-              }
-            }
-          }
+                emits: ['click'],
+              },
+            },
+          },
         })
         expect(wrapper.exists()).toBe(true)
         wrapper.unmount()
@@ -185,10 +185,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.text()).toContain('编辑器')
@@ -201,10 +201,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.text()).toContain('预览')
@@ -217,10 +217,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       const textarea = wrapper.find('.markdown-input')
@@ -234,10 +234,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       const preview = wrapper.find('.markdown-preview')
@@ -251,10 +251,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       const tools = wrapper.find('.editor-tools')
@@ -268,10 +268,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       const buttons = wrapper.findAll('.editor-tools .el-button')
@@ -287,10 +287,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       const textarea = wrapper.find('.markdown-input')
@@ -309,10 +309,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       const textarea = wrapper.find('.markdown-input')
@@ -328,10 +328,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       const textarea = wrapper.find('.markdown-input')
@@ -347,17 +347,17 @@ describe('MarkdownEditor.vue Component', () => {
       const testValue = '# Initial content'
       wrapper = mount(MarkdownEditor, {
         props: {
-          modelValue: testValue
+          modelValue: testValue,
         },
         global: {
           stubs: {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.vm.content).toBe(testValue)
@@ -373,10 +373,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.props().modelValue).toBe('')
@@ -391,10 +391,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.props().modelValue).toBe(null)
@@ -408,10 +408,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       // Vue会将undefined处理为空字符串，这是正常行为
@@ -427,10 +427,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.props().modelValue).toBe(longContent)
@@ -446,10 +446,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.classes()).toContain('markdown-editor')
@@ -463,10 +463,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       const editorContainer = wrapper.find('.editor-container')
@@ -482,10 +482,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       // 快速连续变化内容
@@ -508,10 +508,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.exists()).toBe(true)
@@ -528,10 +528,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.props().modelValue).toBe('原始内容')
@@ -551,10 +551,10 @@ describe('MarkdownEditor.vue Component', () => {
             'el-button': {
               template: '<button class="el-button"><slot /></button>',
               props: ['size', 'title', 'type'],
-              emits: ['click']
-            }
-          }
-        }
+              emits: ['click'],
+            },
+          },
+        },
       })
       
       expect(wrapper.props().modelValue).toBe('原始内容')

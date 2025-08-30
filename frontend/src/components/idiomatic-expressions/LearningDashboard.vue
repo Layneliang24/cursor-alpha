@@ -164,10 +164,21 @@
       <template #header>
         <div class="card-header">
           <span>学习目标</span>
-          <el-button type="primary" size="small" @click="showCreateGoalDialog = true">
-            <el-icon><Plus /></el-icon>
-            新建目标
-          </el-button>
+          <div class="header-actions">
+            <el-button 
+              type="info" 
+              size="small" 
+              @click="navigateToAnalytics"
+              style="margin-right: 10px"
+            >
+              <el-icon><TrendCharts /></el-icon>
+              详细分析
+            </el-button>
+            <el-button type="primary" size="small" @click="showCreateGoalDialog = true">
+              <el-icon><Plus /></el-icon>
+              新建目标
+            </el-button>
+          </div>
         </div>
       </template>
       
@@ -338,6 +349,11 @@ const formatDate = (dateString: string) => {
 // 方法
 const startLearning = () => {
   emit('startLearning')
+}
+
+const navigateToAnalytics = () => {
+  // 导航到详细分析页面
+  window.open('/english/learning-analytics', '_blank')
 }
 
 const createGoal = async () => {
@@ -599,6 +615,11 @@ onMounted(async () => {
 .card-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.header-actions {
+  display: flex;
   align-items: center;
 }
 

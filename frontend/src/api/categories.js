@@ -3,37 +3,37 @@ import request from './request'
 // 分类相关API
 export const categoriesAPI = {
   // 获取分类列表
-  getCategories() {
+  getCategories () {
     return request.get('/categories/')
   },
 
   // 获取分类详情
-  getCategory(id) {
+  getCategory (id) {
     return request.get(`/categories/${id}/`)
   },
 
   // 获取分类下的文章
-  getCategoryArticles(id, params = {}) {
+  getCategoryArticles (id, params = {}) {
     return request.get(`/categories/${id}/articles/`, { params })
   },
 
   // 创建分类
-  createCategory(data) {
+  createCategory (data) {
     return request.post('/categories/', data)
   },
 
   // 更新分类
-  updateCategory(id, data) {
+  updateCategory (id, data) {
     return request.put(`/categories/${id}/`, data)
   },
 
   // 删除分类
-  deleteCategory(id) {
+  deleteCategory (id) {
     return request.delete(`/categories/${id}/`)
   },
 
   // 获取标签列表
-  getTags() {
+  getTags () {
     return request.get('/tags/')
-  }
+  },
 }

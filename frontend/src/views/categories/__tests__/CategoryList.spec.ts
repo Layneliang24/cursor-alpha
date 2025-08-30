@@ -42,7 +42,7 @@ const mockCategoryList = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       loading: false,
       categories: [
@@ -52,7 +52,7 @@ const mockCategoryList = {
           description: '渐进式JavaScript框架',
           icon: '🟩',
           color: '#42b883',
-          article_count: 25
+          article_count: 25,
         },
         {
           id: 2,
@@ -60,7 +60,7 @@ const mockCategoryList = {
           description: '用于构建用户界面的JavaScript库',
           icon: '⚛️',
           color: '#61dafb',
-          article_count: 18
+          article_count: 18,
         },
         {
           id: 3,
@@ -68,7 +68,7 @@ const mockCategoryList = {
           description: '简单易学的编程语言',
           icon: '🐍',
           color: '#3776ab',
-          article_count: 32
+          article_count: 32,
         },
         {
           id: 4,
@@ -76,13 +76,13 @@ const mockCategoryList = {
           description: '容器化平台',
           icon: '🐳',
           color: '#2496ed',
-          article_count: 12
-        }
-      ]
+          article_count: 12,
+        },
+      ],
     }
   },
   computed: {
-    styledCategories() {
+    styledCategories () {
       const list = this.categories || []
       if (list.length === 0) return []
       
@@ -101,12 +101,12 @@ const mockCategoryList = {
       return list.map(cat => ({
         ...cat,
         iconText: cat.icon?.trim() || this.getIconByName(cat.name),
-        sizeClass: getSizeClass(cat.article_count || 0)
+        sizeClass: getSizeClass(cat.article_count || 0),
       }))
-    }
+    },
   },
   methods: {
-    getIconByName(name) {
+    getIconByName (name) {
       if (!name) return '📁'
       const key = String(name).toLowerCase()
       const map = {
@@ -119,7 +119,7 @@ const mockCategoryList = {
         docker: '🐳', kubernetes: '☸️', devops: '🔧', linux: '🐧',
         cloud: '☁️', aws: '☁️', azure: '☁️', gcp: '☁️',
         ai: '🤖', ml: '🧠', machine: '🧠', data: '📊',
-        security: '🛡️', testing: '🧪', mobile: '📱', frontend: '🎨', backend: '🧱'
+        security: '🛡️', testing: '🧪', mobile: '📱', frontend: '🎨', backend: '🧱',
       }
       
       // 长名称匹配
@@ -128,10 +128,10 @@ const mockCategoryList = {
       }
       return '📁'
     },
-    goDetail(id) {
+    goDetail (id) {
       this.$router.push({ name: 'CategoryDetail', params: { id } })
     },
-    async fetchCategories() {
+    async fetchCategories () {
       this.loading = true
       try {
         // Mock API call
@@ -142,19 +142,19 @@ const mockCategoryList = {
       } finally {
         this.loading = false
       }
-    }
+    },
   },
-  mounted() {
+  mounted () {
     // this.fetchCategories() // 注释掉自动加载，避免测试中的加载状态问题
-  }
+  },
 }
 
 // Mock 路由
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { name: 'CategoryDetail', path: '/categories/:id', component: { template: '<div>Detail</div>' } }
-  ]
+    { name: 'CategoryDetail', path: '/categories/:id', component: { template: '<div>Detail</div>' } },
+  ],
 })
 
 // Mock router.push
@@ -174,8 +174,8 @@ describe('CategoryList.vue Component', () => {
 
     wrapper = mount(mockCategoryList, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     
     await router.isReady()

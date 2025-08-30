@@ -8,8 +8,8 @@ vi.mock('../request', () => ({
     get: vi.fn(),
     post: vi.fn(),
     put: vi.fn(),
-    delete: vi.fn()
-  }
+    delete: vi.fn(),
+  },
 }))
 
 describe('articles.js API', () => {
@@ -27,11 +27,11 @@ describe('articles.js API', () => {
         const mockArticles = {
           results: [
             { id: 1, title: '文章1', content: '内容1' },
-            { id: 2, title: '文章2', content: '内容2' }
+            { id: 2, title: '文章2', content: '内容2' },
           ],
           count: 2,
           next: null,
-          previous: null
+          previous: null,
         }
         
         vi.mocked(request.get).mockResolvedValue(mockArticles)
@@ -47,12 +47,12 @@ describe('articles.js API', () => {
           page: 1,
           page_size: 10,
           category: '技术',
-          search: 'Vue'
+          search: 'Vue',
         }
         
         const mockArticles = {
           results: [{ id: 1, title: 'Vue.js教程', category: '技术' }],
-          count: 1
+          count: 1,
         }
         
         vi.mocked(request.get).mockResolvedValue(mockArticles)
@@ -90,7 +90,7 @@ describe('articles.js API', () => {
           title: '测试文章',
           content: '这是测试文章的内容',
           author: { username: 'testuser' },
-          created_at: '2024-01-15T10:00:00Z'
+          created_at: '2024-01-15T10:00:00Z',
         }
         
         vi.mocked(request.get).mockResolvedValue(mockArticle)
@@ -137,14 +137,14 @@ describe('articles.js API', () => {
           title: '新文章',
           content: '新文章内容',
           summary: '新文章摘要',
-          category: 1
+          category: 1,
         }
         
         const mockResponse = {
           id: 3,
           ...articleData,
           created_at: '2024-01-15T12:00:00Z',
-          author: { username: 'currentuser' }
+          author: { username: 'currentuser' },
         }
         
         vi.mocked(request.post).mockResolvedValue(mockResponse)
@@ -163,7 +163,7 @@ describe('articles.js API', () => {
           category: 1,
           tags: ['Vue', 'JavaScript'],
           cover_image: 'https://example.com/cover.jpg',
-          featured: true
+          featured: true,
         }
         
         const mockResponse = { id: 4, ...articleData }
@@ -200,13 +200,13 @@ describe('articles.js API', () => {
         const articleId = 1
         const updateData = {
           title: '更新后的标题',
-          content: '更新后的内容'
+          content: '更新后的内容',
         }
         
         const mockResponse = {
           id: articleId,
           ...updateData,
-          updated_at: '2024-01-15T13:00:00Z'
+          updated_at: '2024-01-15T13:00:00Z',
         }
         
         vi.mocked(request.put).mockResolvedValue(mockResponse)
@@ -225,7 +225,7 @@ describe('articles.js API', () => {
           id: articleId,
           title: '只更新标题',
           content: '原有内容保持不变',
-          summary: '原有摘要保持不变'
+          summary: '原有摘要保持不变',
         }
         
         vi.mocked(request.put).mockResolvedValue(mockResponse)
@@ -299,7 +299,7 @@ describe('articles.js API', () => {
         const articleId = 1
         const mockResponse = {
           message: 'Article liked successfully',
-          likes_count: 26
+          likes_count: 26,
         }
         
         vi.mocked(request.post).mockResolvedValue(mockResponse)
@@ -314,7 +314,7 @@ describe('articles.js API', () => {
         const articleId = 2
         const mockResponse = {
           message: 'Article already liked',
-          likes_count: 15
+          likes_count: 15,
         }
         
         vi.mocked(request.post).mockResolvedValue(mockResponse)
@@ -341,7 +341,7 @@ describe('articles.js API', () => {
         const articleId = 1
         const mockResponse = {
           message: 'Article bookmarked successfully',
-          bookmarked: true
+          bookmarked: true,
         }
         
         vi.mocked(request.post).mockResolvedValue(mockResponse)
@@ -356,7 +356,7 @@ describe('articles.js API', () => {
         const articleId = 2
         const mockResponse = {
           message: 'Article unbookmarked successfully',
-          bookmarked: false
+          bookmarked: false,
         }
         
         vi.mocked(request.post).mockResolvedValue(mockResponse)
@@ -386,14 +386,14 @@ describe('articles.js API', () => {
             id: 1,
             content: '很好的文章！',
             author: { username: 'user1' },
-            created_at: '2024-01-15T10:00:00Z'
+            created_at: '2024-01-15T10:00:00Z',
           },
           {
             id: 2,
             content: '学习了，谢谢分享',
             author: { username: 'user2' },
-            created_at: '2024-01-15T11:00:00Z'
-          }
+            created_at: '2024-01-15T11:00:00Z',
+          },
         ]
         
         vi.mocked(request.get).mockResolvedValue(mockComments)
@@ -432,14 +432,14 @@ describe('articles.js API', () => {
         const commentData = {
           article: 1,
           content: '这是一条新评论',
-          parent: null
+          parent: null,
         }
         
         const mockResponse = {
           id: 3,
           ...commentData,
           author: { username: 'currentuser' },
-          created_at: '2024-01-15T14:00:00Z'
+          created_at: '2024-01-15T14:00:00Z',
         }
         
         vi.mocked(request.post).mockResolvedValue(mockResponse)
@@ -454,14 +454,14 @@ describe('articles.js API', () => {
         const commentData = {
           article: 1,
           content: '这是回复评论',
-          parent: 1
+          parent: 1,
         }
         
         const mockResponse = {
           id: 4,
           ...commentData,
           author: { username: 'currentuser' },
-          created_at: '2024-01-15T15:00:00Z'
+          created_at: '2024-01-15T15:00:00Z',
         }
         
         vi.mocked(request.post).mockResolvedValue(mockResponse)
@@ -543,7 +543,7 @@ describe('articles.js API', () => {
         ordering: '-created_at',
         author: 'testuser',
         featured: true,
-        tags: 'javascript,vue'
+        tags: 'javascript,vue',
       }
       
       const mockResponse = { results: [], count: 0 }
@@ -564,7 +564,7 @@ describe('articles.js API', () => {
         cover_image: 'https://example.com/cover.jpg',
         featured: true,
         allow_comments: true,
-        status: 'published'
+        status: 'published',
       }
       
       const mockResponse = { id: 6, ...articleData }
@@ -572,7 +572,7 @@ describe('articles.js API', () => {
       
       const result = await articlesAPI.createArticle(articleData)
       
-             expect(request.post).toHaveBeenCalledWith('/articles/', articleData)
+      expect(request.post).toHaveBeenCalledWith('/articles/', articleData)
       expect(result).toEqual(mockResponse)
     })
   })
@@ -602,7 +602,7 @@ describe('articles.js API', () => {
       // 并发调用
       const [article, comments] = await Promise.all([
         articlesAPI.getArticle(1),
-        articlesAPI.getComments(1)
+        articlesAPI.getComments(1),
       ])
       
       expect(article).toEqual(mockArticle)

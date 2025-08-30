@@ -91,7 +91,7 @@ const mockPractice = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       loading: false,
       questions: [
@@ -103,9 +103,9 @@ const mockPractice = {
             { id: 'a', text: '苹果', isCorrect: true },
             { id: 'b', text: '香蕉', isCorrect: false },
             { id: 'c', text: '橙子', isCorrect: false },
-            { id: 'd', text: '葡萄', isCorrect: false }
+            { id: 'd', text: '葡萄', isCorrect: false },
           ],
-          translation: '苹果'
+          translation: '苹果',
         },
         {
           id: 2,
@@ -113,8 +113,8 @@ const mockPractice = {
           question: 'Complete the sentence: "I ___ a student."',
           placeholder: 'Enter the correct form of "be"',
           answer: 'am',
-          translation: '我是一个学生。'
-        }
+          translation: '我是一个学生。',
+        },
       ],
       currentIndex: 0,
       selectedAnswer: null,
@@ -122,20 +122,20 @@ const mockPractice = {
       showResult: false,
       showResults: false,
       correctCount: 0,
-      answers: []
+      answers: [],
     }
   },
   computed: {
-    currentQuestion() {
+    currentQuestion () {
       return this.questions[this.currentIndex] || null
     },
-    totalQuestions() {
+    totalQuestions () {
       return this.questions.length
     },
-    isLastQuestion() {
+    isLastQuestion () {
       return this.currentIndex === this.totalQuestions - 1
     },
-    canSubmit() {
+    canSubmit () {
       if (this.currentQuestion?.type === 'multiple_choice') {
         return this.selectedAnswer !== null
       } else if (this.currentQuestion?.type === 'fill_blank') {
@@ -143,22 +143,22 @@ const mockPractice = {
       }
       return false
     },
-    accuracy() {
+    accuracy () {
       if (this.answers.length === 0) return 0
       const correct = this.answers.filter(answer => answer.isCorrect).length
       return Math.round((correct / this.answers.length) * 100)
     },
-    finalAccuracy() {
+    finalAccuracy () {
       return Math.round((this.correctCount / this.totalQuestions) * 100)
-    }
+    },
   },
   methods: {
-    selectAnswer(answerId) {
+    selectAnswer (answerId) {
       if (!this.showResult) {
         this.selectedAnswer = answerId
       }
     },
-    submitAnswer() {
+    submitAnswer () {
       if (!this.canSubmit) return
       
       let isCorrect = false
@@ -173,7 +173,7 @@ const mockPractice = {
       this.answers.push({
         questionId: this.currentQuestion.id,
         answer: this.currentQuestion.type === 'multiple_choice' ? this.selectedAnswer : this.userAnswer,
-        isCorrect
+        isCorrect,
       })
       
       if (isCorrect) {
@@ -182,7 +182,7 @@ const mockPractice = {
       
       this.showResult = true
     },
-    nextQuestion() {
+    nextQuestion () {
       if (this.isLastQuestion) {
         this.showResults = true
       } else {
@@ -190,30 +190,30 @@ const mockPractice = {
         this.resetQuestion()
       }
     },
-    resetQuestion() {
+    resetQuestion () {
       this.selectedAnswer = null
       this.userAnswer = ''
       this.showResult = false
     },
-    restartPractice() {
+    restartPractice () {
       this.currentIndex = 0
       this.correctCount = 0
       this.answers = []
       this.showResults = false
       this.resetQuestion()
     },
-    goToDashboard() {
+    goToDashboard () {
       this.$router.push('/english/dashboard')
-    }
-  }
+    },
+  },
 }
 
 // Mock 路由
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/english/dashboard', component: { template: '<div>Dashboard</div>' } }
-  ]
+    { path: '/english/dashboard', component: { template: '<div>Dashboard</div>' } },
+  ],
 })
 
 // Mock router.push
@@ -233,8 +233,8 @@ describe('Practice.vue Component', () => {
 
     wrapper = mount(mockPractice, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     
     await router.isReady()

@@ -106,7 +106,7 @@ const mockNewsDashboard = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       showCrawlSettings: false,
       featuredNews: [
@@ -117,7 +117,7 @@ const mockNewsDashboard = {
           image_url: '/news1.jpg',
           source: 'TechCrunch',
           published_at: '2024-01-15T10:00:00Z',
-          word_count: 250
+          word_count: 250,
         },
         {
           id: 2,
@@ -126,8 +126,8 @@ const mockNewsDashboard = {
           image_url: '/news2.jpg',
           source: 'BBC News',
           published_at: '2024-01-14T15:30:00Z',
-          word_count: 300
-        }
+          word_count: 300,
+        },
       ],
       hotNews: [
         {
@@ -137,8 +137,8 @@ const mockNewsDashboard = {
           image_url: '/news3.jpg',
           source: 'CNN',
           publish_date: '2024-01-13T12:00:00Z',
-          word_count: 180
-        }
+          word_count: 180,
+        },
       ],
       latestNews: [
         {
@@ -148,41 +148,41 @@ const mockNewsDashboard = {
           image_url: '/news4.jpg',
           source: 'Reuters',
           published_at: '2024-01-12T09:15:00Z',
-          word_count: 220
-        }
+          word_count: 220,
+        },
       ],
       crawlSettings: {
         sources: 'techcrunch',
-        limit: 10
-      }
+        limit: 10,
+      },
     }
   },
   methods: {
-    formatDate(dateString) {
+    formatDate (dateString) {
       if (!dateString) return ''
       const date = new Date(dateString)
       return date.toLocaleDateString('zh-CN')
     },
-    truncateText(text, maxLength) {
+    truncateText (text, maxLength) {
       if (!text) return ''
-      return text.length > maxLength ? text.substring(0, maxLength) + '...' : text
+      return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text
     },
-    viewNewsDetail(news) {
+    viewNewsDetail (news) {
       this.$router.push(`/english/news/${news.id}`)
     },
-    openNewsManagement() {
+    openNewsManagement () {
       this.$router.push('/english/news/management')
     },
-    crawlNews() {
+    crawlNews () {
       // Mock implementation
       console.log('开始爬取新闻')
     },
-    saveCrawlSettings() {
+    saveCrawlSettings () {
       this.showCrawlSettings = false
       // Mock implementation
       console.log('保存爬取设置:', this.crawlSettings)
-    }
-  }
+    },
+  },
 }
 
 // Mock 路由
@@ -190,8 +190,8 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/english/news/:id', component: { template: '<div>NewsDetail</div>' } },
-    { path: '/english/news/management', component: { template: '<div>NewsManagement</div>' } }
-  ]
+    { path: '/english/news/management', component: { template: '<div>NewsManagement</div>' } },
+  ],
 })
 
 // Mock router.push
@@ -211,8 +211,8 @@ describe('NewsDashboard.vue Component', () => {
 
     wrapper = mount(mockNewsDashboard, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     
     await router.isReady()

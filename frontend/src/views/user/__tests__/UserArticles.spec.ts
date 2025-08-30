@@ -129,7 +129,7 @@ const mockUserArticles = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       loading: false,
       activeStatus: 'all',
@@ -143,7 +143,7 @@ const mockUserArticles = {
           views: 1250,
           likes: 45,
           comments_count: 12,
-          created_at: '2024-01-15T10:30:00Z'
+          created_at: '2024-01-15T10:30:00Z',
         },
         {
           id: 2,
@@ -154,7 +154,7 @@ const mockUserArticles = {
           views: 0,
           likes: 0,
           comments_count: 0,
-          created_at: '2024-01-20T14:20:00Z'
+          created_at: '2024-01-20T14:20:00Z',
         },
         {
           id: 3,
@@ -165,77 +165,77 @@ const mockUserArticles = {
           views: 890,
           likes: 23,
           comments_count: 8,
-          created_at: '2024-01-10T09:15:00Z'
-        }
+          created_at: '2024-01-10T09:15:00Z',
+        },
       ],
       currentPage: 1,
       pageSize: 10,
-      total: 3
+      total: 3,
     }
   },
   computed: {
-    totalPages() {
+    totalPages () {
       return Math.ceil(this.total / this.pageSize)
-    }
+    },
   },
   methods: {
-    createArticle() {
+    createArticle () {
       this.$router.push('/articles/create')
     },
-    handleStatusChange(status) {
+    handleStatusChange (status) {
       this.activeStatus = status
       this.loadArticles()
     },
-    getStatusType(status) {
+    getStatusType (status) {
       const types = {
         published: 'success',
         draft: 'warning',
-        archived: 'info'
+        archived: 'info',
       }
       return types[status] || 'info'
     },
-    getStatusText(status) {
+    getStatusText (status) {
       const texts = {
         published: '已发布',
         draft: '草稿',
-        archived: '已归档'
+        archived: '已归档',
       }
       return texts[status] || '未知'
     },
-    getContrastColor(backgroundColor) {
+    getContrastColor (backgroundColor) {
       // Mock contrast color calculation
       return '#ffffff'
     },
-    formatDate(date) {
+    formatDate (date) {
       if (!date) return '未知'
       return new Date(date).toLocaleDateString('zh-CN')
     },
-    viewArticle(id) {
+    viewArticle (id) {
       this.$router.push(`/articles/${id}`)
     },
-    editArticle(id) {
+    editArticle (id) {
       this.$router.push(`/articles/${id}/edit`)
     },
-    deleteArticle(id) {
+    deleteArticle (id) {
       if (confirm('确定要删除这篇文章吗？')) {
         console.log('删除文章:', id)
         this.articles = this.articles.filter(article => article.id !== id)
         this.total--
       }
     },
-    prevPage() {
+    prevPage () {
       if (this.currentPage > 1) {
         this.currentPage--
         this.loadArticles()
       }
     },
-    nextPage() {
+    nextPage () {
       if (this.currentPage < this.totalPages) {
         this.currentPage++
         this.loadArticles()
       }
     },
-    async loadArticles() {
+    async loadArticles () {
       this.loading = true
       try {
         // Mock API call
@@ -244,12 +244,12 @@ const mockUserArticles = {
       } finally {
         this.loading = false
       }
-    }
+    },
   },
-  mounted() {
+  mounted () {
     // Auto load articles on mount - disabled for testing
     // this.loadArticles()
-  }
+  },
 }
 
 // Mock 路由
@@ -258,8 +258,8 @@ const router = createRouter({
   routes: [
     { path: '/articles/create', component: { template: '<div>Create</div>' } },
     { path: '/articles/:id', component: { template: '<div>Detail</div>' } },
-    { path: '/articles/:id/edit', component: { template: '<div>Edit</div>' } }
-  ]
+    { path: '/articles/:id/edit', component: { template: '<div>Edit</div>' } },
+  ],
 })
 
 // Mock router.push
@@ -279,8 +279,8 @@ describe('UserArticles.vue Component', () => {
 
     wrapper = mount(mockUserArticles, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     
     await router.isReady()

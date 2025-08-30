@@ -7,8 +7,8 @@ vi.mock('../request', () => ({
     get: vi.fn(),
     post: vi.fn(),
     put: vi.fn(),
-    delete: vi.fn()
-  }
+    delete: vi.fn(),
+  },
 }))
 
 describe('categoriesAPI', () => {
@@ -27,7 +27,7 @@ describe('categoriesAPI', () => {
     it('应该获取分类列表', async () => {
       const mockResponse = [
         { id: 1, name: '技术', slug: 'tech' },
-        { id: 2, name: '生活', slug: 'life' }
+        { id: 2, name: '生活', slug: 'life' },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -63,8 +63,8 @@ describe('categoriesAPI', () => {
         category: { id: 1, name: '技术' },
         articles: [
           { id: 1, title: 'Vue.js 教程', content: '...' },
-          { id: 2, title: 'React 入门', content: '...' }
-        ]
+          { id: 2, title: 'React 入门', content: '...' },
+        ],
       }
       mockRequest.get.mockResolvedValue(mockResponse)
 
@@ -117,7 +117,7 @@ describe('categoriesAPI', () => {
       const mockResponse = [
         { id: 1, name: 'Vue.js' },
         { id: 2, name: 'React' },
-        { id: 3, name: 'JavaScript' }
+        { id: 3, name: 'JavaScript' },
       ]
       mockRequest.get.mockResolvedValue(mockResponse)
 

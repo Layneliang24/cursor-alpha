@@ -7,17 +7,17 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     token: localStorage.getItem('access_token') || null,
     refreshToken: localStorage.getItem('refresh_token') || null,
-    isLoggedIn: false
+    isLoggedIn: false,
   }),
 
   getters: {
     isAuthenticated: (state) => !!state.token && !!state.user,
-    userInfo: (state) => state.user
+    userInfo: (state) => state.user,
   },
 
   actions: {
     // 登录
-    async login(credentials) {
+    async login (credentials) {
       try {
         const response = await authAPI.login(credentials)
         
@@ -39,7 +39,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     // 注册
-    async register(userData) {
+    async register (userData) {
       try {
         const response = await authAPI.register(userData)
         
@@ -62,7 +62,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     // 登出
-    async logout() {
+    async logout () {
       try {
         if (this.token) {
           await authAPI.logout()
@@ -85,7 +85,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     // 初始化用户状态
-    async initAuth() {
+    async initAuth () {
       const token = localStorage.getItem('access_token')
       const user = localStorage.getItem('user')
       
@@ -109,7 +109,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     // 静默清除认证状态
-    clearAuth() {
+    clearAuth () {
       this.user = null
       this.token = null
       this.refreshToken = null
@@ -121,7 +121,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     // 刷新token
-    async refreshAccessToken() {
+    async refreshAccessToken () {
       try {
         if (!this.refreshToken) {
           throw new Error('No refresh token available')
@@ -137,6 +137,6 @@ export const useAuthStore = defineStore('auth', {
         this.clearAuth()
         throw error
       }
-    }
-  }
+    },
+  },
 })

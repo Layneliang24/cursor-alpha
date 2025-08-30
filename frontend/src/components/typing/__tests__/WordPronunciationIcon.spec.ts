@@ -7,11 +7,11 @@ const mockUseSound = {
   play: vi.fn(),
   stop: vi.fn(),
   sound: { unload: vi.fn() },
-  isPlaying: false
+  isPlaying: false,
 }
 
 vi.mock('@vueuse/sound', () => ({
-  useSound: vi.fn(() => mockUseSound)
+  useSound: vi.fn(() => mockUseSound),
 }))
 
 // Mock Audio API
@@ -23,7 +23,7 @@ const mockAudio = {
   volume: 1,
   playbackRate: 1,
   addEventListener: vi.fn(),
-  removeEventListener: vi.fn()
+  removeEventListener: vi.fn(),
 }
 
 // 确保Audio构造函数返回正确的mock对象
@@ -33,27 +33,27 @@ global.Audio = vi.fn(() => mockAudio)
 Object.defineProperty(mockAudio, 'play', {
   value: vi.fn().mockResolvedValue(undefined),
   writable: true,
-  configurable: true
+  configurable: true,
 })
 
 // 确保Audio构造函数本身也被正确mock
 Object.defineProperty(global, 'Audio', {
   value: vi.fn(() => mockAudio),
   writable: true,
-  configurable: true
+  configurable: true,
 })
 
 // 确保Promise.resolve()正常工作
 Object.defineProperty(mockAudio, 'play', {
   value: vi.fn(() => Promise.resolve()),
   writable: true,
-  configurable: true
+  configurable: true,
 })
 
 // Mock window.stopAllPronunciations
 Object.defineProperty(window, 'stopAllPronunciations', {
   value: vi.fn(),
-  writable: true
+  writable: true,
 })
 
 // Mock console methods
@@ -62,7 +62,7 @@ let consoleSpy: any
 beforeEach(() => {
   consoleSpy = {
     log: vi.spyOn(console, 'log').mockImplementation(() => {}),
-    error: vi.spyOn(console, 'error').mockImplementation(() => {})
+    error: vi.spyOn(console, 'error').mockImplementation(() => {}),
   }
 })
 
@@ -94,8 +94,8 @@ describe('WordPronunciationIcon Component', () => {
     it('正确渲染发音图标按钮', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'hello'
-        }
+          word: 'hello',
+        },
       })
 
       const button = wrapper.find('.sound-icon')
@@ -106,8 +106,8 @@ describe('WordPronunciationIcon Component', () => {
     it('显示正确的标题属性', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'world'
-        }
+          word: 'world',
+        },
       })
 
       const button = wrapper.find('.sound-icon')
@@ -117,8 +117,8 @@ describe('WordPronunciationIcon Component', () => {
     it('应用正确的CSS类', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'test'
-        }
+          word: 'test',
+        },
       })
 
       const button = wrapper.find('.sound-icon')
@@ -131,8 +131,8 @@ describe('WordPronunciationIcon Component', () => {
     it('正确接收word prop', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'example'
-        }
+          word: 'example',
+        },
       })
 
       expect(wrapper.props('word')).toBe('example')
@@ -141,8 +141,8 @@ describe('WordPronunciationIcon Component', () => {
     it('使用默认pronunciationType', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'test'
-        }
+          word: 'test',
+        },
       })
 
       expect(wrapper.props('pronunciationType')).toBe('us')
@@ -152,8 +152,8 @@ describe('WordPronunciationIcon Component', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
           word: 'test',
-          pronunciationType: 'uk'
-        }
+          pronunciationType: 'uk',
+        },
       })
 
       expect(wrapper.props('pronunciationType')).toBe('uk')
@@ -164,8 +164,8 @@ describe('WordPronunciationIcon Component', () => {
     it('点击按钮触发playSound方法', async () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'hello'
-        }
+          word: 'hello',
+        },
       })
 
       const button = wrapper.find('.sound-icon')
@@ -179,8 +179,8 @@ describe('WordPronunciationIcon Component', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
           word: 'hello',
-          pronunciationType: 'us'
-        }
+          pronunciationType: 'us',
+        },
       })
 
       // 检查组件是否正确挂载
@@ -191,8 +191,8 @@ describe('WordPronunciationIcon Component', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
           word: 'world',
-          pronunciationType: 'uk'
-        }
+          pronunciationType: 'uk',
+        },
       })
 
       expect(wrapper.exists()).toBe(true)
@@ -201,8 +201,8 @@ describe('WordPronunciationIcon Component', () => {
     it('处理空单词', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: ''
-        }
+          word: '',
+        },
       })
 
       expect(wrapper.exists()).toBe(true)
@@ -211,8 +211,8 @@ describe('WordPronunciationIcon Component', () => {
     it('处理特殊字符单词', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'café'
-        }
+          word: 'café',
+        },
       })
 
       expect(wrapper.exists()).toBe(true)
@@ -226,8 +226,8 @@ describe('WordPronunciationIcon Component', () => {
 
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'hello'
-        }
+          word: 'hello',
+        },
       })
 
       await wrapper.vm.$nextTick()
@@ -242,8 +242,8 @@ describe('WordPronunciationIcon Component', () => {
 
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'hello'
-        }
+          word: 'hello',
+        },
       })
 
       await wrapper.vm.$nextTick()
@@ -257,20 +257,20 @@ describe('WordPronunciationIcon Component', () => {
     it('组件挂载时记录日志', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'test'
-        }
+          word: 'test',
+        },
       })
 
       expect(consoleSpy.log).toHaveBeenCalledWith(
-        'WordPronunciationIcon mounted, word:', 'test', 'soundSrc:', expect.any(String)
+        'WordPronunciationIcon mounted, word:', 'test', 'soundSrc:', expect.any(String),
       )
     })
 
     it('组件卸载时清理资源', async () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'test'
-        }
+          word: 'test',
+        },
       })
 
       // 检查组件能够正常卸载
@@ -286,8 +286,8 @@ describe('WordPronunciationIcon Component', () => {
 
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'test'
-        }
+          word: 'test',
+        },
       })
 
       const button = wrapper.find('.sound-icon')
@@ -301,8 +301,8 @@ describe('WordPronunciationIcon Component', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
           word: 'test',
-          pronunciationType: 'invalid'
-        }
+          pronunciationType: 'invalid',
+        },
       })
 
       expect(wrapper.exists()).toBe(true)
@@ -313,8 +313,8 @@ describe('WordPronunciationIcon Component', () => {
     it('按钮可点击', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'hello'
-        }
+          word: 'hello',
+        },
       })
 
       const button = wrapper.find('.sound-icon')
@@ -324,8 +324,8 @@ describe('WordPronunciationIcon Component', () => {
     it('按钮有正确的类型', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'world'
-        }
+          word: 'world',
+        },
       })
 
       const button = wrapper.find('.sound-icon')
@@ -338,8 +338,8 @@ describe('WordPronunciationIcon Component', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
           word: 'hello',
-          pronunciationType: 'us'
-        }
+          pronunciationType: 'us',
+        },
       })
 
       // 检查组件是否正确处理发音类型
@@ -350,8 +350,8 @@ describe('WordPronunciationIcon Component', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
           word: 'hello',
-          pronunciationType: 'uk'
-        }
+          pronunciationType: 'uk',
+        },
       })
 
       expect(wrapper.props('pronunciationType')).toBe('uk')
@@ -360,8 +360,8 @@ describe('WordPronunciationIcon Component', () => {
     it('URL编码特殊字符', () => {
       wrapper = mount(WordPronunciationIcon, {
         props: {
-          word: 'hello world'
-        }
+          word: 'hello world',
+        },
       })
 
       expect(wrapper.exists()).toBe(true)

@@ -82,3 +82,4 @@ class ContextTooLongException(AIServiceException):
     def __init__(self, message: str = "上下文长度超过模型限制", context_length: int = None, **kwargs):
         super().__init__(message, **kwargs)
         self.context_length = context_length
+

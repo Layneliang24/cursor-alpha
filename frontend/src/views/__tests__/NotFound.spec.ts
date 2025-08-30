@@ -6,14 +6,14 @@ import NotFound from '../NotFound.vue'
 // Mock Vue Router
 const mockRouter = {
   push: vi.fn(),
-  go: vi.fn()
+  go: vi.fn(),
 }
 
 vi.mock('vue-router', async () => {
   const actual = await vi.importActual('vue-router')
   return {
     ...actual,
-    useRouter: () => mockRouter
+    useRouter: () => mockRouter,
   }
 })
 
@@ -21,11 +21,11 @@ vi.mock('vue-router', async () => {
 const mockElButton = {
   template: '<button :type="type" @click="$emit(\'click\')"><slot /></button>',
   props: ['type'],
-  emits: ['click']
+  emits: ['click'],
 }
 
 const mockElIcon = {
-  template: '<span class="el-icon"><slot /></span>'
+  template: '<span class="el-icon"><slot /></span>',
 }
 
 describe('NotFound.vue Component', () => {
@@ -38,9 +38,9 @@ describe('NotFound.vue Component', () => {
       global: {
         stubs: {
           'el-button': mockElButton,
-          'el-icon': mockElIcon
-        }
-      }
+          'el-icon': mockElIcon,
+        },
+      },
     })
   })
 

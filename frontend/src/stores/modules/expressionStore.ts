@@ -92,7 +92,7 @@ export const useExpressionStore = defineStore('expression', () => {
     expressions: false,
     progress: false,
     sessions: false,
-    details: false
+    details: false,
   })
   
   // 筛选和分页
@@ -105,14 +105,14 @@ export const useExpressionStore = defineStore('expression', () => {
     source: '',
     mastery_level: '',
     is_favorite: null,
-    ordering: '-updated_at'
+    ordering: '-updated_at',
   })
   
   const pagination = reactive<PaginationInfo>({
     page: 1,
     pageSize: 20,
     total: 0,
-    totalPages: 0
+    totalPages: 0,
   })
   
   // 缓存状态
@@ -120,7 +120,7 @@ export const useExpressionStore = defineStore('expression', () => {
     expressions: new Map<string, { data: IdiomaticExpression[], timestamp: number }>(),
     progress: new Map<string, { data: UserExpressionProgress[], timestamp: number }>(),
     lastFetch: 0,
-    ttl: 5 * 60 * 1000 // 5分钟缓存
+    ttl: 5 * 60 * 1000, // 5分钟缓存
   })
   
   // 计算属性
@@ -189,7 +189,7 @@ export const useExpressionStore = defineStore('expression', () => {
         difficulty_level: filters.difficulty || undefined,
         formality_level: filters.formality || undefined,
         usage_frequency: filters.frequency || undefined,
-        ordering: filters.ordering
+        ordering: filters.ordering,
       }
       
       const response = await englishAPI.getIdiomaticExpressions(params)
@@ -201,7 +201,7 @@ export const useExpressionStore = defineStore('expression', () => {
       // 更新缓存
       cache.expressions.set(cacheKey, {
         data: expressions.value,
-        timestamp: now
+        timestamp: now,
       })
       
     } catch (error) {
@@ -228,14 +228,14 @@ export const useExpressionStore = defineStore('expression', () => {
     try {
       const response = await englishAPI.getUserExpressionProgress({
         page: pagination.page,
-        page_size: pagination.pageSize
+        page_size: pagination.pageSize,
       })
       
       userProgress.value = response.results || []
       
       cache.progress.set(cacheKey, {
         data: userProgress.value,
-        timestamp: now
+        timestamp: now,
       })
       
     } catch (error) {
@@ -337,7 +337,7 @@ export const useExpressionStore = defineStore('expression', () => {
       source: '',
       mastery_level: '',
       is_favorite: null,
-      ordering: '-updated_at'
+      ordering: '-updated_at',
     })
     pagination.page = 1
   }
@@ -370,6 +370,6 @@ export const useExpressionStore = defineStore('expression', () => {
     applyFilters,
     changePage,
     clearCache,
-    resetFilters
+    resetFilters,
   }
 })

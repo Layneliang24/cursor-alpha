@@ -137,7 +137,7 @@ const mockTypingPractice = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       isDictExpanded: false,
       isChapterExpanded: false,
@@ -145,7 +145,7 @@ const mockTypingPractice = {
         id: 1,
         name: 'TOEFL',
         total_words: 5000,
-        chapter_count: 20
+        chapter_count: 20,
       },
       selectedChapter: 1,
       practiceStarted: false,
@@ -165,44 +165,44 @@ const mockTypingPractice = {
           name: '考试词汇',
           dictionaries: [
             { id: 1, name: 'TOEFL', total_words: 5000, chapter_count: 20 },
-            { id: 2, name: 'IELTS', total_words: 6000, chapter_count: 25 }
-          ]
-        }
+            { id: 2, name: 'IELTS', total_words: 6000, chapter_count: 25 },
+          ],
+        },
       ],
       chapterList: [
         { number: 1, wordCount: 50 },
         { number: 2, wordCount: 45 },
-        { number: 3, wordCount: 55 }
-      ]
+        { number: 3, wordCount: 55 },
+      ],
     }
   },
   computed: {
-    progressPercentage() {
+    progressPercentage () {
       return ((this.currentIndex + 1) / this.totalWords) * 100
-    }
+    },
   },
   methods: {
-    toggleDictExpanded() {
+    toggleDictExpanded () {
       this.isDictExpanded = !this.isDictExpanded
       this.isChapterExpanded = false
     },
-    toggleChapterExpanded() {
+    toggleChapterExpanded () {
       this.isChapterExpanded = !this.isChapterExpanded
       this.isDictExpanded = false
     },
-    selectDictionary(dict) {
+    selectDictionary (dict) {
       this.selectedDictionary = dict
       this.isDictExpanded = false
       this.selectedChapter = null
     },
-    selectChapter(chapterNumber) {
+    selectChapter (chapterNumber) {
       this.selectedChapter = chapterNumber
       this.isChapterExpanded = false
     },
-    goToDataAnalysis() {
+    goToDataAnalysis () {
       this.$router.push('/english/data-analysis')
     },
-    startPractice() {
+    startPractice () {
       if (this.selectedDictionary && this.selectedChapter) {
         this.practiceStarted = true
         this.currentIndex = 0
@@ -210,17 +210,17 @@ const mockTypingPractice = {
         this.userInput = ''
       }
     },
-    handleInput() {
+    handleInput () {
       if (this.userInput === this.currentWord) {
         this.nextWord()
       }
     },
-    handleKeydown(event) {
+    handleKeydown (event) {
       if (event.key === 'Enter' && !this.practiceStarted) {
         this.startPractice()
       }
     },
-    nextWord() {
+    nextWord () {
       this.currentIndex++
       this.userInput = ''
       
@@ -230,52 +230,52 @@ const mockTypingPractice = {
         this.loadNextWord()
       }
     },
-    loadNextWord() {
+    loadNextWord () {
       // Mock next word
       this.currentWord = 'banana'
       this.currentPhonetic = 'bəˈnɑːnə'
       this.currentMeaning = '香蕉'
     },
-    completePractice() {
+    completePractice () {
       this.practiceCompleted = true
       this.accuracy = 85
       this.totalTime = 300
       this.wpm = 45
     },
-    togglePause() {
+    togglePause () {
       this.isPaused = !this.isPaused
     },
-    resetPractice() {
+    resetPractice () {
       this.practiceStarted = false
       this.practiceCompleted = false
       this.currentIndex = 0
       this.userInput = ''
       this.isPaused = false
     },
-    restartPractice() {
+    restartPractice () {
       this.resetPractice()
     },
-    formatTime(seconds) {
+    formatTime (seconds) {
       const minutes = Math.floor(seconds / 60)
       const remainingSeconds = seconds % 60
       return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
-    }
+    },
   },
-  mounted() {
+  mounted () {
     // Mock keyboard event listener
     document.addEventListener('keydown', this.handleKeydown)
   },
-  beforeUnmount() {
+  beforeUnmount () {
     document.removeEventListener('keydown', this.handleKeydown)
-  }
+  },
 }
 
 // Mock 路由
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/english/data-analysis', component: { template: '<div>DataAnalysis</div>' } }
-  ]
+    { path: '/english/data-analysis', component: { template: '<div>DataAnalysis</div>' } },
+  ],
 })
 
 // Mock router.push
@@ -295,8 +295,8 @@ describe('TypingPractice.vue Component', () => {
 
     wrapper = mount(mockTypingPractice, {
       global: {
-        plugins: [router]
-      }
+        plugins: [router],
+      },
     })
     
     await router.isReady()

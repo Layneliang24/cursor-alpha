@@ -8,8 +8,8 @@ import ArticleList from '../ArticleList.vue'
 // Mock API模块
 vi.mock('@/api/categories', () => ({
   categoriesAPI: {
-    getCategories: vi.fn()
-  }
+    getCategories: vi.fn(),
+  },
 }))
 
 // Mock stores
@@ -19,81 +19,81 @@ const mockArticlesStore = {
   pagination: {
     current: 1,
     pageSize: 10,
-    total: 0
+    total: 0,
   },
-  fetchArticles: vi.fn()
+  fetchArticles: vi.fn(),
 }
 
 vi.mock('@/stores/articles', () => ({
-  useArticlesStore: () => mockArticlesStore
+  useArticlesStore: () => mockArticlesStore,
 }))
 
 // Mock Element Plus组件
 const mockElInput = {
   template: '<input :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" @keyup.enter="$emit(\'keyup.enter\')" />',
   props: ['modelValue'],
-  emits: ['update:modelValue', 'keyup.enter']
+  emits: ['update:modelValue', 'keyup.enter'],
 }
 
 const mockElButton = {
   template: '<button :type="type" @click="$emit(\'click\')"><slot /></button>',
   props: ['type'],
-  emits: ['click']
+  emits: ['click'],
 }
 
 const mockElSelect = {
   template: '<select :value="modelValue" @change="$emit(\'update:modelValue\', $event.target.value)"><slot /></select>',
   props: ['modelValue'],
-  emits: ['update:modelValue', 'change']
+  emits: ['update:modelValue', 'change'],
 }
 
 const mockElOption = {
   template: '<option :value="value" :label="label">{{ label }}</option>',
-  props: ['value', 'label']
+  props: ['value', 'label'],
 }
 
 const mockElCard = {
   template: '<div class="el-card" @click="$emit(\'click\')"><slot /></div>',
-  emits: ['click']
+  emits: ['click'],
 }
 
 const mockElTag = {
   template: '<span class="el-tag" :type="type" :size="size"><slot /></span>',
-  props: ['type', 'size']
+  props: ['type', 'size'],
 }
 
 const mockElAvatar = {
   template: '<div class="el-avatar" :size="size"><slot /></div>',
-  props: ['size']
+  props: ['size'],
 }
 
 const mockElIcon = {
-  template: '<span class="el-icon"><slot /></span>'
+  template: '<span class="el-icon"><slot /></span>',
 }
 
 const mockElSkeleton = {
   template: '<div class="el-skeleton"><slot /></div>',
-  props: ['rows', 'animated']
+  props: ['rows', 'animated'],
 }
 
 const mockElEmpty = {
-  template: '<div class="el-empty"><slot /></div>'
+  template: '<div class="el-empty"><slot /></div>',
 }
 
 const mockElPagination = {
   template: '<div class="el-pagination"></div>',
   props: ['current-page', 'page-size', 'total', 'page-sizes', 'layout'],
-  emits: ['size-change', 'current-change']
+  emits: ['size-change', 'current-change'],
 }
 
 const mockElRow = {
   template: '<div class="el-row" :gutter="gutter"><slot /></div>',
-  props: ['gutter']
+  props: ['gutter'],
 }
 
 const mockElCol = {
   template: '<div class="el-col" :span="span"><slot /></div>',
-  props: ['span']
+  props: ['span'],
 }
 
 // Mock 路由
@@ -105,9 +105,9 @@ const router = createRouter({
     { 
       path: '/articles/:id', 
       name: 'ArticleDetail',
-      component: { template: '<div>Article Detail</div>' } 
-    }
-  ]
+      component: { template: '<div>Article Detail</div>' }, 
+    },
+  ],
 })
 
 // Mock router.push
@@ -137,7 +137,7 @@ describe('ArticleList.vue Component', () => {
         views: 150,
         likes: 25,
         category: { name: '技术', color: '#409eff' },
-        created_at: '2024-01-15T10:00:00Z'
+        created_at: '2024-01-15T10:00:00Z',
       },
       {
         id: 2,
@@ -149,8 +149,8 @@ describe('ArticleList.vue Component', () => {
         views: 80,
         likes: 12,
         category: { name: '生活', color: '#67c23a' },
-        created_at: '2024-01-14T15:30:00Z'
-      }
+        created_at: '2024-01-14T15:30:00Z',
+      },
     ]
     
     mockArticlesStore.pagination.total = 2
@@ -170,9 +170,9 @@ describe('ArticleList.vue Component', () => {
           'el-icon': mockElIcon,
           'el-skeleton': mockElSkeleton,
           'el-empty': mockElEmpty,
-          'el-pagination': mockElPagination
-        }
-      }
+          'el-pagination': mockElPagination,
+        },
+      },
     })
     
     await router.isReady()
@@ -316,9 +316,9 @@ describe('ArticleList.vue Component', () => {
             'el-tag': mockElTag,
             'el-empty': mockElEmpty,
             'el-pagination': mockElPagination,
-            'el-skeleton': mockElSkeleton
-          }
-        }
+            'el-skeleton': mockElSkeleton,
+          },
+        },
       })
       
       await emptyWrapper.vm.$nextTick()
@@ -351,9 +351,9 @@ describe('ArticleList.vue Component', () => {
             'el-tag': mockElTag,
             'el-empty': mockElEmpty,
             'el-pagination': mockElPagination,
-            'el-skeleton': mockElSkeleton
-          }
-        }
+            'el-skeleton': mockElSkeleton,
+          },
+        },
       })
       
       await loadingWrapper.vm.$nextTick()

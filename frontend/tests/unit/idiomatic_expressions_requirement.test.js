@@ -9,7 +9,7 @@ describe('IdiomaticExpressionsRequirementComponent', () => {
     wrapper = mount(IdiomaticExpressionsRequirementComponent, {
       props: {
         // TODO: 添加必要的props
-      }
+      },
     })
   })
   

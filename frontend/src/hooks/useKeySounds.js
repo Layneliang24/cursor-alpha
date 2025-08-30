@@ -9,7 +9,7 @@ const defaultKeySound = 'key-default.wav'
 const defaultCorrectSound = 'correct.wav'
 const defaultWrongSound = 'beep.wav'
 
-export default function useKeySounds() {
+export default function useKeySounds () {
   const isKeySoundEnabled = ref(true)
   const isCorrectSoundEnabled = ref(true)
   const isWrongSoundEnabled = ref(true)
@@ -150,7 +150,7 @@ export default function useKeySounds() {
     isKeySoundEnabled: computed(() => isKeySoundEnabled.value),
     isCorrectSoundEnabled: computed(() => isCorrectSoundEnabled.value),
     isWrongSoundEnabled: computed(() => isWrongSoundEnabled.value),
-    volume: computed(() => volume.value)
+    volume: computed(() => volume.value),
   }
 }
 

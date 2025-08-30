@@ -5,7 +5,7 @@ import { ref, computed } from 'vue'
  * 通知声音提示Hook
  * 用于在需要用户确认或授权时发出明显的声音提示
  */
-export function useNotificationSound() {
+export function useNotificationSound () {
   // 声音文件路径
   const notificationSoundSrc = computed(() => '/sounds/beep.wav')
   const confirmSoundSrc = computed(() => '/sounds/correct.wav')
@@ -14,19 +14,19 @@ export function useNotificationSound() {
   // 通知声音
   const { play: playNotification, stop: stopNotification } = useSound(notificationSoundSrc, {
     volume: 0.8,
-    interrupt: true
+    interrupt: true,
   })
 
   // 确认声音
   const { play: playConfirm, stop: stopConfirm } = useSound(confirmSoundSrc, {
     volume: 0.6,
-    interrupt: true
+    interrupt: true,
   })
 
   // 警告声音
   const { play: playAlert, stop: stopAlert } = useSound(alertSoundSrc, {
     volume: 0.7,
-    interrupt: true
+    interrupt: true,
   })
 
   // 播放通知声音（用于一般通知）
@@ -73,6 +73,6 @@ export function useNotificationSound() {
     confirm,
     alert,
     urgent,
-    stopAll
+    stopAll,
   }
 } 

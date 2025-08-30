@@ -8,15 +8,15 @@ vi.mock('../request', () => ({
     get: vi.fn(),
     post: vi.fn(),
     put: vi.fn(),
-    delete: vi.fn()
-  }
+    delete: vi.fn(),
+  },
 }))
 
 // Mock axios (用于fallback)
 vi.mock('axios', () => ({
   default: {
-    get: vi.fn()
-  }
+    get: vi.fn(),
+  },
 }))
 
 describe('home.js API', () => {
@@ -35,7 +35,7 @@ describe('home.js API', () => {
           total_articles: 100,
           total_users: 50,
           total_views: 1000,
-          active_categories: 8
+          active_categories: 8,
         }
         
         vi.mocked(request.get).mockResolvedValue(mockStats)
@@ -74,7 +74,7 @@ describe('home.js API', () => {
       it('成功获取热门文章', async () => {
         const mockArticles = [
           { id: 1, title: '热门文章1', views: 1000 },
-          { id: 2, title: '热门文章2', views: 800 }
+          { id: 2, title: '热门文章2', views: 800 },
         ]
         
         vi.mocked(request.get).mockResolvedValue(mockArticles)
@@ -89,7 +89,7 @@ describe('home.js API', () => {
         const mockError = new Error('Primary API failed')
         const fallbackArticles = [
           { id: 3, title: 'Fallback文章1', views: 600 },
-          { id: 4, title: 'Fallback文章2', views: 500 }
+          { id: 4, title: 'Fallback文章2', views: 500 },
         ]
         
         // 主API失败
@@ -101,7 +101,7 @@ describe('home.js API', () => {
         
         expect(request.get).toHaveBeenCalledWith('/home/popular-articles/')
         expect(request.get).toHaveBeenCalledWith('/articles/', {
-          params: { page_size: 5, ordering: '-views' }
+          params: { page_size: 5, ordering: '-views' },
         })
         expect(result).toEqual(fallbackArticles)
       })
@@ -118,7 +118,7 @@ describe('home.js API', () => {
         
         expect(request.get).toHaveBeenCalledWith('/home/popular-articles/')
         expect(request.get).toHaveBeenCalledWith('/articles/', {
-          params: { page_size: 5, ordering: '-views' }
+          params: { page_size: 5, ordering: '-views' },
         })
       })
 
@@ -162,7 +162,7 @@ describe('home.js API', () => {
       it('成功获取最新文章', async () => {
         const mockArticles = [
           { id: 1, title: '最新文章1', created_at: '2024-01-15T10:00:00Z' },
-          { id: 2, title: '最新文章2', created_at: '2024-01-14T15:30:00Z' }
+          { id: 2, title: '最新文章2', created_at: '2024-01-14T15:30:00Z' },
         ]
         
         vi.mocked(request.get).mockResolvedValue(mockArticles)
@@ -176,7 +176,7 @@ describe('home.js API', () => {
       it('主API失败时使用fallback API', async () => {
         const mockError = new Error('Primary API failed')
         const fallbackArticles = [
-          { id: 3, title: 'Fallback最新文章1', created_at: '2024-01-13T12:00:00Z' }
+          { id: 3, title: 'Fallback最新文章1', created_at: '2024-01-13T12:00:00Z' },
         ]
         
         // 主API失败
@@ -188,7 +188,7 @@ describe('home.js API', () => {
         
         expect(request.get).toHaveBeenCalledWith('/home/recent-articles/')
         expect(request.get).toHaveBeenCalledWith('/articles/', {
-          params: { page_size: 6, ordering: '-created_at' }
+          params: { page_size: 6, ordering: '-created_at' },
         })
         expect(result).toEqual(fallbackArticles)
       })
@@ -205,7 +205,7 @@ describe('home.js API', () => {
         
         expect(request.get).toHaveBeenCalledWith('/home/recent-articles/')
         expect(request.get).toHaveBeenCalledWith('/articles/', {
-          params: { page_size: 6, ordering: '-created_at' }
+          params: { page_size: 6, ordering: '-created_at' },
         })
       })
 
@@ -250,7 +250,7 @@ describe('home.js API', () => {
         const mockTags = [
           { name: 'Vue.js', count: 25 },
           { name: 'React', count: 18 },
-          { name: 'Python', count: 32 }
+          { name: 'Python', count: 32 },
         ]
         
         vi.mocked(request.get).mockResolvedValue(mockTags)
@@ -289,7 +289,7 @@ describe('home.js API', () => {
       it('成功获取外链列表', async () => {
         const mockLinks = [
           { id: 1, name: 'GitHub', url: 'https://github.com' },
-          { id: 2, name: 'Stack Overflow', url: 'https://stackoverflow.com' }
+          { id: 2, name: 'Stack Overflow', url: 'https://stackoverflow.com' },
         ]
         
         vi.mocked(request.get).mockResolvedValue({ results: mockLinks })
@@ -302,7 +302,7 @@ describe('home.js API', () => {
 
       it('API返回无results字段时返回原始响应', async () => {
         const mockLinks = [
-          { id: 1, name: 'GitHub', url: 'https://github.com' }
+          { id: 1, name: 'GitHub', url: 'https://github.com' },
         ]
         
         vi.mocked(request.get).mockResolvedValue(mockLinks)
@@ -327,7 +327,7 @@ describe('home.js API', () => {
         const linkData = {
           name: 'New Link',
           url: 'https://example.com',
-          description: 'A new external link'
+          description: 'A new external link',
         }
         
         const mockResponse = { id: 3, ...linkData }
@@ -345,7 +345,7 @@ describe('home.js API', () => {
         const linkId = 1
         const updateData = {
           name: 'Updated Link',
-          url: 'https://updated-example.com'
+          url: 'https://updated-example.com',
         }
         
         const mockResponse = { id: linkId, ...updateData }
@@ -410,7 +410,7 @@ describe('home.js API', () => {
       await homeAPI.getPopularArticles()
       
       expect(request.get).toHaveBeenCalledWith('/articles/', {
-        params: { page_size: 5, ordering: '-views' }
+        params: { page_size: 5, ordering: '-views' },
       })
     })
 
@@ -422,7 +422,7 @@ describe('home.js API', () => {
       await homeAPI.getRecentArticles()
       
       expect(request.get).toHaveBeenCalledWith('/articles/', {
-        params: { page_size: 6, ordering: '-created_at' }
+        params: { page_size: 6, ordering: '-created_at' },
       })
     })
   })

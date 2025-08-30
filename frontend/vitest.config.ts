@@ -6,14 +6,14 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src')
-    }
+      '@': resolve(__dirname, 'src'),
+    },
   },
   server: {
     fs: {
       // 允许访问上一级目录（以便从项目根 tests/ 读取用例）
-      allow: ['..']
-    }
+      allow: ['..'],
+    },
   },
   test: {
     environment: 'jsdom',
@@ -21,7 +21,7 @@ export default defineConfig({
     css: true,
     // 仅扫描前端项目内的测试，避免跨根解析问题
     include: [
-      'src/**/__tests__/**/*.{test,spec}.{js,ts,jsx,tsx}'
+      'src/**/__tests__/**/*.{test,spec}.{js,ts,jsx,tsx}',
     ],
     setupFiles: ['./tests/setupTests.ts'],
     coverage: {
@@ -34,14 +34,14 @@ export default defineConfig({
         'src/**/*.d.ts',
         'src/**/__tests__/**',
         'src/**/*.spec.{js,ts}',
-        'src/**/*.test.{js,ts}'
+        'src/**/*.test.{js,ts}',
       ],
       thresholds: {
         lines: 20,
         functions: 20,
         branches: 10,
-        statements: 20
-      }
-    }
-  }
+        statements: 20,
+      },
+    },
+  },
 })

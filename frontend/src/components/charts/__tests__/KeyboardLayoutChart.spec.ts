@@ -12,8 +12,8 @@ describe('KeyboardLayoutChart.vue Component', () => {
       { name: 'i', value: 8 },
       { name: 'o', value: 3 },
       { name: 'u', value: 15 },
-      { name: ' ', value: 2 }
-    ]
+      { name: ' ', value: 2 },
+    ],
   }
 
   beforeEach(() => {
@@ -292,7 +292,7 @@ describe('KeyboardLayoutChart.vue Component', () => {
         { name: 'a', value: 2 },  // 1-3次错误，应该是error-level-1
         { name: 'e', value: 7 },  // 4-10次错误，应该是error-level-2
         { name: 'i', value: 15 }, // 11-20次错误，应该是error-level-3
-        { name: 'o', value: 25 }  // 20次以上错误，应该是error-level-4
+        { name: 'o', value: 25 },  // 20次以上错误，应该是error-level-4
       ]
       
       wrapper = mount(KeyboardLayoutChart, { props: { data: testData } })
@@ -314,7 +314,7 @@ describe('KeyboardLayoutChart.vue Component', () => {
     it('有错误时显示错误计数', () => {
       const testData = [
         { name: 'a', value: 5 },
-        { name: 'e', value: 12 }
+        { name: 'e', value: 12 },
       ]
       
       wrapper = mount(KeyboardLayoutChart, { props: { data: testData } })
@@ -342,7 +342,7 @@ describe('KeyboardLayoutChart.vue Component', () => {
     it('按键有正确的工具提示', () => {
       const testData = [
         { name: 'a', value: 5 },
-        { name: ' ', value: 2 }
+        { name: ' ', value: 2 },
       ]
       
       wrapper = mount(KeyboardLayoutChart, { props: { data: testData } })
@@ -393,7 +393,7 @@ describe('KeyboardLayoutChart.vue Component', () => {
     it('大量数据时正确处理', () => {
       const largeData = Array.from({ length: 100 }, (_, i) => ({ 
         name: String.fromCharCode(97 + i), 
-        value: i 
+        value: i, 
       }))
       wrapper = mount(KeyboardLayoutChart, { props: { data: largeData } })
       
@@ -421,7 +421,7 @@ describe('KeyboardLayoutChart.vue Component', () => {
         { name: 'a', value: 0 },
         { name: 'b', value: 999999 },
         { name: 'c', value: -1000 },
-        { name: 'd', value: 0.0001 }
+        { name: 'd', value: 0.0001 },
       ]
       
       wrapper = mount(KeyboardLayoutChart, { props: { data: extremeData } })

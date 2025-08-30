@@ -10,15 +10,15 @@ vi.mock('@/stores/auth', () => ({
   useAuthStore: vi.fn(() => ({
     login: vi.fn(),
     user: null,
-    isAuthenticated: false
-  }))
+    isAuthenticated: false,
+  })),
 }))
 
 vi.mock('@/api/auth', () => ({
   authAPI: {
     verifyUserIdentity: vi.fn(),
-    requestPasswordReset: vi.fn()
-  }
+    requestPasswordReset: vi.fn(),
+  },
 }))
 
 // Mock Element Plus
@@ -27,15 +27,15 @@ vi.mock('element-plus', () => ({
     error: vi.fn(),
     success: vi.fn(),
     warning: vi.fn(),
-    info: vi.fn()
-  }
+    info: vi.fn(),
+  },
 }))
 
 // 创建模拟的表单ref对象
 const createMockFormRef = () => ({
   validate: vi.fn().mockResolvedValue(true),
   clearValidate: vi.fn(),
-  resetFields: vi.fn()
+  resetFields: vi.fn(),
 })
 
 describe('Login.vue', () => {
@@ -59,8 +59,8 @@ describe('Login.vue', () => {
       routes: [
         { path: '/', component: { template: '<div>Home</div>' } },
         { path: '/register', component: { template: '<div>Register</div>' } },
-        { path: '/login', component: { template: '<div>Login</div>' } }
-      ]
+        { path: '/login', component: { template: '<div>Login</div>' } },
+      ],
     })
 
     // Setup mocks
@@ -93,9 +93,9 @@ describe('Login.vue', () => {
           'Check': true,
           'Message': true,
           'Lock': true,
-          'Key': true
-        }
-      }
+          'Key': true,
+        },
+      },
     })
     
     // 设置模拟的表单ref
@@ -150,7 +150,7 @@ describe('Login.vue', () => {
       expect(mockLoginFormRef.validate).toHaveBeenCalled()
       expect(wrapper.vm.authStore.login).toHaveBeenCalledWith({
         username: 'testuser',
-        password: 'testpass'
+        password: 'testpass',
       })
     })
 
@@ -264,19 +264,19 @@ describe('Login.vue', () => {
       const mockUserInfo = {
         username: 'testuser',
         first_name: 'Test',
-        avatar: '/avatar.jpg'
+        avatar: '/avatar.jpg',
       }
 
       mockAuthAPI.verifyUserIdentity.mockResolvedValue({
         verified: true,
-        user_info: mockUserInfo
+        user_info: mockUserInfo,
       })
 
       await wrapper.vm.verifyIdentity()
 
       expect(mockAuthAPI.verifyUserIdentity).toHaveBeenCalledWith({
         username: 'testuser',
-        password: 'testpass'
+        password: 'testpass',
       })
       expect(wrapper.vm.verifiedUser).toEqual(mockUserInfo)
     })
@@ -365,7 +365,7 @@ describe('Login.vue', () => {
       wrapper.vm.forgotPasswordForm.email = 'test@example.com'
 
       mockAuthAPI.requestPasswordReset.mockResolvedValue({
-        message: '重置邮件已发送'
+        message: '重置邮件已发送',
       })
 
       // 模拟表单验证通过
@@ -546,7 +546,7 @@ describe('Login.vue', () => {
       // 我们主要测试的是登录API被调用和错误处理逻辑
       expect(wrapper.vm.authStore.login).toHaveBeenCalledWith({
         username: 'testuser',
-        password: 'wrongpass'
+        password: 'wrongpass',
       })
     })
   })

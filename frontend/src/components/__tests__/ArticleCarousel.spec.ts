@@ -11,13 +11,13 @@ const mockElIcon = { template: '<span class="el-icon"></span>' }
 const mockRouter = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/articles/:id', component: { template: '<div>Article Detail</div>' } }
-  ]
+    { path: '/articles/:id', component: { template: '<div>Article Detail</div>' } },
+  ],
 })
 
 // 模拟axios
 const mockAxios = {
-  get: vi.fn()
+  get: vi.fn(),
 }
 
 // 模拟ArticleCarousel组件
@@ -106,28 +106,28 @@ const mockArticleCarousel = {
       </div>
     </div>
   `,
-  data() {
+  data () {
     return {
       articles: [],
       loading: true,
       currentSlide: 0,
-      autoPlayTimer: null
+      autoPlayTimer: null,
     }
   },
   methods: {
-    getArticleImage(article) {
+    getArticleImage (article) {
       const gradients = [
         'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
         'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
         'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
       ]
       
       return gradients[article.id % gradients.length]
     },
     
-    formatDate(dateString) {
+    formatDate (dateString) {
       const date = new Date(dateString)
       const now = new Date()
       const diff = now - date
@@ -139,49 +139,49 @@ const mockArticleCarousel = {
       return date.toLocaleDateString('zh-CN')
     },
     
-    goToArticle(id) {
+    goToArticle (id) {
       mockRouter.push(`/articles/${id}`)
     },
     
-    nextSlide() {
+    nextSlide () {
       this.currentSlide = (this.currentSlide + 1) % this.articles.length
     },
     
-    prevSlide() {
+    prevSlide () {
       this.currentSlide = this.currentSlide === 0 ? this.articles.length - 1 : this.currentSlide - 1
     },
     
-    goToSlide(index) {
+    goToSlide (index) {
       this.currentSlide = index
     },
     
-    startAutoPlay() {
+    startAutoPlay () {
       if (this.articles.length > 1) {
         this.autoPlayTimer = setInterval(this.nextSlide, 5000)
       }
     },
     
-    stopAutoPlay() {
+    stopAutoPlay () {
       if (this.autoPlayTimer) {
         clearInterval(this.autoPlayTimer)
         this.autoPlayTimer = null
       }
     },
     
-    async fetchPopularArticles() {
+    async fetchPopularArticles () {
       try {
         this.loading = true
         
         const response = await mockAxios.get('/api/v1/articles/', {
           params: {
             page_size: 5,
-            ordering: '-views'
-          }
+            ordering: '-views',
+          },
         })
         
         if (response.data && response.data.results) {
           const publishedArticles = response.data.results.filter(article => 
-            article.status === 'published'
+            article.status === 'published',
           )
           
           this.articles = publishedArticles
@@ -201,28 +201,28 @@ const mockArticleCarousel = {
       }
     },
     
-    setArticles(articles) {
+    setArticles (articles) {
       this.articles = articles
     },
     
-    setLoading(loading) {
+    setLoading (loading) {
       this.loading = loading
     },
     
-    setCurrentSlide(slide) {
+    setCurrentSlide (slide) {
       this.currentSlide = slide
     },
     
-    setAutoPlayTimer(timer) {
+    setAutoPlayTimer (timer) {
       this.autoPlayTimer = timer
-    }
+    },
   },
-  mounted() {
+  mounted () {
     this.fetchPopularArticles()
   },
-  unmounted() {
+  unmounted () {
     this.stopAutoPlay()
-  }
+  },
 }
 
 describe('ArticleCarousel.vue Component', () => {
@@ -242,9 +242,9 @@ describe('ArticleCarousel.vue Component', () => {
         stubs: {
           'el-skeleton': mockElSkeleton,
           'el-skeleton-item': mockElSkeletonItem,
-          'el-icon': mockElIcon
-        }
-      }
+          'el-icon': mockElIcon,
+        },
+      },
     })
   })
 
@@ -284,8 +284,8 @@ describe('ArticleCarousel.vue Component', () => {
       expect(mockAxios.get).toHaveBeenCalledWith('/api/v1/articles/', {
         params: {
           page_size: 5,
-          ordering: '-views'
-        }
+          ordering: '-views',
+        },
       })
     })
 
@@ -295,9 +295,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '热门文章1', status: 'published' },
-            { id: 2, title: '热门文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '热门文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -310,9 +310,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '热门文章1', status: 'published' },
-            { id: 2, title: '热门文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '热门文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -328,9 +328,9 @@ describe('ArticleCarousel.vue Component', () => {
           results: [
             { id: 1, title: '已发布', status: 'published' },
             { id: 2, title: '草稿', status: 'draft' },
-            { id: 3, title: '已发布2', status: 'published' }
-          ]
-        }
+            { id: 3, title: '已发布2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -357,9 +357,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '热门文章1', status: 'published' },
-            { id: 2, title: '热门文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '热门文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -375,9 +375,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '热门文章1', status: 'published' },
-            { id: 2, title: '热门文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '热门文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -394,9 +394,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '热门文章1', summary: '这是第一篇文章的摘要', status: 'published' },
-            { id: 2, title: '热门文章2', summary: '这是第二篇文章的摘要', status: 'published' }
-          ]
-        }
+            { id: 2, title: '热门文章2', summary: '这是第二篇文章的摘要', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -413,9 +413,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '热门文章1', status: 'published', category: { name: '技术' } },
-            { id: 2, title: '热门文章2', status: 'published', category: { name: '编程' } }
-          ]
-        }
+            { id: 2, title: '热门文章2', status: 'published', category: { name: '编程' } },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -432,9 +432,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '热门文章1', status: 'published', author: { first_name: '张三' } },
-            { id: 2, title: '热门文章2', status: 'published', author: { first_name: '李四' } }
-          ]
-        }
+            { id: 2, title: '热门文章2', status: 'published', author: { first_name: '李四' } },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -451,9 +451,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '热门文章1', status: 'published', views: 100 },
-            { id: 2, title: '热门文章2', status: 'published', views: 80 }
-          ]
-        }
+            { id: 2, title: '热门文章2', status: 'published', views: 80 },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -470,9 +470,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '热门文章1', status: 'published', created_at: '2024-01-01T00:00:00Z' },
-            { id: 2, title: '热门文章2', status: 'published', created_at: '2024-01-02T00:00:00Z' }
-          ]
-        }
+            { id: 2, title: '热门文章2', status: 'published', created_at: '2024-01-02T00:00:00Z' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -506,9 +506,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -525,9 +525,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -544,9 +544,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -563,9 +563,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -582,9 +582,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -602,9 +602,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -621,9 +621,9 @@ describe('ArticleCarousel.vue Component', () => {
       mockAxios.get.mockResolvedValue({
         data: {
           results: [
-            { id: 1, title: '单篇文章', status: 'published' }
-          ]
-        }
+            { id: 1, title: '单篇文章', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -642,9 +642,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -664,10 +664,10 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
-        })
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
+      })
       
       await wrapper.vm.fetchPopularArticles()
       await wrapper.vm.$nextTick()
@@ -688,9 +688,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -704,9 +704,9 @@ describe('ArticleCarousel.vue Component', () => {
       mockAxios.get.mockResolvedValue({
         data: {
           results: [
-            { id: 1, title: '单篇文章', status: 'published' }
-          ]
-        }
+            { id: 1, title: '单篇文章', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -722,9 +722,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -741,9 +741,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -769,9 +769,9 @@ describe('ArticleCarousel.vue Component', () => {
       mockAxios.get.mockResolvedValue({
         data: {
           results: [
-            { id: 1, title: '文章1', status: 'published' }
-          ]
-        }
+            { id: 1, title: '文章1', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -803,9 +803,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -821,9 +821,9 @@ describe('ArticleCarousel.vue Component', () => {
       mockAxios.get.mockResolvedValue({
         data: {
           results: [
-            { id: 1, title: '单篇文章', status: 'published' }
-          ]
-        }
+            { id: 1, title: '单篇文章', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -844,7 +844,7 @@ describe('ArticleCarousel.vue Component', () => {
   describe('空状态处理', () => {
     it('无文章时显示空状态', async () => {
       mockAxios.get.mockResolvedValue({
-        data: { results: [] }
+        data: { results: [] },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -856,7 +856,7 @@ describe('ArticleCarousel.vue Component', () => {
 
     it('空状态显示重新加载按钮', async () => {
       mockAxios.get.mockResolvedValue({
-        data: { results: [] }
+        data: { results: [] },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -869,7 +869,7 @@ describe('ArticleCarousel.vue Component', () => {
 
     it('点击重新加载按钮调用fetchPopularArticles', async () => {
       mockAxios.get.mockResolvedValue({
-        data: { results: [] }
+        data: { results: [] },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -937,9 +937,9 @@ describe('ArticleCarousel.vue Component', () => {
       mockAxios.get.mockResolvedValue({
         data: {
           results: [
-            { id: 1, title: '文章1', status: 'published' }
-          ]
-        }
+            { id: 1, title: '文章1', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -954,9 +954,9 @@ describe('ArticleCarousel.vue Component', () => {
       mockAxios.get.mockResolvedValue({
         data: {
           results: [
-            { id: 1, title: '文章1', status: 'published' }
-          ]
-        }
+            { id: 1, title: '文章1', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -972,9 +972,9 @@ describe('ArticleCarousel.vue Component', () => {
         data: {
           results: [
             { id: 1, title: '文章1', status: 'published' },
-            { id: 2, title: '文章2', status: 'published' }
-          ]
-        }
+            { id: 2, title: '文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -990,9 +990,9 @@ describe('ArticleCarousel.vue Component', () => {
       mockAxios.get.mockResolvedValue({
         data: {
           results: [
-            { id: 1, title: '文章1', status: 'published' }
-          ]
-        }
+            { id: 1, title: '文章1', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()
@@ -1040,9 +1040,9 @@ describe('ArticleCarousel.vue Component', () => {
             stubs: {
               'el-skeleton': mockElSkeleton,
               'el-skeleton-item': mockElSkeletonItem,
-              'el-icon': mockElIcon
-            }
-          }
+              'el-icon': mockElIcon,
+            },
+          },
         })
       }).not.toThrow()
     })
@@ -1079,9 +1079,9 @@ describe('ArticleCarousel.vue Component', () => {
           results: [
             { id: 1, title: '有效文章', status: 'published' },
             { id: 2, title: '无效文章' }, // 缺少status
-            { id: 3, title: '有效文章2', status: 'published' }
-          ]
-        }
+            { id: 3, title: '有效文章2', status: 'published' },
+          ],
+        },
       })
       
       await wrapper.vm.fetchPopularArticles()

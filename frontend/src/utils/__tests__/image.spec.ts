@@ -116,8 +116,8 @@ describe('Image Utils', () => {
     })
 
     it('处理非常长的路径', () => {
-      const longPath = 'a'.repeat(1000) + '.jpg'
-      expect(getImageUrl(longPath)).toBe('/media/' + longPath)
+      const longPath = `${'a'.repeat(1000)}.jpg`
+      expect(getImageUrl(longPath)).toBe(`/media/${longPath}`)
     })
   })
 

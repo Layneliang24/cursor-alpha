@@ -8,14 +8,14 @@ vi.mock('echarts', () => ({
     init: vi.fn(() => ({
       dispose: vi.fn(),
       setOption: vi.fn(),
-      resize: vi.fn()
-    }))
+      resize: vi.fn(),
+    })),
   },
   init: vi.fn(() => ({
     dispose: vi.fn(),
     setOption: vi.fn(),
-    resize: vi.fn()
-  }))
+    resize: vi.fn(),
+  })),
 }))
 
 describe('HeatmapChart.vue Component', () => {
@@ -25,9 +25,9 @@ describe('HeatmapChart.vue Component', () => {
     data: [
       { date: '2024-01-01', count: 5, level: 3 },
       { date: '2024-01-02', count: 8, level: 4 },
-      { date: '2024-01-03', count: 2, level: 1 }
+      { date: '2024-01-03', count: 2, level: 1 },
     ],
-    title: '测试热力图'
+    title: '测试热力图',
   }
 
   beforeEach(() => {

@@ -3,74 +3,74 @@ import request from './request'
 // 英语学习模块 API
 export const englishAPI = {
   // Words
-  getWords(params = {}) {
+  getWords (params = {}) {
     return request.get('/english/words/', { params })
   },
-  getWord(id) {
+  getWord (id) {
     return request.get(`/english/words/${id}/`)
   },
-  createWord(data) {
+  createWord (data) {
     return request.post('/english/words/', data)
   },
-  updateWord(id, data) {
+  updateWord (id, data) {
     return request.put(`/english/words/${id}/`, data)
   },
-  deleteWord(id) {
+  deleteWord (id) {
     return request.delete(`/english/words/${id}/`)
   },
 
   // User Word Progress
-  getProgress(params = {}) {
+  getProgress (params = {}) {
     return request.get('/english/progress/', { params })
   },
   // 复习列表（到期）
-  getDueReviews(params = {}) {
+  getDueReviews (params = {}) {
     return request.get('/english/progress/review/', { params })
   },
   // 复习打卡（detail 动作）
-  reviewProgress(id, payload) {
+  reviewProgress (id, payload) {
     return request.post(`/english/progress/${id}/review/`, payload)
   },
   // 批量复习提交
-  batchReview(data) {
+  batchReview (data) {
     return request.post('/english/progress/batch_review/', data)
   },
   // 学习概览
-  getLearningOverview(days = 7) {
+  getLearningOverview (days = 7) {
     return request.get(`/english/progress/learning_overview/?days=${days}`)
   },
 
   // Expressions
-  getExpressions(params = {}) {
+  getExpressions (params = {}) {
     return request.get('/english/expressions/', { params })
   },
-  getExpression(id) {
+  getExpression (id) {
     return request.get(`/english/expressions/${id}/`)
   },
-  createExpression(data) {
+  createExpression (data) {
     return request.post('/english/expressions/', data)
   },
-  updateExpression(id, data) {
+  updateExpression (id, data) {
     return request.put(`/english/expressions/${id}/`, data)
   },
-  deleteExpression(id) {
+  deleteExpression (id) {
     return request.delete(`/english/expressions/${id}/`)
   },
 
   // News
-  getNewsList(params = {}) {
+  getNewsList (params = {}) {
     return request.get('/english/news/', { params })
   },
-  getNewsManagementList(params = {}) {
+  getNewsManagementList (params = {}) {
     return request.get('/english/news/management_list/', { params })
   },
-  getNewsDetail(id) {
+  getNewsDetail (id) {
     return request.get(`/english/news/${id}/`)
   },
-  getNews(id) {
+  getNews (id) {
     return request.get(`/english/news/${id}/`)
   },
-  triggerNewsCrawl(settings = {}) {
+  triggerNewsCrawl (settings = {}) {
     // 支持新的爬取设置格式
     const { maxArticles = 3, timeout = 30, sources = [], autoCrawl = false } = settings
     
@@ -81,7 +81,7 @@ export const englishAPI = {
       sources: finalSources,
       max_articles: maxArticles,
       timeout,
-      auto_crawl: autoCrawl
+      auto_crawl: autoCrawl,
     }
     
     console.log('发送爬取请求:', payload)
@@ -90,135 +90,183 @@ export const englishAPI = {
   },
   
   // 新闻管理API
-  getFundusPublishers() {
+  getFundusPublishers () {
     return request.get('/english/news/fundus_publishers/')
   },
-  deleteNews(id) {
+  deleteNews (id) {
     return request.delete(`/english/news/${id}/delete_news/`)
   },
   
   // 词库和章节API
-  getDictionaries() {
+  getDictionaries () {
     return request.get('/english/dictionaries/')
   },
-  getChapters(dictionaryId) {
+  getChapters (dictionaryId) {
     return request.get(`/english/dictionaries/${dictionaryId}/chapters/`)
   },
-  getChapterWordCounts(dictionaryId) {
+  getChapterWordCounts (dictionaryId) {
     return request.get('/english/dictionaries/chapter_word_counts/', { 
-      params: { dictionary_id: dictionaryId }
+      params: { dictionary_id: dictionaryId },
     })
   },
-  getWordsForPractice(params = {}) {
+  getWordsForPractice (params = {}) {
     return request.get('/english/typing-practice/words/', { params })
   },
-  getTypingWordsByDictionary(params = {}) {
+  getTypingWordsByDictionary (params = {}) {
     return request.get('/english/typing-words/by_dictionary/', { 
       params: { 
         dictionary_id: params.dictionary_id, 
-        chapter: params.chapter
-      } 
+        chapter: params.chapter,
+      }, 
     })
   },
   // 打字练习相关API
-  getTypingWords(params = {}) {
+  getTypingWords (params = {}) {
     return request.get('/english/typing-practice/words/', { params })
   },
-  getTypingStats() {
+  getTypingStats () {
     return request.get('/english/typing-practice/statistics/')
   },
-  getTypingDailyProgress(params = {}) {
+  getTypingDailyProgress (params = {}) {
     return request.get('/english/typing-practice/daily-progress/', { params })
   },
-      submitTypingPractice(data) {
-      return request.post('/english/typing-practice/submit/', data)
-    },
-    completeTypingSession() {
-      return request.post('/english/typing-practice/complete_session/')
-    },
-  submitTypingResult(data) {
+  submitTypingPractice (data) {
     return request.post('/english/typing-practice/submit/', data)
   },
-  getTypingStatistics() {
+  completeTypingSession () {
+    return request.post('/english/typing-practice/complete_session/')
+  },
+  submitTypingResult (data) {
+    return request.post('/english/typing-practice/submit/', data)
+  },
+  getTypingStatistics () {
     return request.get('/english/typing-practice/statistics/')
   },
-  getDailyProgress(params = {}) {
+  getDailyProgress (params = {}) {
     return request.get('/english/typing-practice/daily-progress/', { params })
   },
 
   // 数据分析API
-  getDataOverview(params = {}) {
+  getDataOverview (params = {}) {
     return request.get('/english/data-analysis/overview/', { params })
   },
-  getExerciseHeatmap(params = {}) {
+  getExerciseHeatmap (params = {}) {
     return request.get('/english/data-analysis/exercise_heatmap/', { params })
   },
-  getWordHeatmap(params = {}) {
+  getWordHeatmap (params = {}) {
     return request.get('/english/data-analysis/word_heatmap/', { params })
   },
-  getWpmTrend(params = {}) {
+  getWpmTrend (params = {}) {
     return request.get('/english/data-analysis/wpm_trend/', { params })
   },
-  getAccuracyTrend(params = {}) {
+  getAccuracyTrend (params = {}) {
     return request.get('/english/data-analysis/accuracy_trend/', { params })
   },
-  getKeyErrorStats() {
+  getKeyErrorStats () {
     return request.get('/english/data-analysis/key_error_stats/')
-  }
+  },
 }
 
 // 数据分析专用API对象
 export const dataAnalysisAPI = {
-  getOverview(params = {}) {
+  getOverview (params = {}) {
     return request.get('/english/data-analysis/overview/', { params })
   },
-  getExerciseHeatmap(params = {}) {
+  getExerciseHeatmap (params = {}) {
     return request.get('/english/data-analysis/exercise_heatmap/', { params })
   },
-  getWordHeatmap(params = {}) {
+  getWordHeatmap (params = {}) {
     return request.get('/english/data-analysis/word_heatmap/', { params })
   },
-  getWpmTrend(params = {}) {
+  getWpmTrend (params = {}) {
     return request.get('/english/data-analysis/wpm_trend/', { params })
   },
-  getAccuracyTrend(params = {}) {
+  getAccuracyTrend (params = {}) {
     return request.get('/english/data-analysis/accuracy_trend/', { params })
   },
-  getKeyErrorStats() {
+  getKeyErrorStats () {
     return request.get('/english/data-analysis/key_error_stats/')
   },
   // 新增：获取月历热力图数据
-  getMonthlyCalendar(params = {}) {
+  getMonthlyCalendar (params = {}) {
     return request.get('/english/data-analysis/monthly-calendar/', { params })
   },
 
   // Enhanced Idiomatic Expressions API
-  getIdiomaticExpressions(params = {}) {
+  getIdiomaticExpressions (params = {}) {
     return request.get('/api/v1/expressions/', { params })
   },
-  getIdiomaticExpression(id) {
+  getIdiomaticExpression (id) {
     return request.get(`/api/v1/expressions/${id}/`)
   },
-  getUserExpressionProgress(params = {}) {
+  getUserExpressionProgress (params = {}) {
     return request.get('/api/v1/user-progress/', { params })
   },
-  updateExpressionProgress(expressionId, data) {
+  updateExpressionProgress (expressionId, data) {
     return request.patch(`/api/v1/user-progress/${expressionId}/`, data)
   },
-  createLearningSession(data) {
+  createLearningSession (data) {
     return request.post('/api/v1/learning-sessions/', data)
   },
-  getLearningStatistics() {
+  getLearningStatistics () {
     return request.get('/api/v1/statistics/learning_overview/')
   },
-  createLearningGoal(data) {
+  createLearningGoal (data) {
     return request.post('/api/v1/learning-goals/', data)
   },
-  updateLearningGoal(goalId, data) {
+  updateLearningGoal (goalId, data) {
     return request.patch(`/api/v1/learning-goals/${goalId}/`, data)
   },
-  getLearningGoals(params = {}) {
+  getLearningGoals (params = {}) {
     return request.get('/api/v1/learning-goals/', { params })
+  },
+
+  // Learning Analytics API
+  getProgressTrend (params = {}) {
+    return request.get('/api/v1/analytics/progress-trend/', { params })
+  },
+  getMasteryDistribution (params = {}) {
+    return request.get('/api/v1/analytics/mastery-distribution/', { params })
+  },
+  getTimeAnalysis (params = {}) {
+    return request.get('/api/v1/analytics/time-analysis/', { params })
+  },
+  getEfficiencyAnalysis (params = {}) {
+    return request.get('/api/v1/analytics/efficiency-analysis/', { params })
+  },
+  getLearningInsights (params = {}) {
+    return request.get('/api/v1/analytics/learning-insights/', { params })
+  },
+
+  // Learning Reports API
+  generateReport(params = {}) {
+    return request.get('/english/reports/generate/', { params })
+  },
+  getReportTemplates() {
+    return request.get('/english/reports/templates/')
+  },
+  downloadReport(params = {}) {
+    return request.get('/english/reports/generate/', { 
+      params,
+      responseType: 'blob'
+    })
+  },
+
+  // Learning Goals API
+  getLearningGoals(params = {}) {
+    return request.get('/english/goals/', { params })
+  },
+  createLearningGoal(data) {
+    return request.post('/english/goals/', data)
+  },
+  updateLearningGoal(goalId, data) {
+    return request.put(`/english/goals/${goalId}/`, data)
+  },
+  deleteLearningGoal(goalId) {
+    return request.delete(`/english/goals/${goalId}/`)
+  },
+  getGoalProgressTracking(goalId, params = {}) {
+    return request.get(`/english/goals/${goalId}/progress_tracking/`, { params })
   }
 }
 
