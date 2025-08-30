@@ -33,7 +33,7 @@ from .serializers import (
     KeyErrorDataSerializer,
 )
 from .services import (
-    DataAnalysisService,
+    LearningAnalyticsService,
 )
 from .pagination import StandardResultsSetPagination
 from .permissions import EnglishAccessPermission, EnglishWordManagePermission
@@ -1237,8 +1237,8 @@ class TypingPracticeViewSet(viewsets.ModelViewSet):
                 
                 # 更新按键错误统计 ⭐ 新增
                 if mistakes:
-                    from .services import DataAnalysisService
-                    service = DataAnalysisService()
+                    from .services import LearningAnalyticsService
+                    service = LearningAnalyticsService()
                     service.update_key_error_stats(request.user.id, mistakes)
                     print(f"按键错误统计已更新: {mistakes}")
                 
@@ -2375,7 +2375,7 @@ class DataAnalysisViewSet(viewsets.ModelViewSet):
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
             
             # 获取数据
-            service = DataAnalysisService()
+            service = LearningAnalyticsService()
             data = service.get_exercise_heatmap(request.user.id, start_date, end_date)
             
             return Response({
@@ -2404,7 +2404,7 @@ class DataAnalysisViewSet(viewsets.ModelViewSet):
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
             
             # 获取数据
-            service = DataAnalysisService()
+            service = LearningAnalyticsService()
             data = service.get_word_heatmap(request.user.id, start_date, end_date)
             
             return Response({
@@ -2433,7 +2433,7 @@ class DataAnalysisViewSet(viewsets.ModelViewSet):
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
             
             # 获取数据
-            service = DataAnalysisService()
+            service = LearningAnalyticsService()
             data = service.get_wpm_trend(request.user.id, start_date, end_date)
             
             return Response({
@@ -2473,7 +2473,7 @@ class DataAnalysisViewSet(viewsets.ModelViewSet):
                 }, status=status.HTTP_400_BAD_REQUEST)
             
             # 获取数据
-            service = DataAnalysisService()
+            service = LearningAnalyticsService()
             data = service.get_monthly_calendar_data(request.user.id, year, month)
             
             return Response({
@@ -2502,7 +2502,7 @@ class DataAnalysisViewSet(viewsets.ModelViewSet):
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
             
             # 获取数据
-            service = DataAnalysisService()
+            service = LearningAnalyticsService()
             data = service.get_accuracy_trend(request.user.id, start_date, end_date)
             
             return Response({
@@ -2522,7 +2522,7 @@ class DataAnalysisViewSet(viewsets.ModelViewSet):
         """获取按键错误统计"""
         try:
             # 获取数据
-            service = DataAnalysisService()
+            service = LearningAnalyticsService()
             data = service.get_key_error_stats(request.user.id)
             
             return Response({
@@ -2551,7 +2551,7 @@ class DataAnalysisViewSet(viewsets.ModelViewSet):
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d') if end_date_str else datetime.now()
             
             # 获取数据
-            service = DataAnalysisService()
+            service = LearningAnalyticsService()
             data = service.get_data_overview(request.user.id, start_date, end_date)
             
             return Response({
