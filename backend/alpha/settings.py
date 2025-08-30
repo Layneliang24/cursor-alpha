@@ -375,8 +375,15 @@ if DEBUG:
 # Cache Configuration
 REDIS_URL = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379/2')
 
+# 开发环境：优先使用本地内存缓存，避免Redis依赖问题
 CACHES = {
     'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+        'TIMEOUT': 300,  # 5分钟默认过期
+    },
+    # Redis缓存（生产环境使用）
+    'redis': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': REDIS_URL,
         'OPTIONS': {
@@ -390,11 +397,6 @@ CACHES = {
         },
         'KEY_PREFIX': 'alpha_cache',
         'TIMEOUT': 300,  # 5分钟默认过期
-    },
-    # 本地内存缓存作为备用
-    'locmem': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
     }
 }
 
