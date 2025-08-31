@@ -5,12 +5,13 @@ AI配置管理URL配置
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from .views import (
+from apps.ai.views import (
     AIProviderViewSet, APIKeyViewSet, AIModelViewSet,
     PromptTemplateViewSet, ModelConfigViewSet,
     TokenUsageViewSet, UsageQuotaViewSet, ModelDiscoveryViewSet,
     MonitoringViewSet, TokenStatisticsViewSet
 )
+from .views.fallback_views import FailoverStrategyViewSet, ProviderHealthViewSet
 
 # 创建DRF路由器
 router = DefaultRouter()
@@ -26,6 +27,8 @@ router.register(r'monitoring', MonitoringViewSet, basename='monitoring')
 router.register(r'token-usage', TokenUsageViewSet, basename='tokenusage')
 router.register(r'token-statistics', TokenStatisticsViewSet, basename='tokenstatistics')
 router.register(r'quotas', UsageQuotaViewSet, basename='usagequota')
+router.register(r'fallback-strategies', FailoverStrategyViewSet, basename='fallbackstrategy')
+router.register(r'provider-health', ProviderHealthViewSet, basename='providerhealth')
 
 app_name = 'ai'
 

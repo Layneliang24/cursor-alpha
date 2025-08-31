@@ -37,6 +37,7 @@ Please select a fix:
  1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
  2) Quit and manually define a default value in models.py.
 Select an option: 1
+- 很多功能或者代码如果需求变更之后，是不是有的代码会使用不到？是否需要删除？会不会造成影响，如果需要删除，需要找到一个合理的解决办法。
 
 ---
 

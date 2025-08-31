@@ -1134,8 +1134,41 @@
           3,
           5
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "in-progress",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "设计与实现故障转移策略CRUD API（含有序提供商与模型权限）",
+            "description": "基于DRF实现FallbackStrategy的创建、读取、更新、删除接口，支持配置有序提供商列表与允许使用的模型，并完善必要字段与校验。",
+            "dependencies": [],
+            "details": "补充/校对模型字段：provider_order（有序提供商列表）、allowed_models、active_provider、strategy_mode、fail_threshold、recovery_threshold、cooldown、last_switch_at；编写序列化器，校验提供商存在性、顺序与去重、允许模型与提供商支持模型的交集；实现ViewSet与路由，权限控制与过滤分页；更新操作使用事务与select_for_update避免并发冲突；生成OpenAPI文档与示例请求/响应。",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "自动降级与恢复检测逻辑（健康检查与选择器服务）",
+            "description": "实现基于阈值与冷却时间的自动降级和恢复检测，封装选择器服务统一决策当前生效提供商。",
+            "dependencies": [
+              "12.1"
+            ],
+            "details": "实现FailoverService/StrategySelector，依据strategy_mode与健康状态选择提供商，支持priority与round-robin；建立健康状态存储（模型或缓存）记录成功/失败计数、最后心跳；在调用通道中上报失败并配合周期性探测任务（如Celery beat）更新健康；当失败计数达到阈值在冷却期内自动切换并持久化active_provider；当主提供商恢复达到阈值且冷却到期按策略回切，加入抖动窗口防抖；输出结构化日志与指标，阈值/窗口/冷却时间可配置并做边界校验。",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "手动切换端点与权限审计",
+            "description": "提供管理员手动切换当前提供商的API，支持指定目标或按顺序下一个可用提供商，含审计与并发防护。",
+            "dependencies": [
+              "12.1",
+              "12.2"
+            ],
+            "details": "新增端点POST /api/fallback-strategies/{id}/switch，参数包含target_provider_id（可选）与reason；使用FailoverService执行切换并支持dry_run；验证目标在provider_order内且可用；采用乐观锁或ETag保证幂等并发安全，配置速率限制；记录审计日志（操作者、时间、前后提供商、原因），可选触发Webhook/通知；完善错误码与OpenAPI说明（如409冲突、422校验失败）。",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 13,
@@ -1732,7 +1765,7 @@
     ],
     "metadata": {
       "created": "2025-08-31T08:10:56.593Z",
-      "updated": "2025-08-31T15:55:06.385Z",
+      "updated": "2025-08-31T16:11:26.872Z",
       "description": "Tasks for ai-config-ui context"
     }
   }
