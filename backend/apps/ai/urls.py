@@ -7,7 +7,8 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     AIProviderViewSet, APIKeyViewSet, AIModelViewSet,
-    TokenUsageViewSet, UsageQuotaViewSet
+    TokenUsageViewSet, UsageQuotaViewSet, ModelDiscoveryViewSet,
+    MonitoringViewSet, TokenStatisticsViewSet
 )
 
 # 创建DRF路由器
@@ -17,7 +18,10 @@ router = DefaultRouter()
 router.register(r'providers', AIProviderViewSet, basename='aiprovider')
 router.register(r'keys', APIKeyViewSet, basename='apikey')
 router.register(r'models', AIModelViewSet, basename='aimodel')
+router.register(r'model-discovery', ModelDiscoveryViewSet, basename='modeldiscovery')
+router.register(r'monitoring', MonitoringViewSet, basename='monitoring')
 router.register(r'token-usage', TokenUsageViewSet, basename='tokenusage')
+router.register(r'token-statistics', TokenStatisticsViewSet, basename='tokenstatistics')
 router.register(r'quotas', UsageQuotaViewSet, basename='usagequota')
 
 app_name = 'ai'

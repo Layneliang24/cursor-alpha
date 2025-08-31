@@ -9,10 +9,16 @@ from .config_models import (
     FailoverStrategy, FailoverRule, UsageQuota
 )
 
+# Import monitoring models
+from .monitoring_models import (
+    ServiceHealthRecord, PerformanceMetric, SystemAlert
+)
+
 # Re-export for Django admin and migrations
 __all__ = [
     'ConversationModel',
     'AIProvider', 'APIKey', 'AIModel', 'ModelConfig', 'TokenUsage',
-    'FailoverStrategy', 'FailoverRule', 'UsageQuota'
+    'FailoverStrategy', 'FailoverRule', 'UsageQuota',
+    'ServiceHealthRecord', 'PerformanceMetric', 'SystemAlert'
 ]
 

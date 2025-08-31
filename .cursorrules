@@ -5,10 +5,13 @@
 ---
 ## 备忘
 ### AI模型中转站
-- openrouter: https://openrouter.ai/ | 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 | 权威，有免费模型
-- chenmoai:  https://hk.chenmoai.cn/v1 https://api.chenmoai.cn/v1 | sk-chhLY3oOJJIWKM3dDaIIrhrFpX7uOrmT2h8jzvNt2YrtEwzV | 连接国外模型比较稳定
-- yinli: https://yinli.one/v1 | sk-301vql0iXmeIEoHx8RdlKoN1NAzpk5gFlzcPebDjj4GqYwD9 | 垃圾罢了
-- siliconflow: https://api.siliconflow.cn/v1 | sk-qcxlwgdycvwptcaipxbiomxxfdsalmtiwvktcravdcnfauit | 余额足够，国内模型多
+
+| 名称        | URL                                                  | 秘钥                                                         | 特点                 | 备注 |
+| ----------- | ---------------------------------------------------- | ------------------------------------------------------------ | -------------------- | ---- |
+| openrouter  | https://openrouter.ai/                               | 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 | 权威，有免费模型     |      |
+| chenmoai    | https://hk.chenmoai.cn/v1 https://api.chenmoai.cn/v1 | sk-chhLY3oOJJIWKM3dDaIIrhrFpX7uOrmT2h8jzvNt2YrtEwzV          | 连接国外模型比较稳定 |      |
+| siliconflow | https://api.siliconflow.cn/v1                        | sk-qcxlwgdycvwptcaipxbiomxxfdsalmtiwvktcravdcnfauit          | 余额足够，国内模型多 |      |
+| yinliai     | https://yinli.one/v1                                 | sk-301vql0iXmeIEoHx8RdlKoN1NAzpk5gFlzcPebDjj4GqYwD9          | 垃圾罢了             |      |
 
 ### 如何固定开发流程方法论
 无论您换到任何新环境，只需要运行：
@@ -22,21 +25,21 @@
 
 ### 代办项目
 
-- Bmad-method项目研究
-- strands agent SDK
-- CI/CD自动流程跑通，云服务器优化
-- 需完善方法论固话机制，让AI严格遵循指定流程
-- 每次测试都有这个错误是怎么回事？ 不能解决根因先吗？为什么要提供这个解决方案：测试数据库有表冲突问题。
-让我先直接测试API端点是否可以访问，而不依赖单元测试
-File "S:\Python3.10\lib\site-packages\MySQLdb\connections.py", line 254, in query
+- [ ] Bmad-method项目研究
+- [ ] strands agent SDK
+- [ ] CI/CD自动流程跑通，云服务器优化
+- [x] 需完善方法论固话机制，让AI严格遵循指定流程
+- [ ] 每次测试都有这个错误是怎么回事？ 不能解决根因先吗？为什么要提供这个解决方案：测试数据库有表冲突问题。
+  让我先直接测试API端点是否可以访问，而不依赖单元测试
+  File "S:\Python3.10\lib\site-packages\MySQLdb\connections.py", line 254, in query
     _mysql.connection.query(self, query)
-django.db.utils.OperationalError: (1050, "Table 'english_typing_word' already exists")
-- 还有每次都让我选这个怎么回事？
-Found 1 test(s).
-Creating test database for alias 'default' ('test_alpha_db')...
-Got an error creating the test database: (1007, "Can't create database 'test_alpha_db'; database exists")
-Type 'yes' if you would like to try deleting the test database 'test_alpha_db', or 'no' to cancel: yes
-Destroying old test database for alias 'default' ('test_alpha_db')...
+  django.db.utils.OperationalError: (1050, "Table 'english_typing_word' already exists")
+- [ ] 还有每次都让我选这个怎么回事？
+  Found 1 test(s).
+  Creating test database for alias 'default' ('test_alpha_db')...
+  Got an error creating the test database: (1007, "Can't create database 'test_alpha_db'; database exists")
+  Type 'yes' if you would like to try deleting the test database 'test_alpha_db', or 'no' to cancel: yes
+  Destroying old test database for alias 'default' ('test_alpha_db')...
 
 ---
 
@@ -44,33 +47,55 @@ Destroying old test database for alias 'default' ('test_alpha_db')...
 
 ### 开发标准流程
 #### Task Master项目管理
-✅ 统一的开发方法论
+​	✅ 统一的开发方法论
 PRD驱动开发: 前后端功能都先写PRD，再用Task Master生成任务
+
 - 复杂度分析: AI评估任务复杂度，指导工作量分配
+
 - 依赖管理: 确保前后端开发顺序的合理性
+
 - 标签化管理: 支持多分支、多特性并行开发
-✅ 统一的质量标准
+
+  ✅ 统一的质量标准
+
 - 测试驱动开发: 前后端都要求先写测试再写代码
+
 - 代码审查: 统一的代码质量检查标准
+
 - 自动化验证: CI/CD中前后端测试都必须通过
+
 - 文档同步: 所有变更都要更新相关文档
-📈 后续开发应用策略
-🎯 前端开发标准流程
+  📈 后续开发应用策略
+  🎯 前端开发标准流程
+
 - 组件设计 → 先写单元测试定义组件行为
+
 - 实现组件 → 使用防御性编程和错误处理
+
 - E2E测试 → 验证用户交互流程
+
 - 跨浏览器测试 → 确保兼容性
+
 - 性能测试 → 监控加载时间和响应性
-🎯 后端开发标准流程
--  API设计 → 先写API测试定义接口行为
+  🎯 后端开发标准流程
+
+- API设计 → 先写API测试定义接口行为
+
 - 模型实现 → 包含数据验证和约束
+
 - 业务逻辑 → 单元测试覆盖所有分支
+
 - 集成测试 → 验证API端到端流程
+
 - 性能测试 → 数据库查询和响应时间优化
-🔄 前后端协同开发
+  🔄 前后端协同开发
+
 - 接口契约 → API文档驱动前后端并行开发
+
 - Mock数据 → 前端可以独立开发和测试
+
 - 集成验证 → E2E测试验证前后端协作
+
 - 部署流水线 → 前后端同时部署和验证
 
 
