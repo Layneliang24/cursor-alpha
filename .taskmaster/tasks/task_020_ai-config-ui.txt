@@ -1,0 +1,15 @@
+# Task ID: 20
+# Title: 实现权限控制系统
+# Status: pending
+# Dependencies: 2, 3
+# Priority: high
+# Description: 基于角色的访问控制（RBAC）
+# Details:
+1. 定义角色模型（管理员、普通用户等）
+2. 后端：实现权限装饰器和视图权限
+3. 前端：根据角色显示/隐藏功能
+4. 审计日志：记录关键操作
+5. 集成JWT认证
+
+# Test Strategy:
+测试不同角色的权限，验证审计日志记录

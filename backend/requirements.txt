@@ -68,3 +68,4 @@ openpyxl==3.1.5
 
 # AI Services
 cryptography==44.0.0
+django-cryptography==1.1

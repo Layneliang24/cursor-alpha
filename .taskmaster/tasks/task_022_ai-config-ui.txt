@@ -1,0 +1,14 @@
+# Task ID: 22
+# Title: 实现国际化
+# Status: pending
+# Dependencies: 1, 18
+# Priority: low
+# Description: 支持中英文界面切换
+# Details:
+1. 集成vue-i18n
+2. 提取所有文本为翻译键
+3. 提供中英文翻译文件
+4. 实现语言切换组件
+
+# Test Strategy:
+测试中英文切换，验证翻译覆盖率

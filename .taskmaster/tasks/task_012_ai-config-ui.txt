@@ -1,0 +1,15 @@
+# Task ID: 12
+# Title: 实现故障转移策略API
+# Status: pending
+# Dependencies: 3, 5
+# Priority: medium
+# Description: 后端支持配置故障转移策略和降级机制
+# Details:
+1. 创建FallbackStrategy模型和API
+2. 实现轮询列表配置（有序提供商列表）
+3. 添加权限控制字段（允许使用的模型）
+4. 实现自动降级和恢复检测逻辑
+5. 创建手动切换端点
+
+# Test Strategy:
+测试故障转移逻辑，模拟服务故障验证自动切换

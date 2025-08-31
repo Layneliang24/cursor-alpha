@@ -1,0 +1,15 @@
+# Task ID: 14
+# Title: 实现Token统计API
+# Status: pending
+# Dependencies: 3
+# Priority: medium
+# Description: 后端收集和统计Token使用数据
+# Details:
+1. 创建TokenUsage模型，记录每次调用详情
+2. 实现实时统计端点（当日消费）
+3. 实现历史分析端点（按天/周/月）
+4. 按提供商和模型分组统计
+5. 集成预算告警（Celery定时检查）
+
+# Test Strategy:
+测试统计逻辑，验证分组和聚合正确性

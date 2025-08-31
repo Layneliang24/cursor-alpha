@@ -1,0 +1,213 @@
+{
+	"meta": {
+		"generatedAt": "2025-08-31T08:14:02.307Z",
+		"tasksAnalyzed": 25,
+		"totalTasks": 25,
+		"analysisCount": 25,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": true
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 2,
+			"taskTitle": "初始化后端项目",
+			"complexityScore": 6,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "将Django后端项目初始化分解为：项目创建、依赖安装、数据库配置、Redis配置、核心应用创建、DRF和JWT配置等独立子任务，确保每个配置步骤可独立验证",
+			"reasoning": "涉及多个技术栈集成（Django、DRF、PostgreSQL、Redis、Celery、JWT），需要配置多个服务和中间件，每个组件都有独立的配置复杂性，建议分解为6个子任务便于管理和调试"
+		},
+		{
+			"taskId": 1,
+			"taskTitle": "初始化前端项目",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "将前端项目初始化分解为：Vite项目创建、Element Plus集成、SCSS配置、按需导入配置、目录结构设置、路由配置等子任务，每个配置步骤独立完成和测试",
+			"reasoning": "现代前端项目初始化相对标准化，但涉及多个工具链配置（Vite、Vue3、TypeScript、Element Plus、SCSS、Vue Router），需要正确配置构建工具和UI库，建议分解为5个子任务"
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "实现API密钥加密存储",
+			"complexityScore": 7,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "将API密钥加密存储分解为：加密库集成、加密字段实现、密钥显示方法、轮换管理命令、过期提醒任务等子任务，重点关注安全性和密钥生命周期管理",
+			"reasoning": "涉及敏感数据加密存储，需要考虑密钥管理、安全性、性能和可用性多个方面，包含Celery定时任务和管理命令开发，安全要求高，建议分解为5个子任务确保安全实现"
+		},
+		{
+			"taskId": 19,
+			"taskTitle": "集成实时通信",
+			"complexionScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "将WebSocket实时通信分解为：Django Channels集成、前端WebSocket客户端、消息路由配置、实时数据推送、断线重连机制、性能优化等子任务，确保稳定的实时通信",
+			"reasoning": "WebSocket实现涉及前后端复杂交互，需要处理连接管理、消息路由、错误处理、性能优化等多个技术难点，Django Channels配置复杂，建议分解为6个子任务"
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "开发提供商管理UI",
+			"complexityScore": 6,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "将提供商管理UI分解为：列表组件开发、表单组件开发、状态显示实现、连接测试功能、批量操作功能、状态管理集成等子任务，确保完整的CRUD体验",
+			"reasoning": "涉及复杂的前端组件开发，包含表格、表单、状态管理、API集成等多个功能模块，需要处理用户交互、数据验证、错误处理，建议分解为6个子任务"
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "开发模型选择UI",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "将模型选择UI分解为：网格布局组件、搜索筛选功能、收藏功能实现、对比面板开发、图表集成、性能优化等子任务，重点关注用户体验和大数据量处理",
+			"reasoning": "涉及复杂的数据展示和交互功能，包含搜索、筛选、收藏、对比、图表等多个特性，需要处理大量模型数据的性能问题，ECharts集成增加复杂性，建议分解为6个子任务"
+		},
+		{
+			"taskId": 25,
+			"taskTitle": "编写测试用例",
+			"complexityScore": 9,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "将测试用例编写分解为：前端单元测试、后端单元测试、API集成测试、组件测试、E2E测试、测试数据准备、测试覆盖率配置、CI/CD集成等子任务，确保全面的测试覆盖",
+			"reasoning": "测试是最复杂的任务之一，需要覆盖整个项目的所有功能模块，涉及多种测试框架和工具，依赖所有其他任务完成，需要设计测试策略和数据，建议分解为8个子任务"
+		},
+		{
+			"taskId": 24,
+			"taskTitle": "安全加固",
+			"complexityScore": 8,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "将安全加固分解为：XSS防护实现、SQL注入防护、HTTPS配置、速率限制实现、安全头配置、安全扫描、漏洞修复等子任务，确保全面的安全防护",
+			"reasoning": "安全是关键且复杂的横切关注点，涉及前后端多个层面的安全措施，需要专业的安全知识和工具，包含多种攻击防护和安全配置，建议分解为7个子任务"
+		},
+		{
+			"taskId": 23,
+			"taskTitle": "性能优化",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "将性能优化分解为：前端代码分割、路由懒加载、图表性能优化、数据库查询优化、缓存策略实现、异步任务优化等子任务，分别针对不同性能瓶颈进行优化",
+			"reasoning": "性能优化涉及前后端多个层面，需要分析性能瓶颈并实施针对性优化，包含代码层面、数据库层面、缓存层面等多种优化策略，建议分解为6个子任务"
+		},
+		{
+			"taskId": 22,
+			"taskTitle": "实现国际化",
+			"complexityScore": 4,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "将国际化实现分解为：vue-i18n集成、文本提取和翻译、语言切换组件、翻译文件管理等子任务，确保完整的多语言支持",
+			"reasoning": "国际化是相对标准的功能实现，vue-i18n提供了完善的解决方案，主要工作是文本提取和翻译，技术复杂度较低，建议分解为4个子任务"
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "设计数据库模型",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 设计数据库模型.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "构建提供商管理API",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 构建提供商管理api.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "实现模型发现API",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 实现模型发现api.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "实现模型参数配置",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 实现模型参数配置.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "构建实时监控API",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 构建实时监控api.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "开发监控仪表板UI",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 开发监控仪表板ui.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "实现故障转移策略API",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 实现故障转移策略api.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 13,
+			"taskTitle": "开发故障转移配置UI",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 开发故障转移配置ui.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 14,
+			"taskTitle": "实现Token统计API",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 实现token统计api.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 15,
+			"taskTitle": "开发统计分析UI",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 开发统计分析ui.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 16,
+			"taskTitle": "实现配置导入导出",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 实现配置导入导出.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 17,
+			"taskTitle": "开发配置管理UI",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 开发配置管理ui.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 18,
+			"taskTitle": "实现主界面布局",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 实现主界面布局.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 20,
+			"taskTitle": "实现权限控制系统",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 实现权限控制系统.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 21,
+			"taskTitle": "开发设置页面",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on 开发设置页面.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		}
+	]
+}

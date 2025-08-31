@@ -1,0 +1,87 @@
+# Task ID: 24
+# Title: 安全加固
+# Status: pending
+# Dependencies: 4, 20
+# Priority: high
+# Description: 增强应用安全性
+# Details:
+1. 前端：XSS防护（数据转义）
+2. 后端：SQL注入防护（ORM使用）
+3. API密钥传输加密（HTTPS）
+4. 速率限制（Django Ratelimit）
+5. 安全头配置（CSP, HSTS）
+
+# Test Strategy:
+安全扫描和渗透测试，修复漏洞
+
+# Subtasks:
+## 1. XSS防护实现 [pending]
+### Dependencies: None
+### Description: 在前端实现XSS攻击防护，包括数据转义和输入验证
+### Details:
+1. 配置Vue 3的HTML转义机制
+2. 实现用户输入数据的转义处理
+3. 配置CSP内容安全策略防止脚本注入
+4. 对API响应数据进行安全过滤
+5. 添加XSS防护的单元测试
+
+## 2. SQL注入防护 [pending]
+### Dependencies: None
+### Description: 在后端实现SQL注入攻击防护，使用ORM和参数化查询
+### Details:
+1. 确保所有数据库查询使用Django ORM
+2. 避免原生SQL查询，必要时使用参数化查询
+3. 对用户输入进行严格验证和过滤
+4. 配置数据库权限最小化原则
+5. 添加SQL注入防护测试用例
+
+## 3. HTTPS配置和API密钥加密 [pending]
+### Dependencies: None
+### Description: 配置HTTPS传输加密，保护API密钥和敏感数据传输
+### Details:
+1. 配置SSL/TLS证书
+2. 强制HTTPS重定向
+3. API密钥在数据库中加密存储
+4. 配置安全的密钥传输机制
+5. 实现密钥轮换机制
+
+## 4. 速率限制实现 [pending]
+### Dependencies: None
+### Description: 使用Django Ratelimit实现API速率限制，防止暴力攻击
+### Details:
+1. 安装和配置Django Ratelimit
+2. 为不同API端点设置合适的速率限制
+3. 实现基于IP和用户的限制策略
+4. 配置Redis作为速率限制存储后端
+5. 添加速率限制的监控和告警
+
+## 5. 安全头配置 [pending]
+### Dependencies: 24.3
+### Description: 配置HTTP安全头，包括CSP、HSTS、X-Frame-Options等
+### Details:
+1. 配置Content Security Policy (CSP)
+2. 启用HTTP Strict Transport Security (HSTS)
+3. 设置X-Frame-Options防止点击劫持
+4. 配置X-Content-Type-Options
+5. 设置Referrer-Policy和其他安全头
+
+## 6. 安全扫描和漏洞检测 [pending]
+### Dependencies: 24.1, 24.2, 24.3, 24.4, 24.5
+### Description: 使用安全扫描工具检测应用漏洞，建立安全检测流程
+### Details:
+1. 集成OWASP ZAP进行自动化安全扫描
+2. 使用Bandit扫描Python代码安全问题
+3. 配置npm audit检查前端依赖漏洞
+4. 建立定期安全扫描流程
+5. 生成安全扫描报告
+
+## 7. 漏洞修复和安全加固验证 [pending]
+### Dependencies: 24.6
+### Description: 修复发现的安全漏洞，验证安全措施的有效性
+### Details:
+1. 根据扫描结果修复发现的漏洞
+2. 更新存在安全问题的依赖包
+3. 进行渗透测试验证安全措施
+4. 建立安全事件响应流程
+5. 编写安全加固文档和最佳实践指南
+

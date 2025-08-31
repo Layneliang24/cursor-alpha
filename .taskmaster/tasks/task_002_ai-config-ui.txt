@@ -1,0 +1,16 @@
+# Task ID: 2
+# Title: 初始化后端项目
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: 创建Django项目，配置DRF、PostgreSQL和Redis
+# Details:
+1. 创建Django项目：`django-admin startproject ai_config_backend`
+2. 安装依赖：`pip install django djangorestframework psycopg2 redis celery`
+3. 配置PostgreSQL数据库连接
+4. 配置Redis作为缓存和Celery broker
+5. 创建核心应用：`python manage.py startapp config_manager`
+6. 配置DRF和JWT认证
+
+# Test Strategy:
+运行`python manage.py runserver`，访问API根路径验证DRF安装成功
