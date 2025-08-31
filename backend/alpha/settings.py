@@ -99,6 +99,7 @@ INSTALLED_APPS = [
     'mdeditor',
     'django_extensions',
     'debug_toolbar',
+    'django_cryptography',
     
     # Local apps
     'apps.users',
@@ -696,3 +697,7 @@ AI_LOAD_BALANCER = {
     'retry_delay': 1.0,
     'connection_timeout': 30.0,
 }
+
+# Django Cryptography配置
+CRYPTOGRAPHY_KEY = os.environ.get('CRYPTOGRAPHY_KEY', 'default-encryption-key-for-development-only-change-in-production')
+CRYPTOGRAPHY_SALT = os.environ.get('CRYPTOGRAPHY_SALT', 'default-salt-for-development')

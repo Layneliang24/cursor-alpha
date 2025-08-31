@@ -1,0 +1,15 @@
+# Task ID: 13
+# Title: 开发故障转移配置UI
+# Status: pending
+# Dependencies: 1, 12
+# Priority: medium
+# Description: 前端界面配置轮询策略和降级设置
+# Details:
+1. 创建FallbackConfig组件
+2. 实现拖拽排序轮询列表
+3. 添加权限控制开关（模型白名单）
+4. 显示当前激活的降级状态
+5. 实现手动切换按钮
+
+# Test Strategy:
+测试拖拽排序和策略保存，模拟降级显示

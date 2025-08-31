@@ -1,0 +1,15 @@
+# Task ID: 5
+# Title: 构建提供商管理API
+# Status: pending
+# Dependencies: 3, 4
+# Priority: high
+# Description: 实现提供商的CRUD、连接测试和状态监控API
+# Details:
+1. 创建ProviderViewSet（DRF）支持CRUD
+2. 实现/test_connection/端点：发送测试请求到提供商API
+3. 实现/bulk_test/端点：批量测试所有提供商
+4. 实现状态监控端点：返回实时和历史状态
+5. 添加权限控制（JWT认证）
+
+# Test Strategy:
+使用DRF APITestCase测试所有端点，模拟第三方API响应

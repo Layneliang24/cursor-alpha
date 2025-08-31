@@ -1,0 +1,77 @@
+# Task ID: 23
+# Title: 性能优化
+# Status: pending
+# Dependencies: 1, 2, 5, 10, 14
+# Priority: medium
+# Description: 前端和后端性能优化
+# Details:
+1. 前端：代码分割、懒加载路由
+2. 前端：图表数据抽样（大数据集）
+3. 后端：数据库查询优化
+4. 后端：缓存策略优化（高频数据）
+5. 后端：异步任务处理（Celery）
+
+# Test Strategy:
+性能测试：页面加载时间、API响应时间
+
+# Subtasks:
+## 1. 前端代码分割和懒加载实现 [pending]
+### Dependencies: None
+### Description: 实现前端代码分割和路由懒加载，减少初始包大小
+### Details:
+1. 配置Vite代码分割策略
+2. 实现路由懒加载（动态import）
+3. 配置组件懒加载
+4. 优化第三方库打包（vendor splitting）
+5. 分析打包结果，确保合理的chunk大小
+
+## 2. 图表性能优化 [pending]
+### Dependencies: None
+### Description: 优化大数据集图表渲染性能，实现数据抽样和虚拟化
+### Details:
+1. 实现图表数据抽样算法
+2. 添加数据虚拟化渲染
+3. 优化图表更新策略（防抖、节流）
+4. 实现图表懒加载
+5. 添加加载状态和骨架屏
+
+## 3. 数据库查询优化 [pending]
+### Dependencies: None
+### Description: 优化数据库查询性能，添加索引和查询优化
+### Details:
+1. 分析慢查询日志
+2. 为高频查询字段添加数据库索引
+3. 优化ORM查询（select_related, prefetch_related）
+4. 实现数据库连接池
+5. 添加查询性能监控
+
+## 4. 缓存策略实现 [pending]
+### Dependencies: None
+### Description: 实现Redis缓存策略，缓存高频访问数据
+### Details:
+1. 实现API响应缓存
+2. 缓存数据库查询结果
+3. 实现缓存失效策略
+4. 添加缓存预热机制
+5. 监控缓存命中率
+
+## 5. 异步任务优化 [pending]
+### Dependencies: None
+### Description: 优化Celery异步任务处理性能
+### Details:
+1. 优化Celery配置（并发数、队列设置）
+2. 实现任务优先级队列
+3. 添加任务失败重试机制
+4. 实现任务结果缓存
+5. 监控任务执行性能
+
+## 6. 性能监控和测试 [pending]
+### Dependencies: 23.1, 23.2, 23.3, 23.4, 23.5
+### Description: 实现性能监控系统和性能测试
+### Details:
+1. 添加前端性能监控（页面加载时间、FCP、LCP）
+2. 实现API响应时间监控
+3. 编写性能测试用例
+4. 设置性能基准和告警
+5. 生成性能优化报告
+

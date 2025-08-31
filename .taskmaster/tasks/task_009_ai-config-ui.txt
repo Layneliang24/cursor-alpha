@@ -1,0 +1,16 @@
+# Task ID: 9
+# Title: 实现模型参数配置
+# Status: pending
+# Dependencies: 3, 7
+# Priority: medium
+# Description: 前后端支持模型参数配置（温度、最大Token等）
+# Details:
+1. 后端：创建ModelConfigViewSet，支持保存模型配置
+2. 前端：开发ModelConfigForm组件
+3. 实现温度滑块（0.0-2.0）和数值输入
+4. 根据模型上下文窗口限制最大Token输入
+5. 支持系统提示模板选择/编辑
+6. 高级参数折叠面板
+
+# Test Strategy:
+测试参数保存和验证逻辑（如最大Token限制）

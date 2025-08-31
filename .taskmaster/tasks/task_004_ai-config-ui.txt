@@ -1,0 +1,67 @@
+# Task ID: 4
+# Title: 实现API密钥加密存储
+# Status: pending
+# Dependencies: 3
+# Priority: high
+# Description: 使用AES加密存储API密钥，仅显示部分字符
+# Details:
+1. 使用django-cryptography库：`pip install django-cryptography`
+2. 在APIKey模型中使用加密字段
+3. 实现密钥显示方法（显示前4位和后4位）
+4. 创建密钥轮换管理命令
+5. 集成密钥过期提醒（Celery定时任务）
+
+# Test Strategy:
+测试密钥存储和检索，验证加密字段不可读，显示方法正确
+
+# Subtasks:
+## 1. 集成django-cryptography加密库 [pending]
+### Dependencies: None
+### Description: 安装并配置django-cryptography库，设置加密密钥和基础配置
+### Details:
+1. 安装django-cryptography库：pip install django-cryptography
+2. 在settings.py中配置CRYPTOGRAPHY_KEY
+3. 添加django_cryptography到INSTALLED_APPS
+4. 配置加密算法和密钥轮换策略
+5. 验证加密库正常工作
+
+## 2. 实现APIKey模型加密字段 [pending]
+### Dependencies: 4.1
+### Description: 修改APIKey模型，使用加密字段存储敏感的API密钥数据
+### Details:
+1. 导入django_cryptography的EncryptedCharField
+2. 修改APIKey模型的key字段为加密字段
+3. 添加密钥创建时间和过期时间字段
+4. 创建并运行数据库迁移
+5. 编写模型单元测试验证加密存储
+
+## 3. 开发密钥安全显示方法 [pending]
+### Dependencies: 4.2
+### Description: 实现密钥的安全显示功能，只显示前4位和后4位字符
+### Details:
+1. 在APIKey模型中添加masked_key属性方法
+2. 实现显示前4位和后4位的逻辑
+3. 在API序列化器中使用masked_key
+4. 确保原始密钥永不在响应中暴露
+5. 添加密钥验证方法用于API调用
+
+## 4. 创建密钥轮换管理命令 [pending]
+### Dependencies: 4.3
+### Description: 开发Django管理命令用于密钥轮换和生命周期管理
+### Details:
+1. 创建rotate_api_keys管理命令
+2. 实现密钥生成和替换逻辑
+3. 添加密钥备份和恢复功能
+4. 支持批量轮换和单个轮换
+5. 记录轮换操作日志和审计信息
+
+## 5. 集成密钥过期提醒任务 [pending]
+### Dependencies: 4.4
+### Description: 使用Celery实现定时任务，监控密钥过期并发送提醒通知
+### Details:
+1. 创建check_api_key_expiry Celery定时任务
+2. 实现密钥过期检查逻辑
+3. 集成邮件或消息通知系统
+4. 配置任务调度（每日检查）
+5. 添加任务监控和错误处理机制
+

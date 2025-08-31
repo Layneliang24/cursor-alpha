@@ -48,6 +48,9 @@ app.conf.update(
         'apps.english.tasks.crawl_news_task': {'queue': 'news'},
         'apps.english.tasks.process_data_quality_task': {'queue': 'quality'},
         'apps.english.tasks.cleanup_task': {'queue': 'maintenance'},
+        'apps.ai.tasks.check_api_key_expiry': {'queue': 'maintenance'},
+        'apps.ai.tasks.cleanup_old_api_keys': {'queue': 'maintenance'},
+        'apps.ai.tasks.health_check_api_keys': {'queue': 'maintenance'},
     },
     
     # 队列设置
@@ -102,6 +105,24 @@ app.conf.update(
         'cleanup-old-data': {
             'task': 'apps.english.tasks.cleanup_old_data',
             'schedule': 3600.0 * 24 * 7,  # 每周执行一次
+            'options': {'queue': 'maintenance'}
+        },
+        # AI密钥管理定时任务
+        'check-api-key-expiry-daily': {
+            'task': 'apps.ai.tasks.check_api_key_expiry',
+            'schedule': 3600.0 * 24,  # 每天检查一次
+            'args': [7],  # 提前7天提醒
+            'options': {'queue': 'maintenance'}
+        },
+        'health-check-api-keys': {
+            'task': 'apps.ai.tasks.health_check_api_keys',
+            'schedule': 3600.0 * 6,  # 每6小时检查一次
+            'options': {'queue': 'maintenance'}
+        },
+        'cleanup-old-api-keys': {
+            'task': 'apps.ai.tasks.cleanup_old_api_keys',
+            'schedule': 3600.0 * 24 * 30,  # 每月清理一次
+            'args': [365],  # 保留365天的记录
             'options': {'queue': 'maintenance'}
         },
     },

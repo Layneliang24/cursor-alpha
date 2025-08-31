@@ -1,0 +1,14 @@
+# Task ID: 18
+# Title: 实现主界面布局
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: 构建主界面框架和导航
+# Details:
+1. 创建基础布局（顶部导航+内容区域）
+2. 实现标签页切换（概览、提供商、模型等）
+3. 开发概览页状态卡片（在线服务、消费等）
+4. 响应式设计（桌面和移动端适配）
+
+# Test Strategy:
+测试布局响应式，验证导航和标签页切换

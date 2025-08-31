@@ -1,0 +1,16 @@
+# Task ID: 3
+# Title: 设计数据库模型
+# Status: pending
+# Dependencies: 2
+# Priority: high
+# Description: 定义提供商、模型、配置、Token统计等核心模型
+# Details:
+1. 定义Provider模型：名称、类型、API端点、状态等
+2. 定义APIKey模型：关联Provider，加密存储密钥
+3. 定义ModelConfig模型：关联Provider，存储模型参数（温度、最大Token等）
+4. 定义TokenUsage模型：关联Provider和模型，存储消费数据
+5. 定义故障转移策略模型
+6. 使用Django迁移创建数据库表
+
+# Test Strategy:
+编写模型单元测试，验证CRUD操作和关联关系

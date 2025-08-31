@@ -1,0 +1,15 @@
+# Task ID: 15
+# Title: 开发统计分析UI
+# Status: pending
+# Dependencies: 1, 14
+# Priority: medium
+# Description: 前端展示Token消费图表和明细
+# Details:
+1. 创建StatisticsView组件
+2. 使用ECharts绘制消费趋势图、饼图、热力图
+3. 实现时间范围选择器
+4. 展示详细数据表格
+5. 添加预算设置和告警配置
+
+# Test Strategy:
+测试图表渲染和筛选功能，验证数据准确性

@@ -1,0 +1,15 @@
+# Task ID: 11
+# Title: 开发监控仪表板UI
+# Status: pending
+# Dependencies: 1, 10
+# Priority: medium
+# Description: 前端展示服务状态、性能图表和告警日志
+# Details:
+1. 创建MonitoringDashboard组件
+2. 使用ECharts绘制响应时间、成功率趋势图
+3. 实现服务状态指示器（在线/离线）
+4. 展示告警日志表格
+5. 集成WebSocket实时更新
+
+# Test Strategy:
+测试图表渲染和实时数据更新，模拟告警显示

@@ -1,0 +1,15 @@
+# Task ID: 7
+# Title: 实现模型发现API
+# Status: pending
+# Dependencies: 5
+# Priority: medium
+# Description: 后端端点获取提供商可用模型列表
+# Details:
+1. 创建/models/端点，根据提供商获取模型列表
+2. 集成各提供商SDK（openai, anthropic等）
+3. 实现缓存机制（Redis），避免频繁调用
+4. 支持手动刷新模型列表
+5. 返回模型详情（名称、能力、价格等）
+
+# Test Strategy:
+测试不同提供商的模型获取，验证缓存和刷新机制

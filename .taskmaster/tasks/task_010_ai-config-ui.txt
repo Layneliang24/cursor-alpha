@@ -1,0 +1,15 @@
+# Task ID: 10
+# Title: 构建实时监控API
+# Status: pending
+# Dependencies: 5
+# Priority: medium
+# Description: 实现服务健康监控和性能指标API
+# Details:
+1. 创建/monitoring/端点，返回实时状态
+2. 实现历史数据存储（24小时）
+3. 计算QPS、错误率、平均响应时间
+4. 使用Celery定时任务收集指标
+5. 实现WebSocket推送实时更新
+
+# Test Strategy:
+测试监控端点，模拟服务状态变化验证实时更新

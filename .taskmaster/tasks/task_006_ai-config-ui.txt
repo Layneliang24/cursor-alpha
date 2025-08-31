@@ -1,0 +1,16 @@
+# Task ID: 6
+# Title: 开发提供商管理UI
+# Status: pending
+# Dependencies: 1, 5
+# Priority: high
+# Description: 前端提供商列表和表单，支持CRUD和连接测试
+# Details:
+1. 创建ProviderList和ProviderForm组件
+2. 使用Element Plus表格展示提供商列表（含状态图标）
+3. 实现表单字段：名称、API端点、密钥等
+4. 添加测试连接按钮，调用/test_connection/ API
+5. 实现批量测试功能
+6. 使用Pinia管理状态
+
+# Test Strategy:
+组件单元测试，E2E测试CRUD流程和连接测试

@@ -1,0 +1,16 @@
+# Task ID: 1
+# Title: 初始化前端项目
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: 使用Vite创建Vue 3 + TypeScript项目，集成Element Plus和SCSS
+# Details:
+1. 使用Vite初始化项目：`npm create vite@latest ai-config-ui -- --template vue-ts`
+2. 安装Element Plus：`npm install element-plus`
+3. 配置SCSS支持：`npm install sass -D`
+4. 配置Element Plus按需导入（使用unplugin-vue-components）
+5. 设置基础目录结构（src/components, src/store, src/views等）
+6. 添加基础路由配置（vue-router）
+
+# Test Strategy:
+验证项目创建成功：运行`npm run dev`，检查Element Plus组件是否正常显示
