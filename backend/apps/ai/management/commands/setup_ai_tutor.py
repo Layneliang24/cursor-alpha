@@ -21,7 +21,7 @@ class Command(BaseCommand):
         parser.add_argument(
             '--provider',
             type=str,
-            choices=['chenmoai', 'openai', 'anthropic', 'google'],
+            choices=['chenmoai', 'openai', 'anthropic', 'google', 'openrouter'],
             default='chenmoai',
             help='AI服务提供商 (默认: chenmoai)'
         )
@@ -96,6 +96,7 @@ class Command(BaseCommand):
             'openai': AIProviderType.OPENAI,
             'anthropic': AIProviderType.ANTHROPIC,
             'google': AIProviderType.GOOGLE,
+            'openrouter': AIProviderType.OPENROUTER,
         }
         
         provider = provider_mapping.get(provider_name)
@@ -110,6 +111,7 @@ class Command(BaseCommand):
                 'openai': 'OPENAI_API_KEY',
                 'anthropic': 'ANTHROPIC_API_KEY',
                 'google': 'GOOGLE_API_KEY',
+                'openrouter': 'OPENROUTER_API_KEY',
             }
             
             env_key = env_key_mapping.get(provider_name)
@@ -181,6 +183,7 @@ class Command(BaseCommand):
             'openai': AIProviderType.OPENAI,
             'anthropic': AIProviderType.ANTHROPIC,
             'google': AIProviderType.GOOGLE,
+            'openrouter': AIProviderType.OPENROUTER,
         }
         
         provider = provider_mapping.get(provider_name)

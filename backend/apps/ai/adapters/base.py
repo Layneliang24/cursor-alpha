@@ -27,6 +27,7 @@ class AIProviderType(Enum):
     AZURE = "azure"
     LOCAL = "local"
     CHENMOAI = "chenmoai"
+    OPENROUTER = "openrouter"
     CUSTOM = "custom"
 
 
