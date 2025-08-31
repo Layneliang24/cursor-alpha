@@ -1087,8 +1087,41 @@
           1,
           10
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "in-progress",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "仪表板基础框架与组件搭建",
+            "description": "创建MonitoringDashboard组件，完成布局、路由接入与占位内容",
+            "dependencies": [],
+            "details": "创建MonitoringDashboard.vue并接入/monitoring路由；使用Element Plus栅格与卡片搭建三栏区块：服务状态区、性能图表区、告警日志区；定义TS类型（ServiceStatus、MetricPoint、AlarmLog）与mock数据，处理空态/加载态；统一样式与主题变量，适配响应式与深色模式；预留子组件/插槽：ServiceStatusPanel、MetricsCharts、AlarmTable，完成基础交互骨架。",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "集成ECharts与服务状态指示器",
+            "description": "绘制响应时间与成功率趋势图，完成在线/离线状态指示与信息展示",
+            "dependencies": [
+              "11.1"
+            ],
+            "details": "按需引入ECharts并封装通用Chart组件；实现响应时间折线图与成功率折线/面积图，支持tooltip、时间范围切换、空数据提示和自适应resize；实现服务状态指示器：在线/离线徽记、延迟、最后心跳时间，使用语义色与图标；支持从Pinia/props接收数据与手动刷新；优化性能：防抖resize、销毁与重建、最小化重渲染。",
+            "status": "in-progress",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "告警日志表格与WebSocket实时更新",
+            "description": "实现告警日志表格（筛选/分页）并接入WebSocket同步图表与状态",
+            "dependencies": [
+              "11.1",
+              "11.2"
+            ],
+            "details": "使用Element Plus表格展示告警（时间、级别、服务、消息），支持级别/服务筛选、关键词搜索与分页；接入WebSocket：定义消息协议类型（metrics_update、status_update、alarm_new），实现心跳、重连与指数退避；将实时数据合并到UI：追加告警、更新图表数据窗口、刷新状态指示器并限制最大数据点/日志条数；确保数据安全与健壮性：字段校验、XSS转义、时间格式化、错误提示；组件卸载时关闭连接与清理资源。",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 12,
@@ -1699,7 +1732,7 @@
     ],
     "metadata": {
       "created": "2025-08-31T08:10:56.593Z",
-      "updated": "2025-08-31T15:38:55.712Z",
+      "updated": "2025-08-31T15:50:16.263Z",
       "description": "Tasks for ai-config-ui context"
     }
   }

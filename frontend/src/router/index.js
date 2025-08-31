@@ -113,6 +113,12 @@ const routes = [
     meta: { title: 'AI服务配置', requiresAuth: true },
   },
   {
+    path: '/english/monitoring',
+    name: 'MonitoringDashboard',
+    component: () => import('@/views/english/MonitoringDashboard.vue'),
+    meta: { title: '监控仪表板', requiresAuth: true },
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/auth/Login.vue'),
