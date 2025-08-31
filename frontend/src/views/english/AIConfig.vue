@@ -153,48 +153,81 @@
       <!-- 模型配置页 -->
       <div v-if="activeTab === 'models'" class="tab-content">
         <div class="models-header">
-          <h2>AI模型配置</h2>
-          <button @click="showAddModelModal = true" class="add-button">
+          <h2>AI模型参数配置</h2>
+          <button @click="showModelConfigForm = true" class="add-button">
             <i class="icon-plus"></i>
-            添加模型
+            新建配置
           </button>
         </div>
 
-        <div class="models-grid">
-          <div v-for="model in aiConfigStore.models" :key="model.id" class="model-card">
+        <div class="model-configs-grid">
+          <div v-for="config in aiConfigStore.modelConfigs" :key="config.id" class="model-config-card">
             <div class="card-header">
-              <h3 class="card-title">{{ model.model_name }}</h3>
-              <div class="model-actions">
-                <button @click="editModel(model)" class="icon-btn edit-btn">
-                  <i class="icon-edit"></i>
+              <div class="config-info">
+                <h3 class="config-name">{{ config.config_name }}</h3>
+                <span class="config-model">{{ config.provider_name }} - {{ config.model }}</span>
+              </div>
+              <div class="config-actions">
+                <span v-if="config.is_default" class="default-badge">默认</span>
+                <button @click="editModelConfig(config)" class="icon-btn edit-btn" title="编辑">
+                  <i class="el-icon-edit"></i>
                 </button>
-                <button @click="deleteModel(model)" class="icon-btn delete-btn">
-                  <i class="icon-delete"></i>
+                <button @click="duplicateModelConfig(config)" class="icon-btn copy-btn" title="复制">
+                  <i class="el-icon-copy-document"></i>
+                </button>
+                <button @click="deleteModelConfig(config)" class="icon-btn delete-btn" title="删除">
+                  <i class="el-icon-delete"></i>
                 </button>
               </div>
             </div>
             <div class="card-content">
-              <div class="model-info">
-                <div class="info-item">
-                  <span class="info-label">提供商:</span>
-                  <span class="info-value">{{ model.provider_name }}</span>
+              <div class="config-details">
+                <div class="detail-row">
+                  <span class="detail-label">温度:</span>
+                  <span class="detail-value">{{ config.temperature || 0.7 }}</span>
                 </div>
-                <div class="info-item">
-                  <span class="info-label">类型:</span>
-                  <span class="info-value">{{ model.model_type }}</span>
+                <div class="detail-row">
+                  <span class="detail-label">最大Token:</span>
+                  <span class="detail-value">{{ config.max_tokens?.toLocaleString() || 'N/A' }}</span>
                 </div>
-                <div class="info-item">
-                  <span class="info-label">上下文长度:</span>
-                  <span class="info-value">{{ model.context_length?.toLocaleString() || '-' }}</span>
+                <div class="detail-row">
+                  <span class="detail-label">系统提示:</span>
+                  <span class="detail-value template-preview">
+                    {{ config.template_name || '自定义模板' }}
+                  </span>
                 </div>
-                <div class="info-item">
-                  <span class="info-label">输入价格:</span>
-                  <span class="info-value">${{ model.input_price_per_1k || 0 }}/1K</span>
+                <div class="detail-row">
+                  <span class="detail-label">创建时间:</span>
+                  <span class="detail-value">{{ formatDate(config.created_at) }}</span>
                 </div>
+              </div>
+              <div class="config-footer">
+                <button 
+                  v-if="!config.is_default" 
+                  @click="setDefaultConfig(config)"
+                  class="set-default-btn"
+                >
+                  设为默认
+                </button>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- 模型配置表单对话框 -->
+        <el-dialog
+          v-model="showModelConfigForm"
+          :title="currentModelConfig ? '编辑模型配置' : '新建模型配置'"
+          width="80%"
+          :before-close="handleCloseConfigForm"
+          destroy-on-close
+        >
+          <ModelConfigForm
+            :config="currentModelConfig"
+            @success="handleConfigFormSuccess"
+            @cancel="handleCloseConfigForm"
+          />
+        </el-dialog>
       </div>
 
       <!-- 统计分析页 -->
@@ -241,13 +274,15 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import ProviderList from '@/components/ai-config/ProviderList.vue'
 import ProviderForm from '@/components/ai-config/ProviderForm.vue'
+import ModelConfigForm from '@/components/ai-config/ModelConfigForm.vue'
 import { useAIConfigStore } from '@/stores/modules/aiConfigStore'
 
 export default {
   name: 'AIConfig',
   components: {
     ProviderList,
-    ProviderForm
+    ProviderForm,
+    ModelConfigForm
   },
   setup() {
     // 使用AI配置store
@@ -259,6 +294,10 @@ export default {
     // 提供商表单相关状态
     const showProviderForm = ref(false)
     const currentProvider = ref(null)
+    
+    // 模型配置表单相关状态
+    const showModelConfigForm = ref(false)
+    const currentModelConfig = ref(null)
     
     // 统计数据
     const statsTimeRange = ref('today')
@@ -308,6 +347,65 @@ export default {
       // 表单提交成功后的处理
       showProviderForm.value = false
       currentProvider.value = null
+    }
+
+    // 模型配置管理相关方法
+    const editModelConfig = (config) => {
+      currentModelConfig.value = config
+      showModelConfigForm.value = true
+    }
+
+    const duplicateModelConfig = async (config) => {
+      try {
+        await aiConfigStore.duplicateModelConfig(config.id)
+        ElMessage.success('配置复制成功')
+      } catch (error) {
+        ElMessage.error('复制配置失败')
+        console.error('复制配置失败:', error)
+      }
+    }
+
+    const deleteModelConfig = async (config) => {
+      try {
+        await ElMessageBox.confirm(
+          `确定要删除配置 "${config.config_name}" 吗？`,
+          '确认删除',
+          {
+            confirmButtonText: '删除',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+        )
+        
+        await aiConfigStore.deleteModelConfig(config.id)
+        ElMessage.success('配置删除成功')
+      } catch (error) {
+        if (error !== 'cancel') {
+          ElMessage.error('删除配置失败')
+          console.error('删除配置失败:', error)
+        }
+      }
+    }
+
+    const setDefaultConfig = async (config) => {
+      try {
+        await aiConfigStore.setDefaultModelConfig(config.id)
+        ElMessage.success('默认配置设置成功')
+      } catch (error) {
+        ElMessage.error('设置默认配置失败')
+        console.error('设置默认配置失败:', error)
+      }
+    }
+
+    const handleConfigFormSuccess = () => {
+      showModelConfigForm.value = false
+      currentModelConfig.value = null
+      ElMessage.success('配置操作成功')
+    }
+
+    const handleCloseConfigForm = () => {
+      showModelConfigForm.value = false
+      currentModelConfig.value = null
     }
     
     // 其他方法（保留原有的API密钥和模型管理方法）
@@ -393,6 +491,10 @@ export default {
       showProviderForm,
       currentProvider,
       
+      // 模型配置表单状态
+      showModelConfigForm,
+      currentModelConfig,
+      
       // 其他模态框
       showAddKeyModal,
       showAddModelModal,
@@ -406,6 +508,14 @@ export default {
       handleEditProvider,
       handleProviderDeleted,
       handleProviderFormSuccess,
+      
+      // 模型配置管理方法
+      editModelConfig,
+      duplicateModelConfig,
+      deleteModelConfig,
+      setDefaultConfig,
+      handleConfigFormSuccess,
+      handleCloseConfigForm,
       
       // 其他方法
       editKey,
@@ -808,6 +918,117 @@ export default {
   color: #999;
 }
 
+/* 模型配置卡片样式 */
+.model-configs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.model-config-card {
+  background: #f8f9ff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e6f3ff;
+  transition: all 0.3s ease;
+}
+
+.model-config-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.config-info {
+  flex: 1;
+}
+
+.config-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.25rem 0;
+}
+
+.config-model {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.config-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.copy-btn {
+  background: #f0f9ff;
+  color: #0ea5e9;
+}
+
+.copy-btn:hover {
+  background: #e0f2fe;
+}
+
+.config-details {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.detail-value {
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.template-preview {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.config-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.set-default-btn {
+  background: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.set-default-btn:hover {
+  background: #d9f7be;
+  border-color: #95de64;
+}
+
+/* Element Plus 对话框自定义样式 */
+:deep(.el-dialog__body) {
+  padding: 0;
+}
+
+:deep(.el-dialog__header) {
+  padding: 1.5rem 1.5rem 1rem;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .ai-config-container {
@@ -832,7 +1053,7 @@ export default {
     grid-template-columns: 1fr;
   }
   
-  .models-grid {
+  .models-grid, .model-configs-grid {
     grid-template-columns: 1fr;
   }
 }

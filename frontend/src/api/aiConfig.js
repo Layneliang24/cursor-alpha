@@ -118,6 +118,47 @@ export const aiConfigAPI = {
     return request.delete(`/ai/model-configs/${id}/`)
   },
 
+  // 设置默认模型配置
+  setDefaultModelConfig(id) {
+    return request.post(`/ai/model-configs/${id}/set_default/`)
+  },
+
+  // 复制模型配置
+  duplicateModelConfig(id) {
+    return request.post(`/ai/model-configs/${id}/duplicate/`)
+  },
+
+  // 获取模型元数据
+  getModelsMetadata(providerId) {
+    const params = providerId ? { provider_id: providerId } : {}
+    return request.get('/ai/model-configs/models_metadata/', { params })
+  },
+
+  // 提示模板管理
+  getPromptTemplates() {
+    return request.get('/ai/prompt-templates/')
+  },
+
+  // 创建提示模板
+  createPromptTemplate(data) {
+    return request.post('/ai/prompt-templates/', data)
+  },
+
+  // 更新提示模板
+  updatePromptTemplate(id, data) {
+    return request.put(`/ai/prompt-templates/${id}/`, data)
+  },
+
+  // 删除提示模板
+  deletePromptTemplate(id) {
+    return request.delete(`/ai/prompt-templates/${id}/`)
+  },
+
+  // 获取提示模板分类
+  getPromptTemplateCategories() {
+    return request.get('/ai/prompt-templates/categories/')
+  },
+
   // Token使用统计
   getTokenUsage(filters = {}) {
     return request.get('/ai/token-usage/', { params: filters })

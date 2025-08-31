@@ -1035,7 +1035,7 @@
             "description": "基于DRF实现模型参数配置的后端接口，包含温度与最大Token等校验逻辑，并提供模型元数据与模板管理能力。",
             "dependencies": [],
             "details": "- 新增序列化与视图集：ModelConfigSerializer/ModelConfigViewSet，字段：provider、model、temperature、max_tokens、system_prompt_template、advanced_params(JSON 如top_p、frequency_penalty、presence_penalty、stop_words、logit_bias、seed、reserved_tokens)。\n- 校验规则：temperature ∈ [0.0, 2.0]；max_tokens > 0 且 ≤ (模型context_window - reserved_tokens，reserved_tokens默认为256，可在advanced_params中覆盖且需≥0)；top_p ∈ (0,1]；frequency/presence_penalty ∈ [-2,2]；stop_words长度限制；logit_bias键值范围校验。\n- 模型元数据接口：GET /api/providers/{id}/models 返回[{name, context_window, display_name}]，用于前端限制最大Token。\n- 配置接口：/api/model-configs [GET/POST]，/api/model-configs/{id} [GET/PATCH/DELETE]，仅认证用户可用。\n- 系统提示模板：PromptTemplateViewSet（name, content），/api/prompt-templates [CRUD]；ModelConfig可存template_id或直接存system_prompt_template（两者择一，优先template_id）。\n- 业务逻辑：保存时根据provider+model查询context_window并执行约束校验；若切换模板ID则同步content快照到配置（可选）。\n- 错误码与信息：返回422/400附具体字段错误；统一异常处理。\n- 迁移与种子数据：创建PromptTemplate表并可选插入示例模板；补充索引与外键约束。",
-            "status": "in-progress",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -1046,7 +1046,7 @@
               "9.1"
             ],
             "details": "- 组件结构：ModelConfigForm（支持受控/非受控），子组件包括TemperatureControl、MaxTokensInput、PromptTemplateSelect、AdvancedParamsCollapse。\n- 温度：ElSlider(0.0-2.0, step=0.1)+数字输入联动，显示当前值与说明tooltip；输入时小数保留一位并自动校正边界。\n- 最大Token：数字输入，实时显示“已选模型上下文窗口/可用上限”；根据 models API 获取context_window 与 reserved_tokens 计算动态max，超出时高亮并给出修正按钮；切换模型/reserved_tokens时自动重算并钳制。\n- 模板：ElSelect列出模板名称（来自 /api/prompt-templates），含“新建/编辑”按钮弹出对话框（名称+内容表单，支持保存/更新）；支持“自定义”选项显示Textarea直输；保持 templateId 与 content 的双向绑定与回填。\n- 高级参数：ElCollapse包含top_p、frequency_penalty、presence_penalty、seed、stop_words(Tag输入)、logit_bias(键值表格)、reserved_tokens；本地校验与输入提示。\n- 模型选择：ElSelect加载 /api/providers/{id}/models；在选项中展示context_window；禁用不兼容项（若有业务条件）。\n- 提交/重置：保存调用 /api/model-configs POST/PATCH；失败按字段提示；成功后事件回调或消息提示。\n- 状态管理与缓存：使用pinia/简单service缓存模型与模板；加载态/空态/错误态处理；i18n与无障碍基础支持。",
-            "status": "pending",
+            "status": "in-progress",
             "testStrategy": ""
           },
           {
@@ -1699,7 +1699,7 @@
     ],
     "metadata": {
       "created": "2025-08-31T08:10:56.593Z",
-      "updated": "2025-08-31T15:04:09.395Z",
+      "updated": "2025-08-31T15:24:20.800Z",
       "description": "Tasks for ai-config-ui context"
     }
   }
