@@ -225,6 +225,62 @@ export const useAIConfigStore = defineStore('aiConfig', () => {
     }
   }
 
+  const createModel = async (modelData) => {
+    try {
+      const response = await aiConfigAPI.createModel(modelData)
+      models.value.push(response.data)
+      return response.data
+    } catch (error) {
+      console.error('创建模型失败:', error)
+      throw error
+    }
+  }
+
+  const updateModel = async (modelId, modelData) => {
+    try {
+      const response = await aiConfigAPI.updateModel(modelId, modelData)
+      const index = models.value.findIndex(m => m.id === modelId)
+      if (index !== -1) {
+        models.value[index] = response.data
+      }
+      return response.data
+    } catch (error) {
+      console.error('更新模型失败:', error)
+      throw error
+    }
+  }
+
+  const deleteModel = async (modelId) => {
+    try {
+      await aiConfigAPI.deleteModel(modelId)
+      models.value = models.value.filter(m => m.id !== modelId)
+    } catch (error) {
+      console.error('删除模型失败:', error)
+      throw error
+    }
+  }
+
+  const testModel = async (modelId, testConfig) => {
+    try {
+      // 模拟模型测试API调用
+      // 实际项目中应该调用真实的API
+      const response = {
+        success: true,
+        data: {
+          response: `这是模型 ${modelId} 的测试响应：${testConfig.prompt}`,
+          tokens_used: Math.floor(Math.random() * 100) + 50,
+          cost: (Math.random() * 0.01).toFixed(4),
+          response_time: Math.floor(Math.random() * 500) + 100
+        }
+      }
+      
+      return response
+    } catch (error) {
+      console.error('测试模型失败:', error)
+      throw error
+    }
+  }
+
   // Token使用统计相关操作
   const fetchTokenUsage = async (filters = {}) => {
     try {
@@ -346,6 +402,10 @@ export const useAIConfigStore = defineStore('aiConfig', () => {
     // 模型操作
     fetchModels,
     fetchAvailableModels,
+    createModel,
+    updateModel,
+    deleteModel,
+    testModel,
     
     // Token使用统计操作
     fetchTokenUsage,
