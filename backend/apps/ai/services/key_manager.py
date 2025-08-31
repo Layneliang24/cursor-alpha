@@ -73,7 +73,7 @@ class APIKeyManager:
             return
         
         try:
-            self._safe_cache_set(key, value, timeout=timeout)
+            cache.set(key, value, timeout=timeout)
         except Exception as e:
             logger.warning(f"缓存写入失败: {e}")
     
@@ -86,7 +86,7 @@ class APIKeyManager:
             return
         
         try:
-            self._safe_cache_delete(key)
+            cache.delete(key)
         except Exception as e:
             logger.warning(f"缓存删除失败: {e}")
     

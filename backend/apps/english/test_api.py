@@ -198,6 +198,7 @@ if __name__ == '__main__':
     import unittest
     unittest.main()
 
+"""
 英语模块API功能测试
 用于验证打字练习相关API是否正常工作
 """

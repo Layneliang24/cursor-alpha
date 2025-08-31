@@ -5,6 +5,7 @@
 
 from .settings import *
 import os
+import sys
 
 # 强制使用测试模式
 DEBUG = False
@@ -27,6 +28,8 @@ DATABASES = {
             'NAME': 'test_alpha_db',
             'CHARSET': 'utf8mb4',
             'COLLATION': 'utf8mb4_unicode_ci',
+            'CREATE_DB': True,
+            'DEPENDENCIES': [],
         }
     }
 }
@@ -159,7 +162,7 @@ REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {
     'user': '2000/hour'
 }
 
-print("✅ 测试环境配置已加载")
-print(f"数据库: {DATABASES['default']['NAME']}@{DATABASES['default']['HOST']}")
-print(f"缓存: {CACHES['default']['BACKEND']}")
-print(f"调试模式: {DEBUG}")
+# 测试环境配置已加载
+# 数据库: {DATABASES['default']['NAME']}@{DATABASES['default']['HOST']}
+# 缓存: {CACHES['default']['BACKEND']}
+# 调试模式: {DEBUG}
