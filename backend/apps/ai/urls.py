@@ -5,13 +5,13 @@ AI配置管理URL配置
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from apps.ai.views import (
+from .views import (
     AIProviderViewSet, APIKeyViewSet, AIModelViewSet,
     PromptTemplateViewSet, ModelConfigViewSet,
     TokenUsageViewSet, UsageQuotaViewSet, ModelDiscoveryViewSet,
     MonitoringViewSet, TokenStatisticsViewSet
 )
-from .views.fallback_views import FailoverStrategyViewSet, ProviderHealthViewSet
+from .fallback_views import FailoverStrategyViewSet, ProviderHealthViewSet
 
 # 创建DRF路由器
 router = DefaultRouter()
