@@ -107,6 +107,12 @@ const routes = [
     meta: { title: 'API集成管理', requiresAuth: true },
   },
   {
+    path: '/english/ai-config',
+    name: 'AIConfig',
+    component: () => import('@/views/english/AIConfig.vue'),
+    meta: { title: 'AI服务配置', requiresAuth: true },
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/auth/Login.vue'),

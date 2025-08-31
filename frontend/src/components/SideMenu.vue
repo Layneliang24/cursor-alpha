@@ -53,6 +53,9 @@
           <router-link class="nav-link" to="/english/api-integration" :class="{ active: $route.path === '/english/api-integration' }">
             <el-icon class="me-2"><Connection /></el-icon>API集成
           </router-link>
+          <router-link class="nav-link" to="/english/ai-config" :class="{ active: $route.path === '/english/ai-config' }">
+            <el-icon class="me-2"><Setting /></el-icon>AI配置管理
+          </router-link>
         </nav>
       </div>
 
@@ -96,7 +99,7 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { categoriesAPI } from '@/api/categories'
 import { homeAPI } from '@/api/home'
-import { House, Document, Edit, Folder, User, DocumentCopy, DataBoard, Trophy, Notebook, ChatDotRound, Notification, Microphone, Connection } from '@element-plus/icons-vue'
+import { House, Document, Edit, Folder, User, DocumentCopy, DataBoard, Trophy, Notebook, ChatDotRound, Notification, Microphone, Connection, Setting } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
 const categories = ref([])

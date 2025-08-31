@@ -824,7 +824,7 @@
             "dependencies": [
               "4.4"
             ],
-            "details": "1. 创建check_api_key_expiry Celery定时任务\n2. 实现密钥过期检查逻辑\n3. 集成邮件或消息通知系统\n4. 配置任务调度（每日检查）\n5. 添加任务监控和错误处理机制\n<info added on 2025-08-31T09:05:16.562Z>\n1. 创建Celery任务文件 (apps/ai/tasks.py)：\n   - check_api_key_expiry: 检查密钥过期并发送提醒\n   - cleanup_old_api_keys: 清理旧的API密钥记录\n   - health_check_api_keys: 健康检查API密钥状态\n2. 集成到Celery配置 (celery_config.py)：\n   - 添加任务路由到maintenance队列\n   - 配置定时任务调度：\n     * check-api-key-expiry-daily: 每天检查，提前7天提醒\n     * health-check-api-keys: 每6小时健康检查\n     * cleanup-old-api-keys: 每月清理，保留365天记录\n3. 实现通知系统：\n   - 邮件通知支持（如果配置了EMAIL_HOST）\n   - 按用户分组发送通知\n   - 区分\"即将过期\"和\"已过期\"通知\n   - 自动禁用过期密钥\n4. 错误处理和监控：\n   - 任务重试机制（最多3次）\n   - 详细日志记录\n   - 任务执行结果统计\n5. 数据安全：\n   - 清理时自动备份删除的密钥信息\n   - 审计日志记录所有操作\n6. 测试结果：\n   - 任务导入成功\n   - 过期检查逻辑正常：检测到1个即将过期密钥（3天后过期）\n   - 通知系统正常：发送到admin@example.com\n   - 返回正确统计信息\n</info added on 2025-08-31T09:05:16.562Z>",
+            "details": "1. 创建check_api_key_expiry Celery定时任务\n2. 实现密钥过期检查逻辑\n3. 集成邮件或消息通知系统\n4. 配置任务调度（每日检查）\n5. 添加任务监控和错误处理机制\n<info added on 2025-08-31T09:05:16.562Z>\n1. 创建Celery任务文件 (apps/ai/tasks.py)：\n   - check_api_key_expiry: 检查密钥过期并发送提醒\n   - cleanup_old_api_keys: 清理旧的API密钥记录\n   - health_check_api_keys: 健康检查API密钥状态\n2. 集成到Celery配置 (celery_config.py)：\n   - 添加任务路由到maintenance队列\n   - 配置定时任务调度：\n     * check-api-key-expiry-daily: 每天检查，提前7天提醒\n     * health-check-api-keys: 每6小时健康检查\n     * cleanup-old-api-keys: 每月清理，保留365天记录\n3. 实现通知系统：\n   - 邮件通知支持（如果配置了EMAIL_HOST）\n   - 按用户分组发送通知\n   - 区分\"即将过期\"和\"已过期\"通知\n   - 自动禁用过期密钥\n4. 错误处理和监控：\n   - 任务重试机制（最多3次）\n   - 详细日志记录\n   - 任务执行结果统计\n5. 数据安全：\n   - 清理时自动备份删除的密钥信息\n   - 审计日志记录所有操作\n6. 测试结果：\n   - 任务导入成功\n   - 过期检查逻辑正常：检测到1个即将过期密钥（3天后过期）\n   - 通知系统正常：发送到admin@example.com\n   - 返回正确统计信息\n</info added on 2025-08-31T09:05:16.562Z>\n<info added on 2025-08-31T09:15:42.443Z>\n✅ 密钥过期提醒Celery任务集成完成\n\n实现内容：\n1. ✅ 创建Celery任务文件 (apps/ai/tasks.py)：\n   - check_api_key_expiry: 检查密钥过期并发送提醒\n   - cleanup_old_api_keys: 清理旧的API密钥记录\n   - health_check_api_keys: 健康检查API密钥状态\n2. ✅ 集成到Celery配置 (celery_config.py)：\n   - 添加任务路由到maintenance队列\n   - 配置定时任务调度：\n     * check-api-key-expiry-daily: 每天检查，提前7天提醒\n     * health-check-api-keys: 每6小时健康检查\n     * cleanup-old-api-keys: 每月清理，保留365天记录\n3. ✅ 实现通知系统：\n   - 邮件通知支持（如果配置了EMAIL_HOST）\n   - 按用户分组发送通知\n   - 区分\"即将过期\"和\"已过期\"通知\n   - 自动禁用过期密钥\n4. ✅ 错误处理和监控：\n   - 任务重试机制（最多3次）\n   - 详细日志记录\n   - 任务执行结果统计\n5. ✅ 数据安全：\n   - 清理时自动备份删除的密钥信息\n   - 审计日志记录所有操作\n\n测试结果：\n- 任务导入成功\n- 过期检查逻辑正常：检测到1个即将过期密钥（3天后过期）\n- 通知系统正常：发送到admin@example.com\n- 返回正确统计信息\n</info added on 2025-08-31T09:15:42.443Z>",
             "status": "done",
             "testStrategy": ""
           }
@@ -1080,14 +1080,177 @@
         "id": 18,
         "title": "实现主界面布局",
         "description": "构建主界面框架和导航",
-        "details": "1. 创建基础布局（顶部导航+内容区域）\n2. 实现标签页切换（概览、提供商、模型等）\n3. 开发概览页状态卡片（在线服务、消费等）\n4. 响应式设计（桌面和移动端适配）",
-        "testStrategy": "测试布局响应式，验证导航和标签页切换",
-        "priority": "high",
+        "status": "done",
         "dependencies": [
           1
         ],
-        "status": "pending",
-        "subtasks": []
+        "priority": "high",
+        "details": "已完成AI配置管理界面的全部实现，包括界面设计、核心功能框架、交互功能和技术集成。",
+        "testStrategy": "测试整个AI配置管理界面的响应式设计、导航、标签页切换、交互功能以及技术集成点。",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "创建AIConfig.vue主界面 (frontend/src/views/english/AIConfig.vue)",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "实现标签页导航：概览、提供商、API密钥、模型配置、统计分析",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "美观的现代化UI设计，渐变背景，卡片布局",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "完整响应式设计，支持桌面和移动端",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "概览页：服务状态卡片、Token消费统计、快速操作",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "提供商管理：网格布局显示所有提供商，状态指示器",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "API密钥管理：列表显示，掩码密钥，状态管理",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 8,
+            "title": "模型配置：模型网格，规格显示，成本信息",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 9,
+            "title": "统计分析：预留ECharts图表集成位置",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 10,
+            "title": "模态框：添加提供商、添加API密钥",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 11,
+            "title": "操作按钮：测试连接、刷新状态、导出配置",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 12,
+            "title": "状态指示：在线/离线、健康/异常、有效/无效",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 13,
+            "title": "结果反馈：操作结果显示区域",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 14,
+            "title": "添加路由配置 (frontend/src/router/index.js)",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 15,
+            "title": "更新侧边栏菜单 (frontend/src/components/SideMenu.vue)",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 16,
+            "title": "创建API接口文件 (frontend/src/api/aiConfig.js)",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 17,
+            "title": "使用Element Plus组件和图标",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 18,
+            "title": "Vue 3 Composition API架构",
+            "description": "",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 19,
@@ -1439,7 +1602,7 @@
     ],
     "metadata": {
       "created": "2025-08-31T08:10:56.593Z",
-      "updated": "2025-08-31T09:05:23.714Z",
+      "updated": "2025-08-31T09:18:55.919Z",
       "description": "Tasks for ai-config-ui context"
     }
   }
