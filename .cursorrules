@@ -10,6 +10,16 @@
 - yinli: https://yinli.one/v1 | sk-301vql0iXmeIEoHx8RdlKoN1NAzpk5gFlzcPebDjj4GqYwD9 | 垃圾罢了
 - siliconflow: https://api.siliconflow.cn/v1 | sk-qcxlwgdycvwptcaipxbiomxxfdsalmtiwvktcravdcnfauit | 余额足够，国内模型多
 
+### 固定方法论
+无论您换到任何新环境，只需要运行：
+- ./scripts/setup-dev-environment.sh - 一键配置完整开发环境
+- ./scripts/validate-methodology.sh - 全面验证环境配置
+- ./scripts/check-development-compliance.sh - 日常合规性评分
+- docs/METHODOLOGY_ONBOARDING.md - 完整入门指南
+- ONBOARDING_CHECKLIST.md - 30分钟入门检查清单
+- .taskmaster/templates/new-developer-training-prd.txt - 培训任务模板
+
+
 ### 代办项目
 
 - Bmad-method项目研究
