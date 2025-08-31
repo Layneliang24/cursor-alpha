@@ -586,6 +586,76 @@ class FailoverRule(models.Model):
         return f"{self.strategy.name} -> {self.fallback_provider.display_name} (P{self.priority})"
 
 
+class FallbackAuditLog(models.Model):
+    """故障转移审计日志"""
+    
+    ACTION_TYPES = [
+        ('auto_switch', '自动切换'),
+        ('manual_switch', '手动切换'),
+        ('recovery', '恢复'),
+        ('health_check', '健康检查'),
+    ]
+    
+    strategy = models.ForeignKey(
+        FailoverStrategy,
+        on_delete=models.CASCADE,
+        related_name='audit_logs',
+        verbose_name='故障转移策略'
+    )
+    
+    action_type = models.CharField(
+        max_length=20,
+        choices=ACTION_TYPES,
+        verbose_name='操作类型'
+    )
+    
+    from_provider = models.CharField(
+        max_length=50,
+        blank=True,
+        verbose_name='源提供商'
+    )
+    
+    to_provider = models.CharField(
+        max_length=50,
+        verbose_name='目标提供商'
+    )
+    
+    reason = models.TextField(
+        verbose_name='切换原因'
+    )
+    
+    operator = models.ForeignKey(
+        'users.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='操作者'
+    )
+    
+    metadata = models.JSONField(
+        default=dict,
+        encoder=DjangoJSONEncoder,
+        verbose_name='元数据',
+        help_text='额外的上下文信息'
+    )
+    
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='创建时间'
+    )
+    
+    class Meta:
+        db_table = 'ai_fallback_audit_logs'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['strategy', 'action_type']),
+            models.Index(fields=['created_at']),
+        ]
+    
+    def __str__(self):
+        return f"{self.strategy.name}: {self.from_provider} -> {self.to_provider}"
+
+
 class UsageQuota(models.Model):
     """使用配额管理"""
     
