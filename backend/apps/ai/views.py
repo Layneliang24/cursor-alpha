@@ -10,10 +10,14 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.db.models import Count, Sum, Avg
 from django.db import transaction
 from apps.rbac.permissions import RBACPermission, CanManageAIConfig
 from apps.rbac.services import AuditService
+from apps.common.ratelimit import ai_config_limit, ai_test_limit, sensitive_limit
+from apps.common.security import DatabaseSecurityMixin
+from apps.common.ssl_config import APIKeySecurityManager
 
 from .config_models import (
     AIProvider, APIKey, AIModel, ModelConfig, TokenUsage,
@@ -29,7 +33,8 @@ from .adapters.factory import AIAdapterFactory
 logger = logging.getLogger(__name__)
 
 
-class AIProviderViewSet(viewsets.ModelViewSet):
+@method_decorator(ai_config_limit, name='dispatch')
+class AIProviderViewSet(DatabaseSecurityMixin, viewsets.ModelViewSet):
     """AI提供商管理ViewSet"""
     
     queryset = AIProvider.objects.all()
@@ -91,6 +96,7 @@ class AIProviderViewSet(viewsets.ModelViewSet):
         )
     
     @action(detail=True, methods=['post'])
+    @method_decorator(ai_test_limit)
     def test_connection(self, request, pk=None):
         """测试单个提供商连接"""
         provider = self.get_object()
@@ -153,6 +159,7 @@ class AIProviderViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     @action(detail=False, methods=['post'])
+    @method_decorator(sensitive_limit)
     def bulk_test(self, request):
         """批量测试所有提供商连接"""
         providers = self.get_queryset().filter(is_active=True)
@@ -273,7 +280,8 @@ class AIProviderViewSet(viewsets.ModelViewSet):
         })
 
 
-class APIKeyViewSet(viewsets.ModelViewSet):
+@method_decorator(sensitive_limit, name='dispatch')
+class APIKeyViewSet(DatabaseSecurityMixin, viewsets.ModelViewSet):
     """API密钥管理ViewSet"""
     
     queryset = APIKey.objects.all()
@@ -317,7 +325,56 @@ class APIKeyViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         """创建API密钥时设置用户"""
-        serializer.save(user=self.request.user)
+        # 验证API密钥传输安全性
+        if not APIKeySecurityManager.validate_key_transmission(self.request):
+            from rest_framework.exceptions import ValidationError
+            raise ValidationError('请使用HTTPS连接创建API密钥')
+        
+        api_key = serializer.save(user=self.request.user)
+        
+        # 记录密钥创建日志
+        APIKeySecurityManager.log_key_access(
+            user=self.request.user,
+            action='create',
+            key_id=str(api_key.id)
+        )
+    
+    def list(self, request, *args, **kwargs):
+        """获取API密钥列表（安全版本）"""
+        queryset = self.filter_queryset(self.get_queryset())
+        
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            # 确保返回安全的响应数据
+            safe_data = [
+                APIKeySecurityManager.create_secure_api_key_response(item)
+                for item in serializer.data
+            ]
+            return self.get_paginated_response(safe_data)
+        
+        serializer = self.get_serializer(queryset, many=True)
+        safe_data = [
+            APIKeySecurityManager.create_secure_api_key_response(item)
+            for item in serializer.data
+        ]
+        return Response(safe_data)
+    
+    def retrieve(self, request, *args, **kwargs):
+        """获取单个API密钥详情（安全版本）"""
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        
+        # 记录密钥访问日志
+        APIKeySecurityManager.log_key_access(
+            user=request.user,
+            action='view',
+            key_id=str(instance.id)
+        )
+        
+        # 返回安全响应
+        safe_data = APIKeySecurityManager.create_secure_api_key_response(serializer.data)
+        return Response(safe_data)
     
     @action(detail=True, methods=['post'])
     def test(self, request, pk=None):

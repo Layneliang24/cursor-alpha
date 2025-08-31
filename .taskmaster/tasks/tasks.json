@@ -1461,7 +1461,7 @@
           4,
           20
         ],
-        "status": "pending",
+        "status": "in-progress",
         "subtasks": [
           {
             "id": 1,
@@ -1469,7 +1469,7 @@
             "description": "在前端实现XSS攻击防护，包括数据转义和输入验证",
             "dependencies": [],
             "details": "1. 配置Vue 3的HTML转义机制\n2. 实现用户输入数据的转义处理\n3. 配置CSP内容安全策略防止脚本注入\n4. 对API响应数据进行安全过滤\n5. 添加XSS防护的单元测试",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -1478,7 +1478,7 @@
             "description": "在后端实现SQL注入攻击防护，使用ORM和参数化查询",
             "dependencies": [],
             "details": "1. 确保所有数据库查询使用Django ORM\n2. 避免原生SQL查询，必要时使用参数化查询\n3. 对用户输入进行严格验证和过滤\n4. 配置数据库权限最小化原则\n5. 添加SQL注入防护测试用例",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -1487,7 +1487,7 @@
             "description": "配置HTTPS传输加密，保护API密钥和敏感数据传输",
             "dependencies": [],
             "details": "1. 配置SSL/TLS证书\n2. 强制HTTPS重定向\n3. API密钥在数据库中加密存储\n4. 配置安全的密钥传输机制\n5. 实现密钥轮换机制",
-            "status": "pending",
+            "status": "in-progress",
             "testStrategy": ""
           },
           {
@@ -1666,7 +1666,7 @@
     ],
     "metadata": {
       "created": "2025-08-31T08:10:56.593Z",
-      "updated": "2025-08-31T10:34:28.498Z",
+      "updated": "2025-08-31T11:25:02.015Z",
       "description": "Tasks for ai-config-ui context"
     }
   }

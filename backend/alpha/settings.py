@@ -702,3 +702,60 @@ AI_LOAD_BALANCER = {
 # Django Cryptography配置
 CRYPTOGRAPHY_KEY = os.environ.get('CRYPTOGRAPHY_KEY', 'default-encryption-key-for-development-only-change-in-production')
 CRYPTOGRAPHY_SALT = os.environ.get('CRYPTOGRAPHY_SALT', 'default-salt-for-development')
+
+# 安全配置 - XSS和CSRF防护
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
+# HTTPS配置（生产环境启用）
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000  # 1年
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+# Content Security Policy配置
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-eval'")  # Vue编译需要
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://fonts.googleapis.com")
+CSP_FONT_SRC = ("'self'", "data:", "https://fonts.gstatic.com")
+CSP_IMG_SRC = ("'self'", "data:", "https:", "blob:")
+CSP_CONNECT_SRC = (
+    "'self'", 
+    "https://api.siliconflow.cn", 
+    "https://openrouter.ai", 
+    "https://api.openai.com",
+    "https://hk.chenmoai.cn",
+    "https://api.chenmoai.cn"
+)
+CSP_OBJECT_SRC = ("'none'",)
+CSP_FRAME_SRC = ("'none'",)
+CSP_BASE_URI = ("'self'",)
+CSP_FORM_ACTION = ("'self'",)
+
+# 权限策略
+PERMISSIONS_POLICY = {
+    "geolocation": [],
+    "microphone": [],
+    "camera": [],
+    "usb": [],
+    "bluetooth": [],
+    "payment": [],
+    "midi": [],
+    "sync-xhr": [],
+}
+
+# 速率限制配置
+RATELIMIT_USE_CACHE = 'default'
+RATELIMIT_ENABLE = True
+
+# 安全日志配置
+SECURITY_LOGGING = {
+    'log_sql_injection_attempts': True,
+    'log_xss_attempts': True,
+    'log_rate_limit_violations': True,
+    'log_authentication_failures': True,
+}

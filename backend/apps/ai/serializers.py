@@ -2,11 +2,16 @@
 AI配置管理序列化器
 """
 
+import re
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from .config_models import (
     AIProvider, APIKey, AIModel, ModelConfig, TokenUsage,
     FailoverStrategy, FailoverRule, UsageQuota
+)
+from apps.common.security import (
+    InputValidator, PROVIDER_NAME_VALIDATOR, MODEL_NAME_VALIDATOR
 )
 
 User = get_user_model()
@@ -24,6 +29,33 @@ class AIProviderSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'is_healthy', 'last_health_check', 'avg_response_time', 'success_rate', 'created_at', 'updated_at']
+    
+    def validate_provider_type(self, value):
+        """验证提供商类型"""
+        return InputValidator.validate_provider_type(value)
+    
+    def validate_display_name(self, value):
+        """验证显示名称"""
+        if not value or not isinstance(value, str):
+            raise serializers.ValidationError("显示名称不能为空")
+        
+        value = value.strip()
+        if len(value) < 2 or len(value) > 100:
+            raise serializers.ValidationError("显示名称长度必须在2-100字符之间")
+        
+        # 使用安全字符串验证器
+        try:
+            InputValidator.SAFE_STRING_VALIDATOR(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(str(e))
+        
+        return value
+    
+    def validate_base_url(self, value):
+        """验证API端点"""
+        if value:
+            return InputValidator.validate_api_endpoint(value)
+        return value
 
 
 class APIKeySerializer(serializers.ModelSerializer):
@@ -99,6 +131,38 @@ class APIKeyCreateSerializer(serializers.Serializer):
     usage_limit_monthly = serializers.IntegerField(required=False, allow_null=True)
     expires_at = serializers.DateTimeField(required=False, allow_null=True)
     
+    def validate_name(self, value):
+        """验证密钥名称"""
+        if not value or not isinstance(value, str):
+            raise serializers.ValidationError("密钥名称不能为空")
+        
+        value = value.strip()
+        if len(value) < 2 or len(value) > 100:
+            raise serializers.ValidationError("密钥名称长度必须在2-100字符之间")
+        
+        # 使用安全字符串验证器
+        try:
+            InputValidator.SAFE_STRING_VALIDATOR(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(str(e))
+        
+        return value
+    
+    def validate_raw_key(self, value):
+        """验证原始API密钥"""
+        if not value or not isinstance(value, str):
+            raise serializers.ValidationError("API密钥不能为空")
+        
+        value = value.strip()
+        if len(value) < 10 or len(value) > 500:
+            raise serializers.ValidationError("API密钥长度必须在10-500字符之间")
+        
+        # 检查密钥格式（基本安全检查）
+        if not re.match(r'^[a-zA-Z0-9\-_.]+$', value):
+            raise serializers.ValidationError("API密钥格式不正确")
+        
+        return value
+    
     def create(self, validated_data):
         """创建API密钥"""
         raw_key = validated_data.pop('raw_key')
@@ -128,6 +192,26 @@ class AIModelSerializer(serializers.ModelSerializer):
             'is_active', 'is_recommended', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'provider_name', 'created_at', 'updated_at']
+    
+    def validate_model_id(self, value):
+        """验证模型ID"""
+        return InputValidator.validate_model_name(value)
+    
+    def validate_display_name(self, value):
+        """验证显示名称"""
+        if not value or not isinstance(value, str):
+            raise serializers.ValidationError("显示名称不能为空")
+        
+        value = value.strip()
+        if len(value) < 2 or len(value) > 100:
+            raise serializers.ValidationError("显示名称长度必须在2-100字符之间")
+        
+        try:
+            InputValidator.SAFE_STRING_VALIDATOR(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(str(e))
+        
+        return value
 
 
 class ModelConfigSerializer(serializers.ModelSerializer):
@@ -145,6 +229,42 @@ class ModelConfigSerializer(serializers.ModelSerializer):
             'is_default', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'user_name', 'model_display_name', 'created_at', 'updated_at']
+    
+    def validate_config_name(self, value):
+        """验证配置名称"""
+        if not value or not isinstance(value, str):
+            raise serializers.ValidationError("配置名称不能为空")
+        
+        value = value.strip()
+        if len(value) < 2 or len(value) > 100:
+            raise serializers.ValidationError("配置名称长度必须在2-100字符之间")
+        
+        try:
+            InputValidator.SAFE_STRING_VALIDATOR(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(str(e))
+        
+        return value
+    
+    def validate_temperature(self, value):
+        """验证温度参数"""
+        if value is not None:
+            if not isinstance(value, (int, float)) or value < 0 or value > 2:
+                raise serializers.ValidationError("temperature必须在0-2之间")
+        return value
+    
+    def validate_max_tokens(self, value):
+        """验证最大token数"""
+        if value is not None:
+            if not isinstance(value, int) or value < 1 or value > 100000:
+                raise serializers.ValidationError("max_tokens必须在1-100000之间")
+        return value
+    
+    def validate_custom_parameters(self, value):
+        """验证自定义参数"""
+        if value:
+            return InputValidator.validate_json_config(value)
+        return value
 
 
 class TokenUsageSerializer(serializers.ModelSerializer):
