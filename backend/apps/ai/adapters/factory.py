@@ -11,6 +11,7 @@ from .openai_adapter import OpenAIAdapter
 from .claude_adapter import ClaudeAdapter
 from .google_adapter import GoogleAdapter
 from .chenmoai_adapter import ChenmoAIAdapter
+from .openrouter_adapter import OpenRouterAdapter
 from .exceptions import ModelNotFoundException, AIServiceException
 
 logger = logging.getLogger(__name__)
@@ -25,6 +26,7 @@ class AIAdapterFactory:
         AIProviderType.ANTHROPIC: ClaudeAdapter,
         AIProviderType.GOOGLE: GoogleAdapter,
         AIProviderType.CHENMOAI: ChenmoAIAdapter,
+        AIProviderType.OPENROUTER: OpenRouterAdapter,
     }
     
     # 模型到提供商的映射
@@ -58,6 +60,16 @@ class AIAdapterFactory:
         'chenmoai-claude-3-sonnet': AIProviderType.CHENMOAI,
         'chenmoai-claude-3-haiku': AIProviderType.CHENMOAI,
         'chenmoai-gemini-pro': AIProviderType.CHENMOAI,
+        
+        # OpenRouter模型（免费和付费模型）
+        'google/gemma-2-9b-it:free': AIProviderType.OPENROUTER,
+        'microsoft/phi-3-mini-128k-instruct:free': AIProviderType.OPENROUTER,
+        'huggingfaceh4/zephyr-7b-beta:free': AIProviderType.OPENROUTER,
+        'openchat/openchat-7b:free': AIProviderType.OPENROUTER,
+        'openai/gpt-4o': AIProviderType.OPENROUTER,
+        'openai/gpt-4o-mini': AIProviderType.OPENROUTER,
+        'anthropic/claude-3-5-sonnet': AIProviderType.OPENROUTER,
+        'anthropic/claude-3-haiku': AIProviderType.OPENROUTER,
     }
     
     @classmethod

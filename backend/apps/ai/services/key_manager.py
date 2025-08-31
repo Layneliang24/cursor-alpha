@@ -115,6 +115,7 @@ class APIKeyManager:
             AIProviderType.AZURE: ['AZURE_OPENAI_API_KEY'],
             AIProviderType.LOCAL: ['OLLAMA_API_KEY'],
             AIProviderType.CHENMOAI: ['CHENMOAI_API_KEY'],
+            AIProviderType.OPENROUTER: ['OPENROUTER_API_KEY'],
         }
         
         for provider, env_vars in env_mapping.items():
@@ -464,7 +465,8 @@ class APIKeyManager:
             AIProviderType.GOOGLE: 'gemini-pro',
             AIProviderType.AZURE: 'gpt-35-turbo',
             AIProviderType.LOCAL: 'llama2',
-            AIProviderType.CHENMOAI: 'gpt-3.5-turbo'
+            AIProviderType.CHENMOAI: 'gpt-3.5-turbo',
+            AIProviderType.OPENROUTER: 'google/gemma-2-9b-it:free'
         }
         return default_models.get(provider, 'gpt-3.5-turbo')
     
