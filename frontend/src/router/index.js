@@ -39,6 +39,7 @@ const routes = [
     component: () => import('@/views/idiomatic-expressions/ExpressionLearning.vue'),
     meta: { title: '地道表达学习', requiresAuth: true },
   },
+
   {
     path: '/english/learning-analytics',
     name: 'LearningAnalytics',

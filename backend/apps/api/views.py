@@ -426,6 +426,7 @@ def update_avatar_url(request):
 
 @api_view(['POST'])
 @permission_classes([])  # 不需要认证
+@csrf_exempt
 def verify_user_identity(request):
     """验证用户身份并返回头像信息"""
     username = request.data.get('username')

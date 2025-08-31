@@ -14,9 +14,11 @@ from .learning_analytics import (
     ForgettingCurveData,
     LearningEfficiencyMetrics
 )
+from .learning_stats import LearningStatsService
 
 __all__ = [
     'LearningAnalyticsService',
+    'LearningStatsService',
     'MasteryLevel', 
     'LearningPhase',
     'LearningInsight',

@@ -87,7 +87,7 @@ export const useAuthStore = defineStore('auth', {
     // 初始化用户状态
     async initAuth () {
       const token = localStorage.getItem('access_token')
-      const user = localStorage.getItem('user')
+      const user = localStorage.getItem('user') || localStorage.getItem('user_info')
       
       if (token && user) {
         this.token = token
@@ -103,6 +103,18 @@ export const useAuthStore = defineStore('auth', {
         } catch (error) {
           console.log('Token验证失败，清除登录状态')
           // token无效，静默清除登录状态，不显示错误消息
+          this.clearAuth()
+        }
+      } else if (token && !user) {
+        // 如果只有token没有用户信息，尝试获取用户信息
+        this.token = token
+        try {
+          const currentUser = await authAPI.getCurrentUser()
+          this.user = currentUser
+          this.isLoggedIn = true
+          localStorage.setItem('user', JSON.stringify(currentUser))
+        } catch (error) {
+          console.log('Token验证失败，清除登录状态')
           this.clearAuth()
         }
       }

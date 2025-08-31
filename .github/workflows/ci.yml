@@ -1,0 +1,372 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master, develop, feature/* ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+# 允许手动触发
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # 基础检查和构建
+  build:
+    name: Build and Basic Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout代码
+      uses: actions/checkout@v4
+      
+    - name: 设置Node.js环境
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: 'frontend/package-lock.json'
+        
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+        cache-dependency-path: 'backend/requirements.txt'
+        
+    - name: 安装前端依赖
+      working-directory: ./frontend
+      run: |
+        npm ci
+        
+    - name: 安装后端依赖
+      working-directory: ./backend
+      run: |
+        pip install -r requirements.txt
+        
+    - name: 前端代码检查
+      working-directory: ./frontend
+      run: |
+        npm run lint:check
+        
+    - name: 前端类型检查
+      working-directory: ./frontend
+      run: |
+        npm run type-check
+        
+    - name: 前端构建
+      working-directory: ./frontend
+      run: |
+        npm run build
+        
+    - name: 后端代码检查
+      working-directory: ./backend
+      run: |
+        python manage.py check
+        
+    # 缓存构建产物
+    - name: 缓存前端构建产物
+      uses: actions/cache@v3
+      with:
+        path: frontend/dist
+        key: frontend-build-${{ github.sha }}
+        
+  # 单元测试
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - name: Checkout代码
+      uses: actions/checkout@v4
+      
+    - name: 设置Node.js环境
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: 'frontend/package-lock.json'
+        
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+        cache-dependency-path: 'backend/requirements.txt'
+        
+    - name: 安装前端依赖
+      working-directory: ./frontend
+      run: npm ci
+      
+    - name: 安装后端依赖
+      working-directory: ./backend
+      run: pip install -r requirements.txt
+      
+    - name: 运行前端单元测试
+      working-directory: ./frontend
+      run: |
+        npm run test:coverage
+        
+    - name: 运行后端单元测试
+      working-directory: ./backend
+      run: |
+        python manage.py test
+        
+    - name: 上传前端覆盖率报告
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: frontend-coverage-report
+        path: frontend/coverage/
+        retention-days: 30
+        
+    - name: 上传测试结果
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results
+        path: |
+          frontend/test-results/
+          backend/test-results/
+        retention-days: 30
+
+  # E2E测试
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: build
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: meimei520
+          MYSQL_DATABASE: alpha_db_test
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        ports:
+          - 3306:3306
+          
+      redis:
+        image: redis:7-alpine
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        ports:
+          - 6379:6379
+    
+    steps:
+    - name: Checkout代码
+      uses: actions/checkout@v4
+      
+    - name: 设置Node.js环境
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: 'frontend/package-lock.json'
+        
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+        cache-dependency-path: 'backend/requirements.txt'
+        
+    - name: 安装系统依赖
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libmysqlclient-dev
+        
+    - name: 安装前端依赖
+      working-directory: ./frontend
+      run: npm ci
+      
+    - name: 安装后端依赖
+      working-directory: ./backend
+      run: pip install -r requirements.txt
+      
+    - name: 安装Playwright浏览器
+      working-directory: ./frontend
+      run: npx playwright install --with-deps
+      
+    - name: 配置测试环境变量
+      run: |
+        echo "DB_HOST=localhost" >> $GITHUB_ENV
+        echo "DB_PORT=3306" >> $GITHUB_ENV
+        echo "DB_NAME=alpha_db_test" >> $GITHUB_ENV
+        echo "DB_USER=root" >> $GITHUB_ENV
+        echo "DB_PASSWORD=meimei520" >> $GITHUB_ENV
+        echo "REDIS_URL=redis://localhost:6379" >> $GITHUB_ENV
+        echo "DEBUG=False" >> $GITHUB_ENV
+        echo "SECRET_KEY=test-secret-key-for-ci" >> $GITHUB_ENV
+        
+    - name: 数据库迁移
+      working-directory: ./backend
+      run: |
+        python manage.py migrate --settings=alpha.settings_test
+        
+    - name: 启动后端服务
+      working-directory: ./backend
+      run: |
+        python manage.py runserver 0.0.0.0:8000 --settings=alpha.settings_test &
+        sleep 10
+        curl -f http://localhost:8000/api/v1/ || exit 1
+        
+    - name: 启动前端服务
+      working-directory: ./frontend
+      run: |
+        npm run build
+        npm run preview -- --port 3000 --host &
+        sleep 10
+        curl -f http://localhost:3000 || exit 1
+        
+    - name: 运行Playwright E2E测试
+      working-directory: ./frontend
+      run: |
+        npm run test:e2e
+        
+    - name: 上传Playwright报告
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-report
+        path: frontend/playwright-report/
+        retention-days: 30
+        
+    - name: 上传测试失败截图
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: playwright-screenshots
+        path: frontend/test-results/
+        retention-days: 30
+
+  # 跨浏览器测试 (可选)
+  cross-browser-tests:
+    name: Cross Browser Tests
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    
+    strategy:
+      matrix:
+        browser: [chrome, firefox, edge]
+        
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: meimei520
+          MYSQL_DATABASE: alpha_db_test
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        ports:
+          - 3306:3306
+          
+    steps:
+    - name: Checkout代码
+      uses: actions/checkout@v4
+      
+    - name: 设置Node.js环境
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: 'frontend/package-lock.json'
+        
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+        cache-dependency-path: 'backend/requirements.txt'
+        
+    - name: 安装系统依赖
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libmysqlclient-dev
+        
+    - name: 安装依赖
+      run: |
+        cd frontend && npm ci
+        cd ../backend && pip install -r requirements.txt
+        
+    - name: 配置测试环境
+      run: |
+        echo "DB_HOST=localhost" >> $GITHUB_ENV
+        echo "DB_PORT=3306" >> $GITHUB_ENV
+        echo "DB_NAME=alpha_db_test" >> $GITHUB_ENV
+        echo "DB_USER=root" >> $GITHUB_ENV
+        echo "DB_PASSWORD=meimei520" >> $GITHUB_ENV
+        echo "SECRET_KEY=test-secret-key-for-ci" >> $GITHUB_ENV
+        
+    - name: 启动服务
+      run: |
+        cd backend && python manage.py migrate --settings=alpha.settings_test
+        cd backend && python manage.py runserver 0.0.0.0:8000 --settings=alpha.settings_test &
+        cd frontend && npm run build && npm run preview -- --port 3000 --host &
+        sleep 15
+        
+    - name: 运行跨浏览器测试
+      working-directory: ./frontend
+      run: |
+        BROWSER=${{ matrix.browser }} npm run test:cross-browser
+        
+    - name: 上传跨浏览器测试报告
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: cross-browser-report-${{ matrix.browser }}
+        path: frontend/test-results/selenium-reports/
+        retention-days: 30
+
+  # 部署到预发布环境 (仅在main/master分支)
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [unit-tests, e2e-tests]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    
+    environment:
+      name: staging
+      url: https://alpha-staging.example.com
+      
+    steps:
+    - name: Checkout代码
+      uses: actions/checkout@v4
+      
+    - name: 部署到预发布环境
+      run: |
+        echo "部署到预发布环境 - 这里添加实际的部署脚本"
+        echo "可以使用 Docker, AWS, Azure, 或其他部署工具"
+        
+    - name: 健康检查
+      run: |
+        echo "执行部署后的健康检查"
+        # curl -f https://alpha-staging.example.com/health || exit 1
+
+  # 通知
+  notify:
+    name: Notify Results
+    runs-on: ubuntu-latest
+    needs: [unit-tests, e2e-tests, cross-browser-tests, deploy-staging]
+    if: always()
+    
+    steps:
+    - name: 通知测试结果
+      run: |
+        echo "测试完成通知"
+        echo "单元测试: ${{ needs.unit-tests.result }}"
+        echo "E2E测试: ${{ needs.e2e-tests.result }}"
+        echo "跨浏览器测试: ${{ needs.cross-browser-tests.result }}"
+        echo "部署: ${{ needs.deploy-staging.result }}"
+        
+    # 可以添加Slack通知
+    # - name: Slack通知
+    #   uses: 8398a7/action-slack@v3
+    #   with:
+    #     status: ${{ job.status }}
+    #     channel: '#ci-cd'
+    #     webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+    #   if: always()

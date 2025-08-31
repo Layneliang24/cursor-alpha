@@ -1,0 +1,26 @@
+# Task ID: 3
+# Title: 修复Computed属性中的空值访问
+# Status: pending
+# Dependencies: 1, 2
+# Priority: high
+# Description: 修复ExpressionLearning.vue组件中currentExpressions computed属性可能访问null/undefined的问题。
+# Details:
+1. 在currentExpressions computed属性中，确保所有访问的属性都经过安全处理。
+2. 使用可选链（?.）和空值合并（??）操作符避免深层属性访问错误。
+3. 确保依赖的store状态（如safeNeedReviewExpressions, safeExpressions）本身是安全的（已在任务2中确保）。
+4. 重构currentExpressions：
+```javascript
+const currentExpressions = computed(() => {
+  if (currentMode.value === 'review') {
+    return expressionStore.needReviewExpressions ?? [];
+  }
+  return expressionStore.expressions ?? [];
+});
+```
+5. 在模板中使用currentExpressions时，同样使用可选链：`{{ currentExpressions?.length ?? 0 }}`。
+6. 移除之前添加的try-catch，因为现在通过安全访问和默认值已经可以避免错误，且try-catch在computed中可能掩盖问题。
+
+# Test Strategy:
+1. 单元测试：模拟store中expressions和needReviewExpressions为null/undefined，验证currentExpressions是否返回空数组。
+2. 在浏览器中手动测试不同模式（学习/复习）下的数据展示。
+3. 运行E2E测试，检查`Cannot read properties of undefined (reading 'length')`错误是否消除。

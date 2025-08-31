@@ -50,7 +50,7 @@ class APICacheMiddleware(MiddlewareMixin):
             logger.debug(f"Cache hit for: {request.path}")
             
             # 返回缓存的响应
-            response = JsonResponse(cached_response['data'])
+            response = JsonResponse(cached_response['data'], safe=False)
             
             # 添加缓存头
             response['X-Cache'] = 'HIT'

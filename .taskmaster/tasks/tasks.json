@@ -410,5 +410,320 @@
       "updated": "2025-08-30T13:43:33.516Z",
       "description": "Tasks for feature-test_task_master context"
     }
+  },
+  "frontend-testing-fix": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "修复Element Plus图标导入错误",
+        "description": "修复AIAssistantChat.vue中Robot图标导入失败的问题，并检查所有Element Plus图标的导入",
+        "details": "1. 定位到文件frontend/src/components/idiomatic-expressions/AIAssistantChat.vue:208行\n2. 检查当前导入语句，确保使用正确的图标名称和导入路径\n3. 根据Element Plus Icons文档，确认正确的导入方式（例如：import { Robot } from '@element-plus/icons-vue'）\n4. 检查package.json中Element Plus和Element Plus Icons的版本，确保兼容\n5. 全局搜索所有Element Plus图标导入，统一修复\n6. 重新启动开发服务器，验证图标显示正常",
+        "testStrategy": "1. 手动访问AIAssistantChat页面，检查Robot图标是否正常显示\n2. 检查浏览器控制台，确保没有图标相关的错误\n3. 遍历所有使用Element Plus图标的页面，验证图标加载情况",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "全面检查组件依赖导入",
+        "description": "检查idiomatic-expressions目录下所有组件和页面的依赖导入，确保无错误",
+        "details": "1. 检查frontend/src/components/idiomatic-expressions/和frontend/src/views/idiomatic-expressions/目录下所有Vue文件\n2. 验证所有import语句的正确性，包括第三方库、本地组件、store和API\n3. 使用IDE的静态分析工具（如TypeScript检查）辅助发现问题\n4. 修复发现的导入错误\n5. 确保所有组件在Vue Router中正确注册",
+        "testStrategy": "1. 逐页面访问，观察控制台是否有导入错误\n2. 使用单元测试框架（如Jest/Vitest）运行组件测试，检查导入问题\n3. 确保所有功能模块都能正常加载",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "验证Vue Router配置",
+        "description": "确保所有路由配置正确，能正确加载对应组件",
+        "details": "1. 检查frontend/src/router/index.ts文件中的路由配置\n2. 验证每个路由的path、name和component属性是否正确\n3. 确保所有页面组件都已在路由中注册\n4. 测试动态路由和嵌套路由（如果存在）\n5. 修复路由配置中的错误",
+        "testStrategy": "1. 手动测试每个路由链接，验证是否跳转到正确页面\n2. 使用Vue Router的单元测试功能进行自动化测试\n3. 检查路由守卫（如果有）是否正常工作",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "修复AIAssistantChat组件",
+        "description": "确保AI助教聊天功能完全可用",
+        "details": "1. 修复图标导入问题后，检查AIAssistantChat组件的其他功能\n2. 验证与后端API的通信（WebSocket或HTTP）\n3. 检查消息发送和接收的逻辑\n4. 确保AI响应正确显示\n5. 处理可能的错误状态（如网络中断、AI服务不可用）",
+        "testStrategy": "1. 在AIAssistantChat页面发送消息，验证是否能收到AI回复\n2. 模拟网络错误，检查错误处理机制\n3. 验证消息历史记录功能",
+        "priority": "high",
+        "dependencies": [
+          1,
+          2
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "设置Playwright测试环境",
+        "description": "配置Playwright用于现代浏览器自动化测试",
+        "details": "1. 安装Playwright：npm install playwright\n2. 初始化Playwright配置文件：npx playwright init\n3. 配置测试脚本目录（如tests/e2e）\n4. 编写基础测试脚本（如页面加载测试）\n5. 集成到项目脚本中（package.json中添加test:e2e脚本）",
+        "testStrategy": "1. 运行Playwright示例测试，验证环境配置正确\n2. 检查测试报告生成情况",
+        "priority": "medium",
+        "dependencies": [
+          3
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "开发Playwright核心功能测试",
+        "description": "使用Playwright编写核心用户流程的测试用例",
+        "details": "1. 编写用户登录流程测试\n2. 编写导航到地道表达学习页面的测试\n3. 编写4种学习模式的切换和使用测试\n4. 编写AI助教聊天功能测试\n5. 编写学习统计数据展示测试\n6. 编写学习目标管理测试\n7. 在测试中监控JavaScript错误（通过page.on('console')事件）",
+        "testStrategy": "1. 运行Playwright测试套件，确保所有测试通过\n2. 检查测试覆盖率报告\n3. 验证测试失败时的错误信息清晰",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "设置Selenium测试环境",
+        "description": "配置Selenium用于跨浏览器兼容性测试",
+        "details": "1. 安装Selenium WebDriver：npm install selenium-webdriver\n2. 安装浏览器驱动（ChromeDriver、GeckoDriver等）\n3. 配置测试脚本目录（如tests/selenium）\n4. 编写基础跨浏览器测试脚本\n5. 集成到项目脚本中",
+        "testStrategy": "1. 运行Selenium示例测试，验证在不同浏览器（Chrome、Firefox）中正常工作\n2. 检查测试报告生成情况",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "开发Selenium跨浏览器测试",
+        "description": "使用Selenium编写关键用户流程的跨浏览器测试",
+        "status": "done",
+        "dependencies": [
+          7
+        ],
+        "priority": "low",
+        "details": "当前进展：\n✅ 已修复CSS选择器问题（使用Element Plus兼容选择器：.el-button--primary, .el-input__inner）\n✅ 响应式设计测试通过（Desktop/Tablet/Mobile）\n✅ 表单验证测试通过（空字段和无效登录）\n✅ 生成HTML/JSON测试报告\n✅ Firefox/Edge基础测试（通过率：Firefox 71.4%，Edge 57.1%）\n\n待完成：\n1. 解决Chrome WebDriver连接问题\n2. 配置有效测试账号解决登录失败\n3. 实现验证码处理机制\n4. 补充Chrome/Safari浏览器测试\n5. 完善复杂场景测试（长时间会话）\n6. 验证数据持久化功能",
+        "testStrategy": "1. 本地和CI环境运行测试套件\n2. 确保全浏览器通过（Chrome/Firefox/Safari/Edge）\n3. 生成跨浏览器兼容性报告（已实现）\n4. 覆盖范围：\n   - 跨浏览器兼容性\n   - 登录页面元素\n   - 响应式布局\n   - 表单验证\n   - JavaScript错误检查\n   - 学习功能导航",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "修复Chrome WebDriver连接",
+            "description": "解决网络问题导致WebDriver下载失败",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "配置测试账号系统",
+            "description": "创建专用测试账号解决登录功能失败",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "实现验证码处理方案",
+            "description": "开发测试环境专用的验证码绕过/模拟机制",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "扩展Chrome/Safari测试",
+            "description": "补充Chrome和Safari的完整测试覆盖：用户登录、闪卡学习、AI聊天、数据统计",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "开发复杂场景测试",
+            "description": "编写长时间会话等复杂用户场景测试脚本",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "验证数据持久化",
+            "description": "测试表单提交后的数据存储和持久化功能",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "实现错误处理改进",
+        "description": "为网络错误、API失败等提供友好的用户提示",
+        "details": "1. 在全局Vue实例中注册错误处理函数\n2. 在API调用层（如axios拦截器）添加错误处理\n3. 为常见错误类型设计用户友好的提示组件\n4. 在组件级别处理特定错误（如组件加载失败）\n5. 实现数据加载超时的处理机制",
+        "testStrategy": "1. 模拟网络错误（使用开发者工具离线模式），检查错误提示\n2. 模拟API返回错误状态码，验证错误处理\n3. 测试组件加载失败时的降级处理",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "优化加载状态指示",
+        "description": "为所有异步操作提供加载状态指示",
+        "details": "1. 在页面初始化时显示全局加载指示器\n2. 为数据获取过程（如API调用）添加局部加载状态\n3. 在AI助教响应等待期间显示打字指示器\n4. 使用Element Plus的加载组件（如el-loading）统一风格\n5. 确保加载状态在错误发生时正确清除",
+        "testStrategy": "1. 模拟慢速网络（通过开发者工具），验证加载状态显示\n2. 检查异步操作各阶段（开始、完成、错误）的加载状态变化\n3. 确保加载状态不会阻塞用户界面",
+        "priority": "medium",
+        "dependencies": [
+          9
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 11,
+        "title": "添加用户引导功能",
+        "description": "为新用户提供功能使用指导",
+        "details": "1. 实现首次访问引导（使用intro.js或driver.js）\n2. 在关键功能点添加提示（如使用v-tour）\n3. 创建帮助文档页面（使用Markdown渲染）\n4. 添加帮助入口（如问号图标）\n5. 记录用户是否已查看引导，避免重复显示",
+        "testStrategy": "1. 模拟新用户首次访问，验证引导流程触发\n2. 测试引导步骤的完整性和正确性\n3. 验证帮助文档内容准确且易于访问",
+        "priority": "low",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 12,
+        "title": "配置单元测试框架",
+        "description": "设置Jest/Vitest用于组件单元测试",
+        "details": "1. 安装测试框架（推荐Vitest：npm install vitest）\n2. 配置测试脚本（vite.config.ts）\n3. 编写示例组件测试\n4. 集成测试覆盖率报告（如c8）\n5. 添加到CI/CD流程",
+        "testStrategy": "1. 运行示例测试，验证配置正确\n2. 检查测试覆盖率报告生成",
+        "priority": "medium",
+        "dependencies": [
+          2
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 13,
+        "title": "编写关键组件单元测试",
+        "description": "为核心组件编写单元测试，确保基础功能",
+        "details": "1. 为学习模式组件（闪卡、情景、AI对话、复习）编写测试\n2. 测试AI助教组件的消息发送和接收\n3. 测试统计图表组件的数据渲染\n4. 测试目标管理组件的状态变更\n5. 使用模拟数据（mock）隔离外部依赖",
+        "testStrategy": "1. 运行单元测试，确保通过率100%\n2. 检查分支和行覆盖率（目标>80%）\n3. 验证测试能捕获组件逻辑错误",
+        "priority": "medium",
+        "dependencies": [
+          12
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 14,
+        "title": "集成测试自动化流水线",
+        "description": "将测试套件集成到CI/CD流水线",
+        "details": "1. 配置GitHub Actions（或类似CI工具）\n2. 添加以下测试任务：\n   - 单元测试（Vitest）\n   - Playwright端到端测试\n   - Selenium跨浏览器测试（可选）\n3. 配置测试报告归档\n4. 添加测试结果通知（如Slack）\n5. 设置流水线触发条件（push、pull_request）",
+        "testStrategy": "1. 提交代码变更，触发CI流水线\n2. 验证所有测试任务正确执行\n3. 检查测试报告和通知是否正常",
+        "priority": "medium",
+        "dependencies": [
+          6,
+          8,
+          13
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "配置GitHub Actions工作流文件",
+            "description": "创建和配置GitHub Actions工作流文件，设置基础的CI/CD流水线结构",
+            "dependencies": [],
+            "details": "1. 在项目根目录创建.github/workflows/ci.yml文件\n2. 配置基础的工作流结构，包括触发条件（push、pull_request）\n3. 设置Node.js环境和依赖安装步骤\n4. 配置缓存策略以提高构建速度\n5. 添加基础的构建步骤",
+            "status": "done",
+            "testStrategy": "1. 提交工作流文件到GitHub，验证是否能正确触发\n2. 检查Actions页面是否显示工作流\n3. 验证基础构建步骤是否成功执行"
+          },
+          {
+            "id": 2,
+            "title": "集成Vitest单元测试任务",
+            "description": "在CI流水线中添加Vitest单元测试执行任务",
+            "dependencies": [
+              "14.1"
+            ],
+            "details": "1. 在GitHub Actions工作流中添加单元测试步骤\n2. 配置测试环境变量和依赖\n3. 执行npm run test:unit命令\n4. 配置测试覆盖率报告生成\n5. 设置测试失败时的流水线中断机制",
+            "status": "done",
+            "testStrategy": "1. 故意引入单元测试失败，验证流水线是否正确中断\n2. 检查测试覆盖率报告是否正确生成\n3. 验证测试结果在Actions日志中的显示"
+          },
+          {
+            "id": 3,
+            "title": "集成Playwright端到端测试任务",
+            "description": "在CI流水线中添加Playwright E2E测试执行任务",
+            "dependencies": [
+              "14.1"
+            ],
+            "details": "1. 在工作流中添加Playwright测试步骤\n2. 配置浏览器环境（Chrome、Firefox、Safari）\n3. 启动应用服务器用于E2E测试\n4. 执行npm run test:e2e命令\n5. 配置测试失败时的截图和视频录制\n6. 设置测试报告和artifacts上传",
+            "status": "done",
+            "testStrategy": "1. 验证E2E测试在CI环境中能正常运行\n2. 检查测试失败时是否生成截图和视频\n3. 确认测试报告能正确上传到GitHub Actions artifacts"
+          },
+          {
+            "id": 4,
+            "title": "配置测试报告归档和通知",
+            "description": "设置测试结果报告的归档存储和通知机制",
+            "dependencies": [
+              "14.2",
+              "14.3"
+            ],
+            "details": "1. 配置测试报告的artifacts上传\n2. 集成测试覆盖率报告到GitHub PR评论\n3. 设置Slack通知集成（可选）\n4. 配置邮件通知机制\n5. 添加测试结果徽章到README文件\n6. 设置测试历史数据存储",
+            "status": "done",
+            "testStrategy": "1. 验证测试报告能正确上传到artifacts\n2. 检查PR评论中是否显示测试覆盖率\n3. 测试Slack通知是否正常发送\n4. 确认README徽章显示正确的测试状态"
+          },
+          {
+            "id": 5,
+            "title": "优化流水线性能和添加Selenium测试",
+            "description": "优化CI/CD流水线性能，并可选地添加Selenium跨浏览器测试",
+            "dependencies": [
+              "14.4"
+            ],
+            "details": "1. 优化流水线并行执行策略\n2. 配置构建缓存以减少执行时间\n3. 添加Selenium跨浏览器测试步骤（可选）\n4. 设置不同环境的测试矩阵（开发、预发布、生产）\n5. 配置条件执行规则（如仅在特定分支执行完整测试）\n6. 添加流水线执行时间监控",
+            "status": "done",
+            "testStrategy": "1. 对比优化前后的流水线执行时间\n2. 验证并行执行是否正常工作\n3. 测试Selenium跨浏览器测试的执行\n4. 确认条件执行规则按预期工作"
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "title": "性能优化与监控",
+        "description": "优化页面加载性能并设置监控",
+        "details": "1. 使用Lighthouse分析性能瓶颈\n2. 优化资源加载（代码分割、懒加载）\n3. 压缩静态资源\n4. 实现前端性能监控（如使用Performance API）\n5. 记录并上报关键性能指标（如FCP、LCP）",
+        "testStrategy": "1. 使用Lighthouse跑分，确保性能评分>90\n2. 在不同网络条件下测试页面加载时间\n3. 验证性能监控数据上报",
+        "priority": "low",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-08-30T15:13:49.235Z",
+      "updated": "2025-08-31T00:47:02.236Z",
+      "description": "Tasks for frontend-testing-fix context"
+    }
   }
 }

@@ -1,0 +1,27 @@
+# Task ID: 4
+# Title: 修复Store中的Computed属性
+# Status: pending
+# Dependencies: 2
+# Priority: high
+# Description: 修复expressionStore.ts中的needReviewExpressions computed属性，确保其正确处理可能的空值。
+# Details:
+1. 在store中，确保expressions和userProgress有安全的初始值（如空数组）。
+2. 重构needReviewExpressions computed属性，使用可选链和空值合并：
+```javascript
+const needReviewExpressions = computed(() => {
+  const expressionList = expressions.value ?? [];
+  const progressList = userProgress.value ?? [];
+  
+  return expressionList.filter(expr => {
+    const progress = progressList.find(p => p.expression_id === expr.id);
+    return progress && new Date(progress.next_review) <= new Date();
+  });
+});
+```
+3. 确保在获取数据后更新这些状态（例如，在API调用成功后设置expressions.value = data）。
+4. 在store中，使用TypeScript类型标注，避免意外的null/undefined赋值。
+
+# Test Strategy:
+1. 单元测试：模拟expressions.value或userProgress.value为null/undefined，验证needReviewExpressions是否返回空数组。
+2. 单元测试：模拟正常数据，验证筛选逻辑是否正确。
+3. 运行E2E测试，检查相关错误是否消除。

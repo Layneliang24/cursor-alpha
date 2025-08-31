@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-08-31T00:46:47.672Z",
+  "message": {
+    "title": "CI/CD 测试报告 ❌ 失败",
+    "summary": "通过率: 0% (0/0)",
+    "details": [
+      "📊 测试统计:",
+      "• 总数: 0",
+      "• 通过: 0",
+      "• 失败: 0",
+      "• 跳过: 0",
+      "• 通过率: 0%",
+      "",
+      "🔍 测试详情:"
+    ],
+    "testDetails": [
+      "⏭️ 单元测试: 跳过",
+      "❌ 端到端测试: 失败",
+      "⏸️ 跨浏览器测试: 未运行",
+      "⏸️ 代码检查: 未运行",
+      "❌ 构建测试: 失败"
+    ],
+    "artifacts": [],
+    "timestamp": "2025-08-31T00:46:45.891Z",
+    "color": "danger"
+  },
+  "results": [
+    {
+      "channel": "slack",
+      "success": false,
+      "error": null
+    },
+    {
+      "channel": "email",
+      "success": false,
+      "error": null
+    },
+    {
+      "channel": "github",
+      "success": false,
+      "error": null
+    }
+  ]
+}

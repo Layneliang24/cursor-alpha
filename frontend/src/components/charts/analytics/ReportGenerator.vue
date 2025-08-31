@@ -273,9 +273,10 @@ export default {
     async loadTemplates() {
       try {
         const response = await dataAnalysisAPI.getReportTemplates()
-        this.templates = response.data.templates
+        this.templates = response.templates || response.data?.templates || []
       } catch (error) {
         console.error('加载报告模板失败:', error)
+        this.templates = []
       }
     },
     

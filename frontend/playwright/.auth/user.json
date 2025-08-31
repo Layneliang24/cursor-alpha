@@ -1,0 +1,43 @@
+{
+  "cookies": [
+    {
+      "name": "csrftoken",
+      "value": "nujMwv04W160Z6cl7nK1BdLNx6xtZhlA",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1788067542.533885,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "sessionid",
+      "value": "91z8552u3cwg06yqhst4q4o94uig0see",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1757827542.535366,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "user",
+          "value": "{\"id\":10,\"username\":\"test_learner\",\"email\":\"test@example.com\",\"first_name\":\"Test\",\"last_name\":\"Learner\",\"date_joined\":\"2025-08-30T21:24:14.578356\",\"last_login\":\"2025-08-31T13:24:38.562877\",\"avatar\":\"https://api.dicebear.com/7.x/initials/svg?seed=test_learner&backgroundColor=667eea&textColor=ffffff\",\"bio\":\"\",\"website\":\"\",\"is_staff\":false,\"is_superuser\":false,\"groups\":[],\"permissions\":[]}"
+        },
+        {
+          "name": "refresh_token",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1NjcwNDM0MiwiaWF0IjoxNzU2NjE3OTQyLCJqdGkiOiI3YzM0MmNkMmI0MDI0MzVmYjJjN2U2ODM0MmZkZTIzMCIsInVzZXJfaWQiOjEwfQ.IgSCl2UJ0lYFeyOlByN1887E1i7UTgQCMUQcK5dzEX0"
+        },
+        {
+          "name": "access_token",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU2NjIxNTQyLCJpYXQiOjE3NTY2MTc5NDIsImp0aSI6IjE2NWM0ZDNiZTE3ZDQ0ZjJiNmFmN2NjZWM2ZmRhZGVmIiwidXNlcl9pZCI6MTB9.yx3sA7dEdQM8kP6UAK-yFMCXjK4gaw9T_BTQz7XKUL0"
+        }
+      ]
+    }
+  ]
+}

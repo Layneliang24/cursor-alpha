@@ -1,0 +1,19 @@
+# Task ID: 8
+# Title: E2E测试增强与验证
+# Status: pending
+# Dependencies: 6, 7
+# Priority: medium
+# Description: 增强Playwright E2E测试，覆盖错误场景并验证修复效果。
+# Details:
+1. 在现有E2E测试中添加对JavaScript错误的检查（使用Playwright的`page.on('pageerror')`）。
+2. 添加测试场景：
+   - 模拟API返回空数据或错误，验证页面是否显示适当信息且无控制台错误。
+   - 测试组件在数据加载前和加载失败时的行为。
+3. 添加测试确保修复后的代码不会导致回归。
+4. 在测试中，使用Playwright的调试工具（如`page.pause()`）定位问题。
+5. 配置CI流水线，在每次提交时运行E2E测试。
+
+# Test Strategy:
+1. 运行所有E2E测试，确保通过率100%（包括JavaScript错误检查）。
+2. 验证新增的测试场景是否通过。
+3. 确保测试在CI环境中稳定运行。

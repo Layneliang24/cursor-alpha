@@ -60,12 +60,7 @@ export default defineConfig({
           'vendor': ['vue', 'vue-router', 'pinia'],
           'ui': ['element-plus', '@element-plus/icons-vue'],
           'charts': ['echarts'],
-          // 地道表达模块单独分包
-          'idiomatic': [
-            '/src/components/idiomatic-expressions',
-            '/src/stores/modules/expressionStore',
-            '/src/stores/modules/learningStore',
-          ],
+          // 地道表达模块暂时使用自动分包
         },
       },
     },
@@ -83,5 +78,61 @@ export default defineConfig({
   // 优化配置
   optimizeDeps: {
     include: ['vue', 'vue-router', 'pinia', 'element-plus', 'echarts'],
+  },
+  
+  // Vitest 测试配置
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./tests/setup.js'],
+    include: ['tests/unit/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/cypress/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/tests/e2e/**',
+      '**/tests/selenium/**',
+    ],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'coverage/**',
+        'dist/**',
+        'packages/*/test{,s}/**',
+        '**/*.d.ts',
+        'cypress/**',
+        'test{,s}/**',
+        'test{,-*}.{js,cjs,mjs,ts,tsx,jsx}',
+        '**/*{.,-}test.{js,cjs,mjs,ts,tsx,jsx}',
+        '**/*{.,-}spec.{js,cjs,mjs,ts,tsx,jsx}',
+        '**/__tests__/**',
+        '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
+        '**/.{eslint,mocha,prettier}rc.{js,cjs,yml}',
+        'src/main.js',
+        'src/router/**',
+        'tests/**',
+      ],
+      thresholds: {
+        global: {
+          branches: 80,
+          functions: 80,
+          lines: 80,
+          statements: 80,
+        },
+      },
+    },
+    // 测试超时配置
+    testTimeout: 10000,
+    hookTimeout: 10000,
+    // 并发配置
+    threads: true,
+    maxThreads: 4,
+    minThreads: 1,
+    // 监听模式配置
+    watch: {
+      exclude: ['**/node_modules/**', '**/dist/**'],
+    },
   },
 }) 

@@ -1,0 +1,120 @@
+{
+  "js-error-fix": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "错误发生时机分析",
+        "description": "使用Vue DevTools和浏览器控制台分析错误发生的具体时机和上下文，确定错误是在组件挂载、数据加载还是用户交互时触发。",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "high",
+        "details": "1. 在浏览器中运行应用，打开开发者工具的控制台和Vue DevTools。\n2. 重现错误：执行E2E测试中失败的步骤，观察错误出现的时间点。\n3. 记录完整的错误堆栈信息，包括错误类型、消息和堆栈跟踪。\n4. 使用Vue DevTools检查组件树，查看错误发生时组件的状态（props, data, computed等）。\n5. 在关键生命周期钩子（如onMounted, onUpdated）中添加日志，记录数据状态的变化。\n6. 分析错误是否与异步数据加载的竞态条件有关（例如，组件渲染时数据尚未加载完成）。\n7. 使用Playwright的调试模式（例如，`npx playwright test --debug`）逐步执行测试，观察错误出现的具体操作步骤。",
+        "testStrategy": "1. 验证是否能够重现错误并捕获完整的错误堆栈。\n2. 检查日志是否记录了错误发生时的组件状态和生命周期阶段。\n3. 确认是否识别出错误触发的具体操作或数据变化时机。",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "数据流完整性检查",
+        "description": "检查从API响应到Pinia store再到组件的完整数据流，识别数据链中可能为null或undefined的薄弱环节。",
+        "status": "pending",
+        "dependencies": [
+          1
+        ],
+        "priority": "high",
+        "details": "1. 检查API调用（在store或组件中）是否处理了错误和空响应（例如，使用try-catch，返回默认值）。\n2. 在Pinia store中，确保所有状态属性都有初始值（例如，expressions初始化为空数组[]，而不是null）。\n3. 检查store中的getters和computed属性是否对可能的null/undefined进行了安全处理（例如，使用可选链和空值合并）。\n4. 在组件中，检查store数据的访问方式：使用storeToRefs安全解构，或直接通过store实例访问。\n5. 在组件渲染前，确保数据已加载：使用v-if控制渲染，或展示加载状态。\n6. 使用TypeScript接口确保数据类型的正确性，特别是在API响应和store状态之间。\n7. 在关键数据节点添加日志，跟踪数据从API到组件的传递过程。",
+        "testStrategy": "1. 模拟API返回空数据或错误，检查应用是否处理得当（无控制台错误，显示合适的空状态）。\n2. 验证store中的状态是否始终有安全的初始值。\n3. 检查组件是否在数据加载完成前不会尝试访问深层属性。\n4. 运行E2E测试，观察错误是否减少或消失。",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "修复Computed属性中的空值访问",
+        "description": "修复ExpressionLearning.vue组件中currentExpressions computed属性可能访问null/undefined的问题。",
+        "status": "pending",
+        "dependencies": [
+          1,
+          2
+        ],
+        "priority": "high",
+        "details": "1. 在currentExpressions computed属性中，确保所有访问的属性都经过安全处理。\n2. 使用可选链（?.）和空值合并（??）操作符避免深层属性访问错误。\n3. 确保依赖的store状态（如safeNeedReviewExpressions, safeExpressions）本身是安全的（已在任务2中确保）。\n4. 重构currentExpressions：\n```javascript\nconst currentExpressions = computed(() => {\n  if (currentMode.value === 'review') {\n    return expressionStore.needReviewExpressions ?? [];\n  }\n  return expressionStore.expressions ?? [];\n});\n```\n5. 在模板中使用currentExpressions时，同样使用可选链：`{{ currentExpressions?.length ?? 0 }}`。\n6. 移除之前添加的try-catch，因为现在通过安全访问和默认值已经可以避免错误，且try-catch在computed中可能掩盖问题。",
+        "testStrategy": "1. 单元测试：模拟store中expressions和needReviewExpressions为null/undefined，验证currentExpressions是否返回空数组。\n2. 在浏览器中手动测试不同模式（学习/复习）下的数据展示。\n3. 运行E2E测试，检查`Cannot read properties of undefined (reading 'length')`错误是否消除。",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "修复Store中的Computed属性",
+        "description": "修复expressionStore.ts中的needReviewExpressions computed属性，确保其正确处理可能的空值。",
+        "status": "pending",
+        "dependencies": [
+          2
+        ],
+        "priority": "high",
+        "details": "1. 在store中，确保expressions和userProgress有安全的初始值（如空数组）。\n2. 重构needReviewExpressions computed属性，使用可选链和空值合并：\n```javascript\nconst needReviewExpressions = computed(() => {\n  const expressionList = expressions.value ?? [];\n  const progressList = userProgress.value ?? [];\n  \n  return expressionList.filter(expr => {\n    const progress = progressList.find(p => p.expression_id === expr.id);\n    return progress && new Date(progress.next_review) <= new Date();\n  });\n});\n```\n3. 确保在获取数据后更新这些状态（例如，在API调用成功后设置expressions.value = data）。\n4. 在store中，使用TypeScript类型标注，避免意外的null/undefined赋值。",
+        "testStrategy": "1. 单元测试：模拟expressions.value或userProgress.value为null/undefined，验证needReviewExpressions是否返回空数组。\n2. 单元测试：模拟正常数据，验证筛选逻辑是否正确。\n3. 运行E2E测试，检查相关错误是否消除。",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "组件挂载时序问题修复",
+        "description": "解决组件挂载时store数据尚未初始化导致的空值访问问题。",
+        "status": "pending",
+        "dependencies": [
+          1,
+          2
+        ],
+        "priority": "medium",
+        "details": "1. 在ExpressionLearning.vue组件中，确保在挂载前不渲染依赖store数据的部分。\n2. 使用v-if控制渲染，直到数据加载完成：\n```html\n<template>\n  <div v-if=\"isLoaded\">\n    <!-- 依赖store数据的模板 -->\n  </div>\n  <div v-else>\n    加载中...\n  </div>\n</template>\n```\n3. 在setup中，使用异步加载数据并更新isLoaded状态：\n```javascript\nimport { ref, onMounted } from 'vue';\nimport { useExpressionStore } from '@/stores/expressionStore';\n\nconst expressionStore = useExpressionStore();\nconst isLoaded = ref(false);\n\nonMounted(async () => {\n  await expressionStore.fetchExpressions(); // 确保store的fetch方法返回Promise\n  await expressionStore.fetchUserProgress();\n  isLoaded.value = true;\n});\n```\n4. 如果数据加载失败，设置isLoaded为true但显示错误信息（避免无限加载）。",
+        "testStrategy": "1. 测试组件挂载时是否显示加载状态。\n2. 模拟数据加载延迟，验证组件是否等待数据加载完成后才渲染。\n3. 模拟数据加载失败，验证组件是否显示错误信息。\n4. 运行E2E测试，检查`Cannot read properties of null (reading 'value')`错误是否消除。",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "添加防御性编程和错误监控",
+        "description": "在关键位置添加防御性编程措施，并建立错误监控机制。",
+        "status": "pending",
+        "dependencies": [
+          3,
+          4,
+          5
+        ],
+        "priority": "medium",
+        "details": "1. 在全局添加错误监听器（Vue应用和window），捕获未处理的Promise拒绝和Vue错误：\n```javascript\n// main.ts\napp.config.errorHandler = (err, instance, info) => {\n  console.error('Vue error:', err, info);\n  // 可上报到错误监控系统\n};\nwindow.addEventListener('unhandledrejection', event => {\n  console.error('Unhandled promise rejection:', event.reason);\n});\n```\n2. 在store的actions中添加try-catch，处理API错误并返回安全数据。\n3. 在组件中，对用户输入和事件处理函数添加边界检查（如事件对象可能为null）。\n4. 使用TypeScript严格模式（`strict: true`）和类型检查，避免可能的空值访问。\n5. 使用Vue的响应性调试工具（如renderTracked, renderTriggered）跟踪响应式依赖问题。",
+        "testStrategy": "1. 模拟一个未处理的Vue错误（如模板中的属性访问错误），验证errorHandler是否捕获。\n2. 模拟API调用失败，验证store是否处理错误并返回安全数据（如空数组）。\n3. 运行所有测试，确保没有引入新错误。",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "编写针对性单元测试",
+        "description": "为修复的问题编写单元测试，覆盖边界条件和错误场景。",
+        "status": "pending",
+        "dependencies": [
+          3,
+          4,
+          5
+        ],
+        "priority": "medium",
+        "details": "1. 使用Vitest（与Vite集成良好）编写单元测试。\n2. 测试组件：\n   - 模拟store数据为null/undefined，验证组件是否安全处理（不抛出错误，显示空状态）。\n   - 测试不同模式（学习/复习）下的数据渲染。\n   - 测试数据加载中和加载失败状态。\n3. 测试store：\n   - 测试needReviewExpressions在expressions或userProgress为空时的行为。\n   - 测试API调用失败时，store是否设置正确的状态。\n4. 测试computed属性：\n   - 测试currentExpressions在不同currentMode下的返回值。\n   - 测试依赖数据变化时computed属性的更新。\n5. 使用测试覆盖率工具（如c8）确保关键逻辑被覆盖。",
+        "testStrategy": "1. 运行单元测试，验证所有测试通过。\n2. 检查测试覆盖率，确保关键路径（如空值处理）被覆盖。\n3. 在CI中集成单元测试，确保每次提交都运行。",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "E2E测试增强与验证",
+        "description": "增强Playwright E2E测试，覆盖错误场景并验证修复效果。",
+        "status": "pending",
+        "dependencies": [
+          6,
+          7
+        ],
+        "priority": "medium",
+        "details": "1. 在现有E2E测试中添加对JavaScript错误的检查（使用Playwright的`page.on('pageerror')`）。\n2. 添加测试场景：\n   - 模拟API返回空数据或错误，验证页面是否显示适当信息且无控制台错误。\n   - 测试组件在数据加载前和加载失败时的行为。\n3. 添加测试确保修复后的代码不会导致回归。\n4. 在测试中，使用Playwright的调试工具（如`page.pause()`）定位问题。\n5. 配置CI流水线，在每次提交时运行E2E测试。",
+        "testStrategy": "1. 运行所有E2E测试，确保通过率100%（包括JavaScript错误检查）。\n2. 验证新增的测试场景是否通过。\n3. 确保测试在CI环境中稳定运行。",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-08-31T04:28:43.514Z",
+      "updated": "2025-08-31T04:28:43.514Z",
+      "description": "Tasks for js-error-fix context"
+    }
+  }
+}

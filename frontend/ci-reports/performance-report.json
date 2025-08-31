@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-08-31T00:46:46.809Z",
+  "build": {},
+  "tests": {
+    "results": [],
+    "totalDuration": 0,
+    "totalDurationSec": 0,
+    "totalTests": 0
+  },
+  "resources": {
+    "totalExecutionTime": 9,
+    "totalExecutionTimeSec": 0,
+    "memoryUsage": {
+      "rss": 45940736,
+      "heapTotal": 5861376,
+      "heapUsed": 4710432,
+      "external": 1674786,
+      "arrayBuffers": 10515
+    },
+    "cpuUsage": {
+      "user": 46000,
+      "system": 46000
+    },
+    "platform": "win32",
+    "nodeVersion": "v22.18.0"
+  },
+  "recommendations": [],
+  "summary": {
+    "buildSizeMB": 0,
+    "testDurationSec": 0,
+    "totalExecutionTimeSec": 0,
+    "recommendationsCount": 0,
+    "overallScore": 100
+  }
+}

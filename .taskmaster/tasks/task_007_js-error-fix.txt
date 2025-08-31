@@ -1,0 +1,24 @@
+# Task ID: 7
+# Title: 编写针对性单元测试
+# Status: pending
+# Dependencies: 3, 4, 5
+# Priority: medium
+# Description: 为修复的问题编写单元测试，覆盖边界条件和错误场景。
+# Details:
+1. 使用Vitest（与Vite集成良好）编写单元测试。
+2. 测试组件：
+   - 模拟store数据为null/undefined，验证组件是否安全处理（不抛出错误，显示空状态）。
+   - 测试不同模式（学习/复习）下的数据渲染。
+   - 测试数据加载中和加载失败状态。
+3. 测试store：
+   - 测试needReviewExpressions在expressions或userProgress为空时的行为。
+   - 测试API调用失败时，store是否设置正确的状态。
+4. 测试computed属性：
+   - 测试currentExpressions在不同currentMode下的返回值。
+   - 测试依赖数据变化时computed属性的更新。
+5. 使用测试覆盖率工具（如c8）确保关键逻辑被覆盖。
+
+# Test Strategy:
+1. 运行单元测试，验证所有测试通过。
+2. 检查测试覆盖率，确保关键路径（如空值处理）被覆盖。
+3. 在CI中集成单元测试，确保每次提交都运行。

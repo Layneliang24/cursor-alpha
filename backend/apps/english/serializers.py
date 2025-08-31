@@ -185,6 +185,21 @@ class LearningStatsSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'user', 'created_at']
 
 
+class LearningOverviewSerializer(serializers.Serializer):
+    """学习概览序列化器"""
+    days = serializers.IntegerField()
+    total_words_learned = serializers.IntegerField()
+    total_words_reviewed = serializers.IntegerField()
+    total_expressions_learned = serializers.IntegerField()
+    total_practice_count = serializers.IntegerField()
+    total_study_time_minutes = serializers.IntegerField()
+    average_accuracy_rate = serializers.DecimalField(max_digits=5, decimal_places=2)
+    daily_stats = serializers.ListField(
+        child=serializers.DictField(), 
+        allow_empty=True
+    )
+
+
 class WordExampleSerializer(serializers.ModelSerializer):
     """单词例句序列化器"""
     class Meta:

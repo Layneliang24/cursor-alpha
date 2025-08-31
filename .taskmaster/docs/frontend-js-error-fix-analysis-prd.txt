@@ -1,0 +1,170 @@
+# 前端JavaScript错误修复失败分析与解决方案PRD
+
+## 项目背景
+
+我是Claude Sonnet 4 AI助手，正在帮助用户修复一个Vue.js项目中的JavaScript运行时错误。尽管进行了多次修复尝试，E2E测试仍然显示JavaScript错误持续存在。
+
+## 问题描述
+
+### 核心问题
+- **E2E测试持续失败**：Playwright测试检测到2个JavaScript运行时错误
+- **错误类型**：
+  1. `Cannot read properties of null (reading 'value')`
+  2. `Cannot read properties of undefined (reading 'length')`
+- **错误位置**：`frontend/src/views/idiomatic-expressions/ExpressionLearning.vue`
+
+### 测试结果
+```
+Expected length: 0
+Received length: 2
+Received array: [
+  "TypeError: Cannot read properties of null (reading 'value') at ComputedRefImpl.fn",
+  "TypeError: Cannot read properties of undefined (reading 'length') at Proxy._sfc_render"
+]
+```
+
+### 已验证的正常功能
+- ✅ 后端API完全正常（所有API返回200状态码）
+- ✅ 用户认证系统正常工作
+- ✅ 基础页面导航功能正常
+- ✅ 数据获取和显示基本正常
+
+## 我的修复尝试历史
+
+### 第1次尝试：模板安全性修复
+- **方法**：在Vue模板中添加可选链操作符(`?.`)和空值合并(`|| 0`)
+- **修复内容**：`{{ currentExpressions?.length || 0 }}`
+- **结果**：❌ 错误持续存在
+
+### 第2次尝试：Store解构问题修复
+- **方法**：避免直接解构store，使用store实例访问
+- **修复内容**：
+  ```javascript
+  // 修复前
+  const { expressions, userProgress, needReviewExpressions } = expressionStore
+  
+  // 修复后
+  const safeExpressions = computed(() => expressionStore.expressions?.value || [])
+  ```
+- **结果**：❌ 错误持续存在
+
+### 第3次尝试：Computed属性安全性修复
+- **方法**：在computed属性中添加try-catch和null检查
+- **修复内容**：
+  ```javascript
+  const currentExpressions = computed(() => {
+    try {
+      if (currentMode?.value === 'review') {
+        return safeNeedReviewExpressions?.value || []
+      }
+      return safeExpressions?.value || []
+    } catch (error) {
+      console.error('Error in currentExpressions computed:', error)
+      return []
+    }
+  })
+  ```
+- **结果**：❌ 错误持续存在
+
+### 第4次尝试：Store内部Computed修复
+- **方法**：修复expressionStore.ts中的computed属性
+- **修复内容**：
+  ```javascript
+  const needReviewExpressions = computed(() => {
+    const expressionList = expressions.value || []
+    const progressList = userProgress.value || []
+    return expressionList.filter(expr => {
+      const progress = progressList.find(p => p.expression_id === expr.id)
+      return progress && new Date(progress.next_review) <= now
+    })
+  })
+  ```
+- **结果**：❌ 错误持续存在
+
+## 问题分析
+
+### 为什么我的修复方法不够彻底？
+
+#### 1. 症状治疗 vs 根本原因
+- **我做的**：在各个地方添加安全检查
+- **问题**：没有找到为什么会出现null/undefined的根本原因
+
+#### 2. 缺乏系统性分析
+- **我做的**：逐个修复发现的问题点
+- **问题**：没有全面分析整个组件的生命周期和数据流
+
+#### 3. 测试驱动不足
+- **我做的**：修复后运行测试验证
+- **问题**：没有创建针对性的单元测试来隔离问题
+
+#### 4. 调试信息不足
+- **我做的**：添加了try-catch但没有看到错误日志
+- **问题**：没有深入分析错误发生的具体时机和上下文
+
+## 技术分析
+
+### 可能的根本原因
+
+#### 1. 组件初始化时序问题
+- Store可能在组件挂载时还未完全初始化
+- 异步数据加载与组件渲染的竞态条件
+
+#### 2. Vue响应式系统问题
+- Pinia store的响应式数据在某些情况下可能为null
+- Computed属性的依赖链可能存在断裂
+
+#### 3. 异步操作处理不当
+- API调用失败时的错误处理不完善
+- 数据获取过程中的中间状态处理
+
+#### 4. 内存泄漏或引用问题
+- 组件卸载时没有正确清理响应式引用
+- 循环引用导致的内存问题
+
+## 需要的深入分析
+
+### 1. 错误发生时机分析
+- 确定错误是在组件挂载、数据加载、还是用户交互时发生
+- 分析错误与特定用户操作的关联性
+
+### 2. 数据流完整性检查
+- 从API响应到Store状态到组件显示的完整数据流
+- 识别数据链中的薄弱环节
+
+### 3. Vue开发工具深度调试
+- 使用Vue DevTools分析组件状态
+- 监控响应式数据的变化时序
+
+### 4. 浏览器控制台深度分析
+- 捕获完整的错误堆栈信息
+- 分析错误发生时的DOM状态
+
+## 期望的解决方案
+
+### 短期目标
+1. **彻底消除JavaScript运行时错误**
+2. **确保E2E测试100%通过**
+3. **建立可靠的错误监控机制**
+
+### 长期目标
+1. **建立防御性编程最佳实践**
+2. **完善的错误处理和用户反馈机制**
+3. **全面的单元测试和集成测试覆盖**
+
+## 技术栈信息
+- **前端框架**：Vue 3 + TypeScript
+- **状态管理**：Pinia
+- **UI组件库**：Element Plus
+- **测试框架**：Playwright (E2E)
+- **构建工具**：Vite
+
+## 约束条件
+- 不能破坏现有的正常功能
+- 必须保持代码的可维护性和可读性
+- 解决方案要具有通用性，适用于其他类似组件
+
+## 成功标准
+- E2E测试JavaScript错误检查通过（0个错误）
+- 所有现有功能测试继续通过
+- 代码质量和性能不下降
+- 建立可复用的错误处理模式
