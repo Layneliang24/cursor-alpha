@@ -29,13 +29,13 @@
             <div class="card-header">
               <h3 class="card-title">服务状态</h3>
               <div class="status-indicator">
-                <div class="status-dot" :class="overallStatus ? 'status-connected' : 'status-disconnected'"></div>
-                <span class="status-text">{{ onlineServicesCount }}/{{ totalServicesCount }} 在线</span>
+                <div class="status-dot" :class="aiConfigStore.overallHealthy ? 'status-connected' : 'status-disconnected'"></div>
+                <span class="status-text">{{ aiConfigStore.onlineProviders }}/{{ aiConfigStore.totalProviders }} 在线</span>
               </div>
             </div>
             <div class="card-content">
               <div class="service-list">
-                <div v-for="provider in providers" :key="provider.id" class="service-item">
+                <div v-for="provider in aiConfigStore.providers" :key="provider.id" class="service-item">
                   <span class="service-name">{{ provider.display_name }}</span>
                   <div class="service-status">
                     <div class="status-dot" :class="provider.is_healthy ? 'status-connected' : 'status-disconnected'"></div>
@@ -49,9 +49,9 @@
           <!-- Token消费统计 -->
           <div class="stats-card">
             <div class="card-header">
-              <h3 class="card-title">Token消费统计</h3>
+              <h3 class="card-title">Token消费</h3>
               <select v-model="statsTimeRange" class="time-range-select">
-                <option value="today">今日</option>
+                <option value="today">今天</option>
                 <option value="week">本周</option>
                 <option value="month">本月</option>
               </select>
@@ -59,40 +59,17 @@
             <div class="card-content">
               <div class="stats-grid">
                 <div class="stat-item">
-                  <span class="stat-label">总消费</span>
-                  <span class="stat-value">${{ totalCost.toFixed(2) }}</span>
+                  <div class="stat-value">{{ totalTokens.toLocaleString() }}</div>
+                  <div class="stat-label">总Token数</div>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-label">总Token</span>
-                  <span class="stat-value">{{ totalTokens.toLocaleString() }}</span>
+                  <div class="stat-value">${{ totalCost.toFixed(2) }}</div>
+                  <div class="stat-label">总费用</div>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-label">请求次数</span>
-                  <span class="stat-value">{{ totalRequests }}</span>
+                  <div class="stat-value">{{ totalRequests }}</div>
+                  <div class="stat-label">请求次数</div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 快速操作 -->
-          <div class="quick-actions-card">
-            <div class="card-header">
-              <h3 class="card-title">快速操作</h3>
-            </div>
-            <div class="card-content">
-              <div class="action-grid">
-                <button @click="testAllConnections" class="action-btn test-btn" :disabled="testing">
-                  <i class="icon-test"></i>
-                  {{ testing ? '测试中...' : '测试所有连接' }}
-                </button>
-                <button @click="refreshProviders" class="action-btn refresh-btn" :disabled="loading">
-                  <i class="icon-refresh"></i>
-                  {{ loading ? '刷新中...' : '刷新状态' }}
-                </button>
-                <button @click="exportConfig" class="action-btn export-btn">
-                  <i class="icon-export"></i>
-                  导出配置
-                </button>
               </div>
             </div>
           </div>
@@ -101,52 +78,18 @@
 
       <!-- 提供商管理页 -->
       <div v-if="activeTab === 'providers'" class="tab-content">
-        <div class="providers-header">
-          <h2>AI服务提供商</h2>
-          <button @click="showAddProviderModal = true" class="add-button">
-            <i class="icon-plus"></i>
-            添加提供商
-          </button>
-        </div>
-
-        <div class="providers-grid">
-          <div v-for="provider in providers" :key="provider.id" class="provider-card">
-            <div class="card-header">
-              <h3 class="card-title">{{ provider.display_name }}</h3>
-              <div class="provider-actions">
-                <button @click="editProvider(provider)" class="icon-btn edit-btn">
-                  <i class="icon-edit"></i>
-                </button>
-                <button @click="deleteProvider(provider)" class="icon-btn delete-btn">
-                  <i class="icon-delete"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-content">
-              <div class="provider-info">
-                <div class="info-item">
-                  <span class="info-label">类型:</span>
-                  <span class="info-value">{{ provider.provider_type }}</span>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">状态:</span>
-                  <div class="status-indicator">
-                    <div class="status-dot" :class="provider.is_healthy ? 'status-connected' : 'status-disconnected'"></div>
-                    <span class="status-text">{{ provider.is_healthy ? '健康' : '异常' }}</span>
-                  </div>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">响应时间:</span>
-                  <span class="info-value">{{ provider.avg_response_time || 0 }}ms</span>
-                </div>
-                <div class="info-item">
-                  <span class="info-label">成功率:</span>
-                  <span class="info-value">{{ (provider.success_rate || 0).toFixed(1) }}%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProviderList 
+          @add="handleAddProvider"
+          @edit="handleEditProvider"
+          @delete="handleProviderDeleted"
+        />
+        
+        <!-- 提供商表单对话框 -->
+        <ProviderForm
+          v-model:visible="showProviderForm"
+          :provider="currentProvider"
+          @success="handleProviderFormSuccess"
+        />
       </div>
 
       <!-- API密钥管理页 -->
@@ -160,7 +103,7 @@
         </div>
 
         <div class="keys-list">
-          <div v-for="key in apiKeys" :key="key.id" class="key-card">
+          <div v-for="key in aiConfigStore.apiKeys" :key="key.id" class="key-card">
             <div class="key-header">
               <div class="key-info">
                 <h3 class="key-name">{{ key.name }}</h3>
@@ -197,7 +140,9 @@
                 </div>
                 <div class="detail-item">
                   <span class="detail-label">最后使用:</span>
-                  <span class="detail-value">{{ key.last_used ? formatDate(key.last_used) : '从未使用' }}</span>
+                  <span class="detail-value">
+                    {{ key.last_used_at ? formatDate(key.last_used_at) : '从未使用' }}
+                  </span>
                 </div>
               </div>
             </div>
@@ -209,42 +154,42 @@
       <div v-if="activeTab === 'models'" class="tab-content">
         <div class="models-header">
           <h2>AI模型配置</h2>
-          <div class="models-actions">
-            <button @click="loadAvailableModels" class="action-btn refresh-btn" :disabled="loadingModels">
-              <i class="icon-refresh"></i>
-              {{ loadingModels ? '加载中...' : '刷新模型列表' }}
-            </button>
-            <button @click="showAddModelModal = true" class="add-button">
-              <i class="icon-plus"></i>
-              添加模型
-            </button>
-          </div>
+          <button @click="showAddModelModal = true" class="add-button">
+            <i class="icon-plus"></i>
+            添加模型
+          </button>
         </div>
 
         <div class="models-grid">
-          <div v-for="model in models" :key="model.id" class="model-card">
+          <div v-for="model in aiConfigStore.models" :key="model.id" class="model-card">
             <div class="card-header">
-              <h3 class="card-title">{{ model.display_name }}</h3>
-              <div class="model-badges">
-                <span v-if="model.is_recommended" class="badge recommended">推荐</span>
-                <span v-if="model.supports_streaming" class="badge feature">流式</span>
-                <span v-if="model.supports_vision" class="badge feature">视觉</span>
+              <h3 class="card-title">{{ model.model_name }}</h3>
+              <div class="model-actions">
+                <button @click="editModel(model)" class="icon-btn edit-btn">
+                  <i class="icon-edit"></i>
+                </button>
+                <button @click="deleteModel(model)" class="icon-btn delete-btn">
+                  <i class="icon-delete"></i>
+                </button>
               </div>
             </div>
             <div class="card-content">
-              <p class="model-description">{{ model.description }}</p>
-              <div class="model-specs">
-                <div class="spec-item">
-                  <span class="spec-label">最大Token:</span>
-                  <span class="spec-value">{{ model.max_tokens?.toLocaleString() || 'N/A' }}</span>
+              <div class="model-info">
+                <div class="info-item">
+                  <span class="info-label">提供商:</span>
+                  <span class="info-value">{{ model.provider_name }}</span>
                 </div>
-                <div class="spec-item">
-                  <span class="spec-label">输入成本:</span>
-                  <span class="spec-value">${{ model.cost_per_1k_input_tokens || 0 }}/1K</span>
+                <div class="info-item">
+                  <span class="info-label">类型:</span>
+                  <span class="info-value">{{ model.model_type }}</span>
                 </div>
-                <div class="spec-item">
-                  <span class="spec-label">输出成本:</span>
-                  <span class="spec-value">${{ model.cost_per_1k_output_tokens || 0 }}/1K</span>
+                <div class="info-item">
+                  <span class="info-label">上下文长度:</span>
+                  <span class="info-value">{{ model.context_length?.toLocaleString() || '-' }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">输入价格:</span>
+                  <span class="info-value">${{ model.input_price_per_1k || 0 }}/1K</span>
                 </div>
               </div>
             </div>
@@ -256,153 +201,35 @@
       <div v-if="activeTab === 'analytics'" class="tab-content">
         <div class="analytics-header">
           <h2>使用统计分析</h2>
-          <div class="time-filters">
-            <select v-model="analyticsTimeRange" @change="loadAnalytics" class="time-range-select">
-              <option value="today">今日</option>
-              <option value="week">本周</option>
-              <option value="month">本月</option>
-              <option value="quarter">本季度</option>
-            </select>
-          </div>
+          <select v-model="analyticsTimeRange" class="time-range-select">
+            <option value="day">今天</option>
+            <option value="week">本周</option>
+            <option value="month">本月</option>
+            <option value="quarter">本季度</option>
+          </select>
         </div>
 
         <div class="analytics-grid">
-          <!-- Token使用趋势图 -->
-          <div class="chart-card">
-            <h3 class="chart-title">Token使用趋势</h3>
-            <div class="chart-container">
-              <!-- 这里将集成ECharts图表 -->
-              <div class="chart-placeholder">
-                📊 Token使用趋势图 (待集成ECharts)
-              </div>
+          <div class="analytics-card">
+            <h3>Token使用趋势</h3>
+            <div class="chart-placeholder">
+              <p>图表组件待实现</p>
             </div>
           </div>
-
-          <!-- 提供商分布 -->
-          <div class="chart-card">
-            <h3 class="chart-title">提供商使用分布</h3>
-            <div class="chart-container">
-              <div class="chart-placeholder">
-                🥧 提供商分布饼图 (待集成ECharts)
-              </div>
+          
+          <div class="analytics-card">
+            <h3>费用分析</h3>
+            <div class="chart-placeholder">
+              <p>费用图表待实现</p>
             </div>
           </div>
-
-          <!-- 成本分析 -->
-          <div class="chart-card">
-            <h3 class="chart-title">成本分析</h3>
-            <div class="chart-container">
-              <div class="chart-placeholder">
-                💰 成本分析图表 (待集成ECharts)
-              </div>
+          
+          <div class="analytics-card">
+            <h3>提供商使用分布</h3>
+            <div class="chart-placeholder">
+              <p>分布图表待实现</p>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- 测试结果显示 -->
-      <div v-if="testResults.length > 0" class="results-card">
-        <h2 class="results-title">操作结果</h2>
-        <div class="results-list">
-          <div 
-            v-for="(result, index) in testResults" 
-            :key="index"
-            class="result-item"
-            :class="result.success ? 'result-success' : 'result-error'"
-          >
-            <div class="result-content">
-              <span class="result-service">{{ result.service }}</span>
-              <span class="result-message">{{ result.message }}</span>
-            </div>
-            <span class="result-status" :class="result.success ? 'result-success' : 'result-error'">
-              {{ result.success ? '成功' : '失败' }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 添加提供商模态框 -->
-    <div v-if="showAddProviderModal" class="modal-overlay" @click="showAddProviderModal = false">
-      <div class="modal-content" @click.stop>
-        <div class="modal-header">
-          <h3>添加AI服务提供商</h3>
-          <button @click="showAddProviderModal = false" class="close-btn">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="form-label">提供商名称</label>
-            <input v-model="newProvider.name" type="text" class="form-input" placeholder="例如: OpenAI" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">显示名称</label>
-            <input v-model="newProvider.display_name" type="text" class="form-input" placeholder="例如: OpenAI GPT" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">提供商类型</label>
-            <select v-model="newProvider.provider_type" class="form-select">
-              <option value="openai">OpenAI</option>
-              <option value="anthropic">Anthropic</option>
-              <option value="google">Google</option>
-              <option value="openrouter">OpenRouter</option>
-              <option value="chenmoai">ChenmoAI</option>
-              <option value="siliconflow">SiliconFlow</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">API基础URL</label>
-            <input v-model="newProvider.base_url" type="url" class="form-input" placeholder="https://api.openai.com/v1" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">描述</label>
-            <textarea v-model="newProvider.description" class="form-textarea" placeholder="提供商描述"></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button @click="showAddProviderModal = false" class="btn btn-secondary">取消</button>
-          <button @click="addProvider" class="btn btn-primary">添加</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 添加API密钥模态框 -->
-    <div v-if="showAddKeyModal" class="modal-overlay" @click="showAddKeyModal = false">
-      <div class="modal-content" @click.stop>
-        <div class="modal-header">
-          <h3>添加API密钥</h3>
-          <button @click="showAddKeyModal = false" class="close-btn">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="form-label">密钥名称</label>
-            <input v-model="newKey.name" type="text" class="form-input" placeholder="例如: OpenAI Production Key" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">选择提供商</label>
-            <select v-model="newKey.provider" class="form-select">
-              <option v-for="provider in providers" :key="provider.id" :value="provider.id">
-                {{ provider.display_name }}
-              </option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">API密钥</label>
-            <input v-model="newKey.raw_key" type="password" class="form-input" placeholder="sk-..." />
-          </div>
-          <div class="form-group">
-            <label class="form-label">过期时间 (可选)</label>
-            <input v-model="newKey.expires_at" type="datetime-local" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label class="checkbox-label">
-              <input v-model="newKey.is_default" type="checkbox" />
-              设为默认密钥
-            </label>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button @click="showAddKeyModal = false" class="btn btn-secondary">取消</button>
-          <button @click="addKey" class="btn btn-primary" :disabled="!newKey.name || !newKey.raw_key">添加</button>
         </div>
       </div>
     </div>
@@ -412,21 +239,26 @@
 <script>
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import ProviderList from '@/components/ai-config/ProviderList.vue'
+import ProviderForm from '@/components/ai-config/ProviderForm.vue'
+import { useAIConfigStore } from '@/stores/modules/aiConfigStore'
 
 export default {
   name: 'AIConfig',
+  components: {
+    ProviderList,
+    ProviderForm
+  },
   setup() {
+    // 使用AI配置store
+    const aiConfigStore = useAIConfigStore()
+    
     // 响应式数据
     const activeTab = ref('overview')
-    const loading = ref(false)
-    const testing = ref(false)
-    const loadingModels = ref(false)
     
-    // 数据状态
-    const providers = ref([])
-    const apiKeys = ref([])
-    const models = ref([])
-    const testResults = ref([])
+    // 提供商表单相关状态
+    const showProviderForm = ref(false)
+    const currentProvider = ref(null)
     
     // 统计数据
     const statsTimeRange = ref('today')
@@ -435,178 +267,100 @@ export default {
     const totalTokens = ref(0)
     const totalRequests = ref(0)
     
-    // 模态框状态
-    const showAddProviderModal = ref(false)
+    // 其他模态框状态
     const showAddKeyModal = ref(false)
     const showAddModelModal = ref(false)
     
-    // 新增数据表单
-    const newProvider = reactive({
-      name: '',
-      display_name: '',
-      provider_type: 'openai',
-      base_url: '',
-      description: ''
-    })
-    
+    // 表单数据
     const newKey = reactive({
       name: '',
-      provider: null,
-      raw_key: '',
-      expires_at: '',
-      is_default: false
+      provider: '',
+      key: '',
+      expires_at: null
     })
     
     // 标签页配置
     const tabs = [
       { key: 'overview', label: '概览', icon: 'icon-dashboard' },
-      { key: 'providers', label: '提供商', icon: 'icon-provider' },
+      { key: 'providers', label: '提供商管理', icon: 'icon-server' },
       { key: 'keys', label: 'API密钥', icon: 'icon-key' },
-      { key: 'models', label: '模型配置', icon: 'icon-model' },
+      { key: 'models', label: '模型配置', icon: 'icon-brain' },
       { key: 'analytics', label: '统计分析', icon: 'icon-chart' }
     ]
     
-    // 计算属性
-    const overallStatus = computed(() => {
-      return providers.value.some(p => p.is_healthy)
-    })
-    
-    const onlineServicesCount = computed(() => {
-      return providers.value.filter(p => p.is_healthy).length
-    })
-    
-    const totalServicesCount = computed(() => {
-      return providers.value.length
-    })
-    
-    // 方法
-    const loadProviders = async () => {
-      try {
-        loading.value = true
-        // TODO: 调用实际API
-        // const response = await aiConfigAPI.getProviders()
-        // providers.value = response.data
-        
-        // 模拟数据
-        providers.value = [
-          {
-            id: 1,
-            name: 'openai',
-            display_name: 'OpenAI',
-            provider_type: 'openai',
-            is_healthy: true,
-            avg_response_time: 150,
-            success_rate: 98.5
-          },
-          {
-            id: 2,
-            name: 'anthropic',
-            display_name: 'Anthropic',
-            provider_type: 'anthropic',
-            is_healthy: false,
-            avg_response_time: null,
-            success_rate: 0
-          }
-        ]
-      } catch (error) {
-        ElMessage.error('加载提供商列表失败: ' + error.message)
-      } finally {
-        loading.value = false
-      }
+    // 提供商管理相关方法
+    const handleAddProvider = () => {
+      currentProvider.value = null
+      showProviderForm.value = true
+    }
+
+    const handleEditProvider = (provider) => {
+      currentProvider.value = provider
+      showProviderForm.value = true
+    }
+
+    const handleProviderDeleted = () => {
+      // 提供商删除后的处理，ProviderList组件已经处理了store更新
+      ElMessage.success('提供商删除成功')
+    }
+
+    const handleProviderFormSuccess = () => {
+      // 表单提交成功后的处理
+      showProviderForm.value = false
+      currentProvider.value = null
     }
     
-    const loadApiKeys = async () => {
-      try {
-        // TODO: 调用实际API
-        // const response = await aiConfigAPI.getApiKeys()
-        // apiKeys.value = response.data
-        
-        // 模拟数据
-        apiKeys.value = [
-          {
-            id: 1,
-            name: 'OpenAI Production',
-            provider_name: 'OpenAI',
-            masked_key: 'sk-proj...abc123',
-            is_active: true,
-            is_default: true,
-            is_expired: false,
-            expires_at: '2024-12-31T23:59:59',
-            last_used: '2024-08-31T10:30:00'
-          }
-        ]
-      } catch (error) {
-        ElMessage.error('加载API密钥失败: ' + error.message)
-      }
+    // 其他方法（保留原有的API密钥和模型管理方法）
+    const editKey = (key) => {
+      // TODO: 实现编辑API密钥功能
+      console.log('编辑API密钥:', key)
     }
-    
-    const loadModels = async () => {
+
+    const deleteKey = async (key) => {
       try {
-        // TODO: 调用实际API
-        // const response = await aiConfigAPI.getModels()
-        // models.value = response.data
-        
-        // 模拟数据
-        models.value = [
+        await ElMessageBox.confirm(
+          `确定要删除API密钥 "${key.name}" 吗？`,
+          '确认删除',
           {
-            id: 1,
-            display_name: 'GPT-4',
-            description: '最强大的GPT模型，适合复杂任务',
-            max_tokens: 8192,
-            supports_streaming: true,
-            supports_vision: true,
-            is_recommended: true,
-            cost_per_1k_input_tokens: 0.03,
-            cost_per_1k_output_tokens: 0.06
+            confirmButtonText: '删除',
+            cancelButtonText: '取消',
+            type: 'warning',
           }
-        ]
+        )
+        
+        await aiConfigStore.deleteAPIKey(key.id)
+        ElMessage.success('API密钥删除成功')
       } catch (error) {
-        ElMessage.error('加载模型列表失败: ' + error.message)
-      }
-    }
-    
-    const testAllConnections = async () => {
-      testing.value = true
-      testResults.value = []
-      
-      try {
-        for (const provider of providers.value) {
-          await new Promise(resolve => setTimeout(resolve, 500)) // 模拟延迟
-          const success = Math.random() > 0.3
-          
-          testResults.value.push({
-            service: provider.display_name,
-            message: success ? '连接测试成功' : '连接测试失败',
-            success
-          })
+        if (error !== 'cancel') {
+          ElMessage.error('删除API密钥失败')
         }
-      } finally {
-        testing.value = false
       }
     }
-    
-    const refreshProviders = async () => {
-      await loadProviders()
-      ElMessage.success('提供商状态已刷新')
+
+    const editModel = (model) => {
+      // TODO: 实现编辑模型功能
+      console.log('编辑模型:', model)
     }
-    
-    const exportConfig = () => {
-      const config = {
-        providers: providers.value,
-        keys: apiKeys.value.map(k => ({ ...k, raw_key: undefined })), // 不导出实际密钥
-        models: models.value,
-        exportTime: new Date().toISOString()
+
+    const deleteModel = async (model) => {
+      try {
+        await ElMessageBox.confirm(
+          `确定要删除模型 "${model.model_name}" 吗？`,
+          '确认删除',
+          {
+            confirmButtonText: '删除',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+        )
+        
+        // TODO: 实现删除模型API调用
+        ElMessage.success('模型删除成功')
+      } catch (error) {
+        if (error !== 'cancel') {
+          ElMessage.error('删除模型失败')
+        }
       }
-      
-      const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `ai-config-${new Date().toISOString().split('T')[0]}.json`
-      a.click()
-      URL.revokeObjectURL(url)
-      
-      ElMessage.success('配置已导出')
     }
     
     const formatDate = (dateString) => {
@@ -615,48 +369,49 @@ export default {
     
     // 生命周期
     onMounted(async () => {
-      await Promise.all([
-        loadProviders(),
-        loadApiKeys(),
-        loadModels()
-      ])
+      try {
+        await aiConfigStore.initializeData()
+      } catch (error) {
+        ElMessage.error('初始化数据失败')
+        console.error('初始化错误:', error)
+      }
     })
     
     return {
+      // Store
+      aiConfigStore,
+      
       // 数据
       activeTab,
-      loading,
-      testing,
-      loadingModels,
-      providers,
-      apiKeys,
-      models,
-      testResults,
       statsTimeRange,
       analyticsTimeRange,
       totalCost,
       totalTokens,
       totalRequests,
       
-      // 模态框
-      showAddProviderModal,
+      // 提供商表单状态
+      showProviderForm,
+      currentProvider,
+      
+      // 其他模态框
       showAddKeyModal,
       showAddModelModal,
-      newProvider,
       newKey,
       
       // 配置
       tabs,
       
-      // 计算属性
-      overallStatus,
-      onlineServicesCount,
-      totalServicesCount,
+      // 提供商管理方法
+      handleAddProvider,
+      handleEditProvider,
+      handleProviderDeleted,
+      handleProviderFormSuccess,
       
-      // 方法
-      testAllConnections,
-      refreshProviders,
-      exportConfig,
+      // 其他方法
+      editKey,
+      deleteKey,
+      editModel,
+      deleteModel,
       formatDate
     }
   }
@@ -685,14 +440,18 @@ export default {
 
 .page-title {
   font-size: 2.5rem;
-  font-weight: bold;
-  color: #1a202c;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: 0.5rem;
 }
 
 .page-subtitle {
-  font-size: 1.125rem;
-  color: #4a5568;
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0;
 }
 
 /* 标签页导航 */
@@ -703,8 +462,8 @@ export default {
   margin-bottom: 2rem;
   background: white;
   padding: 0.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .tab-button {
@@ -713,70 +472,88 @@ export default {
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 0.75rem;
   background: transparent;
-  color: #4a5568;
-  font-weight: 500;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  color: #666;
 }
 
 .tab-button:hover {
-  background: #f7fafc;
-  color: #2d3748;
+  background: #f8f9ff;
+  color: #667eea;
 }
 
 .tab-button.tab-active {
-  background: #3182ce;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 /* 标签页内容 */
 .tab-content {
-  min-height: 400px;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* 概览页样式 */
 .overview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
 }
 
-.status-card,
-.stats-card,
-.quick-actions-card {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+.status-card, .stats-card {
+  background: #f8f9ff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e6f3ff;
 }
 
 .card-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: between;
   align-items: center;
-  padding: 1.5rem;
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1rem;
 }
 
 .card-title {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  color: #1a202c;
+  color: #333;
   margin: 0;
 }
 
-.card-content {
-  padding: 1.5rem;
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* 服务状态样式 */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-connected {
+  background: #52c41a;
+}
+
+.status-disconnected {
+  background: #ff4d4f;
+}
+
+.status-text {
+  font-size: 0.9rem;
+  color: #666;
+}
+
 .service-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  space-y: 0.75rem;
 }
 
 .service-item {
@@ -784,13 +561,14 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem;
-  background: #f7fafc;
-  border-radius: 0.5rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e6f3ff;
 }
 
 .service-name {
   font-weight: 500;
-  color: #2d3748;
+  color: #333;
 }
 
 .service-status {
@@ -800,11 +578,11 @@ export default {
 }
 
 .service-response-time {
-  font-size: 0.875rem;
-  color: #4a5568;
+  font-size: 0.8rem;
+  color: #666;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 }
 
-/* 统计样式 */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -814,92 +592,43 @@ export default {
 .stat-item {
   text-align: center;
   padding: 1rem;
-  background: #f7fafc;
-  border-radius: 0.5rem;
-}
-
-.stat-label {
-  display: block;
-  font-size: 0.875rem;
-  color: #4a5568;
-  margin-bottom: 0.25rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e6f3ff;
 }
 
 .stat-value {
-  display: block;
   font-size: 1.5rem;
-  font-weight: bold;
-  color: #1a202c;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 0.25rem;
 }
 
-/* 快速操作样式 */
-.action-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
 }
 
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 500;
+.time-range-select {
+  padding: 0.5rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  background: white;
   cursor: pointer;
-  transition: background-color 0.2s;
-  color: white;
 }
 
-.test-btn {
-  background: #3182ce;
-}
-
-.test-btn:hover:not(:disabled) {
-  background: #2c5aa0;
-}
-
-.refresh-btn {
-  background: #38a169;
-}
-
-.refresh-btn:hover:not(:disabled) {
-  background: #2f855a;
-}
-
-.export-btn {
-  background: #805ad5;
-}
-
-.export-btn:hover {
-  background: #6b46c1;
-}
-
-.action-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* 提供商页面样式 */
-.providers-header,
-.keys-header,
-.models-header,
-.analytics-header {
+/* 其他页面的基础样式 */
+.keys-header, .models-header, .analytics-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.providers-header h2,
-.keys-header h2,
-.models-header h2,
-.analytics-header h2 {
+.keys-header h2, .models-header h2, .analytics-header h2 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1a202c;
+  color: #333;
   margin: 0;
 }
 
@@ -907,437 +636,176 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: #3182ce;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  border-radius: 0.5rem;
-  font-weight: 500;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .add-button:hover {
-  background: #2c5aa0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-/* 网格布局 */
-.providers-grid,
-.models-grid {
+/* 卡片列表样式 */
+.keys-list, .models-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 1.5rem;
 }
 
-.provider-card,
-.model-card {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+.models-grid {
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 }
 
-/* 密钥列表样式 */
-.keys-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.key-card, .model-card {
+  background: #f8f9ff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #e6f3ff;
+  transition: all 0.3s ease;
 }
 
-.key-card {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+.key-card:hover, .model-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-.key-header {
+.key-header, .card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem;
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
+  align-items: flex-start;
+  margin-bottom: 1rem;
 }
 
 .key-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  flex: 1;
 }
 
 .key-name {
-  font-size: 1.125rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #1a202c;
-  margin: 0;
+  color: #333;
+  margin: 0 0 0.25rem 0;
 }
 
 .key-provider {
-  font-size: 0.875rem;
-  color: #4a5568;
+  font-size: 0.9rem;
+  color: #666;
 }
 
-.key-actions {
+.key-actions, .model-actions {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .default-badge {
-  background: #3182ce;
+  background: #52c41a;
   color: white;
   padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
   font-weight: 500;
 }
 
-.key-content {
-  padding: 1.5rem;
-}
-
-.key-details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.detail-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.detail-label {
-  font-size: 0.875rem;
-  color: #4a5568;
-  font-weight: 500;
-}
-
-.detail-value {
-  font-size: 0.875rem;
-  color: #1a202c;
-}
-
-.masked-key {
-  font-family: 'Courier New', monospace;
-  background: #f7fafc;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-}
-
-.text-warning {
-  color: #d69e2e !important;
-}
-
-/* 状态指示器 */
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.status-dot {
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-}
-
-.status-connected {
-  background: #38a169;
-  color: #38a169;
-}
-
-.status-disconnected {
-  background: #e53e3e;
-  color: #e53e3e;
-}
-
-.status-text {
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-/* 图标按钮 */
 .icon-btn {
-  width: 2rem;
-  height: 2rem;
+  width: 32px;
+  height: 32px;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .edit-btn {
-  background: #edf2f7;
-  color: #4a5568;
+  background: #e6f7ff;
+  color: #1890ff;
 }
 
 .edit-btn:hover {
-  background: #e2e8f0;
+  background: #bae7ff;
 }
 
 .delete-btn {
-  background: #fed7d7;
-  color: #e53e3e;
+  background: #fff2f0;
+  color: #ff4d4f;
 }
 
 .delete-btn:hover {
-  background: #feb2b2;
+  background: #ffccc7;
 }
 
-/* 模态框样式 */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  max-width: 500px;
-  width: 90%;
-  max-height: 80vh;
-  overflow: hidden;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem;
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.modal-header h3 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1a202c;
-}
-
-.close-btn {
-  width: 2rem;
-  height: 2rem;
-  border: none;
-  background: transparent;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #4a5568;
-}
-
-.modal-body {
-  padding: 1.5rem;
-  max-height: 60vh;
-  overflow-y: auto;
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  padding: 1.5rem;
-  background: #f8fafc;
-  border-top: 1px solid #e2e8f0;
-}
-
-/* 表单样式 */
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 0.5rem;
-}
-
-.form-input,
-.form-select,
-.form-textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.form-textarea {
-  min-height: 80px;
-  resize: vertical;
-}
-
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
-  outline: none;
-  border-color: #3182ce;
-  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-
-.checkbox-label input[type="checkbox"] {
-  width: auto;
-}
-
-/* 按钮样式 */
-.btn {
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-primary {
-  background: #3182ce;
-  color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: #2c5aa0;
-}
-
-.btn-secondary {
-  background: #e2e8f0;
-  color: #4a5568;
-}
-
-.btn-secondary:hover {
-  background: #cbd5e0;
-}
-
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* 结果显示样式 */
-.results-card {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  margin-top: 2rem;
-}
-
-.results-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1a202c;
-  margin-bottom: 1rem;
-}
-
-.results-list {
-  display: flex;
-  flex-direction: column;
+.key-details, .model-info {
+  display: grid;
   gap: 0.75rem;
 }
 
-.result-item {
+.detail-item, .info-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  border: 1px solid;
 }
 
-.result-success {
-  background: #f0fff4;
-  border-color: #9ae6b4;
-}
-
-.result-error {
-  background: #fed7d7;
-  border-color: #feb2b2;
-}
-
-.result-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.result-service {
+.detail-label, .info-label {
   font-weight: 500;
-  color: #1a202c;
+  color: #666;
+  font-size: 0.9rem;
 }
 
-.result-message {
-  font-size: 0.875rem;
-  color: #4a5568;
+.detail-value, .info-value {
+  color: #333;
+  font-size: 0.9rem;
 }
 
-.result-status {
-  font-size: 0.875rem;
-  font-weight: 500;
+.masked-key {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  background: #f0f0f0;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
 }
 
-/* 时间选择器 */
-.time-range-select {
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
+.text-warning {
+  color: #faad14;
 }
 
-/* 分析页面样式 */
+/* 统计分析页样式 */
 .analytics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
-.chart-card {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.analytics-card {
+  background: #f8f9ff;
+  border-radius: 12px;
   padding: 1.5rem;
+  border: 1px solid #e6f3ff;
 }
 
-.chart-title {
-  font-size: 1.125rem;
+.analytics-card h3 {
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #1a202c;
-  margin-bottom: 1rem;
-}
-
-.chart-container {
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: #333;
+  margin: 0 0 1rem 0;
 }
 
 .chart-placeholder {
-  color: #4a5568;
-  font-size: 1.125rem;
-  text-align: center;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 8px;
+  border: 2px dashed #d9d9d9;
+  color: #999;
 }
 
 /* 响应式设计 */
@@ -1348,12 +816,15 @@ export default {
   
   .tab-navigation {
     flex-wrap: wrap;
+    gap: 0.25rem;
   }
   
-  .overview-grid,
-  .providers-grid,
-  .models-grid,
-  .analytics-grid {
+  .tab-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .overview-grid, .analytics-grid {
     grid-template-columns: 1fr;
   }
   
@@ -1361,30 +832,8 @@ export default {
     grid-template-columns: 1fr;
   }
   
-  .action-grid {
+  .models-grid {
     grid-template-columns: 1fr;
   }
-  
-  .page-title {
-    font-size: 2rem;
-  }
-  
-  .modal-content {
-    width: 95%;
-    margin: 1rem;
-  }
 }
-
-/* 图标类（使用CSS类或图标字体） */
-.icon-dashboard::before { content: '📊'; }
-.icon-provider::before { content: '🏢'; }
-.icon-key::before { content: '🔑'; }
-.icon-model::before { content: '🤖'; }
-.icon-chart::before { content: '📈'; }
-.icon-plus::before { content: '+'; }
-.icon-edit::before { content: '✏️'; }
-.icon-delete::before { content: '🗑️'; }
-.icon-test::before { content: '🧪'; }
-.icon-refresh::before { content: '🔄'; }
-.icon-export::before { content: '📤'; }
 </style>
