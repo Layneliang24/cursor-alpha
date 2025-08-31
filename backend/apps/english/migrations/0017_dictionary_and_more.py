@@ -43,6 +43,11 @@ class Migration(migrations.Migration):
             name='chapter',
             field=models.IntegerField(default=1, verbose_name='章节'),
         ),
+        migrations.AddField(
+            model_name='typingword',
+            name='dictionary',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='english.dictionary', verbose_name='所属词库'),
+        ),
         migrations.AlterField(
             model_name='typingword',
             name='word',
@@ -63,11 +68,6 @@ class Migration(migrations.Migration):
         migrations.AddIndex(
             model_name='dictionary',
             index=models.Index(fields=['is_active'], name='english_dic_is_acti_c57335_idx'),
-        ),
-        migrations.AddField(
-            model_name='typingword',
-            name='dictionary',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='english.dictionary', verbose_name='所属词库'),
         ),
         migrations.AlterUniqueTogether(
             name='typingword',

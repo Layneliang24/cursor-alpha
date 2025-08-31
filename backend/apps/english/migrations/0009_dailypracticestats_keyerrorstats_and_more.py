@@ -103,28 +103,8 @@ class Migration(migrations.Migration):
                 "db_table": "english_typing_practice_records",
             },
         ),
-        migrations.RenameIndex(
-            model_name="typingword",
-            new_name="english_typ_word_b37dfb_idx",
-            old_name="english_typ_word_7dc76d_idx",
-        ),
-        migrations.RenameIndex(
-            model_name="typingword",
-            new_name="english_typ_difficu_a3b70a_idx",
-            old_name="english_typ_difficu_a3b70d_idx",
-        ),
-        migrations.AddIndex(
-            model_name="typingsession",
-            index=models.Index(
-                fields=["user", "session_date"], name="english_typ_user_id_b835e3_idx"
-            ),
-        ),
-        migrations.AddIndex(
-            model_name="typingsession",
-            index=models.Index(
-                fields=["word", "is_correct"], name="english_typ_word_id_415c13_idx"
-            ),
-        ),
+
+
         migrations.AddField(
             model_name="typingpracticerecord",
             name="user",
