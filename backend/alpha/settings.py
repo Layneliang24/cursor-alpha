@@ -112,6 +112,7 @@ INSTALLED_APPS = [
     'apps.todos',
     'apps.ai',
     'apps.search',
+    'apps.rbac',
     'feature_flags',
 ]
 

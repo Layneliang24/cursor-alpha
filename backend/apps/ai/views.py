@@ -12,6 +12,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 from django.db.models import Count, Sum, Avg
 from django.db import transaction
+from apps.rbac.permissions import RBACPermission, CanManageAIConfig
+from apps.rbac.services import AuditService
 
 from .config_models import (
     AIProvider, APIKey, AIModel, ModelConfig, TokenUsage,
@@ -32,7 +34,25 @@ class AIProviderViewSet(viewsets.ModelViewSet):
     
     queryset = AIProvider.objects.all()
     serializer_class = AIProviderSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [RBACPermission]
+    
+    # RBAC权限配置
+    resource_type = 'ai_config'
+    
+    def get_permissions(self):
+        """根据操作类型返回不同权限"""
+        if self.action in ['list', 'retrieve']:
+            return [RBACPermission('ai_config.view')]
+        elif self.action == 'create':
+            return [RBACPermission('ai_config.create')]
+        elif self.action in ['update', 'partial_update']:
+            return [RBACPermission('ai_config.edit')]
+        elif self.action == 'destroy':
+            return [RBACPermission('ai_config.delete')]
+        elif self.action in ['test_connection', 'bulk_test']:
+            return [RBACPermission('ai_config.test')]
+        else:
+            return [CanManageAIConfig()]
     
     def get_queryset(self):
         """获取查询集"""
@@ -52,7 +72,23 @@ class AIProviderViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         """创建提供商时设置创建者"""
-        serializer.save(created_by=self.request.user)
+        provider = serializer.save(created_by=self.request.user)
+        
+        # 记录审计日志
+        AuditService.log_user_action(
+            user=self.request.user,
+            action='create_ai_provider',
+            resource_type='ai_provider',
+            description=f"创建AI提供商: {provider.display_name}",
+            request=self.request,
+            resource_id=str(provider.id),
+            resource_name=provider.display_name,
+            new_value={
+                'provider_type': provider.provider_type,
+                'display_name': provider.display_name,
+                'api_endpoint': provider.api_endpoint
+            }
+        )
     
     @action(detail=True, methods=['post'])
     def test_connection(self, request, pk=None):
@@ -241,7 +277,21 @@ class APIKeyViewSet(viewsets.ModelViewSet):
     """API密钥管理ViewSet"""
     
     queryset = APIKey.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [RBACPermission]
+    resource_type = 'ai_config'
+    
+    def get_permissions(self):
+        """根据操作类型返回不同权限"""
+        if self.action in ['list', 'retrieve']:
+            return [RBACPermission('ai_config.view')]
+        elif self.action == 'create':
+            return [RBACPermission('ai_config.create')]
+        elif self.action in ['update', 'partial_update']:
+            return [RBACPermission('ai_config.edit')]
+        elif self.action == 'destroy':
+            return [RBACPermission('ai_config.delete')]
+        else:
+            return [CanManageAIConfig()]
     
     def get_serializer_class(self):
         """根据动作选择序列化器"""

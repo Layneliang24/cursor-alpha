@@ -3,10 +3,16 @@
     <!-- 工具栏 -->
     <div class="toolbar">
       <div class="toolbar-left">
-        <el-button type="primary" @click="handleAdd" :icon="Plus">
+        <el-button 
+          v-permission="'ai_config.create'"
+          type="primary" 
+          @click="handleAdd" 
+          :icon="Plus"
+        >
           添加提供商
         </el-button>
         <el-button 
+          v-permission="'ai_config.test'"
           type="success" 
           @click="handleBatchTest" 
           :loading="batchTesting"
@@ -112,6 +118,7 @@
           <div class="action-buttons">
             <el-tooltip content="测试连接" placement="top">
               <el-button 
+                v-permission="'ai_config.test'"
                 size="small" 
                 type="success" 
                 :icon="Connection"
@@ -122,6 +129,7 @@
             </el-tooltip>
             <el-tooltip content="编辑" placement="top">
               <el-button 
+                v-permission="'ai_config.edit'"
                 size="small" 
                 type="primary" 
                 :icon="Edit"
@@ -131,6 +139,7 @@
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
               <el-button 
+                v-permission="'ai_config.delete'"
                 size="small" 
                 type="danger" 
                 :icon="Delete"

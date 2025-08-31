@@ -8,12 +8,14 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import App from './App.vue'
 import router from './router'
 import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/modules/userStore'
 import { 
   vueErrorHandler, 
   globalUnhandledErrorHandler, 
   globalUnhandledRejectionHandler, 
 } from '@/utils/errorHandler'
 import { setupApiErrorInterceptor } from '@/utils/apiErrorInterceptor'
+import permissionDirective from '@/directives/permission'
 
 const app = createApp(App)
 
@@ -36,9 +38,14 @@ const pinia = createPinia()
 app.use(pinia)
 app.use(router)
 app.use(ElementPlus)
+app.use(permissionDirective)
 
 // 初始化认证状态
 const authStore = useAuthStore()
 authStore.initAuth()
+
+// 初始化用户权限状态
+const userStore = useUserStore()
+userStore.initialize()
 
 app.mount('#app') 
