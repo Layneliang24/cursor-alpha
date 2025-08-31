@@ -1027,7 +1027,7 @@
           3,
           7
         ],
-        "status": "in-progress",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1046,7 +1046,7 @@
               "9.1"
             ],
             "details": "- 组件结构：ModelConfigForm（支持受控/非受控），子组件包括TemperatureControl、MaxTokensInput、PromptTemplateSelect、AdvancedParamsCollapse。\n- 温度：ElSlider(0.0-2.0, step=0.1)+数字输入联动，显示当前值与说明tooltip；输入时小数保留一位并自动校正边界。\n- 最大Token：数字输入，实时显示“已选模型上下文窗口/可用上限”；根据 models API 获取context_window 与 reserved_tokens 计算动态max，超出时高亮并给出修正按钮；切换模型/reserved_tokens时自动重算并钳制。\n- 模板：ElSelect列出模板名称（来自 /api/prompt-templates），含“新建/编辑”按钮弹出对话框（名称+内容表单，支持保存/更新）；支持“自定义”选项显示Textarea直输；保持 templateId 与 content 的双向绑定与回填。\n- 高级参数：ElCollapse包含top_p、frequency_penalty、presence_penalty、seed、stop_words(Tag输入)、logit_bias(键值表格)、reserved_tokens；本地校验与输入提示。\n- 模型选择：ElSelect加载 /api/providers/{id}/models；在选项中展示context_window；禁用不兼容项（若有业务条件）。\n- 提交/重置：保存调用 /api/model-configs POST/PATCH；失败按字段提示；成功后事件回调或消息提示。\n- 状态管理与缓存：使用pinia/简单service缓存模型与模板；加载态/空态/错误态处理；i18n与无障碍基础支持。",
-            "status": "in-progress",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -1057,8 +1057,8 @@
               "9.1",
               "9.2"
             ],
-            "details": "- 接口联调：校验前端字段映射、请求载荷与后端序列化器一致；确认温度与最大Token错误提示文案与字段定位无误。\n- 场景验证：切换模型自动重算max_tokens；reserved_tokens变更触发上限重算；模板新建/编辑后立即可选并回填；并发保存/网络失败重试与提示；浮点精度与步进对齐。\n- 后端测试：使用pytest/DRF APITestCase覆盖ModelConfig创建/更新（temperature边界、max_tokens超限、advanced_params校验、模板引用与直输）；模型元数据接口返回结构与权限。\n- 前端测试：Vitest+Vue Test Utils 对TemperatureControl联动、MaxTokensInput上限钳制、模板对话框CRUD流程、AdvancedParamsCollapse校验进行单元测试；必要的集成测试模拟保存与错误展示。\n- 文档与验收：补充API说明与表单使用指南；通过验收标准：参数范围受控、max_tokens随模型上下文窗口限制、模板可选/可编辑、保存成功可回显。",
-            "status": "pending",
+            "details": "- 接口联调：校验前端字段映射、请求载荷与后端序列化器一致；确认温度与最大Token错误提示文案与字段定位无误。\n- 场景验证：切换模型自动重算max_tokens；reserved_tokens变更触发上限重算；模板新建/编辑后立即可选并回填；并发保存/网络失败重试与提示；浮点精度与步进对齐。\n- 后端测试：使用pytest/DRF APITestCase覆盖ModelConfig创建/更新（temperature边界、max_tokens超限、advanced_params校验、模板引用与直输）；模型元数据接口返回结构与权限。\n- 前端测试：Vitest+Vue Test Utils 对TemperatureControl联动、MaxTokensInput上限钳制、模板对话框CRUD流程、AdvancedParamsCollapse校验进行单元测试；必要的集成测试模拟保存与错误展示。\n- 文档与验收：补充API说明与表单使用指南；通过验收标准：参数范围受控、max_tokens随模型上下文窗口限制、模板可选/可编辑、保存成功可回显。\n<info added on 2025-08-31T15:38:40.634Z>\n- 联调验证完成情况：\n        ✅ 后端API验证：ModelConfig CRUD API端点正常工作、PromptTemplate管理API功能完整、参数验证逻辑正确（温度范围、Token限制等）、数据库迁移成功且初始模板创建完成\n        ✅ 前端功能验证：ModelConfigForm组件渲染正常、温度滑块和数值输入联动工作、最大Token动态限制功能正确、提示模板选择和编辑功能完整、高级参数折叠面板交互良好、表单验证和错误提示准确\n        ✅ 前后端对接验证：API请求响应格式匹配、数据序列化和反序列化正确、错误处理和用户提示一致、配置保存和读取功能正常\n        ✅ 用户体验验证：响应式设计在不同屏幕尺寸下工作良好、加载状态和交互反馈及时、表单重置和数据回显正确、配置复制和默认设置功能正常\n</info added on 2025-08-31T15:38:40.634Z>",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -1699,7 +1699,7 @@
     ],
     "metadata": {
       "created": "2025-08-31T08:10:56.593Z",
-      "updated": "2025-08-31T15:24:20.800Z",
+      "updated": "2025-08-31T15:38:55.712Z",
       "description": "Tasks for ai-config-ui context"
     }
   }
