@@ -5,7 +5,7 @@
 from rest_framework import serializers
 from django.db import transaction
 from django.utils import timezone
-from ..models import FailoverStrategy, FailoverRule, AIProvider, AIModel
+from .models import FailoverStrategy, FailoverRule, AIProvider, AIModel
 
 
 class FailoverRuleSerializer(serializers.ModelSerializer):

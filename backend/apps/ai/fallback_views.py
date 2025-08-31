@@ -12,15 +12,15 @@ from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
 
-from ..models import FailoverStrategy, FailoverRule, AIProvider
-from ..serializers.fallback_serializers import (
+from .models import FailoverStrategy, FailoverRule, AIProvider
+from .fallback_serializers import (
     FailoverStrategyListSerializer,
     FailoverStrategyDetailSerializer,
     FailoverStrategyCreateUpdateSerializer,
     FailoverSwitchSerializer,
     ProviderHealthSerializer
 )
-from ..services.failover_service import FailoverService
+from .services.failover_service import FailoverService
 
 
 class FailoverStrategyViewSet(viewsets.ModelViewSet):
@@ -385,7 +385,7 @@ class ProviderHealthViewSet(viewsets.ReadOnlyModelViewSet):
     def refresh_all(self, request):
         """刷新所有提供商健康状态"""
         try:
-            from ..services.health_check_service import HealthCheckService
+            from .services.health_check_service import HealthCheckService
             
             health_service = HealthCheckService()
             results = health_service.check_all_providers()
@@ -412,7 +412,7 @@ class ProviderHealthViewSet(viewsets.ReadOnlyModelViewSet):
         provider = self.get_object()
         
         try:
-            from ..services.health_check_service import HealthCheckService
+            from .services.health_check_service import HealthCheckService
             
             health_service = HealthCheckService()
             result = health_service.check_provider(provider)
