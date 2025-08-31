@@ -31,6 +31,12 @@
 - [x] 需完善方法论固话机制，让AI严格遵循指定流程
 - [ ] 在纠错的时候，AI经常会为了解决一个问题会把已开发的成果进行简化、删除或者禁用，在找到原因纠错之后，AI经常会忘记把为了纠错而简化的成果恢复，
 尤其是删除的根本无法回滚，这样项目开发越到后期就会越偏离目标，最后项目变得面目全非了。需要找到一个合理的解决办法。
+- [ ] 在开发过程中，经常会遇到这样的问题,这样的情况经常会在变更数据库设计的时候出现，需要找到一个合理的解决办法。
+It is impossible to add a non-nullable field 'provider' to modelconfig without specifying a default. This is because the database needs something to populate existing rows.
+Please select a fix:
+ 1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
+ 2) Quit and manually define a default value in models.py.
+Select an option: 1
 
 ---
 

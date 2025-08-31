@@ -7,6 +7,8 @@ export const useAIConfigStore = defineStore('aiConfig', () => {
   const providers = ref([])
   const apiKeys = ref([])
   const models = ref([])
+  const modelConfigs = ref([])
+  const promptTemplates = ref([])
   const tokenUsage = ref([])
   const quotas = ref([])
   const loading = ref(false)
@@ -281,6 +283,145 @@ export const useAIConfigStore = defineStore('aiConfig', () => {
     }
   }
 
+  // 模型配置相关操作
+  const fetchModelConfigs = async () => {
+    try {
+      const response = await aiConfigAPI.getModelConfigs()
+      modelConfigs.value = response.data.results || response.data || []
+      return modelConfigs.value
+    } catch (error) {
+      console.error('获取模型配置列表失败:', error)
+      throw error
+    }
+  }
+
+  const createModelConfig = async (configData) => {
+    try {
+      const response = await aiConfigAPI.createModelConfig(configData)
+      modelConfigs.value.push(response.data)
+      return response.data
+    } catch (error) {
+      console.error('创建模型配置失败:', error)
+      throw error
+    }
+  }
+
+  const updateModelConfig = async (configId, configData) => {
+    try {
+      const response = await aiConfigAPI.updateModelConfig(configId, configData)
+      const index = modelConfigs.value.findIndex(c => c.id === configId)
+      if (index !== -1) {
+        modelConfigs.value[index] = response.data
+      }
+      return response.data
+    } catch (error) {
+      console.error('更新模型配置失败:', error)
+      throw error
+    }
+  }
+
+  const deleteModelConfig = async (configId) => {
+    try {
+      await aiConfigAPI.deleteModelConfig(configId)
+      modelConfigs.value = modelConfigs.value.filter(c => c.id !== configId)
+    } catch (error) {
+      console.error('删除模型配置失败:', error)
+      throw error
+    }
+  }
+
+  const setDefaultModelConfig = async (configId) => {
+    try {
+      const response = await aiConfigAPI.setDefaultModelConfig(configId)
+      // 更新本地状态：将其他配置的默认状态设为false，当前配置设为true
+      modelConfigs.value.forEach(config => {
+        config.is_default = config.id === configId
+      })
+      return response.data
+    } catch (error) {
+      console.error('设置默认配置失败:', error)
+      throw error
+    }
+  }
+
+  const duplicateModelConfig = async (configId) => {
+    try {
+      const response = await aiConfigAPI.duplicateModelConfig(configId)
+      modelConfigs.value.push(response.data)
+      return response.data
+    } catch (error) {
+      console.error('复制配置失败:', error)
+      throw error
+    }
+  }
+
+  const getModelsMetadata = async (providerId) => {
+    try {
+      const response = await aiConfigAPI.getModelsMetadata(providerId)
+      return response.data.data || []
+    } catch (error) {
+      console.error('获取模型元数据失败:', error)
+      throw error
+    }
+  }
+
+  // 提示模板相关操作
+  const fetchPromptTemplates = async () => {
+    try {
+      const response = await aiConfigAPI.getPromptTemplates()
+      promptTemplates.value = response.data.results || response.data || []
+      return promptTemplates.value
+    } catch (error) {
+      console.error('获取提示模板列表失败:', error)
+      throw error
+    }
+  }
+
+  const createPromptTemplate = async (templateData) => {
+    try {
+      const response = await aiConfigAPI.createPromptTemplate(templateData)
+      promptTemplates.value.push(response.data)
+      return response.data
+    } catch (error) {
+      console.error('创建提示模板失败:', error)
+      throw error
+    }
+  }
+
+  const updatePromptTemplate = async (templateId, templateData) => {
+    try {
+      const response = await aiConfigAPI.updatePromptTemplate(templateId, templateData)
+      const index = promptTemplates.value.findIndex(t => t.id === templateId)
+      if (index !== -1) {
+        promptTemplates.value[index] = response.data
+      }
+      return response.data
+    } catch (error) {
+      console.error('更新提示模板失败:', error)
+      throw error
+    }
+  }
+
+  const deletePromptTemplate = async (templateId) => {
+    try {
+      await aiConfigAPI.deletePromptTemplate(templateId)
+      promptTemplates.value = promptTemplates.value.filter(t => t.id !== templateId)
+    } catch (error) {
+      console.error('删除提示模板失败:', error)
+      throw error
+    }
+  }
+
+  const getPromptTemplateCategories = async () => {
+    try {
+      const response = await aiConfigAPI.getPromptTemplateCategories()
+      return response.data.data || []
+    } catch (error) {
+      console.error('获取模板分类失败:', error)
+      throw error
+    }
+  }
+
   // Token使用统计相关操作
   const fetchTokenUsage = async (filters = {}) => {
     try {
@@ -345,6 +486,8 @@ export const useAIConfigStore = defineStore('aiConfig', () => {
     providers.value = []
     apiKeys.value = []
     models.value = []
+    modelConfigs.value = []
+    promptTemplates.value = []
     tokenUsage.value = []
     quotas.value = []
     loading.value = false
@@ -357,7 +500,9 @@ export const useAIConfigStore = defineStore('aiConfig', () => {
       await Promise.all([
         fetchProviders(),
         fetchAPIKeys(),
-        fetchModels()
+        fetchModels(),
+        fetchModelConfigs(),
+        fetchPromptTemplates()
       ])
     } catch (error) {
       console.error('初始化数据失败:', error)
@@ -372,6 +517,8 @@ export const useAIConfigStore = defineStore('aiConfig', () => {
     providers,
     apiKeys,
     models,
+    modelConfigs,
+    promptTemplates,
     tokenUsage,
     quotas,
     loading,
@@ -406,6 +553,22 @@ export const useAIConfigStore = defineStore('aiConfig', () => {
     updateModel,
     deleteModel,
     testModel,
+    
+    // 模型配置操作
+    fetchModelConfigs,
+    createModelConfig,
+    updateModelConfig,
+    deleteModelConfig,
+    setDefaultModelConfig,
+    duplicateModelConfig,
+    getModelsMetadata,
+    
+    // 提示模板操作
+    fetchPromptTemplates,
+    createPromptTemplate,
+    updatePromptTemplate,
+    deletePromptTemplate,
+    getPromptTemplateCategories,
     
     // Token使用统计操作
     fetchTokenUsage,
