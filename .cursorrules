@@ -29,17 +29,8 @@
 - [ ] strands agent SDK
 - [ ] CI/CD自动流程跑通，云服务器优化
 - [x] 需完善方法论固话机制，让AI严格遵循指定流程
-- [ ] 每次测试都有这个错误是怎么回事？ 不能解决根因先吗？为什么要提供这个解决方案：测试数据库有表冲突问题。
-  让我先直接测试API端点是否可以访问，而不依赖单元测试
-  File "S:\Python3.10\lib\site-packages\MySQLdb\connections.py", line 254, in query
-    _mysql.connection.query(self, query)
-  django.db.utils.OperationalError: (1050, "Table 'english_typing_word' already exists")
-- [ ] 还有每次都让我选这个怎么回事？
-  Found 1 test(s).
-  Creating test database for alias 'default' ('test_alpha_db')...
-  Got an error creating the test database: (1007, "Can't create database 'test_alpha_db'; database exists")
-  Type 'yes' if you would like to try deleting the test database 'test_alpha_db', or 'no' to cancel: yes
-  Destroying old test database for alias 'default' ('test_alpha_db')...
+- [ ] 在纠错的时候，AI经常会为了解决一个问题会把已开发的成果进行简化、删除或者禁用，在找到原因纠错之后，AI经常会忘记把为了纠错而简化的成果恢复，
+尤其是删除的根本无法回滚，这样项目开发越到后期就会越偏离目标，最后项目变得面目全非了。需要找到一个合理的解决办法。
 
 ---
 
@@ -97,7 +88,6 @@ PRD驱动开发: 前后端功能都先写PRD，再用Task Master生成任务
 - 集成验证 → E2E测试验证前后端协作
 
 - 部署流水线 → 前后端同时部署和验证
-
 
 
 ### 对话规范：

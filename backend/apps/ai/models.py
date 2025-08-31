@@ -5,7 +5,7 @@ from .conversation.storage import ConversationModel
 
 # Import config models
 from .config_models import (
-    AIProvider, APIKey, AIModel, ModelConfig, TokenUsage,
+    AIProvider, APIKey, AIModel, PromptTemplate, ModelConfig, TokenUsage,
     FailoverStrategy, FailoverRule, UsageQuota
 )
 
@@ -17,7 +17,7 @@ from .monitoring_models import (
 # Re-export for Django admin and migrations
 __all__ = [
     'ConversationModel',
-    'AIProvider', 'APIKey', 'AIModel', 'ModelConfig', 'TokenUsage',
+    'AIProvider', 'APIKey', 'AIModel', 'PromptTemplate', 'ModelConfig', 'TokenUsage',
     'FailoverStrategy', 'FailoverRule', 'UsageQuota',
     'ServiceHealthRecord', 'PerformanceMetric', 'SystemAlert'
 ]

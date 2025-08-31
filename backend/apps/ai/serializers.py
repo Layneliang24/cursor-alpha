@@ -7,7 +7,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from .config_models import (
-    AIProvider, APIKey, AIModel, ModelConfig, TokenUsage,
+    AIProvider, APIKey, AIModel, PromptTemplate, ModelConfig, TokenUsage,
     FailoverStrategy, FailoverRule, UsageQuota
 )
 from apps.common.security import (
@@ -214,21 +214,87 @@ class AIModelSerializer(serializers.ModelSerializer):
         return value
 
 
+class PromptTemplateSerializer(serializers.ModelSerializer):
+    """系统提示模板序列化器"""
+    
+    created_by_name = serializers.CharField(source='created_by.username', read_only=True)
+    
+    class Meta:
+        model = PromptTemplate
+        fields = [
+            'id', 'name', 'description', 'content', 'category',
+            'is_public', 'is_system', 'is_active', 'usage_count',
+            'created_by', 'created_by_name', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'usage_count', 'created_by_name', 'created_at', 'updated_at']
+    
+    def validate_name(self, value):
+        """验证模板名称"""
+        if not value or not isinstance(value, str):
+            raise serializers.ValidationError("模板名称不能为空")
+        
+        value = value.strip()
+        if len(value) < 2 or len(value) > 100:
+            raise serializers.ValidationError("模板名称长度必须在2-100字符之间")
+        
+        try:
+            InputValidator.SAFE_STRING_VALIDATOR(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(str(e))
+        
+        return value
+    
+    def validate_content(self, value):
+        """验证模板内容"""
+        if not value or not isinstance(value, str):
+            raise serializers.ValidationError("模板内容不能为空")
+        
+        value = value.strip()
+        if len(value) < 5 or len(value) > 10000:
+            raise serializers.ValidationError("模板内容长度必须在5-10000字符之间")
+        
+        return value
+    
+    def create(self, validated_data):
+        """创建模板时设置创建者"""
+        validated_data['created_by'] = self.context['request'].user
+        return super().create(validated_data)
+
+
 class ModelConfigSerializer(serializers.ModelSerializer):
     """模型配置序列化器"""
     
     user_name = serializers.CharField(source='user.username', read_only=True)
-    model_display_name = serializers.CharField(source='model.display_name', read_only=True)
+    provider_name = serializers.CharField(source='provider.display_name', read_only=True)
+    template_name = serializers.CharField(source='prompt_template.name', read_only=True)
+    context_window = serializers.SerializerMethodField()
     
     class Meta:
         model = ModelConfig
         fields = [
-            'id', 'user', 'user_name', 'model', 'model_display_name',
-            'config_name', 'temperature', 'max_tokens', 'top_p', 'top_k',
-            'presence_penalty', 'frequency_penalty', 'custom_parameters',
-            'is_default', 'created_at', 'updated_at'
+            'id', 'user', 'user_name', 'provider', 'provider_name', 'model',
+            'config_name', 'temperature', 'max_tokens', 'top_p',
+            'frequency_penalty', 'presence_penalty', 'prompt_template',
+            'template_name', 'system_prompt_template', 'advanced_params',
+            'context_window', 'is_default', 'is_active',
+            'created_at', 'updated_at', 'last_used'
         ]
-        read_only_fields = ['id', 'user_name', 'model_display_name', 'created_at', 'updated_at']
+        read_only_fields = [
+            'id', 'user_name', 'provider_name', 'template_name', 
+            'context_window', 'created_at', 'updated_at', 'last_used'
+        ]
+    
+    def get_context_window(self, obj):
+        """获取模型上下文窗口"""
+        try:
+            # 尝试从AIModel表获取max_tokens
+            ai_model = AIModel.objects.filter(
+                provider=obj.provider,
+                model_id=obj.model
+            ).first()
+            return ai_model.max_tokens if ai_model else 4096
+        except:
+            return 4096  # 默认值
     
     def validate_config_name(self, value):
         """验证配置名称"""
@@ -250,21 +316,125 @@ class ModelConfigSerializer(serializers.ModelSerializer):
         """验证温度参数"""
         if value is not None:
             if not isinstance(value, (int, float)) or value < 0 or value > 2:
-                raise serializers.ValidationError("temperature必须在0-2之间")
+                raise serializers.ValidationError("temperature必须在0.0-2.0之间")
         return value
     
     def validate_max_tokens(self, value):
         """验证最大token数"""
         if value is not None:
-            if not isinstance(value, int) or value < 1 or value > 100000:
-                raise serializers.ValidationError("max_tokens必须在1-100000之间")
+            if not isinstance(value, int) or value < 1:
+                raise serializers.ValidationError("max_tokens必须大于0")
+            
+            # 获取模型上下文窗口进行验证
+            provider = self.initial_data.get('provider')
+            model = self.initial_data.get('model')
+            
+            if provider and model:
+                try:
+                    ai_model = AIModel.objects.filter(
+                        provider_id=provider,
+                        model_id=model
+                    ).first()
+                    
+                    if ai_model:
+                        # 获取保留Token数（默认256）
+                        advanced_params = self.initial_data.get('advanced_params', {})
+                        reserved_tokens = advanced_params.get('reserved_tokens', 256)
+                        
+                        if not isinstance(reserved_tokens, int) or reserved_tokens < 0:
+                            reserved_tokens = 256
+                        
+                        max_allowed = ai_model.max_tokens - reserved_tokens
+                        if value > max_allowed:
+                            raise serializers.ValidationError(
+                                f"max_tokens不能超过{max_allowed}（模型上下文窗口{ai_model.max_tokens} - 保留Token{reserved_tokens}）"
+                            )
+                except:
+                    pass  # 如果验证失败，不阻塞保存
+        
         return value
     
-    def validate_custom_parameters(self, value):
-        """验证自定义参数"""
-        if value:
-            return InputValidator.validate_json_config(value)
+    def validate_top_p(self, value):
+        """验证top_p参数"""
+        if value is not None:
+            if not isinstance(value, (int, float)) or value <= 0 or value > 1:
+                raise serializers.ValidationError("top_p必须在(0,1]之间")
         return value
+    
+    def validate_frequency_penalty(self, value):
+        """验证频率惩罚"""
+        if value is not None:
+            if not isinstance(value, (int, float)) or value < -2 or value > 2:
+                raise serializers.ValidationError("frequency_penalty必须在-2.0到2.0之间")
+        return value
+    
+    def validate_presence_penalty(self, value):
+        """验证存在惩罚"""
+        if value is not None:
+            if not isinstance(value, (int, float)) or value < -2 or value > 2:
+                raise serializers.ValidationError("presence_penalty必须在-2.0到2.0之间")
+        return value
+    
+    def validate_advanced_params(self, value):
+        """验证高级参数"""
+        if not value:
+            return value
+        
+        if not isinstance(value, dict):
+            raise serializers.ValidationError("advanced_params必须是字典格式")
+        
+        # 验证保留Token数
+        if 'reserved_tokens' in value:
+            reserved_tokens = value['reserved_tokens']
+            if not isinstance(reserved_tokens, int) or reserved_tokens < 0:
+                raise serializers.ValidationError("reserved_tokens必须是非负整数")
+        
+        # 验证种子值
+        if 'seed' in value:
+            seed = value['seed']
+            if seed is not None and (not isinstance(seed, int) or seed < 0):
+                raise serializers.ValidationError("seed必须是非负整数或null")
+        
+        # 验证停止词
+        if 'stop_words' in value:
+            stop_words = value['stop_words']
+            if stop_words is not None:
+                if not isinstance(stop_words, list):
+                    raise serializers.ValidationError("stop_words必须是字符串数组")
+                if len(stop_words) > 10:
+                    raise serializers.ValidationError("stop_words最多包含10个停止词")
+                for word in stop_words:
+                    if not isinstance(word, str) or len(word) > 20:
+                        raise serializers.ValidationError("每个停止词长度不能超过20字符")
+        
+        # 验证logit_bias
+        if 'logit_bias' in value:
+            logit_bias = value['logit_bias']
+            if logit_bias is not None:
+                if not isinstance(logit_bias, dict):
+                    raise serializers.ValidationError("logit_bias必须是字典格式")
+                if len(logit_bias) > 100:
+                    raise serializers.ValidationError("logit_bias最多包含100个键值对")
+                for token_id, bias in logit_bias.items():
+                    if not isinstance(bias, (int, float)) or bias < -100 or bias > 100:
+                        raise serializers.ValidationError("logit_bias值必须在-100到100之间")
+        
+        return value
+    
+    def create(self, validated_data):
+        """创建配置时设置用户"""
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
+    
+    def update(self, instance, validated_data):
+        """更新配置时处理模板关联"""
+        # 如果选择了模板，同步模板内容
+        if 'prompt_template' in validated_data and validated_data['prompt_template']:
+            template = validated_data['prompt_template']
+            validated_data['system_prompt_template'] = template.content
+            template.increment_usage()  # 增加使用次数
+        
+        return super().update(instance, validated_data)
 
 
 class TokenUsageSerializer(serializers.ModelSerializer):
