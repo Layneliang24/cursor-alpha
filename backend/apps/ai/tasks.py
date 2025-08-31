@@ -1,257 +1,496 @@
 """
-AI配置管理相关的Celery任务
+AI监控相关的Celery任务
 """
 
 import logging
 from datetime import datetime, timedelta
-from typing import List, Dict, Any
+from typing import Dict, Any
 
 from celery import shared_task
 from django.utils import timezone
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib.auth import get_user_model
+from django.core.cache import cache
 
-from .config_models import APIKey, AIProvider
+from .services.monitoring_service import monitoring_service
+from .monitoring_models import ServiceHealthRecord, PerformanceMetric, SystemAlert
+from .config_models import AIProvider
 
-User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
 @shared_task(bind=True, max_retries=3)
-def check_api_key_expiry(self, notification_days: int = 7):
+def collect_system_metrics(self):
     """
-    检查API密钥过期情况并发送提醒
-    
-    Args:
-        notification_days: 提前多少天发送过期提醒
+    收集系统性能指标的定时任务
+    每5分钟执行一次
     """
     try:
-        logger.info(f'开始检查API密钥过期情况，提前{notification_days}天提醒')
+        logger.info("开始收集系统性能指标")
         
-        # 计算检查时间范围
-        now = timezone.now()
-        warning_date = now + timedelta(days=notification_days)
+        # 获取所有活跃的AI提供商
+        active_providers = AIProvider.objects.filter(is_active=True)
         
-        # 查找即将过期和已过期的密钥
-        expiring_soon = APIKey.objects.filter(
-            expires_at__lte=warning_date,
-            expires_at__gt=now,
-            is_active=True
-        ).select_related('provider', 'user')
+        current_time = timezone.now()
+        period_start = current_time - timedelta(minutes=5)
         
-        expired_keys = APIKey.objects.filter(
-            expires_at__lte=now,
-            is_active=True
-        ).select_related('provider', 'user')
+        metrics_collected = 0
         
-        # 处理即将过期的密钥
-        if expiring_soon.exists():
-            logger.warning(f'发现{expiring_soon.count()}个即将过期的API密钥')
-            _send_expiry_notifications(expiring_soon, 'warning')
-        
-        # 处理已过期的密钥
-        if expired_keys.exists():
-            logger.error(f'发现{expired_keys.count()}个已过期的API密钥')
-            _send_expiry_notifications(expired_keys, 'expired')
-            
-            # 自动禁用过期密钥
-            expired_keys.update(is_active=False)
-            logger.info(f'已自动禁用{expired_keys.count()}个过期密钥')
-        
-        # 返回检查结果
-        result = {
-            'check_time': now.isoformat(),
-            'expiring_soon_count': expiring_soon.count(),
-            'expired_count': expired_keys.count(),
-            'notification_days': notification_days
-        }
-        
-        logger.info(f'API密钥过期检查完成: {result}')
-        return result
-        
-    except Exception as exc:
-        logger.error(f'API密钥过期检查失败: {exc}')
-        # 重试机制
-        if self.request.retries < self.max_retries:
-            logger.info(f'正在重试检查任务，第{self.request.retries + 1}次')
-            raise self.retry(countdown=60 * (self.request.retries + 1))
-        else:
-            logger.error('API密钥过期检查达到最大重试次数，任务失败')
-            raise
-
-
-@shared_task
-def cleanup_old_api_keys(days_to_keep: int = 365):
-    """
-    清理旧的API密钥记录
-    
-    Args:
-        days_to_keep: 保留多少天的记录
-    """
-    try:
-        cutoff_date = timezone.now() - timedelta(days=days_to_keep)
-        
-        # 查找要清理的密钥（已禁用且过期很久的）
-        old_keys = APIKey.objects.filter(
-            is_active=False,
-            updated_at__lt=cutoff_date,
-            expires_at__lt=cutoff_date
-        )
-        
-        count = old_keys.count()
-        if count > 0:
-            # 备份要删除的密钥信息
-            backup_data = []
-            for key in old_keys:
-                backup_data.append({
-                    'key_id': key.key_id,
-                    'name': key.name,
-                    'provider': key.provider.name,
-                    'user': key.user.username,
-                    'masked_key': key.masked_key,
-                    'created_at': key.created_at.isoformat(),
-                    'deleted_at': timezone.now().isoformat()
-                })
-            
-            # 保存备份
-            backup_file = f'logs/deleted_api_keys_{datetime.now().strftime("%Y%m%d")}.json'
-            import os
-            import json
-            os.makedirs('logs', exist_ok=True)
-            with open(backup_file, 'w', encoding='utf-8') as f:
-                json.dump(backup_data, f, indent=2, ensure_ascii=False)
-            
-            # 删除旧密钥
-            old_keys.delete()
-            
-            logger.info(f'清理了{count}个旧API密钥，备份到{backup_file}')
-            return {'cleaned_count': count, 'backup_file': backup_file}
-        else:
-            logger.info('没有需要清理的旧API密钥')
-            return {'cleaned_count': 0}
-            
-    except Exception as exc:
-        logger.error(f'API密钥清理失败: {exc}')
-        raise
-
-
-@shared_task
-def health_check_api_keys():
-    """
-    检查API密钥的健康状态
-    """
-    try:
-        logger.info('开始API密钥健康检查')
-        
-        # 获取所有活跃的密钥
-        active_keys = APIKey.objects.filter(is_active=True).select_related('provider')
-        
-        health_results = []
-        
-        for key in active_keys:
+        for provider in active_providers:
             try:
-                # 这里可以扩展为实际的API健康检查
-                # 例如调用各个提供商的简单API来验证密钥有效性
-                is_valid = key.validate_key()
+                # 收集该提供商的指标
+                provider_metrics = _collect_provider_metrics(
+                    provider, period_start, current_time
+                )
                 
-                health_result = {
-                    'key_id': key.key_id,
-                    'name': key.name,
-                    'provider': key.provider.name,
-                    'is_valid': is_valid,
-                    'check_time': timezone.now().isoformat()
-                }
-                
-                health_results.append(health_result)
-                
-                # 更新最后使用时间（如果验证成功）
-                if is_valid:
-                    key.last_used = timezone.now()
-                    key.save(update_fields=['last_used'])
-                
+                if provider_metrics:
+                    # 保存到数据库
+                    PerformanceMetric.objects.create(**provider_metrics)
+                    metrics_collected += 1
+                    
             except Exception as e:
-                logger.error(f'密钥健康检查失败 {key.name}: {e}')
-                health_results.append({
-                    'key_id': key.key_id,
-                    'name': key.name,
-                    'provider': key.provider.name,
-                    'is_valid': False,
-                    'error': str(e),
-                    'check_time': timezone.now().isoformat()
-                })
+                logger.error(f"收集提供商 {provider.display_name} 指标失败: {e}")
         
-        # 统计结果
-        valid_count = sum(1 for r in health_results if r.get('is_valid'))
-        total_count = len(health_results)
-        
-        logger.info(f'API密钥健康检查完成: {valid_count}/{total_count} 有效')
+        logger.info(f"系统指标收集完成，共收集 {metrics_collected} 个提供商的指标")
         
         return {
-            'total_checked': total_count,
-            'valid_count': valid_count,
-            'invalid_count': total_count - valid_count,
-            'results': health_results
+            'success': True,
+            'metrics_collected': metrics_collected,
+            'timestamp': current_time.isoformat()
         }
         
-    except Exception as exc:
-        logger.error(f'API密钥健康检查失败: {exc}')
-        raise
+    except Exception as e:
+        logger.error(f"收集系统指标任务失败: {e}")
+        
+        # 重试机制
+        if self.request.retries < self.max_retries:
+            logger.info(f"任务将在 {60 * (self.request.retries + 1)} 秒后重试")
+            raise self.retry(countdown=60 * (self.request.retries + 1))
+        
+        return {
+            'success': False,
+            'error': str(e),
+            'timestamp': timezone.now().isoformat()
+        }
 
 
-def _send_expiry_notifications(keys: List[APIKey], notification_type: str):
+def _collect_provider_metrics(
+    provider: AIProvider,
+    period_start: datetime,
+    period_end: datetime
+) -> Dict[str, Any]:
     """
-    发送密钥过期通知
+    收集单个提供商的指标数据
     
     Args:
-        keys: 需要通知的密钥列表
-        notification_type: 通知类型 ('warning' 或 'expired')
+        provider: AI提供商实例
+        period_start: 统计周期开始时间
+        period_end: 统计周期结束时间
+        
+    Returns:
+        指标数据字典，如果没有数据则返回None
     """
     try:
-        # 按用户分组通知
-        user_keys = {}
-        for key in keys:
-            user_email = key.user.email
-            if user_email not in user_keys:
-                user_keys[user_email] = []
-            user_keys[user_email].append(key)
+        # 从健康记录中统计API调用数据
+        health_records = ServiceHealthRecord.objects.filter(
+            provider=provider,
+            check_timestamp__gte=period_start,
+            check_timestamp__lt=period_end,
+            check_type='api_call'
+        )
         
-        # 发送邮件通知
-        for user_email, user_key_list in user_keys.items():
-            if notification_type == 'warning':
-                subject = 'API密钥即将过期提醒'
-                message_template = 'API密钥即将过期，请及时更新：\n\n'
-            else:
-                subject = 'API密钥已过期警告'
-                message_template = 'API密钥已过期，请立即更新：\n\n'
+        if not health_records.exists():
+            return None
+        
+        # 统计基础指标
+        total_requests = health_records.count()
+        successful_requests = health_records.filter(is_healthy=True).count()
+        failed_requests = total_requests - successful_requests
+        
+        # 计算响应时间统计
+        response_times = list(health_records.values_list('response_time', flat=True))
+        if response_times:
+            avg_response_time = sum(response_times) / len(response_times)
+            min_response_time = min(response_times)
+            max_response_time = max(response_times)
             
-            # 构建邮件内容
-            message = message_template
-            for key in user_key_list:
-                expiry_str = key.expires_at.strftime('%Y-%m-%d %H:%M') if key.expires_at else '未设置'
-                message += f'- {key.name} ({key.provider.display_name}): {key.masked_key}\n'
-                message += f'  过期时间: {expiry_str}\n\n'
-            
-            message += '请登录系统更新您的API密钥。\n'
-            message += '如有疑问，请联系技术支持。'
-            
-            # 发送邮件（如果配置了邮件设置）
-            if hasattr(settings, 'EMAIL_HOST') and settings.EMAIL_HOST:
-                try:
-                    send_mail(
-                        subject=subject,
-                        message=message,
-                        from_email=settings.DEFAULT_FROM_EMAIL,
-                        recipient_list=[user_email],
-                        fail_silently=False
-                    )
-                    logger.info(f'已发送密钥过期通知到: {user_email}')
-                except Exception as e:
-                    logger.error(f'发送邮件失败到 {user_email}: {e}')
-            else:
-                logger.warning(f'邮件未配置，跳过通知到: {user_email}')
-                # 可以在这里添加其他通知方式，如系统内消息、Slack等
+            # 计算95分位数
+            sorted_times = sorted(response_times)
+            p95_index = int(len(sorted_times) * 0.95)
+            p95_response_time = sorted_times[p95_index] if p95_index < len(sorted_times) else max_response_time
+        else:
+            avg_response_time = min_response_time = max_response_time = p95_response_time = 0.0
+        
+        # 从metadata中提取token和成本信息（如果有的话）
+        total_input_tokens = 0
+        total_output_tokens = 0
+        total_cost = 0.0
+        
+        for record in health_records:
+            if record.metadata:
+                total_input_tokens += record.metadata.get('input_tokens', 0)
+                total_output_tokens += record.metadata.get('output_tokens', 0)
+                total_cost += record.metadata.get('cost', 0.0)
+        
+        return {
+            'service_name': f"{provider.provider_type}-service",
+            'provider': provider,
+            'period_start': period_start,
+            'period_end': period_end,
+            'total_requests': total_requests,
+            'successful_requests': successful_requests,
+            'failed_requests': failed_requests,
+            'avg_response_time': avg_response_time,
+            'min_response_time': min_response_time,
+            'max_response_time': max_response_time,
+            'p95_response_time': p95_response_time,
+            'total_input_tokens': total_input_tokens,
+            'total_output_tokens': total_output_tokens,
+            'total_cost': total_cost
+        }
         
     except Exception as e:
-        logger.error(f'发送过期通知失败: {e}')
-        raise
+        logger.error(f"收集提供商 {provider.display_name} 指标时发生错误: {e}")
+        return None
+
+
+@shared_task(bind=True)
+def perform_health_checks(self):
+    """
+    执行服务健康检查的定时任务
+    每分钟执行一次
+    """
+    try:
+        logger.info("开始执行服务健康检查")
+        
+        # 获取所有活跃的AI提供商
+        active_providers = AIProvider.objects.filter(is_active=True)
+        
+        checks_performed = 0
+        healthy_services = 0
+        
+        for provider in active_providers:
+            try:
+                # 执行健康检查（这里简化为检查服务状态）
+                service_name = f"{provider.provider_type}-service"
+                
+                # 获取服务状态
+                service_status = monitoring_service.get_service_status(service_name)
+                
+                if service_status:
+                    # 记录健康检查结果
+                    ServiceHealthRecord.objects.create(
+                        service_name=service_name,
+                        provider=provider,
+                        status=service_status.status,
+                        is_healthy=service_status.is_healthy,
+                        response_time=service_status.response_time,
+                        check_type='scheduled'
+                    )
+                    
+                    checks_performed += 1
+                    if service_status.is_healthy:
+                        healthy_services += 1
+                        
+            except Exception as e:
+                logger.error(f"健康检查失败 {provider.display_name}: {e}")
+        
+        logger.info(f"健康检查完成，检查了 {checks_performed} 个服务，{healthy_services} 个健康")
+        
+        return {
+            'success': True,
+            'checks_performed': checks_performed,
+            'healthy_services': healthy_services,
+            'timestamp': timezone.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"执行健康检查任务失败: {e}")
+        return {
+            'success': False,
+            'error': str(e),
+            'timestamp': timezone.now().isoformat()
+        }
+
+
+@shared_task(bind=True)
+def cleanup_monitoring_data(self):
+    """
+    清理过期监控数据的定时任务
+    每天凌晨执行一次
+    """
+    try:
+        logger.info("开始清理过期监控数据")
+        
+        # 清理7天前的健康记录
+        health_deleted = ServiceHealthRecord.cleanup_old_records(days=7)
+        
+        # 清理30天前的性能指标
+        metrics_deleted = PerformanceMetric.cleanup_old_metrics(days=30)
+        
+        # 清理已解决的告警（14天前）
+        alerts_deleted = SystemAlert.cleanup_old_alerts(days=14)
+        
+        logger.info(f"数据清理完成: 健康记录 {health_deleted}, 性能指标 {metrics_deleted}, 告警 {alerts_deleted}")
+        
+        return {
+            'success': True,
+            'health_records_deleted': health_deleted,
+            'metrics_deleted': metrics_deleted,
+            'alerts_deleted': alerts_deleted,
+            'timestamp': timezone.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"清理监控数据任务失败: {e}")
+        return {
+            'success': False,
+            'error': str(e),
+            'timestamp': timezone.now().isoformat()
+        }
+
+
+@shared_task(bind=True)
+def generate_monitoring_alerts(self):
+    """
+    生成监控告警的定时任务
+    每10分钟执行一次
+    """
+    try:
+        logger.info("开始生成监控告警")
+        
+        current_time = timezone.now()
+        check_period = current_time - timedelta(minutes=10)
+        
+        alerts_generated = 0
+        
+        # 检查服务健康状态
+        for provider in AIProvider.objects.filter(is_active=True):
+            try:
+                service_name = f"{provider.provider_type}-service"
+                
+                # 检查最近的健康记录
+                recent_records = ServiceHealthRecord.objects.filter(
+                    provider=provider,
+                    check_timestamp__gte=check_period
+                ).order_by('-check_timestamp')
+                
+                if recent_records.exists():
+                    # 检查连续失败
+                    consecutive_failures = 0
+                    for record in recent_records[:5]:  # 检查最近5次
+                        if not record.is_healthy:
+                            consecutive_failures += 1
+                        else:
+                            break
+                    
+                    # 连续失败3次以上创建告警
+                    if consecutive_failures >= 3:
+                        existing_alert = SystemAlert.objects.filter(
+                            alert_type='service_unhealthy',
+                            service_name=service_name,
+                            status=SystemAlert.AlertStatus.ACTIVE
+                        ).first()
+                        
+                        if not existing_alert:
+                            SystemAlert.create_alert(
+                                alert_type='service_unhealthy',
+                                title=f'服务 {service_name} 连续失败',
+                                message=f'服务 {service_name} 连续失败 {consecutive_failures} 次',
+                                level=SystemAlert.AlertLevel.ERROR,
+                                service_name=service_name,
+                                provider=provider,
+                                consecutive_failures=consecutive_failures
+                            )
+                            alerts_generated += 1
+                    
+                    # 检查响应时间过慢
+                    from django.db.models import Avg
+                    avg_response_time = recent_records.aggregate(
+                        avg_time=Avg('response_time')
+                    )['avg_time']
+                    
+                    if avg_response_time and avg_response_time > 5.0:
+                        existing_alert = SystemAlert.objects.filter(
+                            alert_type='slow_response',
+                            service_name=service_name,
+                            status=SystemAlert.AlertStatus.ACTIVE
+                        ).first()
+                        
+                        if not existing_alert:
+                            SystemAlert.create_alert(
+                                alert_type='slow_response',
+                                title=f'服务 {service_name} 响应缓慢',
+                                message=f'服务 {service_name} 平均响应时间 {avg_response_time:.2f}s 超过阈值',
+                                level=SystemAlert.AlertLevel.WARNING,
+                                service_name=service_name,
+                                provider=provider,
+                                threshold_value=5.0,
+                                actual_value=avg_response_time
+                            )
+                            alerts_generated += 1
+                            
+            except Exception as e:
+                logger.error(f"为提供商 {provider.display_name} 生成告警失败: {e}")
+        
+        logger.info(f"告警生成完成，共生成 {alerts_generated} 个告警")
+        
+        return {
+            'success': True,
+            'alerts_generated': alerts_generated,
+            'timestamp': current_time.isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"生成监控告警任务失败: {e}")
+        return {
+            'success': False,
+            'error': str(e),
+            'timestamp': timezone.now().isoformat()
+        }
+
+
+@shared_task(bind=True)
+def update_service_metrics_cache(self):
+    """
+    更新服务指标缓存的定时任务
+    每分钟执行一次
+    """
+    try:
+        logger.info("开始更新服务指标缓存")
+        
+        # 获取系统概览并缓存
+        overview = monitoring_service.get_system_overview()
+        cache.set('monitoring:system_overview', overview, 60)
+        
+        # 获取所有服务状态并缓存
+        services = monitoring_service.get_all_services_status()
+        cache.set('monitoring:all_services', services, 60)
+        
+        # 获取活跃告警并缓存
+        alerts = monitoring_service.get_active_alerts()
+        cache.set('monitoring:active_alerts', alerts, 60)
+        
+        logger.info("服务指标缓存更新完成")
+        
+        return {
+            'success': True,
+            'services_count': len(services),
+            'alerts_count': len(alerts),
+            'timestamp': timezone.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"更新服务指标缓存任务失败: {e}")
+        return {
+            'success': False,
+            'error': str(e),
+            'timestamp': timezone.now().isoformat()
+        }
+
+
+@shared_task(bind=True)
+def check_budget_alerts_task(self):
+    """
+    检查预算告警的定时任务
+    每小时执行一次
+    """
+    try:
+        logger.info("开始检查用户预算告警")
+        
+        from .services.token_statistics import token_statistics_service
+        
+        # 获取所有预算告警
+        alerts = token_statistics_service.check_budget_alerts()
+        
+        alerts_created = 0
+        
+        # 为每个告警创建系统告警
+        for budget_alert in alerts:
+            try:
+                token_statistics_service.create_budget_alert(budget_alert)
+                alerts_created += 1
+                logger.info(f"创建预算告警: 用户 {budget_alert.username}, 使用率 {budget_alert.usage_percentage}%")
+                
+            except Exception as e:
+                logger.error(f"创建预算告警失败 {budget_alert.username}: {e}")
+        
+        logger.info(f"预算告警检查完成，共创建 {alerts_created} 个告警")
+        
+        return {
+            'success': True,
+            'total_alerts_checked': len(alerts),
+            'alerts_created': alerts_created,
+            'timestamp': timezone.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"检查预算告警任务失败: {e}")
+        return {
+            'success': False,
+            'error': str(e),
+            'timestamp': timezone.now().isoformat()
+        }
+
+
+@shared_task(bind=True)
+def update_token_statistics_cache(self):
+    """
+    更新Token统计缓存的定时任务
+    每30分钟执行一次
+    """
+    try:
+        logger.info("开始更新Token统计缓存")
+        
+        from .services.token_statistics import token_statistics_service
+        from django.contrib.auth import get_user_model
+        
+        User = get_user_model()
+        
+        # 获取活跃用户（最近30天有使用记录）
+        recent_users = User.objects.filter(
+            token_usage__created_at__gte=timezone.now() - timedelta(days=30)
+        ).distinct()
+        
+        cached_users = 0
+        
+        for user in recent_users:
+            try:
+                # 更新用户摘要缓存
+                summary = token_statistics_service.get_user_summary(user, days=30)
+                
+                # 更新实时统计缓存
+                realtime_stats = token_statistics_service.get_realtime_statistics(user=user)
+                
+                cached_users += 1
+                
+            except Exception as e:
+                logger.error(f"更新用户 {user.username} 统计缓存失败: {e}")
+                continue
+        
+        # 更新全局统计缓存
+        try:
+            # 获取所有提供商统计
+            provider_stats = token_statistics_service.get_provider_statistics(days=30)
+            cache.set('token_stats:all_providers', provider_stats, 1800)  # 30分钟
+            
+            # 获取所有模型统计
+            model_stats = token_statistics_service.get_model_statistics(days=30)
+            cache.set('token_stats:all_models', model_stats, 1800)  # 30分钟
+            
+        except Exception as e:
+            logger.error(f"更新全局统计缓存失败: {e}")
+        
+        logger.info(f"Token统计缓存更新完成，更新 {cached_users} 个用户缓存")
+        
+        return {
+            'success': True,
+            'cached_users': cached_users,
+            'timestamp': timezone.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"更新Token统计缓存任务失败: {e}")
+        return {
+            'success': False,
+            'error': str(e),
+            'timestamp': timezone.now().isoformat()
+        }

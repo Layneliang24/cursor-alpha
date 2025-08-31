@@ -98,7 +98,6 @@ INSTALLED_APPS = [
     'captcha',
     'mdeditor',
     'django_extensions',
-    'debug_toolbar',
     'django_cryptography',
     
     # Local apps
@@ -116,6 +115,11 @@ INSTALLED_APPS = [
     'feature_flags',
 ]
 
+# 条件化添加debug_toolbar，仅在非测试环境中
+import sys
+if DEBUG and 'test' not in sys.argv and not os.environ.get('PYTEST_CURRENT_TEST'):
+    INSTALLED_APPS.append('debug_toolbar')
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -132,8 +136,11 @@ MIDDLEWARE = [
     # 地道表达安全中间件
     'apps.english.middleware.EnglishSecurityMiddleware',
     'apps.english.middleware.ContentSecurityMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+# 条件化添加debug_toolbar中间件
+if DEBUG and 'test' not in sys.argv and not os.environ.get('PYTEST_CURRENT_TEST'):
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'alpha.urls'
 
