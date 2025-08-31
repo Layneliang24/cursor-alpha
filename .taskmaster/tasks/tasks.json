@@ -833,16 +833,80 @@
       {
         "id": 5,
         "title": "构建提供商管理API",
-        "description": "实现提供商的CRUD、连接测试和状态监控API",
-        "details": "1. 创建ProviderViewSet（DRF）支持CRUD\n2. 实现/test_connection/端点：发送测试请求到提供商API\n3. 实现/bulk_test/端点：批量测试所有提供商\n4. 实现状态监控端点：返回实时和历史状态\n5. 添加权限控制（JWT认证）",
-        "testStrategy": "使用DRF APITestCase测试所有端点，模拟第三方API响应",
-        "priority": "high",
+        "description": "实现提供商、API密钥、AI模型、使用统计和配额的完整管理API，包括CRUD、连接测试和状态监控",
+        "status": "done",
         "dependencies": [
           3,
           4
         ],
-        "status": "pending",
-        "subtasks": []
+        "priority": "high",
+        "details": "已实现以下核心功能：\n- AIProviderViewSet：完整CRUD操作，支持状态/健康状态过滤，自动设置创建者\n- 连接测试功能：test_connection（单个测试）和bulk_test（批量测试）端点，自动更新健康状态\n- 状态监控功能：status_history（状态历史）和system_health（系统健康）端点\n- APIKeyViewSet：用户隔离密钥管理，安全序列化，测试及默认密钥设置\n- 扩展ViewSet：AIModelViewSet（模型管理）、TokenUsageViewSet（使用统计）、UsageQuotaViewSet（配额监控）\n- 路由配置：集成到/api/v1/主路由\n- 技术架构：JWT认证/权限控制、完整过滤支持、错误处理/日志记录、事务安全",
+        "testStrategy": "已使用DRF APITestCase完成全面测试：验证所有端点返回200状态码，JWT认证有效，数据序列化正确，权限控制可靠，并模拟第三方API响应",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "实现AIProviderViewSet",
+            "description": "在backend/apps/ai/views.py创建ViewSet，支持CRUD操作、JWT认证、状态过滤和自动设置创建者",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "实现连接测试功能",
+            "description": "开发test_connection（单个测试）和bulk_test（批量测试）端点，包含错误处理和状态自动更新",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "实现状态监控功能",
+            "description": "创建status_history端点获取状态历史，system_health端点计算系统整体健康指标",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "实现APIKeyViewSet",
+            "description": "开发用户隔离的密钥管理，支持安全序列化、密钥测试、默认密钥设置和过期预警",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "实现扩展管理ViewSet",
+            "description": "构建AIModelViewSet（模型管理）、TokenUsageViewSet（使用统计）和UsageQuotaViewSet（配额监控）",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "配置路由集成",
+            "description": "创建apps/ai/urls.py路由配置，注册所有ViewSet并集成到主URL路由",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "完成API测试验证",
+            "description": "测试所有端点状态码、JWT认证、数据序列化、权限控制和错误处理逻辑",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 6,
@@ -1602,7 +1666,7 @@
     ],
     "metadata": {
       "created": "2025-08-31T08:10:56.593Z",
-      "updated": "2025-08-31T09:18:55.919Z",
+      "updated": "2025-08-31T09:28:43.768Z",
       "description": "Tasks for ai-config-ui context"
     }
   }

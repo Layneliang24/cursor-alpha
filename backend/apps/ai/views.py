@@ -1,507 +1,545 @@
 """
-AI服务管理API视图
-
-提供AI服务管理、负载均衡、健康监控等API接口
+AI配置管理API视图
 """
 
 import logging
-from typing import Dict, Any
+from datetime import datetime, timedelta
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-from drf_spectacular.types import OpenApiTypes
+from django.utils import timezone
+from django.db.models import Count, Sum, Avg
+from django.db import transaction
 
-from .services.manager import ai_service_manager
-from .services.load_balancer import LoadBalancingStrategy
-from .services.degradation import ServiceLevel
-from .adapters.base import AIProviderType, AIMessage, MessageRole
+from .config_models import (
+    AIProvider, APIKey, AIModel, ModelConfig, TokenUsage,
+    FailoverStrategy, FailoverRule, UsageQuota
+)
+from .serializers import (
+    AIProviderSerializer, APIKeySerializer, APIKeyCreateSerializer,
+    AIModelSerializer, ModelConfigSerializer, TokenUsageSerializer,
+    FailoverStrategySerializer, FailoverRuleSerializer, UsageQuotaSerializer
+)
+from .adapters.factory import AIAdapterFactory
 
 logger = logging.getLogger(__name__)
 
 
-class ConversationViewSet(viewsets.ViewSet):
+class AIProviderViewSet(viewsets.ModelViewSet):
+    """AI提供商管理ViewSet"""
+    
+    queryset = AIProvider.objects.all()
+    serializer_class = AIProviderSerializer
     permission_classes = [IsAuthenticated]
-
-    def list(self, request):
+    
+    def get_queryset(self):
+        """获取查询集"""
+        queryset = super().get_queryset()
+        
+        # 按状态过滤
+        is_active = self.request.query_params.get('is_active')
+        if is_active is not None:
+            queryset = queryset.filter(is_active=is_active.lower() == 'true')
+        
+        # 按健康状态过滤
+        is_healthy = self.request.query_params.get('is_healthy')
+        if is_healthy is not None:
+            queryset = queryset.filter(is_healthy=is_healthy.lower() == 'true')
+        
+        return queryset.order_by('-created_at')
+    
+    def perform_create(self, serializer):
+        """创建提供商时设置创建者"""
+        serializer.save(created_by=self.request.user)
+    
+    @action(detail=True, methods=['post'])
+    def test_connection(self, request, pk=None):
+        """测试单个提供商连接"""
+        provider = self.get_object()
+        
+        try:
+            # 获取该提供商的默认API密钥
+            api_key = APIKey.objects.filter(
+                provider=provider,
+                is_active=True,
+                is_default=True
+            ).first()
+            
+            if not api_key:
+                return Response({
+                    'success': False,
+                    'message': '未找到可用的API密钥',
+                    'provider_id': provider.id,
+                    'provider_name': provider.display_name
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # 创建适配器并测试连接
+            adapter = AIAdapterFactory.create_adapter(
+                provider_type=provider.provider_type,
+                api_key=api_key.get_key(),
+                base_url=provider.base_url
+            )
+            
+            # 执行健康检查
+            health_result = adapter.health_check()
+            
+            # 更新提供商状态
+            provider.is_healthy = health_result.is_healthy
+            provider.last_health_check = timezone.now()
+            if health_result.response_time:
+                provider.avg_response_time = health_result.response_time
+            provider.save()
+            
+            return Response({
+                'success': health_result.is_healthy,
+                'message': '连接测试成功' if health_result.is_healthy else '连接测试失败',
+                'provider_id': provider.id,
+                'provider_name': provider.display_name,
+                'response_time': health_result.response_time,
+                'details': health_result.details if hasattr(health_result, 'details') else None
+            })
+            
+        except Exception as e:
+            logger.error(f'提供商连接测试失败 {provider.name}: {e}')
+            
+            # 更新提供商状态为不健康
+            provider.is_healthy = False
+            provider.last_health_check = timezone.now()
+            provider.save()
+            
+            return Response({
+                'success': False,
+                'message': f'连接测试失败: {str(e)}',
+                'provider_id': provider.id,
+                'provider_name': provider.display_name
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['post'])
+    def bulk_test(self, request):
+        """批量测试所有提供商连接"""
+        providers = self.get_queryset().filter(is_active=True)
+        results = []
+        
+        for provider in providers:
+            try:
+                # 获取该提供商的默认API密钥
+                api_key = APIKey.objects.filter(
+                    provider=provider,
+                    is_active=True,
+                    is_default=True
+                ).first()
+                
+                if not api_key:
+                    results.append({
+                        'provider_id': provider.id,
+                        'provider_name': provider.display_name,
+                        'success': False,
+                        'message': '未找到可用的API密钥'
+                    })
+                    continue
+                
+                # 创建适配器并测试连接
+                adapter = AIAdapterFactory.create_adapter(
+                    provider_type=provider.provider_type,
+                    api_key=api_key.get_key(),
+                    base_url=provider.base_url
+                )
+                
+                # 执行健康检查
+                health_result = adapter.health_check()
+                
+                # 更新提供商状态
+                provider.is_healthy = health_result.is_healthy
+                provider.last_health_check = timezone.now()
+                if health_result.response_time:
+                    provider.avg_response_time = health_result.response_time
+                provider.save()
+                
+                results.append({
+                    'provider_id': provider.id,
+                    'provider_name': provider.display_name,
+                    'success': health_result.is_healthy,
+                    'message': '连接正常' if health_result.is_healthy else '连接异常',
+                    'response_time': health_result.response_time
+                })
+                
+            except Exception as e:
+                logger.error(f'提供商批量测试失败 {provider.name}: {e}')
+                
+                # 更新提供商状态为不健康
+                provider.is_healthy = False
+                provider.last_health_check = timezone.now()
+                provider.save()
+                
+                results.append({
+                    'provider_id': provider.id,
+                    'provider_name': provider.display_name,
+                    'success': False,
+                    'message': f'测试失败: {str(e)}'
+                })
+        
+        # 统计结果
+        total_count = len(results)
+        success_count = sum(1 for r in results if r['success'])
+        
         return Response({
-            "success": True,
-            "message": "ai placeholder",
-            "data": []
+            'total_tested': total_count,
+            'success_count': success_count,
+            'failure_count': total_count - success_count,
+            'results': results
+        })
+    
+    @action(detail=True, methods=['get'])
+    def status_history(self, request, pk=None):
+        """获取提供商状态历史"""
+        provider = self.get_object()
+        
+        # 这里可以扩展为从专门的状态历史表获取数据
+        # 目前返回基本的状态信息
+        return Response({
+            'provider_id': provider.id,
+            'provider_name': provider.display_name,
+            'current_status': {
+                'is_healthy': provider.is_healthy,
+                'is_active': provider.is_active,
+                'last_health_check': provider.last_health_check,
+                'avg_response_time': provider.avg_response_time,
+                'success_rate': provider.success_rate
+            },
+            'history': [
+                # 可以在这里添加历史状态数据
+            ]
+        })
+    
+    @action(detail=False, methods=['get'])
+    def system_health(self, request):
+        """获取系统整体健康状态"""
+        providers = self.get_queryset()
+        
+        total_count = providers.count()
+        healthy_count = providers.filter(is_healthy=True).count()
+        active_count = providers.filter(is_active=True).count()
+        
+        # 计算平均响应时间
+        avg_response_time = providers.filter(
+            avg_response_time__isnull=False
+        ).aggregate(avg_time=Avg('avg_response_time'))['avg_time']
+        
+        return Response({
+            'total_providers': total_count,
+            'healthy_providers': healthy_count,
+            'active_providers': active_count,
+            'health_percentage': (healthy_count / total_count * 100) if total_count > 0 else 0,
+            'average_response_time': avg_response_time,
+            'last_updated': timezone.now()
         })
 
 
-class AIServiceViewSet(viewsets.ViewSet):
-    """AI服务管理API"""
+class APIKeyViewSet(viewsets.ModelViewSet):
+    """API密钥管理ViewSet"""
     
+    queryset = APIKey.objects.all()
     permission_classes = [IsAuthenticated]
     
-    @extend_schema(
-        summary="获取AI服务状态",
-        description="获取所有AI服务的状态信息，包括健康状态、负载均衡统计等",
-        responses={200: {
-            "type": "object",
-            "properties": {
-                "services": {"type": "object"},
-                "load_balancer": {"type": "object"},
-                "degradation": {"type": "object"}
-            }
-        }},
-        tags=["AI服务管理"]
-    )
-    def list(self, request):
-        """获取AI服务状态"""
-        try:
-            return Response({
-                'services': ai_service_manager.get_service_status(),
-                'load_balancer': ai_service_manager.get_load_balancer_stats(),
-                'degradation': ai_service_manager.get_degradation_status()
-            })
-        except Exception as e:
-            logger.error(f"获取AI服务状态失败: {e}")
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+    def get_serializer_class(self):
+        """根据动作选择序列化器"""
+        if self.action == 'create':
+            return APIKeyCreateSerializer
+        return APIKeySerializer
     
-    @extend_schema(
-        summary="添加AI服务",
-        description="动态添加新的AI服务实例",
-        request={
-            "type": "object",
-            "properties": {
-                "service_name": {"type": "string", "description": "服务名称"},
-                "provider": {"type": "string", "enum": [p.value for p in AIProviderType]},
-                "model": {"type": "string", "description": "模型名称"},
-                "weight": {"type": "integer", "minimum": 1, "description": "负载均衡权重"},
-                "config": {"type": "object", "description": "模型配置参数"}
-            },
-            "required": ["service_name", "provider", "model"]
-        },
-        responses={201: {"type": "object", "properties": {"message": {"type": "string"}}}},
-        tags=["AI服务管理"]
-    )
-    @action(detail=False, methods=['post'])
-    def add_service(self, request):
-        """添加AI服务"""
-        try:
-            data = request.data
-            service_name = data.get('service_name')
-            provider = AIProviderType(data.get('provider'))
-            model = data.get('model')
-            weight = data.get('weight', 1)
-            config = data.get('config', {})
-            
-            success = ai_service_manager.add_service(
-                service_name=service_name,
-                provider=provider,
-                model=model,
-                config=config,
-                weight=weight
-            )
-            
-            if success:
-                return Response(
-                    {'message': f'服务 {service_name} 添加成功'},
-                    status=status.HTTP_201_CREATED
-                )
-            else:
-                return Response(
-                    {'error': f'服务 {service_name} 添加失败'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-                
-        except Exception as e:
-            logger.error(f"添加AI服务失败: {e}")
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+    def get_queryset(self):
+        """获取当前用户的API密钥"""
+        queryset = APIKey.objects.filter(user=self.request.user)
+        
+        # 按提供商过滤
+        provider_id = self.request.query_params.get('provider')
+        if provider_id:
+            queryset = queryset.filter(provider_id=provider_id)
+        
+        # 按状态过滤
+        is_active = self.request.query_params.get('is_active')
+        if is_active is not None:
+            queryset = queryset.filter(is_active=is_active.lower() == 'true')
+        
+        return queryset.select_related('provider').order_by('-created_at')
     
-    @extend_schema(
-        summary="移除AI服务",
-        description="移除指定的AI服务实例",
-        parameters=[
-            OpenApiParameter(
-                name="service_name",
-                type=OpenApiTypes.STR,
-                location=OpenApiParameter.PATH,
-                description="服务名称"
-            )
-        ],
-        responses={200: {"type": "object", "properties": {"message": {"type": "string"}}}},
-        tags=["AI服务管理"]
-    )
-    @action(detail=True, methods=['delete'])
-    def remove_service(self, request, pk=None):
-        """移除AI服务"""
-        try:
-            service_name = pk
-            success = ai_service_manager.remove_service(service_name)
-            
-            if success:
-                return Response({'message': f'服务 {service_name} 移除成功'})
-            else:
-                return Response(
-                    {'error': f'服务 {service_name} 不存在'},
-                    status=status.HTTP_404_NOT_FOUND
-                )
-                
-        except Exception as e:
-            logger.error(f"移除AI服务失败: {e}")
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+    def perform_create(self, serializer):
+        """创建API密钥时设置用户"""
+        serializer.save(user=self.request.user)
     
-    @extend_schema(
-        summary="启用/禁用AI服务",
-        description="启用或禁用指定的AI服务",
-        request={
-            "type": "object",
-            "properties": {
-                "enabled": {"type": "boolean", "description": "是否启用"}
-            },
-            "required": ["enabled"]
-        },
-        parameters=[
-            OpenApiParameter(
-                name="service_name",
-                type=OpenApiTypes.STR,
-                location=OpenApiParameter.PATH,
-                description="服务名称"
-            )
-        ],
-        responses={200: {"type": "object", "properties": {"message": {"type": "string"}}}},
-        tags=["AI服务管理"]
-    )
-    @action(detail=True, methods=['patch'])
-    def toggle_service(self, request, pk=None):
-        """启用/禁用AI服务"""
+    @action(detail=True, methods=['post'])
+    def test(self, request, pk=None):
+        """测试API密钥有效性"""
+        api_key = self.get_object()
+        
         try:
-            service_name = pk
-            enabled = request.data.get('enabled', True)
-            
-            if enabled:
-                success = ai_service_manager.enable_service(service_name)
-                action_text = "启用"
-            else:
-                success = ai_service_manager.disable_service(service_name)
-                action_text = "禁用"
-            
-            if success:
-                return Response({'message': f'服务 {service_name} {action_text}成功'})
-            else:
-                return Response(
-                    {'error': f'服务 {service_name} 不存在'},
-                    status=status.HTTP_404_NOT_FOUND
-                )
-                
-        except Exception as e:
-            logger.error(f"切换AI服务状态失败: {e}")
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            # 创建适配器并测试
+            adapter = AIAdapterFactory.create_adapter(
+                provider_type=api_key.provider.provider_type,
+                api_key=api_key.get_key(),
+                base_url=api_key.provider.base_url
             )
-    
-    @extend_schema(
-        summary="AI对话接口",
-        description="与AI助教进行对话，支持负载均衡和故障转移",
-        request={
-            "type": "object",
-            "properties": {
-                "messages": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "role": {"type": "string", "enum": ["user", "assistant", "system"]},
-                            "content": {"type": "string"}
-                        }
-                    },
-                    "description": "对话消息列表"
-                },
-                "service_name": {"type": "string", "description": "指定服务名称（可选）"},
-                "max_tokens": {"type": "integer", "description": "最大token数"},
-                "temperature": {"type": "number", "description": "温度参数"},
-                "stream": {"type": "boolean", "description": "是否使用流式响应"}
-            },
-            "required": ["messages"]
-        },
-        responses={200: {
-            "type": "object",
-            "properties": {
-                "response": {"type": "string"},
-                "service_used": {"type": "string"},
-                "tokens_used": {"type": "integer"},
-                "response_time": {"type": "number"}
-            }
-        }},
-        tags=["AI对话"]
-    )
-    @action(detail=False, methods=['post'])
-    def chat(self, request):
-        """AI对话接口"""
-        try:
-            data = request.data
-            messages_data = data.get('messages', [])
-            service_name = data.get('service_name')
             
-            # 转换消息格式
-            messages = []
-            for msg_data in messages_data:
-                role = MessageRole(msg_data.get('role', 'user'))
-                content = msg_data.get('content', '')
-                messages.append(AIMessage(role=role, content=content))
+            # 执行健康检查
+            health_result = adapter.health_check()
             
-            if not messages:
-                return Response(
-                    {'error': '消息列表不能为空'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            
-            # 准备参数
-            kwargs = {}
-            if 'max_tokens' in data:
-                kwargs['max_tokens'] = data['max_tokens']
-            if 'temperature' in data:
-                kwargs['temperature'] = data['temperature']
-            
-            # 生成响应
-            import asyncio
-            response = asyncio.run(ai_service_manager.generate_response(
-                messages=messages,
-                service_name=service_name,
-                **kwargs
-            ))
+            # 更新最后使用时间
+            if health_result.is_healthy:
+                api_key.last_used = timezone.now()
+                api_key.save()
             
             return Response({
-                'response': response.content,
-                'service_used': response.model,
-                'tokens_used': response.usage.get('total_tokens', 0) if response.usage else 0,
-                'response_time': getattr(response, 'response_time', 0)
+                'success': health_result.is_healthy,
+                'message': '密钥测试成功' if health_result.is_healthy else '密钥测试失败',
+                'key_id': api_key.key_id,
+                'key_name': api_key.name,
+                'response_time': health_result.response_time
             })
             
         except Exception as e:
-            logger.error(f"AI对话失败: {e}")
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-
-class LoadBalancerViewSet(viewsets.ViewSet):
-    """负载均衡管理API"""
-    
-    permission_classes = [IsAuthenticated]
-    
-    @extend_schema(
-        summary="获取负载均衡统计",
-        description="获取负载均衡器的详细统计信息",
-        responses={200: {
-            "type": "object",
-            "properties": {
-                "strategy": {"type": "string"},
-                "services": {"type": "object"},
-                "total_requests": {"type": "integer"}
-            }
-        }},
-        tags=["负载均衡"]
-    )
-    def list(self, request):
-        """获取负载均衡统计"""
-        try:
-            return Response(ai_service_manager.get_load_balancer_stats())
-        except Exception as e:
-            logger.error(f"获取负载均衡统计失败: {e}")
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-    
-    @extend_schema(
-        summary="设置负载均衡策略",
-        description="更新负载均衡策略",
-        request={
-            "type": "object",
-            "properties": {
-                "strategy": {
-                    "type": "string",
-                    "enum": [s.value for s in LoadBalancingStrategy],
-                    "description": "负载均衡策略"
-                }
-            },
-            "required": ["strategy"]
-        },
-        responses={200: {"type": "object", "properties": {"message": {"type": "string"}}}},
-        tags=["负载均衡"]
-    )
-    @action(detail=False, methods=['post'])
-    def set_strategy(self, request):
-        """设置负载均衡策略"""
-        try:
-            strategy_value = request.data.get('strategy')
-            strategy = LoadBalancingStrategy(strategy_value)
-            
-            ai_service_manager.set_load_balancing_strategy(strategy)
-            
-            return Response({'message': f'负载均衡策略已更新: {strategy.value}'})
-            
-        except ValueError:
-            return Response(
-                {'error': f'无效的负载均衡策略: {strategy_value}'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        except Exception as e:
-            logger.error(f"设置负载均衡策略失败: {e}")
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-
-class HealthMonitorViewSet(viewsets.ViewSet):
-    """健康监控API"""
-    
-    permission_classes = [IsAuthenticated]
-    
-    @extend_schema(
-        summary="获取健康状态",
-        description="获取所有AI服务的健康状态",
-        responses={200: {
-            "type": "object",
-            "properties": {
-                "summary": {"type": "object"},
-                "services": {"type": "object"}
-            }
-        }},
-        tags=["健康监控"]
-    )
-    def list(self, request):
-        """获取健康状态"""
-        try:
-            health_monitor = ai_service_manager._health_monitor
-            
+            logger.error(f'API密钥测试失败 {api_key.name}: {e}')
             return Response({
-                'summary': health_monitor.get_health_summary(),
-                'services': {
-                    name: {
-                        'status': health.status.value,
-                        'is_healthy': health.is_healthy,
-                        'response_time': health.response_time,
-                        'last_check': health.last_check.isoformat() if health.last_check else None,
-                        'consecutive_failures': health.consecutive_failures,
-                        'uptime_percentage': round(health.uptime_percentage, 2),
-                        'error': health.error
-                    }
-                    for name, health in health_monitor.get_all_health().items()
-                }
-            })
-            
-        except Exception as e:
-            logger.error(f"获取健康状态失败: {e}")
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-
-class DegradationViewSet(viewsets.ViewSet):
-    """服务降级管理API"""
+                'success': False,
+                'message': f'密钥测试失败: {str(e)}',
+                'key_id': api_key.key_id,
+                'key_name': api_key.name
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+    @action(detail=True, methods=['post'])
+    def set_default(self, request, pk=None):
+        """设置为默认密钥"""
+        api_key = self.get_object()
+        
+        with transaction.atomic():
+            # 取消同一提供商下的其他默认密钥
+            APIKey.objects.filter(
+                provider=api_key.provider,
+                user=self.request.user,
+                is_default=True
+            ).update(is_default=False)
+            
+            # 设置当前密钥为默认
+            api_key.is_default = True
+            api_key.save()
+        
+        return Response({
+            'success': True,
+            'message': f'{api_key.name} 已设置为默认密钥',
+            'key_id': api_key.key_id
+        })
+    
+    @action(detail=False, methods=['get'])
+    def expiring_soon(self, request):
+        """获取即将过期的密钥"""
+        days_ahead = int(request.query_params.get('days', 7))
+        warning_date = timezone.now() + timedelta(days=days_ahead)
+        
+        expiring_keys = self.get_queryset().filter(
+            expires_at__lte=warning_date,
+            expires_at__gt=timezone.now(),
+            is_active=True
+        )
+        
+        serializer = self.get_serializer(expiring_keys, many=True)
+        return Response({
+            'count': expiring_keys.count(),
+            'days_ahead': days_ahead,
+            'keys': serializer.data
+        })
+
+
+class AIModelViewSet(viewsets.ModelViewSet):
+    """AI模型管理ViewSet"""
+    
+    queryset = AIModel.objects.all()
+    serializer_class = AIModelSerializer
     permission_classes = [IsAuthenticated]
     
-    @extend_schema(
-        summary="获取降级状态",
-        description="获取当前服务降级状态和指标",
-        responses={200: {
-            "type": "object",
-            "properties": {
-                "current_level": {"type": "string"},
-                "metrics": {"type": "object"},
-                "thresholds": {"type": "object"},
-                "recommendations": {"type": "array"}
-            }
-        }},
-        tags=["服务降级"]
-    )
-    def list(self, request):
-        """获取降级状态"""
-        try:
-            degradation_manager = ai_service_manager._degradation_manager
-            
-            return Response({
-                **degradation_manager.get_status_summary(),
-                'thresholds': degradation_manager.get_thresholds()
-            })
-            
-        except Exception as e:
-            logger.error(f"获取降级状态失败: {e}")
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+    def get_queryset(self):
+        """获取查询集"""
+        queryset = super().get_queryset()
+        
+        # 按提供商过滤
+        provider_id = self.request.query_params.get('provider')
+        if provider_id:
+            queryset = queryset.filter(provider_id=provider_id)
+        
+        # 按推荐状态过滤
+        is_recommended = self.request.query_params.get('is_recommended')
+        if is_recommended is not None:
+            queryset = queryset.filter(is_recommended=is_recommended.lower() == 'true')
+        
+        return queryset.select_related('provider').order_by('-is_recommended', 'provider__name', 'display_name')
     
-    @extend_schema(
-        summary="强制服务降级",
-        description="手动设置服务降级级别",
-        request={
-            "type": "object",
-            "properties": {
-                "level": {
-                    "type": "string",
-                    "enum": [l.value for l in ServiceLevel],
-                    "description": "服务级别"
-                }
+    @action(detail=False, methods=['get'])
+    def recommended(self, request):
+        """获取推荐模型"""
+        recommended_models = self.get_queryset().filter(
+            is_recommended=True,
+            is_active=True
+        )
+        
+        serializer = self.get_serializer(recommended_models, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'])
+    def pricing(self, request, pk=None):
+        """获取模型定价信息"""
+        model = self.get_object()
+        
+        return Response({
+            'model_id': model.id,
+            'model_name': model.display_name,
+            'input_cost': model.cost_per_1k_input_tokens,
+            'output_cost': model.cost_per_1k_output_tokens,
+            'currency': 'USD',
+            'unit': 'per 1K tokens',
+            'max_tokens': model.max_tokens
+        })
+
+
+class TokenUsageViewSet(viewsets.ReadOnlyModelViewSet):
+    """Token使用统计ViewSet（只读）"""
+    
+    queryset = TokenUsage.objects.all()
+    serializer_class = TokenUsageSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """获取当前用户的使用记录"""
+        queryset = TokenUsage.objects.filter(user=self.request.user)
+        
+        # 时间范围过滤
+        time_range = self.request.query_params.get('time_range', 'week')
+        now = timezone.now()
+        
+        if time_range == 'today':
+            start_date = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        elif time_range == 'week':
+            start_date = now - timedelta(days=7)
+        elif time_range == 'month':
+            start_date = now - timedelta(days=30)
+        elif time_range == 'quarter':
+            start_date = now - timedelta(days=90)
+        else:
+            start_date = now - timedelta(days=7)  # 默认一周
+        
+        queryset = queryset.filter(created_at__gte=start_date)
+        
+        # 按模型过滤
+        model_id = self.request.query_params.get('model')
+        if model_id:
+            queryset = queryset.filter(model_id=model_id)
+        
+        return queryset.select_related('model').order_by('-created_at')
+    
+    @action(detail=False, methods=['get'])
+    def summary(self, request):
+        """获取使用统计摘要"""
+        queryset = self.get_queryset()
+        
+        # 聚合统计
+        stats = queryset.aggregate(
+            total_tokens=Sum('total_tokens'),
+            total_cost=Sum('cost'),
+            total_requests=Count('id'),
+            avg_tokens_per_request=Avg('total_tokens')
+        )
+        
+        # 按模型分组统计
+        model_stats = queryset.values(
+            'model__display_name',
+            'model__provider__display_name'
+        ).annotate(
+            tokens=Sum('total_tokens'),
+            cost=Sum('cost'),
+            requests=Count('id')
+        ).order_by('-cost')
+        
+        return Response({
+            'summary': {
+                'total_tokens': stats['total_tokens'] or 0,
+                'total_cost': float(stats['total_cost'] or 0),
+                'total_requests': stats['total_requests'] or 0,
+                'avg_tokens_per_request': float(stats['avg_tokens_per_request'] or 0)
             },
-            "required": ["level"]
-        },
-        responses={200: {"type": "object", "properties": {"message": {"type": "string"}}}},
-        tags=["服务降级"]
-    )
-    @action(detail=False, methods=['post'])
-    def force_degradation(self, request):
-        """强制服务降级"""
-        try:
-            level_value = request.data.get('level')
-            level = ServiceLevel(level_value)
-            
-            ai_service_manager.force_degradation(level)
-            
-            return Response({'message': f'服务级别已强制设置为: {level.value}'})
-            
-        except ValueError:
-            return Response(
-                {'error': f'无效的服务级别: {level_value}'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        except Exception as e:
-            logger.error(f"强制服务降级失败: {e}")
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            'by_model': list(model_stats)
+        })
     
-    @extend_schema(
-        summary="清除服务降级",
-        description="清除强制设置的服务降级",
-        responses={200: {"type": "object", "properties": {"message": {"type": "string"}}}},
-        tags=["服务降级"]
-    )
-    @action(detail=False, methods=['post'])
-    def clear_degradation(self, request):
-        """清除服务降级"""
-        try:
-            ai_service_manager.clear_degradation()
-            return Response({'message': '服务降级已清除'})
+    @action(detail=False, methods=['get'])
+    def trends(self, request):
+        """获取使用趋势数据"""
+        queryset = self.get_queryset()
+        
+        # 按日期分组统计
+        daily_stats = queryset.extra(
+            select={'date': 'DATE(created_at)'}
+        ).values('date').annotate(
+            tokens=Sum('total_tokens'),
+            cost=Sum('cost'),
+            requests=Count('id')
+        ).order_by('date')
+        
+        return Response({
+            'daily_trends': list(daily_stats)
+        })
+
+
+class UsageQuotaViewSet(viewsets.ModelViewSet):
+    """使用配额管理ViewSet"""
+    
+    queryset = UsageQuota.objects.all()
+    serializer_class = UsageQuotaSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """获取当前用户的配额"""
+        return UsageQuota.objects.filter(user=self.request.user).order_by('-created_at')
+    
+    def perform_create(self, serializer):
+        """创建配额时设置用户"""
+        serializer.save(user=self.request.user)
+    
+    @action(detail=True, methods=['post'])
+    def reset(self, request, pk=None):
+        """重置配额使用量"""
+        quota = self.get_object()
+        
+        quota.used_amount = 0
+        quota.last_reset = timezone.now()
+        quota.save()
+        
+        return Response({
+            'success': True,
+            'message': f'配额 {quota.quota_name} 已重置',
+            'quota_id': quota.id,
+            'reset_time': quota.last_reset
+        })
+    
+    @action(detail=False, methods=['get'])
+    def status(self, request):
+        """获取所有配额状态"""
+        quotas = self.get_queryset().filter(is_active=True)
+        
+        status_data = []
+        for quota in quotas:
+            usage_percentage = (quota.used_amount / quota.limit_amount * 100) if quota.limit_amount > 0 else 0
             
-        except Exception as e:
-            logger.error(f"清除服务降级失败: {e}")
-            return Response(
-                {'error': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-
+            status_data.append({
+                'quota_id': quota.id,
+                'quota_name': quota.quota_name,
+                'quota_type': quota.quota_type,
+                'used_amount': quota.used_amount,
+                'limit_amount': quota.limit_amount,
+                'usage_percentage': usage_percentage,
+                'is_exceeded': quota.used_amount >= quota.limit_amount,
+                'last_reset': quota.last_reset
+            })
+        
+        return Response({
+            'quotas': status_data,
+            'total_quotas': len(status_data),
+            'exceeded_quotas': sum(1 for q in status_data if q['is_exceeded'])
+        })
