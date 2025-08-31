@@ -135,20 +135,20 @@ if 'test' in sys.argv:
         'django.contrib.auth.hashers.MD5PasswordHasher',
     ]
     
-    # 禁用迁移
-    MIGRATION_MODULES = {
-        'users': None,
-        'articles': None,
-        'categories': None,
-        'links': None,
-        'api': None,
-        'english': None,
-        'jobs': None,
-        'todos': None,
-        'ai': None,
-        'search': None,
-        'feature_flags': None,
-    }
+    # 注释掉禁用迁移的设置，避免表重复创建冲突
+    # MIGRATION_MODULES = {
+    #     'users': None,
+    #     'articles': None,
+    #     'categories': None,
+    #     'links': None,
+    #     'api': None,
+    #     'english': None,
+    #     'jobs': None,
+    #     'todos': None,
+    #     'ai': None,
+    #     'search': None,
+    #     'feature_flags': None,
+    # }
 
 # 测试覆盖率配置
 COVERAGE_MODULE_EXCLUDES = [

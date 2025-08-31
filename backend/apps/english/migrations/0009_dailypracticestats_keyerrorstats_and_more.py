@@ -8,7 +8,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("english", "0008_auto_20250817_1016"),
+        ("english", "0006_usertypingstats_typingword_typingsession"),
     ]
 
     operations = [
