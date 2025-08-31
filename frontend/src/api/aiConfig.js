@@ -27,43 +27,55 @@ export const aiConfigAPI = {
   },
 
   // 测试提供商连接
-  testProvider(id) {
-    return request.post(`/ai/providers/${id}/test/`)
+  testProviderConnection(id) {
+    return request.post(`/ai/providers/${id}/test_connection/`)
+  },
+
+  // 测试提供商配置（不保存）
+  testProviderConfig(config) {
+    return request.post('/ai/providers/test_config/', config)
+  },
+
+  // 批量测试提供商
+  batchTestProviders(providerIds) {
+    return request.post('/ai/providers/bulk_test/', { provider_ids: providerIds })
+  },
+
+  // 获取提供商状态
+  getProviderStatus() {
+    return request.get('/ai/providers/system_health/')
   },
 
   // API密钥管理
-  getApiKeys() {
-    return request.get('/ai/keys/')
+  getAPIKeys(providerId = null) {
+    const params = providerId ? { provider: providerId } : {}
+    return request.get('/ai/keys/', { params })
   },
 
   // 创建API密钥
-  createApiKey(data) {
+  createAPIKey(data) {
     return request.post('/ai/keys/', data)
   },
 
   // 更新API密钥
-  updateApiKey(id, data) {
+  updateAPIKey(id, data) {
     return request.put(`/ai/keys/${id}/`, data)
   },
 
   // 删除API密钥
-  deleteApiKey(id) {
+  deleteAPIKey(id) {
     return request.delete(`/ai/keys/${id}/`)
   },
 
-  // 测试API密钥
-  testApiKey(id) {
-    return request.post(`/ai/keys/${id}/test/`)
-  },
-
   // AI模型管理
-  getModels() {
-    return request.get('/ai/models/')
+  getModels(providerId = null) {
+    const params = providerId ? { provider: providerId } : {}
+    return request.get('/ai/models/', { params })
   },
 
   // 获取可用模型（从提供商API动态加载）
-  loadAvailableModels(providerId) {
-    return request.post(`/ai/providers/${providerId}/load-models/`)
+  getAvailableModels(providerId) {
+    return request.get(`/ai/providers/${providerId}/available_models/`)
   },
 
   // 创建模型配置
@@ -102,21 +114,19 @@ export const aiConfigAPI = {
   },
 
   // Token使用统计
-  getTokenUsage(timeRange = 'week') {
-    return request.get(`/ai/token-usage/`, {
-      params: { time_range: timeRange }
-    })
+  getTokenUsage(filters = {}) {
+    return request.get('/ai/token-usage/', { params: filters })
   },
 
   // 获取使用统计摘要
-  getUsageStats(timeRange = 'week') {
-    return request.get(`/ai/usage-stats/`, {
+  getUsageStatistics(timeRange = '7d') {
+    return request.get('/ai/usage-statistics/', {
       params: { time_range: timeRange }
     })
   },
 
   // 使用配额管理
-  getUsageQuotas() {
+  getQuotas() {
     return request.get('/ai/quotas/')
   },
 
@@ -126,7 +136,7 @@ export const aiConfigAPI = {
   },
 
   // 更新使用配额
-  updateUsageQuota(id, data) {
+  updateQuota(id, data) {
     return request.put(`/ai/quotas/${id}/`, data)
   },
 
@@ -177,7 +187,7 @@ export const aiConfigAPI = {
 
   // 获取系统健康状态
   getSystemHealth() {
-    return request.get('/ai/system-health/')
+    return request.get('/ai/providers/system_health/')
   }
 }
 
