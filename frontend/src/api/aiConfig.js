@@ -93,6 +93,11 @@ export const aiConfigAPI = {
     return request.delete(`/ai/models/${id}/`)
   },
 
+  // 测试模型
+  testModel(id, config) {
+    return request.post(`/ai/models/${id}/test/`, config)
+  },
+
   // 模型配置管理
   getModelConfigs() {
     return request.get('/ai/model-configs/')
