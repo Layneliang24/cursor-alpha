@@ -1,0 +1,19 @@
+{
+  "page_test": {
+    "page_status": 200,
+    "page_title": "用户登录",
+    "vue_app_mounted": true,
+    "console_errors": 0,
+    "js_errors": 0,
+    "robot_error_fixed": true,
+    "vue_indicators": {
+      "Vue挂载点": true,
+      "Vite客户端": true,
+      "Vue模块": true
+    }
+  },
+  "navigation_test": {
+    "navigation_success": true,
+    "final_url": "http://localhost:3000/english/idiomatic-learning"
+  }
+}

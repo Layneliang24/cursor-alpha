@@ -5,7 +5,7 @@ from .views import (
     LearningPlanViewSet, PracticeRecordViewSet, PronunciationRecordViewSet,
     LearningStatsViewSet, 
     TypingPracticeViewSet, DictionaryViewSet, TypingWordViewSet,
-    DataAnalysisViewSet
+    DataAnalysisViewSet, ai_chat
 )
 from .analytics_views import (
     progress_trend, mastery_distribution, time_analysis,
@@ -38,4 +38,9 @@ analytics_patterns = [
     path('analytics/learning-insights/', learning_insights, name='analytics-learning-insights'),
 ]
 
-urlpatterns = router.urls + analytics_patterns
+# AI聊天路由
+ai_patterns = [
+    path('english/ai/chat/', ai_chat, name='ai-chat'),
+]
+
+urlpatterns = router.urls + analytics_patterns + ai_patterns

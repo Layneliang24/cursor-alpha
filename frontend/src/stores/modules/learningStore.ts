@@ -174,6 +174,17 @@ export const useLearningStore = defineStore('learning', () => {
       loading.statistics = false
     }
   }
+
+  const fetchUserProgress = async () => {
+    try {
+      const response = await englishAPI.getUserExpressionProgress()
+      // 这里可以处理用户进度数据
+      console.log('用户进度数据:', response)
+    } catch (error) {
+      console.error('获取用户进度失败:', error)
+      // 静默失败，不阻止初始化
+    }
+  }
   
   const startStudySession = (type: StudySession['session_type'] = 'flashcard') => {
     const session: StudySession = {

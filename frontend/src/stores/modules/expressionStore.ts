@@ -149,15 +149,18 @@ export const useExpressionStore = defineStore('expression', () => {
   
   const needReviewExpressions = computed(() => {
     const now = new Date()
-    return expressions.value.filter(expr => {
-      const progress = userProgress.value.find(p => p.expression_id === expr.id)
+    const expressionList = expressions.value || []
+    const progressList = userProgress.value || []
+    return expressionList.filter(expr => {
+      const progress = progressList.find(p => p.expression_id === expr.id)
       return progress && new Date(progress.next_review) <= now
     })
   })
   
   const masteryStats = computed(() => {
     const stats = { beginner: 0, intermediate: 0, advanced: 0, mastered: 0 }
-    userProgress.value.forEach(progress => {
+    const progressList = userProgress.value || []
+    progressList.forEach(progress => {
       if (progress.mastery_level >= 80) stats.mastered++
       else if (progress.mastery_level >= 60) stats.advanced++
       else if (progress.mastery_level >= 40) stats.intermediate++

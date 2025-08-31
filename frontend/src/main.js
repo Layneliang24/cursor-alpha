@@ -8,8 +8,24 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import App from './App.vue'
 import router from './router'
 import { useAuthStore } from '@/stores/auth'
+import { 
+  vueErrorHandler, 
+  globalUnhandledErrorHandler, 
+  globalUnhandledRejectionHandler, 
+} from '@/utils/errorHandler'
+import { setupApiErrorInterceptor } from '@/utils/apiErrorInterceptor'
 
 const app = createApp(App)
+
+// 设置全局错误处理器
+app.config.errorHandler = vueErrorHandler
+
+// 设置全局未捕获错误处理器
+window.addEventListener('error', globalUnhandledErrorHandler)
+window.addEventListener('unhandledrejection', globalUnhandledRejectionHandler)
+
+// 设置API错误拦截器
+setupApiErrorInterceptor()
 
 // 注册Element Plus图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

@@ -1,0 +1,27 @@
+# Task ID: 6
+# Title: 添加防御性编程和错误监控
+# Status: pending
+# Dependencies: 3, 4, 5
+# Priority: medium
+# Description: 在关键位置添加防御性编程措施，并建立错误监控机制。
+# Details:
+1. 在全局添加错误监听器（Vue应用和window），捕获未处理的Promise拒绝和Vue错误：
+```javascript
+// main.ts
+app.config.errorHandler = (err, instance, info) => {
+  console.error('Vue error:', err, info);
+  // 可上报到错误监控系统
+};
+window.addEventListener('unhandledrejection', event => {
+  console.error('Unhandled promise rejection:', event.reason);
+});
+```
+2. 在store的actions中添加try-catch，处理API错误并返回安全数据。
+3. 在组件中，对用户输入和事件处理函数添加边界检查（如事件对象可能为null）。
+4. 使用TypeScript严格模式（`strict: true`）和类型检查，避免可能的空值访问。
+5. 使用Vue的响应性调试工具（如renderTracked, renderTriggered）跟踪响应式依赖问题。
+
+# Test Strategy:
+1. 模拟一个未处理的Vue错误（如模板中的属性访问错误），验证errorHandler是否捕获。
+2. 模拟API调用失败，验证store是否处理错误并返回安全数据（如空数组）。
+3. 运行所有测试，确保没有引入新错误。

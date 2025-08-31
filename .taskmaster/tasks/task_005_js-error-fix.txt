@@ -1,0 +1,40 @@
+# Task ID: 5
+# Title: 组件挂载时序问题修复
+# Status: pending
+# Dependencies: 1, 2
+# Priority: medium
+# Description: 解决组件挂载时store数据尚未初始化导致的空值访问问题。
+# Details:
+1. 在ExpressionLearning.vue组件中，确保在挂载前不渲染依赖store数据的部分。
+2. 使用v-if控制渲染，直到数据加载完成：
+```html
+<template>
+  <div v-if="isLoaded">
+    <!-- 依赖store数据的模板 -->
+  </div>
+  <div v-else>
+    加载中...
+  </div>
+</template>
+```
+3. 在setup中，使用异步加载数据并更新isLoaded状态：
+```javascript
+import { ref, onMounted } from 'vue';
+import { useExpressionStore } from '@/stores/expressionStore';
+
+const expressionStore = useExpressionStore();
+const isLoaded = ref(false);
+
+onMounted(async () => {
+  await expressionStore.fetchExpressions(); // 确保store的fetch方法返回Promise
+  await expressionStore.fetchUserProgress();
+  isLoaded.value = true;
+});
+```
+4. 如果数据加载失败，设置isLoaded为true但显示错误信息（避免无限加载）。
+
+# Test Strategy:
+1. 测试组件挂载时是否显示加载状态。
+2. 模拟数据加载延迟，验证组件是否等待数据加载完成后才渲染。
+3. 模拟数据加载失败，验证组件是否显示错误信息。
+4. 运行E2E测试，检查`Cannot read properties of null (reading 'value')`错误是否消除。

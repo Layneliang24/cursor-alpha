@@ -1,5 +1,14 @@
 <template>
   <div class="expression-learning">
+    <!-- 加载状态 -->
+    <div v-if="!isLoaded" v-loading="true" element-loading-text="正在加载学习内容..." class="loading-container">
+      <div style="height: 400px; display: flex; align-items: center; justify-content: center;">
+        <span>加载中...</span>
+      </div>
+    </div>
+    
+    <!-- 主要内容 -->
+    <div v-else>
     <!-- 页面头部 -->
     <div class="page-header">
       <div class="header-left">
@@ -85,10 +94,10 @@
           </el-button>
           
           <span class="card-counter">
-            {{ currentCardIndex + 1 }} / {{ currentExpressions.length }}
+            {{ currentCardIndex + 1 }} / {{ currentExpressions?.length || 0 }}
           </span>
           
-          <el-button @click="nextCard" :disabled="currentCardIndex >= currentExpressions.length - 1">
+          <el-button @click="nextCard" :disabled="currentCardIndex >= (currentExpressions?.length || 0) - 1">
             下一张
             <el-icon><ArrowRight /></el-icon>
           </el-button>
@@ -145,7 +154,7 @@
       <!-- 复习模式 -->
       <div v-if="currentMode === 'review'" class="review-mode">
         <div class="review-header">
-          <h3>今日复习 ({{ needReviewExpressions.length }}个)</h3>
+          <h3>今日复习 ({{ needReviewExpressions?.length || 0 }}个)</h3>
           <el-button type="primary" @click="startReview" v-if="!reviewSession.active">
             开始复习
           </el-button>
@@ -159,7 +168,7 @@
               :stroke-width="8"
             />
             <span class="progress-text">
-              {{ reviewSession.currentIndex + 1 }} / {{ reviewSession.expressions.length }}
+              {{ reviewSession.currentIndex + 1 }} / {{ reviewSession.expressions?.length || 0 }}
             </span>
           </div>
           
@@ -197,11 +206,13 @@
         @goal-created="handleGoalCreated"
       />
     </el-dialog>
+    </div> <!-- 主要内容结束 -->
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, reactive } from 'vue'
+import { storeToRefs } from 'pinia'
 import { ElMessage } from 'element-plus'
 import { 
   TrendCharts, ChatDotSquare, Postcard, VideoPlay, Refresh,
@@ -219,12 +230,21 @@ import type { IdiomaticExpression } from '@/stores/modules/expressionStore'
 const expressionStore = useExpressionStore()
 const learningStore = useLearningStore()
 
+// 使用 storeToRefs 获取响应式引用
+const { 
+  expressions, 
+  userProgress, 
+  needReviewExpressions, 
+  loading 
+} = storeToRefs(expressionStore)
+
 // 状态
 const currentMode = ref<'flashcard' | 'scenario' | 'ai_chat' | 'review'>('flashcard')
 const currentCardIndex = ref(0)
 const selectedScenarioId = ref<number | null>(null)
 const selectedExpression = ref<IdiomaticExpression | null>(null)
 const showDashboard = ref(false)
+const isLoaded = ref(false)
 
 // 学习会话状态
 const reviewSession = reactive({
@@ -235,34 +255,39 @@ const reviewSession = reactive({
   results: [] as Array<{ expressionId: number, difficulty: 'easy' | 'medium' | 'hard' }>
 })
 
-// 计算属性
-const { 
-  expressions, 
-  userProgress, 
-  needReviewExpressions,
-  loading 
-} = expressionStore
-
 const { settings } = learningStore
 
 const currentExpressions = computed(() => {
-  if (currentMode.value === 'review') {
-    return needReviewExpressions.value
+  try {
+    if (currentMode?.value === 'review') {
+      return needReviewExpressions?.value || []
+    }
+    return expressions?.value || []
+  } catch (error) {
+    console.warn('Error in currentExpressions computed:', error)
+    return []
   }
-  return expressions.value
 })
 
 const currentExpression = computed(() => {
-  if (reviewSession.active) {
-    return reviewSession.currentExpression
+  try {
+    if (reviewSession?.active) {
+      return reviewSession.currentExpression
+    }
+    const expressions = currentExpressions.value || []
+    const index = currentCardIndex.value || 0
+    return expressions[index] || null
+  } catch (error) {
+    console.warn('Error in currentExpression computed:', error)
+    return null
   }
-  return currentExpressions.value[currentCardIndex.value]
 })
 
 const availableScenarios = computed(() => {
   // 从表达式中提取场景
   const scenarios = new Map()
-  expressions.value.forEach(expr => {
+  const expressionList = expressions.value || []
+  expressionList.forEach(expr => {
     expr.scenarios?.forEach(scenario => {
       if (!scenarios.has(scenario.id)) {
         scenarios.set(scenario.id, scenario)
@@ -274,12 +299,13 @@ const availableScenarios = computed(() => {
 
 const currentScenario = computed(() => {
   if (!selectedScenarioId.value) return null
-  return availableScenarios.value.find(s => s.id === selectedScenarioId.value)
+  const scenarios = availableScenarios.value || []
+  return scenarios.find(s => s.id === selectedScenarioId.value)
 })
 
 const reviewProgress = computed(() => {
-  if (!reviewSession.active || reviewSession.expressions.length === 0) return 0
-  return ((reviewSession.currentIndex + 1) / reviewSession.expressions.length) * 100
+  if (!reviewSession.active || (reviewSession.expressions?.length || 0) === 0) return 0
+  return ((reviewSession.currentIndex + 1) / (reviewSession.expressions?.length || 1)) * 100
 })
 
 // 方法
@@ -288,7 +314,7 @@ const setMode = (mode: typeof currentMode.value) => {
   
   if (mode === 'review' && !reviewSession.active) {
     // 自动开始复习模式
-    if (needReviewExpressions.value.length > 0) {
+    if (needReviewExpressions?.value && needReviewExpressions.value.length > 0) {
       startReview()
     }
   }
@@ -301,14 +327,14 @@ const previousCard = () => {
 }
 
 const nextCard = () => {
-  if (currentCardIndex.value < currentExpressions.value.length - 1) {
+  if (currentCardIndex.value < (currentExpressions.value?.length || 0) - 1) {
     currentCardIndex.value++
   }
 }
 
 const getCurrentProgress = () => {
   if (!currentExpression.value) return undefined
-  return userProgress.value.find(p => p.expression_id === currentExpression.value!.id)
+  return userProgress.value?.find(p => p.expression_id === currentExpression.value?.id)
 }
 
 const handleCardFlip = (flipped: boolean) => {
@@ -351,7 +377,7 @@ const loadScenario = (scenarioId: number) => {
 
 const handleExpressionClick = (expression: any) => {
   // 点击场景中的表达式，切换到表达详情
-  const expr = expressions.value.find(e => e.id === expression.id)
+  const expr = expressions.value?.find(e => e.id === expression.id)
   if (expr) {
     selectedExpression.value = expr
     setMode('ai_chat')
@@ -379,7 +405,7 @@ const handleExpressionSelect = (expressionId: number) => {
   if (expressionId === 0) {
     selectedExpression.value = null
   } else {
-    const expr = expressions.value.find(e => e.id === expressionId)
+    const expr = expressions.value?.find(e => e.id === expressionId)
     selectedExpression.value = expr || null
   }
 }
@@ -399,7 +425,7 @@ const handleGoalCreated = (goal: any) => {
 
 // 复习模式方法
 const startReview = () => {
-  if (needReviewExpressions.value.length === 0) {
+  if (!needReviewExpressions?.value || needReviewExpressions.value.length === 0) {
     ElMessage.info('暂无需要复习的表达式')
     return
   }
@@ -413,7 +439,7 @@ const startReview = () => {
   // 开始学习会话
   learningStore.startStudySession('review')
   
-  ElMessage.success(`开始复习，共${reviewSession.expressions.length}个表达式`)
+  ElMessage.success(`开始复习，共${reviewSession.expressions?.length || 0}个表达式`)
 }
 
 const reviewEasy = () => {
@@ -445,7 +471,7 @@ const recordReviewResult = (difficulty: 'easy' | 'medium' | 'hard') => {
 }
 
 const nextReviewItem = () => {
-  if (reviewSession.currentIndex < reviewSession.expressions.length - 1) {
+  if (reviewSession.currentIndex < (reviewSession.expressions?.length || 0) - 1) {
     reviewSession.currentIndex++
     reviewSession.currentExpression = reviewSession.expressions[reviewSession.currentIndex]
   } else {
@@ -457,7 +483,7 @@ const nextReviewItem = () => {
 const finishReview = () => {
   const session = learningStore.endStudySession('复习完成')
   
-  ElMessage.success(`复习完成！复习了${reviewSession.results.length}个表达式`)
+  ElMessage.success(`复习完成！复习了${reviewSession.results?.length || 0}个表达式`)
   
   reviewSession.active = false
   reviewSession.expressions = []
@@ -468,9 +494,9 @@ const finishReview = () => {
 }
 
 const showReviewResults = () => {
-  const easy = reviewSession.results.filter(r => r.difficulty === 'easy').length
-  const medium = reviewSession.results.filter(r => r.difficulty === 'medium').length
-  const hard = reviewSession.results.filter(r => r.difficulty === 'hard').length
+  const easy = reviewSession.results?.filter(r => r.difficulty === 'easy').length || 0
+  const medium = reviewSession.results?.filter(r => r.difficulty === 'medium').length || 0
+  const hard = reviewSession.results?.filter(r => r.difficulty === 'hard').length || 0
   
   ElMessage({
     message: `复习结果：简单 ${easy}个，一般 ${medium}个，困难 ${hard}个`,
@@ -486,20 +512,29 @@ const handleReviewMastery = (expressionId: number, masteryLevel: number) => {
 
 // 生命周期
 onMounted(async () => {
-  // 初始化数据
-  await Promise.all([
-    expressionStore.fetchExpressions(),
-    expressionStore.fetchUserProgress(),
-    learningStore.initialize()
-  ])
-  
-  // 如果有需要复习的表达式，提示用户
-  if (needReviewExpressions.value.length > 0) {
-    ElMessage({
-      message: `你有${needReviewExpressions.value.length}个表达式需要复习`,
-      type: 'info',
-      duration: 3000
-    })
+  try {
+    // 初始化数据
+    await Promise.all([
+      expressionStore.fetchExpressions(),
+      expressionStore.fetchUserProgress(),
+      learningStore.initialize()
+    ])
+    
+    // 数据加载完成，允许渲染
+    isLoaded.value = true
+    
+    // 如果有需要复习的表达式，提示用户
+    if (needReviewExpressions?.value && needReviewExpressions.value.length > 0) {
+      ElMessage({
+        message: `你有${needReviewExpressions.value.length}个表达式需要复习`,
+        type: 'info',
+        duration: 3000
+      })
+    }
+  } catch (error) {
+    console.error('Error in onMounted:', error)
+    // 即使加载失败也要设置isLoaded，避免无限加载
+    isLoaded.value = true
   }
 })
 </script>
@@ -509,6 +544,11 @@ onMounted(async () => {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.loading-container {
+  min-height: 400px;
+  position: relative;
 }
 
 .page-header {

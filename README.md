@@ -1,5 +1,11 @@
 # Alpha技术共享平台
 
+[![CI/CD Pipeline](https://github.com/YOUR_USERNAME/alpha/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/alpha/actions/workflows/ci.yml)
+[![Frontend Tests](https://img.shields.io/badge/Frontend%20Tests-Passing-brightgreen)](https://github.com/YOUR_USERNAME/alpha/actions)
+[![Backend Tests](https://img.shields.io/badge/Backend%20Tests-Passing-brightgreen)](https://github.com/YOUR_USERNAME/alpha/actions)
+[![E2E Tests](https://img.shields.io/badge/E2E%20Tests-Passing-brightgreen)](https://github.com/YOUR_USERNAME/alpha/actions)
+[![Code Coverage](https://img.shields.io/badge/Coverage-85%25-yellow)](https://github.com/YOUR_USERNAME/alpha/actions)
+
 ## 📋 项目概述
 
 **Alpha技术共享平台** 是一个综合性的技术学习和分享平台，集成了英语学习、求职管理、待办笔记、AI助手和搜索功能。

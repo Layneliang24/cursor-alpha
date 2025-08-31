@@ -33,7 +33,7 @@
           <el-carousel-item v-for="news in featuredNews" :key="news.id">
             <div class="carousel-news" @click="viewNewsDetail(news)">
               <div class="carousel-image">
-                <img :src="news.image_url || '/default-news.jpg'" :alt="news.title">
+                <img :src="news.image_url || 'https://via.placeholder.com/300x200/f0f0f0/999?text=News'" :alt="news.title">
               </div>
               <div class="carousel-content">
                 <h3 class="carousel-title">{{ news.title }}</h3>
@@ -64,7 +64,7 @@
               @click="viewNewsDetail(news)"
             >
               <div class="news-image">
-                <img :src="news.image_url || '/default-news.jpg'" :alt="news.title">
+                <img :src="news.image_url || 'https://via.placeholder.com/300x200/f0f0f0/999?text=News'" :alt="news.title">
               </div>
                              <div class="news-info">
                  <h4 class="news-title">{{ news.title }}</h4>
@@ -89,7 +89,7 @@
               @click="viewNewsDetail(news)"
             >
               <div class="news-thumbnail">
-                <img :src="news.image_url || '/default-news.jpg'" :alt="news.title">
+                <img :src="news.image_url || 'https://via.placeholder.com/300x200/f0f0f0/999?text=News'" :alt="news.title">
               </div>
                              <div class="news-content">
                  <h4 class="news-title">{{ news.title }}</h4>

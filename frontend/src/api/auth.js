@@ -1,5 +1,4 @@
 import request from './request'
-import axios from 'axios'
 
 // 认证相关API
 export const authAPI = {
@@ -30,29 +29,17 @@ export const authAPI = {
 
   // 验证用户身份（用于登录页面显示头像）
   verifyUserIdentity (data) {
-    // 不需要认证的请求，直接使用axios
-    return axios.post('/api/v1/auth/verify-identity/', data, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(response => response.data)
+    // 使用配置好的request实例，不需要认证但需要正确的CORS配置
+    return request.post('/auth/verify-identity/', data)
   },
 
   // 请求密码重置
   requestPasswordReset (email) {
-    return axios.post('/api/v1/auth/password-reset/', { email }, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(response => response.data)
+    return request.post('/auth/password-reset/', { email })
   },
 
   // 确认密码重置
   confirmPasswordReset (data) {
-    return axios.post('/api/v1/auth/password-reset-confirm/', data, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(response => response.data)
+    return request.post('/auth/password-reset-confirm/', data)
   },
 }

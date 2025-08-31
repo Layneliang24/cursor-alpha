@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-08-31T00:46:45.891Z",
+  "summary": {
+    "total": 0,
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0,
+    "passRate": 0
+  },
+  "tests": {
+    "unit": {
+      "status": "skipped",
+      "results": null
+    },
+    "e2e": {
+      "status": "failed",
+      "results": null
+    },
+    "selenium": {
+      "status": "not_run",
+      "results": null
+    },
+    "lint": {
+      "status": "not_run",
+      "results": null
+    },
+    "build": {
+      "status": "failed",
+      "results": null
+    }
+  },
+  "artifacts": []
+}

@@ -349,7 +349,7 @@ export default {
       this.loading = true
       try {
         const response = await dataAnalysisAPI.getLearningGoals()
-        this.goals = response.data.results || []
+        this.goals = response.results || response.data?.results || []
         
         // 为每个目标加载进度追踪数据
         for (const goal of this.goals) {

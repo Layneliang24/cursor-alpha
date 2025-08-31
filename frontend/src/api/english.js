@@ -165,6 +165,31 @@ export const englishAPI = {
   getKeyErrorStats () {
     return request.get('/english/data-analysis/key_error_stats/')
   },
+
+  // 地道表达相关API
+  getIdiomaticExpressions (params = {}) {
+    return request.get('/expressions/', { params })
+  },
+  getIdiomaticExpression (id) {
+    return request.get(`/expressions/${id}/`)
+  },
+  getUserExpressionProgress (params = {}) {
+    return request.get('/expression-progress/', { params })
+  },
+  updateExpressionProgress (expressionId, data) {
+    return request.patch(`/expression-progress/${expressionId}/`, data)
+  },
+  createLearningSession (data) {
+    return request.post('/learning-sessions/', data)
+  },
+  getLearningStatistics () {
+    return request.get('/english/progress/learning_overview/')
+  },
+
+  // AI对话相关API
+  sendAIMessage (data) {
+    return request.post('/english/ai/chat/', data)
+  },
 }
 
 // 数据分析专用API对象
@@ -194,80 +219,80 @@ export const dataAnalysisAPI = {
 
   // Enhanced Idiomatic Expressions API
   getIdiomaticExpressions (params = {}) {
-    return request.get('/api/v1/expressions/', { params })
+    return request.get('/expressions/', { params })
   },
   getIdiomaticExpression (id) {
-    return request.get(`/api/v1/expressions/${id}/`)
+    return request.get(`/expressions/${id}/`)
   },
   getUserExpressionProgress (params = {}) {
-    return request.get('/api/v1/user-progress/', { params })
+    return request.get('/expression-progress/', { params })
   },
   updateExpressionProgress (expressionId, data) {
-    return request.patch(`/api/v1/user-progress/${expressionId}/`, data)
+    return request.patch(`/expression-progress/${expressionId}/`, data)
   },
   createLearningSession (data) {
-    return request.post('/api/v1/learning-sessions/', data)
+    return request.post('/learning-sessions/', data)
   },
   getLearningStatistics () {
-    return request.get('/api/v1/statistics/learning_overview/')
+    return request.get('/english/progress/learning_overview/')
   },
   createLearningGoal (data) {
-    return request.post('/api/v1/learning-goals/', data)
+    return request.post('/learning-goals/', data)
   },
   updateLearningGoal (goalId, data) {
-    return request.patch(`/api/v1/learning-goals/${goalId}/`, data)
+    return request.patch(`/learning-goals/${goalId}/`, data)
   },
   getLearningGoals (params = {}) {
-    return request.get('/api/v1/learning-goals/', { params })
+    return request.get('/learning-goals/', { params })
   },
 
   // Learning Analytics API
   getProgressTrend (params = {}) {
-    return request.get('/api/v1/analytics/progress-trend/', { params })
+    return request.get('/analytics/progress-trend/', { params })
   },
   getMasteryDistribution (params = {}) {
-    return request.get('/api/v1/analytics/mastery-distribution/', { params })
+    return request.get('/analytics/mastery-distribution/', { params })
   },
   getTimeAnalysis (params = {}) {
-    return request.get('/api/v1/analytics/time-analysis/', { params })
+    return request.get('/analytics/time-analysis/', { params })
   },
   getEfficiencyAnalysis (params = {}) {
-    return request.get('/api/v1/analytics/efficiency-analysis/', { params })
+    return request.get('/analytics/efficiency-analysis/', { params })
   },
   getLearningInsights (params = {}) {
-    return request.get('/api/v1/analytics/learning-insights/', { params })
+    return request.get('/analytics/learning-insights/', { params })
   },
 
   // Learning Reports API
-  generateReport(params = {}) {
+  generateReport (params = {}) {
     return request.get('/english/reports/generate/', { params })
   },
-  getReportTemplates() {
+  getReportTemplates () {
     return request.get('/english/reports/templates/')
   },
-  downloadReport(params = {}) {
+  downloadReport (params = {}) {
     return request.get('/english/reports/generate/', { 
       params,
-      responseType: 'blob'
+      responseType: 'blob',
     })
   },
 
   // Learning Goals API
-  getLearningGoals(params = {}) {
+  getLearningGoals (params = {}) {
     return request.get('/english/goals/', { params })
   },
-  createLearningGoal(data) {
+  createLearningGoal (data) {
     return request.post('/english/goals/', data)
   },
-  updateLearningGoal(goalId, data) {
+  updateLearningGoal (goalId, data) {
     return request.put(`/english/goals/${goalId}/`, data)
   },
-  deleteLearningGoal(goalId) {
+  deleteLearningGoal (goalId) {
     return request.delete(`/english/goals/${goalId}/`)
   },
-  getGoalProgressTracking(goalId, params = {}) {
+  getGoalProgressTracking (goalId, params = {}) {
     return request.get(`/english/goals/${goalId}/progress_tracking/`, { params })
-  }
+  },
 }
 
 

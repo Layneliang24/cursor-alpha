@@ -21,6 +21,7 @@ from .serializers import (
     PracticeRecordSerializer,
     PronunciationRecordSerializer,
     LearningStatsSerializer,
+    LearningOverviewSerializer,
     TypingWordSerializer,
     TypingSessionSerializer,
     UserTypingStatsSerializer,
@@ -34,6 +35,7 @@ from .serializers import (
 )
 from .services import (
     LearningAnalyticsService,
+    LearningStatsService,
 )
 from .pagination import StandardResultsSetPagination
 from .permissions import EnglishAccessPermission, EnglishWordManagePermission
@@ -2609,5 +2611,39 @@ class DataAnalysisViewSet(viewsets.ModelViewSet):
                 'success': False,
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# AI聊天相关视图
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def ai_chat(request):
+    """AI聊天接口"""
+    try:
+        data = request.data
+        message = data.get('message', '')
+        context = data.get('context', '')
+        expression_id = data.get('expression_id')
+        conversation_history = data.get('conversation_history', [])
+        
+        # 简单的模拟响应，实际应该调用AI服务
+        ai_response = {
+            'message': f'这是AI对"{message}"的回复。在实际应用中，这里会调用真正的AI服务来生成回复。',
+            'timestamp': timezone.now().isoformat(),
+            'context': context
+        }
+        
+        return Response({
+            'success': True,
+            'response': ai_response
+        })
+        
+    except Exception as e:
+        return Response({
+            'success': False,
+            'error': str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     

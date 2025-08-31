@@ -1,0 +1,76 @@
+{
+  "pages": {
+    "首页": {
+      "url": "http://localhost:3000/",
+      "status_code": 200,
+      "has_vue_app": true,
+      "has_vue_errors": false,
+      "console_errors": 0,
+      "js_errors": 0,
+      "network_failures": 0,
+      "import_errors": [],
+      "icon_errors": [],
+      "module_errors": [],
+      "component_checks": {},
+      "success": true
+    },
+    "地道表达列表": {
+      "url": "http://localhost:3000/english/expressions",
+      "status_code": 200,
+      "has_vue_app": true,
+      "has_vue_errors": false,
+      "console_errors": 0,
+      "js_errors": 0,
+      "network_failures": 0,
+      "import_errors": [],
+      "icon_errors": [],
+      "module_errors": [],
+      "component_checks": {},
+      "success": true
+    },
+    "地道表达学习": {
+      "url": "http://localhost:3000/english/idiomatic-learning",
+      "status_code": 200,
+      "has_vue_app": true,
+      "has_vue_errors": false,
+      "console_errors": 0,
+      "js_errors": 0,
+      "network_failures": 0,
+      "import_errors": [],
+      "icon_errors": [],
+      "module_errors": [],
+      "component_checks": {
+        "expression_card": false,
+        "learning_modes": false,
+        "ai_assistant": false,
+        "dashboard": false
+      },
+      "success": true
+    },
+    "学习分析": {
+      "url": "http://localhost:3000/english/learning-analytics",
+      "status_code": 200,
+      "has_vue_app": true,
+      "has_vue_errors": false,
+      "console_errors": 0,
+      "js_errors": 0,
+      "network_failures": 0,
+      "import_errors": [],
+      "icon_errors": [],
+      "module_errors": [],
+      "component_checks": {},
+      "success": true
+    }
+  },
+  "components": {},
+  "errors": [],
+  "summary": {
+    "total_pages": 4,
+    "successful_pages": 4,
+    "success_rate": 1.0,
+    "total_import_errors": 0,
+    "total_icon_errors": 0,
+    "total_module_errors": 0,
+    "overall_success": true
+  }
+}

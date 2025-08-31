@@ -22,6 +22,7 @@ export default defineConfig({
     // 仅扫描前端项目内的测试，避免跨根解析问题
     include: [
       'src/**/__tests__/**/*.{test,spec}.{js,ts,jsx,tsx}',
+      'tests/unit/**/*.{test,spec}.{js,ts,jsx,tsx}',
     ],
     setupFiles: ['./tests/setupTests.ts'],
     coverage: {

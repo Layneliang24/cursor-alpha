@@ -1,0 +1,133 @@
+{
+  "routes": {},
+  "navigation_tests": {
+    "Home": {
+      "path": "/",
+      "status_code": 200,
+      "current_url": "http://localhost:3000/",
+      "page_title": "Alpha 技术共享平台",
+      "has_vue_app": true,
+      "is_correct_route": true,
+      "is_auth_redirect": false,
+      "console_errors": 0,
+      "success": true
+    },
+    "EnglishExpressions": {
+      "path": "/english/expressions",
+      "status_code": 200,
+      "current_url": "http://localhost:3000/login?redirect=/english/expressions",
+      "page_title": "用户登录",
+      "has_vue_app": true,
+      "is_correct_route": true,
+      "is_auth_redirect": true,
+      "console_errors": 0,
+      "success": true
+    },
+    "IdiomaticLearning": {
+      "path": "/english/idiomatic-learning",
+      "status_code": 200,
+      "current_url": "http://localhost:3000/login?redirect=/english/idiomatic-learning",
+      "page_title": "用户登录",
+      "has_vue_app": true,
+      "is_correct_route": true,
+      "is_auth_redirect": true,
+      "console_errors": 0,
+      "success": true
+    },
+    "LearningAnalytics": {
+      "path": "/english/learning-analytics",
+      "status_code": 200,
+      "current_url": "http://localhost:3000/login?redirect=/english/learning-analytics",
+      "page_title": "用户登录",
+      "has_vue_app": true,
+      "is_correct_route": true,
+      "is_auth_redirect": true,
+      "console_errors": 0,
+      "success": true
+    },
+    "Login": {
+      "path": "/login",
+      "status_code": 200,
+      "current_url": "http://localhost:3000/login",
+      "page_title": "用户登录",
+      "has_vue_app": true,
+      "is_correct_route": true,
+      "is_auth_redirect": false,
+      "console_errors": 0,
+      "success": true
+    }
+  },
+  "summary": {
+    "component_files": {
+      "total": 5,
+      "existing": 5,
+      "missing": 0
+    },
+    "navigation": {
+      "total": 5,
+      "successful": 5,
+      "failed": 0
+    },
+    "router_guards": {
+      "total": 3,
+      "working": 3,
+      "not_working": 0
+    },
+    "overall_success": true
+  },
+  "component_files": {
+    "Home": {
+      "path": "/",
+      "component": "@/views/Home.vue",
+      "file_path": "frontend\\src\\views\\Home.vue",
+      "exists": true
+    },
+    "EnglishExpressions": {
+      "path": "/english/expressions",
+      "component": "@/views/english/Expressions.vue",
+      "file_path": "frontend\\src\\views\\english\\Expressions.vue",
+      "exists": true
+    },
+    "IdiomaticLearning": {
+      "path": "/english/idiomatic-learning",
+      "component": "@/views/idiomatic-expressions/ExpressionLearning.vue",
+      "file_path": "frontend\\src\\views\\idiomatic-expressions\\ExpressionLearning.vue",
+      "exists": true
+    },
+    "LearningAnalytics": {
+      "path": "/english/learning-analytics",
+      "component": "@/views/english/LearningAnalytics.vue",
+      "file_path": "frontend\\src\\views\\english\\LearningAnalytics.vue",
+      "exists": true
+    },
+    "Login": {
+      "path": "/login",
+      "component": "@/views/auth/Login.vue",
+      "file_path": "frontend\\src\\views\\auth\\Login.vue",
+      "exists": true
+    }
+  },
+  "router_guards": {
+    "/english/expressions": {
+      "original_path": "/english/expressions",
+      "current_url": "http://localhost:3000/login?redirect=/english/expressions",
+      "redirected_to_login": true,
+      "guard_working": true,
+      "success": true
+    },
+    "/english/idiomatic-learning": {
+      "original_path": "/english/idiomatic-learning",
+      "current_url": "http://localhost:3000/login?redirect=/english/idiomatic-learning",
+      "redirected_to_login": true,
+      "guard_working": true,
+      "success": true
+    },
+    "/english/learning-analytics": {
+      "original_path": "/english/learning-analytics",
+      "current_url": "http://localhost:3000/login?redirect=/english/learning-analytics",
+      "redirected_to_login": true,
+      "guard_working": true,
+      "success": true
+    }
+  }
+}

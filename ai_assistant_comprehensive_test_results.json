@@ -1,0 +1,26 @@
+{
+  "mode_switching": {},
+  "component_loading": {
+    "ai_component_found": true,
+    "ai_text_present": false,
+    "success": true
+  },
+  "ui_interaction": {},
+  "functionality": {
+    "input_available": true,
+    "input_successful": true,
+    "send_button_available": false,
+    "message_sent": true,
+    "success": true
+  },
+  "summary": {
+    "mode_switching": false,
+    "component_loading": true,
+    "functionality": true,
+    "success_rate": 0.6666666666666666,
+    "ai_assistant_functional": false,
+    "recommendations": [
+      "修复学习模式切换功能，确保用户可以切换到AI对话模式"
+    ]
+  }
+}

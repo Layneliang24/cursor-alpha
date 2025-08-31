@@ -4,7 +4,7 @@
     <div class="chat-header">
       <div class="assistant-info">
         <div class="avatar">
-          <el-icon size="24"><Robot /></el-icon>
+          <el-icon size="24"><ChatDotSquare /></el-icon>
         </div>
         <div class="info">
           <h3 class="assistant-name">AI英语助教</h3>
@@ -31,7 +31,7 @@
           </template>
         </el-dropdown>
         
-        <el-button type="text" @click="clearConversation" v-if="messages.length > 0">
+        <el-button type="text" @click="clearConversation" v-if="messages?.length > 0">
           <el-icon><Delete /></el-icon>
           清空对话
         </el-button>
@@ -42,9 +42,9 @@
     <div class="chat-content" ref="chatContainer">
       <div class="messages-container">
         <!-- 欢迎消息 -->
-        <div class="message assistant-message" v-if="messages.length === 0">
+        <div class="message assistant-message" v-if="(messages?.length || 0) === 0">
           <div class="message-avatar">
-            <el-icon><Robot /></el-icon>
+            <el-icon><ChatDotSquare /></el-icon>
           </div>
           <div class="message-content">
             <div class="message-bubble">
@@ -69,7 +69,7 @@
           :class="message.role + '-message'"
         >
           <div class="message-avatar" v-if="message.role === 'assistant'">
-            <el-icon><Robot /></el-icon>
+            <el-icon><ChatDotSquare /></el-icon>
           </div>
           
           <div class="message-content">
@@ -98,7 +98,7 @@
         <!-- AI正在输入指示器 -->
         <div class="message assistant-message" v-if="loading.ai_response">
           <div class="message-avatar">
-            <el-icon><Robot /></el-icon>
+            <el-icon><ChatDotSquare /></el-icon>
           </div>
           <div class="message-content">
             <div class="message-bubble typing-indicator">
@@ -116,7 +116,7 @@
     <!-- 输入区域 -->
     <div class="chat-input">
       <!-- 快捷问题 -->
-      <div class="quick-questions" v-if="showQuickQuestions && messages.length === 0">
+      <div class="quick-questions" v-if="showQuickQuestions && (messages?.length || 0) === 0">
         <div class="quick-question-label">快速开始：</div>
         <div class="quick-question-buttons">
           <el-button 
@@ -205,7 +205,7 @@
 import { ref, computed, nextTick, onMounted, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { 
-  Robot, User, Setting, ArrowDown, Delete, Link, InfoFilled, 
+  ChatDotSquare, User, Setting, ArrowDown, Delete, Link, InfoFilled, 
   Close, EditPen, Promotion 
 } from '@element-plus/icons-vue'
 import { useLearningStore } from '@/stores/modules/learningStore'
@@ -243,7 +243,12 @@ const chatContainer = ref<HTMLElement>()
 const { loading, currentConversation } = learningStore
 
 const messages = computed(() => {
-  return currentConversation.value?.messages || []
+  try {
+    return currentConversation.value?.messages || []
+  } catch (error) {
+    console.warn('Error accessing messages:', error)
+    return []
+  }
 })
 
 const contextExpression = computed(() => props.contextExpression)
@@ -368,7 +373,7 @@ const handleContextChange = (context: AIConversation['context']) => {
   emit('contextChange', context)
   
   // 如果已有对话，提示用户
-  if (messages.value.length > 0) {
+  if ((messages.value?.length || 0) > 0) {
     ElMessageBox.confirm(
       '切换对话模式将开始新的对话，当前对话将被保存。是否继续？',
       '确认切换',
@@ -454,7 +459,7 @@ onMounted(() => {
 
 // 监听消息变化，自动滚动
 watch(
-  () => messages.value.length,
+  () => messages.value?.length || 0,
   async () => {
     await nextTick()
     scrollToBottom()

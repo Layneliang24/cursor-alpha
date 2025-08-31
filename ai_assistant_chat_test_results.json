@@ -1,0 +1,83 @@
+{
+  "component_loading": {
+    "page_loaded": true,
+    "ai_button_found": false,
+    "chat_dialog_accessible": false,
+    "has_ai_text_content": false,
+    "ai_text_indicators": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "success": false
+  },
+  "ui_interaction": {
+    "ui_elements": {
+      "input_field": {
+        "selectors": [
+          "input[placeholder*='消息']",
+          "input[placeholder*='输入']",
+          "textarea[placeholder*='消息']",
+          ".chat-input input",
+          "[data-testid='chat-input']"
+        ],
+        "test_passed": true
+      },
+      "send_button": {
+        "selectors": [
+          "button:has-text('发送')",
+          "button[title='发送']",
+          ".send-button",
+          "[data-testid='send-button']"
+        ],
+        "test_passed": false
+      },
+      "message_area": {
+        "selectors": [
+          ".chat-messages",
+          ".message-list",
+          "[data-testid='messages']",
+          ".conversation"
+        ],
+        "test_passed": false
+      }
+    },
+    "has_basic_chat_structure": true,
+    "success": true
+  },
+  "api_communication": {
+    "total_api_requests": 0,
+    "ai_related_requests": 0,
+    "websocket_connections": 0,
+    "has_websocket": false,
+    "api_requests_sample": [],
+    "ai_api_calls": [],
+    "success": false
+  },
+  "error_handling": {
+    "console_errors": 0,
+    "js_errors": 0,
+    "ai_related_errors": 0,
+    "error_details": {
+      "console": [],
+      "js": [],
+      "ai_related": []
+    },
+    "success": true
+  },
+  "summary": {
+    "total_tests": 4,
+    "successful_tests": 2,
+    "success_rate": 0.5,
+    "component_ready": false,
+    "ui_functional": true,
+    "api_working": false,
+    "no_errors": true,
+    "overall_success": false,
+    "recommendations": [
+      "检查AI助教组件是否正确加载和渲染",
+      "确保AI助教的后端API通信正常"
+    ]
+  }
+}
