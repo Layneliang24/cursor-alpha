@@ -40,22 +40,31 @@
         </el-form-item>
 
         <el-form-item label="显示名称" prop="display_name" required>
-          <el-input
+          <SecureInput
             v-model="formData.display_name"
             placeholder="输入提供商显示名称"
-            maxlength="100"
+            :security-rule="{
+              maxLength: 100,
+              enableXSSDetection: true,
+              validator: validateDisplayName
+            }"
             show-word-limit
+            @xss-detected="handleXSSDetected"
           />
         </el-form-item>
 
         <el-form-item label="描述" prop="description">
-          <el-input
+          <SecureInput
             v-model="formData.description"
             type="textarea"
             :rows="3"
             placeholder="输入提供商描述信息（可选）"
-            maxlength="500"
+            :security-rule="{
+              maxLength: 500,
+              enableXSSDetection: true
+            }"
             show-word-limit
+            @xss-detected="handleXSSDetected"
           />
         </el-form-item>
       </div>
@@ -65,12 +74,17 @@
         <div class="section-title">API配置</div>
         
         <el-form-item label="API端点" prop="api_endpoint" required>
-          <el-input
+          <SecureInput
             v-model="formData.api_endpoint"
+            type="url"
             placeholder="输入API端点URL"
-          >
-            <template #prepend>https://</template>
-          </el-input>
+            :security-rule="{
+              maxLength: 2048,
+              enableXSSDetection: true,
+              validator: validateURL
+            }"
+            @xss-detected="handleXSSDetected"
+          />
         </el-form-item>
 
         <el-form-item label="API版本" prop="api_version">
@@ -214,6 +228,8 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useAIConfigStore } from '@/stores/modules/aiConfigStore'
+import SecureInput from '@/components/common/SecureInput.vue'
+import { sanitizeURL } from '@/utils/security'
 
 // Props & Emits
 const props = defineProps({
@@ -471,6 +487,47 @@ const handleSubmit = async () => {
 const handleClose = () => {
   visible.value = false
   resetForm()
+}
+
+// 安全验证函数
+const validateDisplayName = (value) => {
+  if (!value || value.trim().length === 0) {
+    return '显示名称不能为空'
+  }
+  if (value.length < 2) {
+    return '显示名称至少需要2个字符'
+  }
+  if (!/^[\w\s\u4e00-\u9fa5\-_.()]+$/.test(value)) {
+    return '显示名称包含不允许的字符'
+  }
+  return null
+}
+
+const validateURL = (value) => {
+  if (!value || value.trim().length === 0) {
+    return 'API端点不能为空'
+  }
+  
+  // 添加协议前缀进行验证
+  const urlToValidate = value.startsWith('http') ? value : `https://${value}`
+  
+  try {
+    const url = new URL(urlToValidate)
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      return '仅支持HTTP和HTTPS协议'
+    }
+    if (!url.hostname || url.hostname.length < 3) {
+      return 'URL格式不正确'
+    }
+    return null
+  } catch (error) {
+    return 'URL格式不正确'
+  }
+}
+
+const handleXSSDetected = (originalValue, cleanedValue) => {
+  ElMessage.warning('检测到潜在的安全风险内容，已自动清理')
+  console.warn('XSS防护:', { originalValue, cleanedValue })
 }
 </script>
 

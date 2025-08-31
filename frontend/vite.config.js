@@ -20,6 +20,15 @@ export default defineConfig({
       usePolling: true, // Windows 环境优化
       interval: 100,
     },
+    // 安全头配置 - XSS防护
+    headers: {
+      "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.siliconflow.cn https://openrouter.ai https://api.openai.com https://hk.chenmoai.cn https://api.chenmoai.cn ws://localhost:24678; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests",
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY",
+      "X-XSS-Protection": "1; mode=block",
+      "Referrer-Policy": "strict-origin-when-cross-origin",
+      "Permissions-Policy": "geolocation=(), microphone=(), camera=()"
+    },
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:8000',

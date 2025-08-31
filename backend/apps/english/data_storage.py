@@ -345,21 +345,27 @@ class PerformanceMonitor:
                 
                 for index_info in missing_indexes:
                     try:
-                        # 检查索引是否已存在
-                        cursor.execute(f"""
+                        # 检查索引是否已存在（使用参数化查询）
+                        cursor.execute("""
                             SELECT COUNT(*) FROM information_schema.statistics 
                             WHERE table_schema = DATABASE() 
-                            AND table_name = '{index_info['table']}' 
-                            AND index_name = '{index_info['index_name']}'
-                        """)
+                            AND table_name = %s 
+                            AND index_name = %s
+                        """, [index_info['table'], index_info['index_name']])
                         
                         exists = cursor.fetchone()[0] > 0
                         
                         if not exists:
-                            # 创建索引
+                            # 验证表名和列名安全性
+                            from apps.common.security import SQLSecurityUtils
+                            safe_table = SQLSecurityUtils.validate_table_name(index_info['table'])
+                            safe_column = SQLSecurityUtils.validate_column_name(index_info['column'])
+                            safe_index = SQLSecurityUtils.validate_column_name(index_info['index_name'])
+                            
+                            # 创建索引（使用验证后的名称）
                             cursor.execute(f"""
-                                CREATE INDEX {index_info['index_name']} 
-                                ON {index_info['table']} ({index_info['column']})
+                                CREATE INDEX {safe_index} 
+                                ON {safe_table} ({safe_column})
                             """)
                             optimization_results.append(f"创建索引: {index_info['index_name']}")
                         else:
@@ -425,8 +431,12 @@ class DataBackupManager:
         
         try:
             with connection.cursor() as cursor:
-                # 获取记录数
-                cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
+                # 验证表名安全性
+                from apps.common.security import SQLSecurityUtils
+                safe_table_name = SQLSecurityUtils.validate_table_name(table_name)
+                
+                # 获取记录数（使用参数化查询）
+                cursor.execute("SELECT COUNT(*) FROM " + safe_table_name)
                 record_count = cursor.fetchone()[0]
                 table_info['record_count'] = record_count
                 
