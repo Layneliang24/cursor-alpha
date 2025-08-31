@@ -14,6 +14,14 @@ from pathlib import Path
 import os
 from datetime import timedelta
 
+# 加载.env文件
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(Path(__file__).resolve().parent.parent, '.env'))
+except ImportError:
+    # 如果没有安装python-dotenv，忽略
+    pass
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

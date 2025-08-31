@@ -26,6 +26,7 @@ class AIProviderType(Enum):
     GOOGLE = "google"
     AZURE = "azure"
     LOCAL = "local"
+    CHENMOAI = "chenmoai"
     CUSTOM = "custom"
 
 

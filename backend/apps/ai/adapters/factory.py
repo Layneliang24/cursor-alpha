@@ -10,6 +10,7 @@ from .base import BaseAIAdapter, AIModelConfig, AIProviderType
 from .openai_adapter import OpenAIAdapter
 from .claude_adapter import ClaudeAdapter
 from .google_adapter import GoogleAdapter
+from .chenmoai_adapter import ChenmoAIAdapter
 from .exceptions import ModelNotFoundException, AIServiceException
 
 logger = logging.getLogger(__name__)
@@ -23,6 +24,7 @@ class AIAdapterFactory:
         AIProviderType.OPENAI: OpenAIAdapter,
         AIProviderType.ANTHROPIC: ClaudeAdapter,
         AIProviderType.GOOGLE: GoogleAdapter,
+        AIProviderType.CHENMOAI: ChenmoAIAdapter,
     }
     
     # 模型到提供商的映射
@@ -49,6 +51,13 @@ class AIAdapterFactory:
         'gemini-1.5-flash': AIProviderType.GOOGLE,
         'gemini-2.0-flash-exp': AIProviderType.GOOGLE,
         'gemini-2.5-pro-exp-03-25': AIProviderType.GOOGLE,
+        
+        # ChenmoAI模型（支持多种模型通过中转访问）
+        'chenmoai-gpt-4': AIProviderType.CHENMOAI,
+        'chenmoai-gpt-3.5-turbo': AIProviderType.CHENMOAI,
+        'chenmoai-claude-3-sonnet': AIProviderType.CHENMOAI,
+        'chenmoai-claude-3-haiku': AIProviderType.CHENMOAI,
+        'chenmoai-gemini-pro': AIProviderType.CHENMOAI,
     }
     
     @classmethod

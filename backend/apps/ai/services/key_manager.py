@@ -114,6 +114,7 @@ class APIKeyManager:
             AIProviderType.GOOGLE: ['GOOGLE_API_KEY', 'GEMINI_API_KEY'],
             AIProviderType.AZURE: ['AZURE_OPENAI_API_KEY'],
             AIProviderType.LOCAL: ['OLLAMA_API_KEY'],
+            AIProviderType.CHENMOAI: ['CHENMOAI_API_KEY'],
         }
         
         for provider, env_vars in env_mapping.items():
@@ -462,7 +463,8 @@ class APIKeyManager:
             AIProviderType.ANTHROPIC: 'claude-3-haiku-20240307',
             AIProviderType.GOOGLE: 'gemini-pro',
             AIProviderType.AZURE: 'gpt-35-turbo',
-            AIProviderType.LOCAL: 'llama2'
+            AIProviderType.LOCAL: 'llama2',
+            AIProviderType.CHENMOAI: 'gpt-3.5-turbo'
         }
         return default_models.get(provider, 'gpt-3.5-turbo')
     
