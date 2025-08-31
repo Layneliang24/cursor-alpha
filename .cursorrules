@@ -10,7 +10,7 @@
 - yinli: https://yinli.one/v1 | sk-301vql0iXmeIEoHx8RdlKoN1NAzpk5gFlzcPebDjj4GqYwD9 | 垃圾罢了
 - siliconflow: https://api.siliconflow.cn/v1 | sk-qcxlwgdycvwptcaipxbiomxxfdsalmtiwvktcravdcnfauit | 余额足够，国内模型多
 
-### 固定方法论
+### 如何固定开发流程方法论
 无论您换到任何新环境，只需要运行：
 - ./scripts/setup-dev-environment.sh - 一键配置完整开发环境
 - ./scripts/validate-methodology.sh - 全面验证环境配置
@@ -26,6 +26,17 @@
 - strands agent SDK
 - CI/CD自动流程跑通，云服务器优化
 - 需完善方法论固话机制，让AI严格遵循指定流程
+- 每次测试都有这个错误是怎么回事？ 不能解决根因先吗？为什么要提供这个解决方案：测试数据库有表冲突问题。
+让我先直接测试API端点是否可以访问，而不依赖单元测试
+File "S:\Python3.10\lib\site-packages\MySQLdb\connections.py", line 254, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1050, "Table 'english_typing_word' already exists")
+- 还有每次都让我选这个怎么回事？
+Found 1 test(s).
+Creating test database for alias 'default' ('test_alpha_db')...
+Got an error creating the test database: (1007, "Can't create database 'test_alpha_db'; database exists")
+Type 'yes' if you would like to try deleting the test database 'test_alpha_db', or 'no' to cancel: yes
+Destroying old test database for alias 'default' ('test_alpha_db')...
 
 ---
 
