@@ -7,6 +7,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     AIProviderViewSet, APIKeyViewSet, AIModelViewSet,
+    PromptTemplateViewSet, ModelConfigViewSet,
     TokenUsageViewSet, UsageQuotaViewSet, ModelDiscoveryViewSet,
     MonitoringViewSet, TokenStatisticsViewSet
 )
@@ -18,6 +19,8 @@ router = DefaultRouter()
 router.register(r'providers', AIProviderViewSet, basename='aiprovider')
 router.register(r'keys', APIKeyViewSet, basename='apikey')
 router.register(r'models', AIModelViewSet, basename='aimodel')
+router.register(r'prompt-templates', PromptTemplateViewSet, basename='prompttemplate')
+router.register(r'model-configs', ModelConfigViewSet, basename='modelconfig')
 router.register(r'model-discovery', ModelDiscoveryViewSet, basename='modeldiscovery')
 router.register(r'monitoring', MonitoringViewSet, basename='monitoring')
 router.register(r'token-usage', TokenUsageViewSet, basename='tokenusage')

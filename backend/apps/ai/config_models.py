@@ -253,12 +253,70 @@ class AIModel(models.Model):
         return f"{self.display_name} ({self.provider.display_name})"
 
 
+class PromptTemplate(models.Model):
+    """系统提示模板"""
+    
+    # 基础信息
+    name = models.CharField(max_length=100, help_text="模板名称")
+    description = models.TextField(blank=True, help_text="模板描述")
+    content = models.TextField(help_text="模板内容")
+    
+    # 分类信息
+    category = models.CharField(
+        max_length=50, 
+        choices=[
+            ('general', '通用'),
+            ('coding', '代码助手'),
+            ('writing', '写作助手'),
+            ('analysis', '分析助手'),
+            ('translation', '翻译助手'),
+            ('creative', '创意助手'),
+            ('custom', '自定义'),
+        ],
+        default='general',
+        help_text="模板分类"
+    )
+    
+    # 状态信息
+    is_public = models.BooleanField(default=False, help_text="是否为公共模板")
+    is_system = models.BooleanField(default=False, help_text="是否为系统内置模板")
+    is_active = models.BooleanField(default=True)
+    
+    # 使用统计
+    usage_count = models.IntegerField(default=0, help_text="使用次数")
+    
+    # 关联信息
+    created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='prompt_templates')
+    
+    # 时间戳
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'ai_prompt_templates'
+        ordering = ['-is_system', '-usage_count', 'name']
+        indexes = [
+            models.Index(fields=['category', 'is_active']),
+            models.Index(fields=['is_public', 'is_active']),
+            models.Index(fields=['created_by', 'is_active']),
+        ]
+    
+    def __str__(self):
+        return f"{self.name} ({self.category})"
+    
+    def increment_usage(self):
+        """增加使用次数"""
+        self.usage_count += 1
+        self.save(update_fields=['usage_count'])
+
+
 class ModelConfig(models.Model):
     """模型配置"""
     
     # 关联信息
     user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='model_configs')
-    model = models.ForeignKey(AIModel, on_delete=models.CASCADE, related_name='configs')
+    provider = models.ForeignKey(AIProvider, on_delete=models.CASCADE, related_name='model_configs')
+    model = models.CharField(max_length=100, help_text="模型ID")
     
     # 配置信息
     config_name = models.CharField(max_length=100, help_text="配置名称")
@@ -290,11 +348,22 @@ class ModelConfig(models.Model):
         help_text="存在惩罚(-2.0-2.0)"
     )
     
-    # 系统提示
-    system_prompt = models.TextField(blank=True, help_text="系统提示")
+    # 系统提示配置
+    prompt_template = models.ForeignKey(
+        PromptTemplate, 
+        on_delete=models.SET_NULL, 
+        null=True, blank=True,
+        related_name='model_configs',
+        help_text="系统提示模板"
+    )
+    system_prompt_template = models.TextField(blank=True, help_text="系统提示内容")
     
-    # 其他配置
-    custom_config = models.JSONField(default=dict, encoder=DjangoJSONEncoder, help_text="自定义配置")
+    # 高级参数
+    advanced_params = models.JSONField(
+        default=dict, 
+        encoder=DjangoJSONEncoder, 
+        help_text="高级参数 (seed, stop_words, logit_bias, reserved_tokens等)"
+    )
     
     # 状态信息
     is_default = models.BooleanField(default=False, help_text="是否为默认配置")

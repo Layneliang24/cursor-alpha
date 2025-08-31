@@ -20,12 +20,12 @@ from apps.common.security import DatabaseSecurityMixin
 from apps.common.ssl_config import APIKeySecurityManager
 
 from .config_models import (
-    AIProvider, APIKey, AIModel, ModelConfig, TokenUsage,
+    AIProvider, APIKey, AIModel, PromptTemplate, ModelConfig, TokenUsage,
     FailoverStrategy, FailoverRule, UsageQuota
 )
 from .serializers import (
     AIProviderSerializer, APIKeySerializer, APIKeyCreateSerializer,
-    AIModelSerializer, ModelConfigSerializer, TokenUsageSerializer,
+    AIModelSerializer, PromptTemplateSerializer, ModelConfigSerializer, TokenUsageSerializer,
     FailoverStrategySerializer, FailoverRuleSerializer, UsageQuotaSerializer
 )
 from .adapters.factory import AIAdapterFactory
@@ -1591,5 +1591,294 @@ class TokenStatisticsViewSet(viewsets.ViewSet):
             logger.error(f"导出Token使用数据失败: {e}")
             return Response(
                 {'error': f'导出数据失败: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+@method_decorator(ai_config_limit, name='dispatch')
+class PromptTemplateViewSet(DatabaseSecurityMixin, viewsets.ModelViewSet):
+    """系统提示模板管理ViewSet"""
+    
+    serializer_class = PromptTemplateSerializer
+    permission_classes = [RBACPermission]
+    
+    # RBAC权限配置
+    resource_type = 'ai_config'
+    
+    def get_permissions(self):
+        """根据操作类型返回不同权限"""
+        if self.action in ['list', 'retrieve']:
+            return [RBACPermission('ai_config.view')]
+        elif self.action in ['create']:
+            return [RBACPermission('ai_config.create')]
+        elif self.action in ['update', 'partial_update']:
+            return [RBACPermission('ai_config.edit')]
+        elif self.action in ['destroy']:
+            return [RBACPermission('ai_config.delete')]
+        else:
+            return [RBACPermission('ai_config.manage')]
+    
+    def get_queryset(self):
+        """获取用户可访问的模板"""
+        user = self.request.user
+        
+        # 用户可以看到：自己创建的模板、公共模板、系统模板
+        from django.db import models as django_models
+        return PromptTemplate.objects.filter(
+            django_models.Q(created_by=user) | 
+            django_models.Q(is_public=True) | 
+            django_models.Q(is_system=True)
+        ).filter(is_active=True).order_by('-is_system', '-usage_count', 'name')
+    
+    def perform_create(self, serializer):
+        """创建模板时记录审计日志"""
+        template = serializer.save(created_by=self.request.user)
+        
+        AuditService.log_user_action(
+            user=self.request.user,
+            action='create_prompt_template',
+            resource_type='prompt_template',
+            resource_id=str(template.id),
+            details=f"创建提示模板: {template.name}"
+        )
+    
+    def perform_update(self, serializer):
+        """更新模板时记录审计日志"""
+        template = serializer.save()
+        
+        AuditService.log_user_action(
+            user=self.request.user,
+            action='update_prompt_template',
+            resource_type='prompt_template',
+            resource_id=str(template.id),
+            details=f"更新提示模板: {template.name}"
+        )
+    
+    def perform_destroy(self, instance):
+        """删除模板时记录审计日志"""
+        AuditService.log_user_action(
+            user=self.request.user,
+            action='delete_prompt_template',
+            resource_type='prompt_template',
+            resource_id=str(instance.id),
+            details=f"删除提示模板: {instance.name}"
+        )
+        
+        # 软删除：设置为非活跃状态
+        instance.is_active = False
+        instance.save()
+    
+    @action(detail=False, methods=['get'])
+    def categories(self, request):
+        """获取模板分类列表"""
+        try:
+            categories = []
+            for choice in PromptTemplate._meta.get_field('category').choices:
+                categories.append({
+                    'value': choice[0],
+                    'label': choice[1]
+                })
+            
+            return Response({
+                'success': True,
+                'data': categories
+            })
+            
+        except Exception as e:
+            logger.error(f"获取模板分类失败: {e}")
+            return Response(
+                {'error': f'获取分类失败: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+@method_decorator(ai_config_limit, name='dispatch')
+class ModelConfigViewSet(DatabaseSecurityMixin, viewsets.ModelViewSet):
+    """模型配置管理ViewSet"""
+    
+    serializer_class = ModelConfigSerializer
+    permission_classes = [RBACPermission]
+    
+    # RBAC权限配置
+    resource_type = 'ai_config'
+    
+    def get_permissions(self):
+        """根据操作类型返回不同权限"""
+        if self.action in ['list', 'retrieve']:
+            return [RBACPermission('ai_config.view')]
+        elif self.action in ['create']:
+            return [RBACPermission('ai_config.create')]
+        elif self.action in ['update', 'partial_update']:
+            return [RBACPermission('ai_config.edit')]
+        elif self.action in ['destroy']:
+            return [RBACPermission('ai_config.delete')]
+        else:
+            return [RBACPermission('ai_config.manage')]
+    
+    def get_queryset(self):
+        """获取用户的模型配置"""
+        return ModelConfig.objects.filter(
+            user=self.request.user,
+            is_active=True
+        ).select_related(
+            'provider', 'prompt_template'
+        ).order_by('-is_default', '-last_used', '-created_at')
+    
+    def perform_create(self, serializer):
+        """创建配置时记录审计日志"""
+        config = serializer.save(user=self.request.user)
+        
+        AuditService.log_user_action(
+            user=self.request.user,
+            action='create_model_config',
+            resource_type='model_config',
+            resource_id=str(config.id),
+            details=f"创建模型配置: {config.config_name}"
+        )
+    
+    def perform_update(self, serializer):
+        """更新配置时记录审计日志和使用时间"""
+        config = serializer.save(last_used=timezone.now())
+        
+        AuditService.log_user_action(
+            user=self.request.user,
+            action='update_model_config',
+            resource_type='model_config',
+            resource_id=str(config.id),
+            details=f"更新模型配置: {config.config_name}"
+        )
+    
+    def perform_destroy(self, instance):
+        """删除配置时记录审计日志"""
+        AuditService.log_user_action(
+            user=self.request.user,
+            action='delete_model_config',
+            resource_type='model_config',
+            resource_id=str(instance.id),
+            details=f"删除模型配置: {instance.config_name}"
+        )
+        
+        # 软删除：设置为非活跃状态
+        instance.is_active = False
+        instance.save()
+    
+    @action(detail=False, methods=['get'])
+    def models_metadata(self, request):
+        """获取模型元数据（用于前端限制最大Token）"""
+        try:
+            provider_id = request.query_params.get('provider_id')
+            if not provider_id:
+                return Response(
+                    {'error': 'provider_id参数是必需的'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # 获取指定提供商的模型列表
+            models = AIModel.objects.filter(
+                provider_id=provider_id,
+                is_active=True
+            ).values('model_id', 'display_name', 'max_tokens')
+            
+            models_data = []
+            for model in models:
+                models_data.append({
+                    'name': model['model_id'],
+                    'display_name': model['display_name'],
+                    'context_window': model['max_tokens'] or 4096
+                })
+            
+            return Response({
+                'success': True,
+                'data': models_data
+            })
+            
+        except Exception as e:
+            logger.error(f"获取模型元数据失败: {e}")
+            return Response(
+                {'error': f'获取模型元数据失败: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=True, methods=['post'])
+    def set_default(self, request, pk=None):
+        """设置为默认配置"""
+        try:
+            config = self.get_object()
+            
+            # 取消用户的其他默认配置
+            ModelConfig.objects.filter(
+                user=request.user,
+                provider=config.provider,
+                model=config.model,
+                is_default=True
+            ).update(is_default=False)
+            
+            # 设置当前配置为默认
+            config.is_default = True
+            config.save()
+            
+            AuditService.log_user_action(
+                user=request.user,
+                action='set_default_model_config',
+                resource_type='model_config',
+                resource_id=str(config.id),
+                details=f"设置默认配置: {config.config_name}"
+            )
+            
+            return Response({
+                'success': True,
+                'message': '已设置为默认配置'
+            })
+            
+        except Exception as e:
+            logger.error(f"设置默认配置失败: {e}")
+            return Response(
+                {'error': f'设置默认配置失败: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=True, methods=['post'])
+    def duplicate(self, request, pk=None):
+        """复制配置"""
+        try:
+            original_config = self.get_object()
+            
+            # 创建副本
+            new_config = ModelConfig.objects.create(
+                user=request.user,
+                provider=original_config.provider,
+                model=original_config.model,
+                config_name=f"{original_config.config_name} (副本)",
+                temperature=original_config.temperature,
+                max_tokens=original_config.max_tokens,
+                top_p=original_config.top_p,
+                frequency_penalty=original_config.frequency_penalty,
+                presence_penalty=original_config.presence_penalty,
+                prompt_template=original_config.prompt_template,
+                system_prompt_template=original_config.system_prompt_template,
+                advanced_params=original_config.advanced_params,
+                is_default=False,
+                is_active=True
+            )
+            
+            AuditService.log_user_action(
+                user=request.user,
+                action='duplicate_model_config',
+                resource_type='model_config',
+                resource_id=str(new_config.id),
+                details=f"复制配置: {original_config.config_name} -> {new_config.config_name}"
+            )
+            
+            serializer = self.get_serializer(new_config)
+            return Response({
+                'success': True,
+                'data': serializer.data,
+                'message': '配置复制成功'
+            }, status=status.HTTP_201_CREATED)
+            
+        except Exception as e:
+            logger.error(f"复制配置失败: {e}")
+            return Response(
+                {'error': f'复制配置失败: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
