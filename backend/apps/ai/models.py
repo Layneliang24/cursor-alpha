@@ -6,7 +6,7 @@ from .conversation.storage import ConversationModel
 # Import config models
 from .config_models import (
     AIProvider, APIKey, AIModel, PromptTemplate, ModelConfig, TokenUsage,
-    FailoverStrategy, FailoverRule, FallbackAuditLog, UsageQuota
+    FailoverStrategy, FailoverRule, FallbackAuditLog, UsageQuota, ProviderHealthStatus
 )
 
 # Import monitoring models
@@ -18,7 +18,7 @@ from .monitoring_models import (
 __all__ = [
     'ConversationModel',
     'AIProvider', 'APIKey', 'AIModel', 'PromptTemplate', 'ModelConfig', 'TokenUsage',
-    'FailoverStrategy', 'FailoverRule', 'FallbackAuditLog', 'UsageQuota',
+    'FailoverStrategy', 'FailoverRule', 'FallbackAuditLog', 'UsageQuota', 'ProviderHealthStatus',
     'ServiceHealthRecord', 'PerformanceMetric', 'SystemAlert'
 ]
 

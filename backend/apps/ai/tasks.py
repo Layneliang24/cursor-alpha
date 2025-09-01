@@ -494,3 +494,162 @@ def update_token_statistics_cache(self):
             'error': str(e),
             'timestamp': timezone.now().isoformat()
         }
+
+
+@shared_task(bind=True)
+def periodic_health_check_and_auto_switch(self):
+    """周期性健康检查和自动切换任务"""
+    from .models import FailoverStrategy, ProviderHealthStatus
+    from .services.failover_service import FailoverService
+    from .services.health_check_service import HealthCheckService
+    
+    logger.info("开始执行周期性健康检查和自动切换任务")
+    
+    health_service = HealthCheckService()
+    strategies = FailoverStrategy.objects.filter(is_active=True)
+    
+    total_strategies = strategies.count()
+    processed_strategies = 0
+    auto_switches = 0
+    
+    for strategy in strategies:
+        try:
+            # 检查策略中的所有提供商
+            providers_to_check = [strategy.primary_provider]
+            providers_to_check.extend([
+                rule.fallback_provider 
+                for rule in strategy.rules.filter(is_active=True)
+            ])
+            
+            # 去重
+            providers_to_check = list(set(providers_to_check))
+            
+            # 检查每个提供商的健康状态
+            for provider in providers_to_check:
+                health_result = health_service.check_provider(provider)
+                
+                # 更新健康状态记录
+                health_status, created = ProviderHealthStatus.objects.get_or_create(
+                    strategy=strategy,
+                    provider=provider,
+                    defaults={
+                        'success_count': 0,
+                        'failure_count': 0,
+                        'consecutive_failures': 0,
+                        'consecutive_successes': 0,
+                        'is_healthy': True,
+                        'is_available': True
+                    }
+                )
+                
+                # 记录检查结果
+                if health_result['is_healthy']:
+                    health_status.record_success(health_result.get('response_time'))
+                else:
+                    health_status.record_failure(health_result.get('response_time'))
+            
+            # 创建故障转移服务实例
+            failover_service = FailoverService(strategy)
+            
+            # 检查是否需要自动切换
+            current_provider = strategy.active_provider
+            if current_provider:
+                current_health = ProviderHealthStatus.objects.filter(
+                    strategy=strategy,
+                    provider=current_provider
+                ).first()
+                
+                if current_health and current_health.should_failover():
+                    logger.info(
+                        f"策略 {strategy.name} 的当前提供商 {current_provider.display_name} "
+                        f"连续失败 {current_health.consecutive_failures} 次，触发自动切换"
+                    )
+                    
+                    result = failover_service.execute_failover(
+                        reason=f"周期性检查发现连续失败{current_health.consecutive_failures}次"
+                    )
+                    
+                    if result['success']:
+                        auto_switches += 1
+                        logger.info(f"自动切换成功: {result}")
+            
+            processed_strategies += 1
+            
+        except Exception as e:
+            logger.error(f"处理策略 {strategy.name} 时出错: {str(e)}")
+            continue
+    
+    logger.info(
+        f"周期性健康检查完成: 处理了 {processed_strategies}/{total_strategies} 个策略，"
+        f"执行了 {auto_switches} 次自动切换"
+    )
+    
+    return {
+        'total_strategies': total_strategies,
+        'processed_strategies': processed_strategies,
+        'auto_switches': auto_switches
+    }
+
+
+@shared_task(bind=True)
+def cleanup_old_health_records(self):
+    """清理旧的健康状态记录"""
+    from .models import ProviderHealthStatus
+    from django.utils import timezone
+    from datetime import timedelta
+    
+    # 删除30天前的健康状态记录
+    cutoff_date = timezone.now() - timedelta(days=30)
+    deleted_count, _ = ProviderHealthStatus.objects.filter(
+        updated_at__lt=cutoff_date
+    ).delete()
+    
+    logger.info(f"清理了 {deleted_count} 条旧的健康状态记录")
+    
+    return {'deleted_count': deleted_count}
+
+
+@shared_task(bind=True)
+def update_provider_health_metrics(self):
+    """更新提供商健康指标"""
+    from .models import AIProvider, ProviderHealthStatus
+    from django.db.models import Avg, Count
+    
+    logger.info("开始更新提供商健康指标")
+    
+    # 获取所有活跃的提供商
+    providers = AIProvider.objects.filter(is_active=True)
+    updated_count = 0
+    
+    for provider in providers:
+        try:
+            # 获取该提供商的所有健康状态记录
+            health_records = ProviderHealthStatus.objects.filter(provider=provider)
+            
+            if health_records.exists():
+                # 计算平均指标
+                avg_metrics = health_records.aggregate(
+                    avg_response_time=Avg('avg_response_time'),
+                    total_strategies=Count('id')
+                )
+                
+                # 计算整体健康状态
+                healthy_count = health_records.filter(is_healthy=True).count()
+                total_count = health_records.count()
+                overall_health_rate = healthy_count / total_count if total_count > 0 else 0
+                
+                # 更新提供商指标
+                provider.avg_response_time = avg_metrics['avg_response_time']
+                provider.success_rate = overall_health_rate * 100  # 转换为百分比
+                provider.is_healthy = overall_health_rate > 0.5  # 超过50%的策略认为健康
+                provider.save(update_fields=['avg_response_time', 'success_rate', 'is_healthy'])
+                
+                updated_count += 1
+                
+        except Exception as e:
+            logger.error(f"更新提供商 {provider.display_name} 指标时出错: {str(e)}")
+            continue
+    
+    logger.info(f"更新了 {updated_count} 个提供商的健康指标")
+    
+    return {'updated_count': updated_count}

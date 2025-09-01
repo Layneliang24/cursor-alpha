@@ -4,12 +4,13 @@
 """
 
 import logging
+import random
 from typing import Optional, Dict, Any, List
 from django.db import transaction
 from django.utils import timezone
 from django.core.cache import cache
 
-from ..models import FailoverStrategy, FailoverRule, AIProvider, AIModel
+from ..models import FailoverStrategy, FailoverRule, AIProvider, AIModel, ProviderHealthStatus
 
 logger = logging.getLogger(__name__)
 
@@ -99,318 +100,263 @@ class FailoverService:
         # 获取当前活跃提供商
         current_provider = self.get_active_provider()
         
-        # 查找下一个可用的提供商
-        next_provider = self._find_next_provider(current_provider, error_type)
-        
-        if not next_provider:
-            logger.error(f"没有找到可用的备用提供商")
+        # 检查是否在冷却期内
+        if self._is_in_cooldown():
+            logger.info(f"策略 {self.strategy.name} 在冷却期内，跳过故障转移")
             return {
                 'success': False,
-                'message': '没有可用的备用提供商',
-                'current_provider': current_provider.display_name if current_provider else None,
-                'next_provider': None
+                'reason': 'cooldown_period',
+                'current_provider': current_provider.display_name if current_provider else None
             }
         
-        if next_provider == current_provider:
-            logger.info(f"当前提供商已是最优选择，无需切换")
-            return {
-                'success': True,
-                'message': '当前提供商已是最优选择',
-                'current_provider': current_provider.display_name,
-                'next_provider': current_provider.display_name,
-                'switched': False
-            }
+        # 根据策略模式选择下一个提供商
+        next_provider = self._select_next_provider()
         
-        # 执行切换
-        result = self._switch_provider(current_provider, next_provider, reason, 'auto_switch')
-        
-        # 更新统计信息
-        self._update_statistics(switched=result['success'])
-        
-        return result
-    
-    def manual_switch(self, target_provider: AIProvider = None, reason: str = '',
-                     operator=None, dry_run: bool = False) -> Dict[str, Any]:
-        """手动切换提供商"""
-        logger.info(
-            f"开始手动切换提供商，策略: {self.strategy.name}，"
-            f"目标: {target_provider.display_name if target_provider else '自动选择'}，"
-            f"原因: {reason}，试运行: {dry_run}"
-        )
-        
-        current_provider = self.get_active_provider()
-        
-        if target_provider is None:
-            # 自动选择下一个可用提供商
-            target_provider = self._find_next_provider(current_provider)
-        
-        if not target_provider:
-            return {
-                'success': False,
-                'message': '没有找到可用的目标提供商',
-                'current_provider': current_provider.display_name if current_provider else None,
-                'target_provider': None
-            }
-        
-        if target_provider == current_provider:
-            return {
-                'success': True,
-                'message': '目标提供商与当前提供商相同，无需切换',
-                'current_provider': current_provider.display_name,
-                'target_provider': target_provider.display_name,
-                'switched': False
-            }
-        
-        if dry_run:
-            # 试运行，只返回切换计划
-            return {
-                'success': True,
-                'message': '试运行成功',
-                'current_provider': current_provider.display_name,
-                'target_provider': target_provider.display_name,
-                'dry_run': True,
-                'plan': {
-                    'from_model': self.get_active_model(current_provider).model_name,
-                    'to_model': self.get_active_model(target_provider).model_name,
+        if next_provider and next_provider != current_provider:
+            # 执行切换
+            with transaction.atomic():
+                self.strategy.active_provider = next_provider
+                self.strategy.last_switch_at = timezone.now()
+                self.strategy.save()
+                
+                # 记录审计日志
+                self._log_switch(current_provider, next_provider, reason, error_type)
+                
+                logger.info(
+                    f"故障转移成功: {current_provider.display_name if current_provider else 'None'} -> "
+                    f"{next_provider.display_name}"
+                )
+                
+                return {
+                    'success': True,
+                    'previous_provider': current_provider.display_name if current_provider else None,
+                    'current_provider': next_provider.display_name,
                     'reason': reason
                 }
+        else:
+            logger.warning(f"没有可用的备用提供商进行故障转移")
+            return {
+                'success': False,
+                'reason': 'no_available_provider',
+                'current_provider': current_provider.display_name if current_provider else None
             }
-        
-        # 执行实际切换
-        result = self._switch_provider(
-            current_provider, 
-            target_provider, 
-            reason, 
-            'manual_switch',
-            operator
+    
+    def record_request_result(self, provider: AIProvider, success: bool, 
+                            response_time: float = None, error_type: str = None):
+        """记录请求结果"""
+        # 获取或创建健康状态记录
+        health_status, created = ProviderHealthStatus.objects.get_or_create(
+            strategy=self.strategy,
+            provider=provider,
+            defaults={
+                'success_count': 0,
+                'failure_count': 0,
+                'consecutive_failures': 0,
+                'consecutive_successes': 0,
+                'is_healthy': True,
+                'is_available': True
+            }
         )
         
-        return result
+        # 记录结果
+        if success:
+            health_status.record_success(response_time)
+            logger.debug(f"记录成功请求: {provider.display_name}")
+        else:
+            health_status.record_failure(response_time)
+            logger.debug(f"记录失败请求: {provider.display_name}")
+        
+        # 检查是否需要自动切换
+        self._check_auto_switch(health_status, error_type)
     
-    def test_failover(self) -> Dict[str, Any]:
-        """测试故障转移策略"""
-        logger.info(f"开始测试故障转移策略: {self.strategy.name}")
+    def _check_auto_switch(self, health_status: ProviderHealthStatus, error_type: str = None):
+        """检查是否需要自动切换"""
+        current_provider = self.strategy.active_provider
         
-        test_results = {
-            'strategy_name': self.strategy.name,
-            'primary_provider': {
-                'name': self.strategy.primary_provider.display_name,
-                'is_healthy': self.strategy.primary_provider.is_healthy,
-                'model': self.strategy.primary_model.model_name
-            },
-            'fallback_rules': [],
-            'recommendations': []
-        }
-        
-        # 测试所有备用规则
-        for rule in self.strategy.rules.filter(is_active=True).order_by('priority'):
-            rule_test = {
-                'priority': rule.priority,
-                'provider_name': rule.fallback_provider.display_name,
-                'model_name': rule.fallback_model.model_name,
-                'is_healthy': rule.fallback_provider.is_healthy,
-                'trigger_errors': rule.trigger_errors,
-                'available': rule.fallback_provider.is_healthy and rule.fallback_provider.is_active
-            }
-            test_results['fallback_rules'].append(rule_test)
-        
-        # 生成建议
-        healthy_rules = [r for r in test_results['fallback_rules'] if r['available']]
-        if not healthy_rules:
-            test_results['recommendations'].append(
-                "警告: 没有可用的备用提供商，建议添加更多备用规则或检查提供商健康状态"
+        # 检查是否应该故障转移
+        if (health_status.should_failover() and 
+            health_status.provider == current_provider and
+            not self._is_in_cooldown()):
+            
+            logger.info(
+                f"提供商 {current_provider.display_name} 连续失败 {health_status.consecutive_failures} 次，"
+                f"达到阈值 {self.strategy.fail_threshold}，触发自动故障转移"
+            )
+            
+            self.execute_failover(
+                reason=f"连续失败{health_status.consecutive_failures}次",
+                error_type=error_type
             )
         
-        if not self.strategy.primary_provider.is_healthy:
-            if healthy_rules:
-                test_results['recommendations'].append(
-                    f"主提供商不健康，将自动切换到 {healthy_rules[0]['provider_name']}"
+        # 检查是否应该恢复
+        elif (health_status.should_recover() and 
+              not self._is_in_cooldown() and
+              not self._is_in_jitter_window()):
+            
+            # 如果是主提供商恢复，直接切换
+            if health_status.provider == self.strategy.primary_provider:
+                logger.info(
+                    f"主提供商 {health_status.provider.display_name} 连续成功 {health_status.consecutive_successes} 次，"
+                    f"达到恢复阈值 {self.strategy.recovery_threshold}，恢复主提供商"
                 )
-            else:
-                test_results['recommendations'].append(
-                    "主提供商不健康且没有可用的备用提供商，服务可能中断"
+                self._switch_to_provider(self.strategy.primary_provider, "主提供商恢复")
+            # 如果是备用提供商恢复，检查主提供商是否健康
+            elif health_status.provider != self.strategy.primary_provider:
+                logger.info(
+                    f"备用提供商 {health_status.provider.display_name} 连续成功 {health_status.consecutive_successes} 次，"
+                    f"达到恢复阈值 {self.strategy.recovery_threshold}，尝试恢复主提供商"
                 )
-        
-        return test_results
+                
+                # 检查主提供商是否健康
+                primary_health = self._get_provider_health_status(self.strategy.primary_provider)
+                if primary_health and primary_health.is_healthy:
+                    self._switch_to_provider(self.strategy.primary_provider, "主提供商恢复")
     
-    def _find_next_provider(self, current_provider: AIProvider, 
-                           error_type: str = None) -> Optional[AIProvider]:
-        """查找下一个可用的提供商"""
-        # 获取所有活跃规则，按优先级排序
-        rules = self.strategy.rules.filter(is_active=True).order_by('priority')
-        
-        # 如果指定了错误类型，优先考虑匹配的规则
-        if error_type:
-            matching_rules = rules.filter(trigger_errors__contains=[error_type])
-            if matching_rules.exists():
-                for rule in matching_rules:
-                    if (rule.fallback_provider.is_healthy and 
-                        rule.fallback_provider.is_active and
-                        rule.fallback_provider != current_provider):
-                        return rule.fallback_provider
-        
-        # 按优先级查找可用提供商
-        for rule in rules:
-            if (rule.fallback_provider.is_healthy and 
-                rule.fallback_provider.is_active and
-                rule.fallback_provider != current_provider):
-                return rule.fallback_provider
-        
-        # 如果当前不是主提供商且主提供商健康，回退到主提供商
-        if (current_provider != self.strategy.primary_provider and
-            self.strategy.primary_provider.is_healthy and
-            self.strategy.primary_provider.is_active):
+    def _select_next_provider(self) -> Optional[AIProvider]:
+        """根据策略模式选择下一个提供商"""
+        if self.strategy.strategy_mode == 'priority':
+            return self._select_by_priority()
+        elif self.strategy.strategy_mode == 'round_robin':
+            return self._select_by_round_robin()
+        else:
+            return self._select_by_priority()  # 默认使用优先级模式
+    
+    def _select_by_priority(self) -> Optional[AIProvider]:
+        """按优先级选择提供商"""
+        # 首先尝试主提供商
+        if self._is_provider_healthy(self.strategy.primary_provider):
             return self.strategy.primary_provider
+        
+        # 然后按优先级尝试备用提供商
+        rules = self.strategy.rules.filter(is_active=True).order_by('priority')
+        for rule in rules:
+            if self._is_provider_healthy(rule.fallback_provider):
+                return rule.fallback_provider
         
         return None
     
-    @transaction.atomic
-    def _switch_provider(self, from_provider: AIProvider, to_provider: AIProvider,
-                        reason: str, action_type: str, operator=None) -> Dict[str, Any]:
-        """执行提供商切换"""
+    def _select_by_round_robin(self) -> Optional[AIProvider]:
+        """按轮询模式选择提供商"""
+        # 获取所有可用的提供商
+        available_providers = []
+        
+        # 添加主提供商
+        if self._is_provider_healthy(self.strategy.primary_provider):
+            available_providers.append(self.strategy.primary_provider)
+        
+        # 添加备用提供商
+        rules = self.strategy.rules.filter(is_active=True).order_by('priority')
+        for rule in rules:
+            if self._is_provider_healthy(rule.fallback_provider):
+                available_providers.append(rule.fallback_provider)
+        
+        if not available_providers:
+            return None
+        
+        # 使用缓存记录当前轮询位置
+        cache_key = f"{self.cache_prefix}_round_robin_index"
+        current_index = cache.get(cache_key, 0)
+        
+        # 选择下一个提供商
+        next_index = (current_index + 1) % len(available_providers)
+        cache.set(cache_key, next_index, self.cache_timeout)
+        
+        return available_providers[next_index]
+    
+    def _is_provider_healthy(self, provider: AIProvider) -> bool:
+        """检查提供商是否健康"""
+        health_status = self._get_provider_health_status(provider)
+        if health_status:
+            return health_status.is_healthy and health_status.is_available
+        return provider.is_healthy
+    
+    def _get_provider_health_status(self, provider: AIProvider) -> Optional[ProviderHealthStatus]:
+        """获取提供商健康状态"""
         try:
-            # 记录审计日志
-            from ..models import FallbackAuditLog
-            
-            audit_log = FallbackAuditLog.objects.create(
+            return ProviderHealthStatus.objects.get(
                 strategy=self.strategy,
-                action_type=action_type,
-                from_provider=from_provider.display_name if from_provider else '',
-                to_provider=to_provider.display_name,
-                reason=reason,
-                operator=operator,
-                metadata={
-                    'from_provider_id': from_provider.id if from_provider else None,
-                    'to_provider_id': to_provider.id,
-                    'from_model': self.get_active_model(from_provider).model_name if from_provider else '',
-                    'to_model': self.get_active_model(to_provider).model_name,
-                    'timestamp': timezone.now().isoformat()
-                }
+                provider=provider
             )
+        except ProviderHealthStatus.DoesNotExist:
+            return None
+    
+    def _is_in_cooldown(self) -> bool:
+        """检查是否在冷却期内"""
+        if not self.strategy.last_switch_at:
+            return False
+        
+        cooldown_end = self.strategy.last_switch_at + timezone.timedelta(seconds=self.strategy.cooldown)
+        return timezone.now() < cooldown_end
+    
+    def _is_in_jitter_window(self) -> bool:
+        """检查是否在抖动窗口内"""
+        if not self.strategy.last_switch_at:
+            return False
+        
+        # 使用固定的抖动窗口（冷却期 + 抖动窗口）
+        jitter_end = self.strategy.last_switch_at + timezone.timedelta(seconds=self.strategy.cooldown + self.strategy.jitter_window)
+        return timezone.now() < jitter_end
+    
+    def _switch_to_provider(self, provider: AIProvider, reason: str):
+        """切换到指定提供商"""
+        with transaction.atomic():
+            previous_provider = self.strategy.active_provider
+            self.strategy.active_provider = provider
+            self.strategy.last_switch_at = timezone.now()
+            self.strategy.save()
             
-            # 更新相关规则的触发统计
-            if action_type == 'auto_switch':
-                rule = self.strategy.rules.filter(
-                    fallback_provider=to_provider,
-                    is_active=True
-                ).first()
-                if rule:
-                    rule.trigger_count += 1
-                    rule.last_triggered = timezone.now()
-                    rule.save(update_fields=['trigger_count', 'last_triggered'])
+            # 记录审计日志
+            self._log_switch(previous_provider, provider, reason)
             
             logger.info(
-                f"提供商切换成功: {from_provider.display_name if from_provider else 'None'} "
-                f"-> {to_provider.display_name}"
+                f"切换到提供商: {previous_provider.display_name if previous_provider else 'None'} -> "
+                f"{provider.display_name}，原因: {reason}"
             )
-            
-            return {
-                'success': True,
-                'message': '切换成功',
-                'current_provider': from_provider.display_name if from_provider else None,
-                'next_provider': to_provider.display_name,
-                'switched': True,
-                'audit_log_id': audit_log.id,
-                'switch_time': timezone.now().isoformat()
+    
+    def _log_switch(self, from_provider: AIProvider, to_provider: AIProvider, 
+                   reason: str, error_type: str = None):
+        """记录切换日志"""
+        # 这里可以记录到审计日志表或系统日志
+        log_data = {
+            'strategy_id': self.strategy.id,
+            'strategy_name': self.strategy.name,
+            'from_provider': from_provider.display_name if from_provider else None,
+            'to_provider': to_provider.display_name if to_provider else None,
+            'reason': reason,
+            'error_type': error_type,
+            'timestamp': timezone.now().isoformat()
+        }
+        
+        logger.info(f"故障转移切换: {log_data}")
+        
+        # 可以在这里添加审计日志记录
+        # FallbackAuditLog.objects.create(...)
+    
+    def get_health_summary(self) -> Dict[str, Any]:
+        """获取健康状态摘要"""
+        health_statuses = ProviderHealthStatus.objects.filter(strategy=self.strategy)
+        
+        summary = {
+            'strategy_id': self.strategy.id,
+            'strategy_name': self.strategy.name,
+            'active_provider': self.strategy.active_provider.display_name if self.strategy.active_provider else None,
+            'providers': []
+        }
+        
+        for health in health_statuses:
+            provider_info = {
+                'provider_name': health.provider.display_name,
+                'is_healthy': health.is_healthy,
+                'is_available': health.is_available,
+                'success_rate': health.get_success_rate(),
+                'consecutive_failures': health.consecutive_failures,
+                'consecutive_successes': health.consecutive_successes,
+                'avg_response_time': health.avg_response_time,
+                'last_heartbeat': health.last_heartbeat_at.isoformat() if health.last_heartbeat_at else None
             }
-            
-        except Exception as e:
-            logger.error(f"提供商切换失败: {str(e)}")
-            return {
-                'success': False,
-                'message': f'切换失败: {str(e)}',
-                'current_provider': from_provider.display_name if from_provider else None,
-                'next_provider': to_provider.display_name,
-                'switched': False,
-                'error': str(e)
-            }
-    
-    def _update_statistics(self, switched: bool = False):
-        """更新统计信息"""
-        try:
-            self.strategy.total_requests += 1
-            if switched:
-                self.strategy.fallback_count += 1
-            else:
-                self.strategy.successful_requests += 1
-            
-            self.strategy.last_used = timezone.now()
-            self.strategy.save(update_fields=[
-                'total_requests', 'successful_requests', 'fallback_count', 'last_used'
-            ])
-            
-        except Exception as e:
-            logger.error(f"更新统计信息失败: {str(e)}")
-    
-    def record_success(self, provider: AIProvider, response_time: float = None):
-        """记录成功调用"""
-        try:
-            # 更新提供商健康状态
-            provider.update_health_status(True, response_time)
-            
-            # 更新策略统计
-            self.strategy.successful_requests += 1
-            self.strategy.total_requests += 1
-            self.strategy.last_used = timezone.now()
-            self.strategy.save(update_fields=[
-                'successful_requests', 'total_requests', 'last_used'
-            ])
-            
-            # 更新相关规则的成功统计
-            if provider != self.strategy.primary_provider:
-                rule = self.strategy.rules.filter(
-                    fallback_provider=provider,
-                    is_active=True
-                ).first()
-                if rule:
-                    rule.success_count += 1
-                    rule.save(update_fields=['success_count'])
-            
-            # 更新缓存中的错误率
-            self._update_error_rate_cache(success=True)
-            
-        except Exception as e:
-            logger.error(f"记录成功调用失败: {str(e)}")
-    
-    def record_failure(self, provider: AIProvider, error_type: str = '', 
-                      response_time: float = None):
-        """记录失败调用"""
-        try:
-            # 更新提供商健康状态
-            provider.update_health_status(False, response_time)
-            
-            # 更新策略统计
-            self.strategy.total_requests += 1
-            self.strategy.last_used = timezone.now()
-            self.strategy.save(update_fields=['total_requests', 'last_used'])
-            
-            # 更新缓存中的错误率
-            self._update_error_rate_cache(success=False)
-            
-        except Exception as e:
-            logger.error(f"记录失败调用失败: {str(e)}")
-    
-    def _update_error_rate_cache(self, success: bool):
-        """更新错误率缓存"""
-        try:
-            cache_key = f"{self.cache_prefix}_error_rate"
-            
-            # 获取当前错误率数据
-            error_data = cache.get(cache_key, {'total': 0, 'errors': 0})
-            
-            error_data['total'] += 1
-            if not success:
-                error_data['errors'] += 1
-            
-            # 计算错误率
-            error_rate = error_data['errors'] / error_data['total'] if error_data['total'] > 0 else 0
-            
-            # 更新缓存
-            cache.set(cache_key, error_data, self.cache_timeout)
-            cache.set(f"{self.cache_prefix}_current_error_rate", error_rate, self.cache_timeout)
-            
-        except Exception as e:
-            logger.error(f"更新错误率缓存失败: {str(e)}")
+            summary['providers'].append(provider_info)
+        
+        return summary
 
 
 class FailoverManager:

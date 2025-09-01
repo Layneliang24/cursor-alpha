@@ -1152,8 +1152,8 @@
             "dependencies": [
               "12.1"
             ],
-            "details": "实现FailoverService/StrategySelector，依据strategy_mode与健康状态选择提供商，支持priority与round-robin；建立健康状态存储（模型或缓存）记录成功/失败计数、最后心跳；在调用通道中上报失败并配合周期性探测任务（如Celery beat）更新健康；当失败计数达到阈值在冷却期内自动切换并持久化active_provider；当主提供商恢复达到阈值且冷却到期按策略回切，加入抖动窗口防抖；输出结构化日志与指标，阈值/窗口/冷却时间可配置并做边界校验。",
-            "status": "pending",
+            "details": "实现FailoverService/StrategySelector，依据strategy_mode与健康状态选择提供商，支持priority与round-robin；建立健康状态存储（模型或缓存）记录成功/失败计数、最后心跳；在调用通道中上报失败并配合周期性探测任务（如Celery beat）更新健康；当失败计数达到阈值在冷却期内自动切换并持久化active_provider；当主提供商恢复达到阈值且冷却到期按策略回切，加入抖动窗口防抖；输出结构化日志与指标，阈值/窗口/冷却时间可配置并做边界校验。\n<info added on 2025-09-01T11:21:37.820Z>\n实现计划分析：\n\n当前状态分析：\n1. 已有基础架构：\n   - FailoverStrategy 模型已存在，包含基础字段\n   - FailoverService 服务已实现，但缺少自动降级与恢复检测逻辑\n   - HealthCheckService 服务已实现，支持健康检查\n   - 基础CRUD API已实现\n\n2. 需要增强的功能：\n   - 自动降级与恢复检测逻辑\n   - 健康状态存储和计数机制\n   - 周期性探测任务\n   - 抖动窗口防抖机制\n   - 结构化日志与指标\n\n实现计划：\n1. 扩展FailoverStrategy模型：\n   - 添加 active_provider 字段记录当前活跃提供商\n   - 添加 fail_threshold、recovery_threshold、cooldown 字段\n   - 添加 last_switch_at 字段记录最后切换时间\n\n2. 增强FailoverService：\n   - 实现基于阈值的自动切换逻辑\n   - 添加健康状态计数机制\n   - 实现冷却期和抖动窗口\n   - 添加自动恢复检测\n\n3. 创建健康状态存储：\n   - 实现ProviderHealthStatus模型\n   - 添加成功/失败计数\n   - 记录最后心跳时间\n\n4. 实现周期性探测任务：\n   - 创建Celery beat任务\n   - 定期更新健康状态\n   - 触发自动切换检查\n\n5. 添加结构化日志：\n   - 实现审计日志记录\n   - 添加性能指标收集\n   - 配置可调节的阈值参数\n</info added on 2025-09-01T11:21:37.820Z>\n<info added on 2025-09-01T11:35:39.647Z>\n## 实现完成总结\n\n### ✅ 已完成的功能\n\n1. **扩展FailoverStrategy模型**：\n   - 添加了 `active_provider` 字段记录当前活跃提供商\n   - 添加了 `fail_threshold`、`recovery_threshold`、`cooldown`、`jitter_window` 等配置字段\n   - 添加了 `last_switch_at` 字段记录最后切换时间\n   - 添加了 `strategy_mode` 字段支持优先级和轮询模式\n\n2. **创建ProviderHealthStatus模型**：\n   - 实现了健康状态存储和计数机制\n   - 支持成功/失败计数、连续成功/失败计数\n   - 记录响应时间统计（平均、最小、最大）\n   - 实现了 `should_failover()` 和 `should_recover()` 判断方法\n\n3. **增强FailoverService**：\n   - 实现了基于阈值的自动切换逻辑\n   - 添加了健康状态计数机制\n   - 实现了冷却期和抖动窗口防抖机制\n   - 添加了自动恢复检测逻辑\n   - 支持优先级和轮询两种选择模式\n\n4. **实现周期性探测任务**：\n   - 创建了 `periodic_health_check_and_auto_switch` Celery任务\n   - 定期更新健康状态并触发自动切换检查\n   - 添加了清理旧记录和更新指标的任务\n\n5. **添加结构化日志**：\n   - 实现了详细的审计日志记录\n   - 添加了性能指标收集\n   - 配置了可调节的阈值参数\n\n### ✅ 测试验证\n\n创建了全面的测试用例，验证了以下功能：\n- 初始健康状态创建\n- 连续失败触发故障转移\n- 冷却期防止快速切换\n- 连续成功后恢复主提供商\n- 抖动窗口防止抖动\n- 优先级和轮询模式选择\n- 健康状态摘要\n- 提供商健康状态方法\n- 响应时间跟踪\n\n**所有10个测试用例全部通过** ✅\n\n### 🔧 技术实现细节\n\n1. **健康状态管理**：\n   - 使用ProviderHealthStatus模型存储每个策略-提供商对的健康状态\n   - 实现了连续失败/成功计数机制\n   - 支持响应时间统计和健康状态判断\n\n2. **自动切换逻辑**：\n   - 基于阈值的故障转移触发\n   - 冷却期和抖动窗口防止频繁切换\n   - 支持主提供商自动恢复\n\n3. **策略模式**：\n   - 优先级模式：按配置的优先级选择提供商\n   - 轮询模式：在可用提供商间轮询\n\n4. **周期性任务**：\n   - 定期检查所有活跃策略的健康状态\n   - 自动触发故障转移和恢复\n   - 清理过期数据并更新指标\n\n### 📊 性能优化\n\n- 使用数据库索引优化查询性能\n- 实现了缓存机制减少重复计算\n- 添加了批量操作减少数据库访问\n- 使用事务确保数据一致性\n\n### 🎯 下一步建议\n\n1. 集成到现有的AI服务调用流程中\n2. 添加Web界面配置故障转移策略\n3. 实现更详细的监控和告警机制\n4. 添加性能基准测试\n</info added on 2025-09-01T11:35:39.647Z>",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -1765,7 +1765,7 @@
     ],
     "metadata": {
       "created": "2025-08-31T08:10:56.593Z",
-      "updated": "2025-08-31T16:11:26.872Z",
+      "updated": "2025-09-01T11:35:44.145Z",
       "description": "Tasks for ai-config-ui context"
     }
   }

@@ -16,6 +16,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django_cryptography.fields import encrypt
+from django.utils import timezone
 
 
 class AIProviderType(models.TextChoices):
@@ -488,6 +489,47 @@ class FailoverStrategy(models.Model):
         help_text="备用提供商"
     )
     
+    # 自动降级与恢复检测配置
+    active_provider = models.ForeignKey(
+        AIProvider,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='active_strategies',
+        help_text="当前活跃的提供商"
+    )
+    strategy_mode = models.CharField(
+        max_length=20,
+        choices=[
+            ('priority', '优先级模式'),
+            ('round_robin', '轮询模式'),
+        ],
+        default='priority',
+        help_text="策略模式"
+    )
+    
+    # 阈值配置
+    fail_threshold = models.IntegerField(
+        default=3,
+        validators=[MinValueValidator(1), MaxValueValidator(100)],
+        help_text="失败阈值（连续失败次数）"
+    )
+    recovery_threshold = models.IntegerField(
+        default=5,
+        validators=[MinValueValidator(1), MaxValueValidator(100)],
+        help_text="恢复阈值（连续成功次数）"
+    )
+    cooldown = models.IntegerField(
+        default=300,
+        validators=[MinValueValidator(0), MaxValueValidator(3600)],
+        help_text="冷却时间（秒）"
+    )
+    jitter_window = models.IntegerField(
+        default=60,
+        validators=[MinValueValidator(0), MaxValueValidator(300)],
+        help_text="抖动窗口（秒）"
+    )
+    
     # 触发条件
     max_retries = models.IntegerField(default=3, help_text="最大重试次数")
     retry_delay = models.IntegerField(default=1, help_text="重试延迟(秒)")
@@ -497,6 +539,7 @@ class FailoverStrategy(models.Model):
     # 状态信息
     is_active = models.BooleanField(default=True)
     is_default = models.BooleanField(default=False, help_text="是否为默认策略")
+    last_switch_at = models.DateTimeField(null=True, blank=True, help_text="最后切换时间")
     
     # 统计信息
     total_requests = models.IntegerField(default=0)
@@ -514,6 +557,8 @@ class FailoverStrategy(models.Model):
         indexes = [
             models.Index(fields=['user', 'is_active']),
             models.Index(fields=['is_active', 'is_default']),
+            models.Index(fields=['active_provider']),
+            models.Index(fields=['last_switch_at']),
         ]
         constraints = [
             models.UniqueConstraint(
@@ -537,6 +582,12 @@ class FailoverStrategy(models.Model):
         if self.total_requests == 0:
             return 0.0
         return self.fallback_count / self.total_requests
+    
+    def save(self, *args, **kwargs):
+        """保存时设置默认活跃提供商"""
+        if not self.active_provider:
+            self.active_provider = self.primary_provider
+        super().save(*args, **kwargs)
 
 
 class FailoverRule(models.Model):
@@ -761,3 +812,153 @@ class UsageQuota(models.Model):
             self.save(update_fields=['is_exceeded'])
         
         return exceeded
+
+
+class ProviderHealthStatus(models.Model):
+    """提供商健康状态记录"""
+    
+    # 关联信息
+    strategy = models.ForeignKey(
+        FailoverStrategy,
+        on_delete=models.CASCADE,
+        related_name='health_statuses',
+        help_text="关联的故障转移策略"
+    )
+    provider = models.ForeignKey(
+        AIProvider,
+        on_delete=models.CASCADE,
+        related_name='health_statuses',
+        help_text="提供商"
+    )
+    
+    # 健康状态计数
+    success_count = models.IntegerField(default=0, help_text="成功次数")
+    failure_count = models.IntegerField(default=0, help_text="失败次数")
+    consecutive_failures = models.IntegerField(default=0, help_text="连续失败次数")
+    consecutive_successes = models.IntegerField(default=0, help_text="连续成功次数")
+    
+    # 时间信息
+    last_success_at = models.DateTimeField(null=True, blank=True, help_text="最后成功时间")
+    last_failure_at = models.DateTimeField(null=True, blank=True, help_text="最后失败时间")
+    last_heartbeat_at = models.DateTimeField(null=True, blank=True, help_text="最后心跳时间")
+    
+    # 性能指标
+    avg_response_time = models.FloatField(null=True, blank=True, help_text="平均响应时间(秒)")
+    min_response_time = models.FloatField(null=True, blank=True, help_text="最小响应时间(秒)")
+    max_response_time = models.FloatField(null=True, blank=True, help_text="最大响应时间(秒)")
+    
+    # 状态信息
+    is_healthy = models.BooleanField(default=True, help_text="是否健康")
+    is_available = models.BooleanField(default=True, help_text="是否可用")
+    
+    # 时间戳
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'ai_provider_health_statuses'
+        ordering = ['-updated_at']
+        indexes = [
+            models.Index(fields=['strategy', 'provider']),
+            models.Index(fields=['is_healthy', 'is_available']),
+            models.Index(fields=['last_heartbeat_at']),
+        ]
+        unique_together = ['strategy', 'provider']
+    
+    def __str__(self):
+        return f"{self.strategy.name} - {self.provider.display_name}"
+    
+    def get_success_rate(self) -> float:
+        """获取成功率"""
+        total = self.success_count + self.failure_count
+        if total == 0:
+            return 0.0
+        return self.success_count / total
+    
+    def get_total_requests(self) -> int:
+        """获取总请求数"""
+        return self.success_count + self.failure_count
+    
+    def record_success(self, response_time: float = None):
+        """记录成功请求"""
+        self.success_count += 1
+        self.consecutive_successes += 1
+        self.consecutive_failures = 0
+        self.last_success_at = timezone.now()
+        self.last_heartbeat_at = timezone.now()
+        self.is_healthy = True
+        
+        # 更新响应时间统计
+        if response_time is not None:
+            if self.avg_response_time is None:
+                self.avg_response_time = response_time
+                self.min_response_time = response_time
+                self.max_response_time = response_time
+            else:
+                # 计算移动平均
+                total_requests = self.get_total_requests()
+                self.avg_response_time = (
+                    (self.avg_response_time * (total_requests - 1) + response_time) / total_requests
+                )
+                self.min_response_time = min(self.min_response_time, response_time)
+                self.max_response_time = max(self.max_response_time, response_time)
+        
+        self.save()
+    
+    def record_failure(self, response_time: float = None):
+        """记录失败请求"""
+        self.failure_count += 1
+        self.consecutive_failures += 1
+        self.consecutive_successes = 0
+        self.last_failure_at = timezone.now()
+        self.last_heartbeat_at = timezone.now()
+        
+        # 如果连续失败达到阈值，标记为不健康
+        if self.consecutive_failures >= self.strategy.fail_threshold:
+            self.is_healthy = False
+        
+        # 更新响应时间统计
+        if response_time is not None:
+            if self.avg_response_time is None:
+                self.avg_response_time = response_time
+                self.min_response_time = response_time
+                self.max_response_time = response_time
+            else:
+                total_requests = self.get_total_requests()
+                self.avg_response_time = (
+                    (self.avg_response_time * (total_requests - 1) + response_time) / total_requests
+                )
+                self.min_response_time = min(self.min_response_time, response_time)
+                self.max_response_time = max(self.max_response_time, response_time)
+        
+        self.save()
+    
+    def should_failover(self) -> bool:
+        """判断是否应该故障转移"""
+        return (
+            self.consecutive_failures >= self.strategy.fail_threshold and
+            self.is_available
+        )
+    
+    def should_recover(self) -> bool:
+        """判断是否应该恢复"""
+        return (
+            self.consecutive_successes >= self.strategy.recovery_threshold and
+            self.is_healthy
+        )
+    
+    def is_in_cooldown(self) -> bool:
+        """判断是否在冷却期内"""
+        if not self.strategy.last_switch_at:
+            return False
+        
+        cooldown_end = self.strategy.last_switch_at + timedelta(seconds=self.strategy.cooldown)
+        return timezone.now() < cooldown_end
+    
+    def is_in_jitter_window(self) -> bool:
+        """判断是否在抖动窗口内"""
+        if not self.strategy.last_switch_at:
+            return False
+        
+        jitter_end = self.strategy.last_switch_at + timedelta(seconds=self.strategy.jitter_window)
+        return timezone.now() < jitter_end
