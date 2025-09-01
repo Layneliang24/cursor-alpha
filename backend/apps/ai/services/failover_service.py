@@ -358,6 +358,161 @@ class FailoverService:
         
         return summary
 
+    def manual_switch(self, target_provider: AIProvider = None, reason: str = None, 
+                     operator=None, dry_run: bool = False) -> Dict[str, Any]:
+        """手动切换提供商"""
+        logger.info(f"开始手动切换，策略: {self.strategy.name}，目标: {target_provider.display_name if target_provider else 'auto'}")
+        
+        # 获取当前活跃提供商
+        current_provider = self.strategy.active_provider
+        
+        # 验证权限
+        if not self._can_switch_provider(operator):
+            raise PermissionError("没有权限执行手动切换")
+        
+        # 检查并发冲突
+        if self._has_concurrent_modification():
+            raise ValueError("检测到并发修改，请重试")
+        
+        # 确定目标提供商
+        if target_provider:
+            # 验证目标提供商是否在策略中
+            if not self._is_provider_in_strategy(target_provider):
+                raise ValueError(f"提供商 {target_provider.display_name} 不在当前策略中")
+            
+            # 验证目标提供商是否可用
+            if not self._is_provider_healthy(target_provider):
+                raise ValueError(f"提供商 {target_provider.display_name} 不可用")
+        else:
+            # 自动选择下一个可用提供商
+            target_provider = self._select_next_provider()
+            if not target_provider:
+                raise ValueError("没有可用的备用提供商")
+        
+        # 检查是否已经是目标提供商
+        if current_provider == target_provider:
+            return {
+                'success': True,
+                'message': f'当前已经是目标提供商 {target_provider.display_name}',
+                'current_provider': current_provider.display_name if current_provider else None,
+                'target_provider': target_provider.display_name,
+                'switched': False,
+                'dry_run': dry_run
+            }
+        
+        # 如果是试运行，只返回计划
+        if dry_run:
+            return {
+                'success': True,
+                'message': '试运行：切换计划已生成',
+                'current_provider': current_provider.display_name if current_provider else None,
+                'target_provider': target_provider.display_name,
+                'reason': reason,
+                'operator': operator.username if operator else None,
+                'switched': False,
+                'dry_run': True
+            }
+        
+        # 执行实际切换
+        try:
+            with transaction.atomic():
+                # 再次检查并发冲突
+                if self._has_concurrent_modification():
+                    raise ValueError("检测到并发修改，请重试")
+                
+                # 执行切换
+                self._switch_to_provider(target_provider, f"手动切换: {reason}")
+                
+                # 记录审计日志
+                self._log_manual_switch(
+                    from_provider=current_provider,
+                    to_provider=target_provider,
+                    reason=reason,
+                    operator=operator
+                )
+                
+                logger.info(
+                    f"手动切换成功: {current_provider.display_name if current_provider else 'None'} -> "
+                    f"{target_provider.display_name}，操作者: {operator.username if operator else 'Unknown'}"
+                )
+                
+                return {
+                    'success': True,
+                    'message': '切换成功',
+                    'current_provider': current_provider.display_name if current_provider else None,
+                    'target_provider': target_provider.display_name,
+                    'reason': reason,
+                    'operator': operator.username if operator else None,
+                    'switched': True,
+                    'dry_run': False,
+                    'timestamp': timezone.now().isoformat()
+                }
+                
+        except Exception as e:
+            logger.error(f"手动切换失败: {str(e)}")
+            raise
+    
+    def _can_switch_provider(self, operator) -> bool:
+        """检查是否有权限切换提供商"""
+        if not operator:
+            return False
+        
+        # 检查用户是否是策略的所有者
+        if operator != self.strategy.user:
+            return False
+        
+        # 可以在这里添加更多的权限检查逻辑
+        # 比如检查用户是否有管理员权限等
+        
+        return True
+    
+    def _has_concurrent_modification(self) -> bool:
+        """检查是否有并发修改"""
+        # 使用版本号或时间戳检查
+        # 这里使用简单的最后修改时间检查
+        if not self.strategy.last_switch_at:
+            return False
+        
+        # 检查是否在最近5秒内有其他修改
+        recent_switch = timezone.now() - timezone.timedelta(seconds=5)
+        return self.strategy.last_switch_at > recent_switch
+    
+    def _is_provider_in_strategy(self, provider: AIProvider) -> bool:
+        """检查提供商是否在策略中"""
+        # 检查是否是主提供商
+        if provider == self.strategy.primary_provider:
+            return True
+        
+        # 检查是否在备用规则中
+        return self.strategy.rules.filter(
+            fallback_provider=provider,
+            is_active=True
+        ).exists()
+    
+    def _log_manual_switch(self, from_provider: AIProvider, to_provider: AIProvider, 
+                          reason: str, operator=None):
+        """记录手动切换审计日志"""
+        from ..models import FallbackAuditLog
+        
+        try:
+            FallbackAuditLog.objects.create(
+                strategy=self.strategy,
+                action_type='manual_switch',
+                from_provider=from_provider.display_name if from_provider else 'None',
+                to_provider=to_provider.display_name,
+                reason=reason,
+                operator=operator,
+                metadata={
+                    'switch_type': 'manual',
+                    'operator_id': operator.id if operator else None,
+                    'operator_username': operator.username if operator else None,
+                    'timestamp': timezone.now().isoformat()
+                }
+            )
+        except Exception as e:
+            logger.error(f"记录审计日志失败: {str(e)}")
+            # 不抛出异常，避免影响主要功能
+
 
 class FailoverManager:
     """故障转移管理器 - 管理多个策略"""

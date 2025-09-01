@@ -2,6 +2,7 @@
 故障转移策略API视图
 """
 
+import logging
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -11,6 +12,8 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
+
+logger = logging.getLogger(__name__)
 
 from .models import FailoverStrategy, FailoverRule, AIProvider
 from .fallback_serializers import (
@@ -117,13 +120,47 @@ class FailoverStrategyViewSet(viewsets.ModelViewSet):
     
     @extend_schema(
         summary="手动切换提供商",
-        description="手动切换到指定的备用提供商",
-        request=FailoverSwitchSerializer
+        description="手动切换到指定的备用提供商，支持指定目标或自动选择下一个可用提供商",
+        request=FailoverSwitchSerializer,
+        responses={
+            200: {
+                'description': '切换成功',
+                'content': {
+                    'application/json': {
+                        'example': {
+                            'success': True,
+                            'message': '切换成功',
+                            'data': {
+                                'current_provider': 'OpenAI',
+                                'target_provider': 'Anthropic',
+                                'reason': '性能优化',
+                                'operator': 'admin',
+                                'switched': True,
+                                'dry_run': False,
+                                'timestamp': '2024-01-01T12:00:00Z'
+                            }
+                        }
+                    }
+                }
+            },
+            400: {'description': '请求参数错误'},
+            403: {'description': '权限不足'},
+            409: {'description': '并发冲突'},
+            422: {'description': '验证失败'}
+        }
     )
     @action(detail=True, methods=['post'])
     def switch(self, request, pk=None):
         """手动切换提供商"""
         strategy = self.get_object()
+        
+        # 验证策略是否活跃
+        if not strategy.is_active:
+            return Response({
+                'success': False,
+                'message': '策略未激活，无法执行切换'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
         serializer = FailoverSwitchSerializer(
             data=request.data,
             context={'strategy': strategy}
@@ -144,17 +181,48 @@ class FailoverStrategyViewSet(viewsets.ModelViewSet):
                 dry_run=dry_run
             )
             
-            return Response({
-                'success': True,
-                'message': '切换成功' if not dry_run else '试运行成功',
-                'data': result
-            })
+            # 根据操作类型返回不同的状态码
+            if dry_run:
+                return Response({
+                    'success': True,
+                    'message': '试运行成功',
+                    'data': result
+                })
+            else:
+                return Response({
+                    'success': True,
+                    'message': '切换成功',
+                    'data': result
+                })
             
-        except Exception as e:
+        except PermissionError as e:
             return Response({
                 'success': False,
-                'message': f'切换失败: {str(e)}'
-            }, status=status.HTTP_400_BAD_REQUEST)
+                'message': str(e),
+                'error_code': 'PERMISSION_DENIED'
+            }, status=status.HTTP_403_FORBIDDEN)
+            
+        except ValueError as e:
+            if '并发修改' in str(e):
+                return Response({
+                    'success': False,
+                    'message': str(e),
+                    'error_code': 'CONCURRENT_MODIFICATION'
+                }, status=status.HTTP_409_CONFLICT)
+            else:
+                return Response({
+                    'success': False,
+                    'message': str(e),
+                    'error_code': 'VALIDATION_ERROR'
+                }, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            
+        except Exception as e:
+            logger.error(f"手动切换失败: {str(e)}", exc_info=True)
+            return Response({
+                'success': False,
+                'message': '切换失败，请稍后重试',
+                'error_code': 'INTERNAL_ERROR'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     @extend_schema(
         summary="测试故障转移策略",
@@ -341,6 +409,114 @@ class FailoverStrategyViewSet(viewsets.ModelViewSet):
             'message': '策略复制成功',
             'data': serializer.data
         }, status=status.HTTP_201_CREATED)
+
+    @extend_schema(
+        summary="获取策略审计日志",
+        description="获取策略的操作审计日志，包括自动切换、手动切换、恢复等操作记录",
+        parameters=[
+            OpenApiParameter(
+                name='action_type',
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description='过滤操作类型 (auto_switch, manual_switch, recovery, health_check)'
+            ),
+            OpenApiParameter(
+                name='start_date',
+                type=OpenApiTypes.DATE,
+                location=OpenApiParameter.QUERY,
+                description='开始日期 (YYYY-MM-DD)'
+            ),
+            OpenApiParameter(
+                name='end_date',
+                type=OpenApiTypes.DATE,
+                location=OpenApiParameter.QUERY,
+                description='结束日期 (YYYY-MM-DD)'
+            ),
+            OpenApiParameter(
+                name='limit',
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.QUERY,
+                description='返回记录数量限制 (默认50)'
+            )
+        ]
+    )
+    @action(detail=True, methods=['get'])
+    def audit_logs(self, request, pk=None):
+        """获取策略审计日志"""
+        strategy = self.get_object()
+        
+        from .models import FallbackAuditLog
+        from datetime import datetime, timedelta
+        
+        # 构建查询
+        queryset = FallbackAuditLog.objects.filter(strategy=strategy)
+        
+        # 过滤操作类型
+        action_type = request.query_params.get('action_type')
+        if action_type:
+            queryset = queryset.filter(action_type=action_type)
+        
+        # 过滤日期范围
+        start_date = request.query_params.get('start_date')
+        if start_date:
+            try:
+                start_datetime = datetime.strptime(start_date, '%Y-%m-%d')
+                queryset = queryset.filter(created_at__gte=start_datetime)
+            except ValueError:
+                pass
+        
+        end_date = request.query_params.get('end_date')
+        if end_date:
+            try:
+                end_datetime = datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)
+                queryset = queryset.filter(created_at__lt=end_datetime)
+            except ValueError:
+                pass
+        
+        # 限制返回数量
+        limit = request.query_params.get('limit', 50)
+        try:
+            limit = int(limit)
+            if limit > 0:
+                queryset = queryset[:limit]
+        except ValueError:
+            queryset = queryset[:50]
+        
+        # 序列化日志数据
+        logs_data = []
+        for log in queryset.order_by('-created_at'):
+            log_data = {
+                'id': log.id,
+                'action_type': log.action_type,
+                'action_type_display': log.get_action_type_display(),
+                'from_provider': log.from_provider,
+                'to_provider': log.to_provider,
+                'reason': log.reason,
+                'operator': log.operator.username if log.operator else None,
+                'created_at': log.created_at.isoformat(),
+                'metadata': log.metadata
+            }
+            logs_data.append(log_data)
+        
+        # 统计信息
+        total_logs = FallbackAuditLog.objects.filter(strategy=strategy).count()
+        action_type_stats = {}
+        for action_type in ['auto_switch', 'manual_switch', 'recovery', 'health_check']:
+            count = FallbackAuditLog.objects.filter(
+                strategy=strategy,
+                action_type=action_type
+            ).count()
+            action_type_stats[action_type] = count
+        
+        return Response({
+            'results': logs_data,
+            'summary': {
+                'total_logs': total_logs,
+                'action_type_stats': action_type_stats,
+                'strategy_name': strategy.name,
+                'strategy_id': strategy.id
+            }
+        })
 
 
 @extend_schema(
