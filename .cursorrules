@@ -24,7 +24,7 @@
 
 
 ### 代办项目
-- [ ] 接入Figma MCP工具，让Figma专业设计前端页面，AI进行代码生成。
+- [ ] 接入Figma MCP工具，让Figma专业设计前端页面，AI进行代码生成。需注意重构风险，建议新建feature分支
 - [ ] Bmad-method项目研究
 - [ ] strands agent SDK
 - [ ] CI/CD自动流程跑通，云服务器优化
@@ -37,7 +37,7 @@ Please select a fix:
  1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
  2) Quit and manually define a default value in models.py.
 Select an option: 1
-- 很多功能或者代码如果需求变更之后，是不是有的代码会使用不到？是否需要删除？会不会造成影响，如果需要删除，需要找到一个合理的解决办法。
+- [ ]很多功能或者代码如果需求变更之后，是不是有的代码会使用不到？是否需要删除？会不会造成影响，如果需要删除，需要找到一个合理的解决办法。
 
 ---
 
