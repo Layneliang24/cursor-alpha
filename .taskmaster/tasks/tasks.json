@@ -1134,7 +1134,7 @@
           3,
           5
         ],
-        "status": "in-progress",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -1174,15 +1174,61 @@
         "id": 13,
         "title": "开发故障转移配置UI",
         "description": "前端界面配置轮询策略和降级设置",
-        "details": "1. 创建FallbackConfig组件\n2. 实现拖拽排序轮询列表\n3. 添加权限控制开关（模型白名单）\n4. 显示当前激活的降级状态\n5. 实现手动切换按钮",
-        "testStrategy": "测试拖拽排序和策略保存，模拟降级显示",
-        "priority": "medium",
+        "status": "done",
         "dependencies": [
           1,
           12
         ],
-        "status": "pending",
-        "subtasks": []
+        "priority": "medium",
+        "details": "已完成故障转移配置UI的开发，包括以下功能：\n- 策略列表展示和管理（创建、编辑、删除、复制）\n- 拖拽排序提供商轮询顺序\n- 模型白名单配置对话框\n- 手动切换提供商功能\n- 审计日志查看和过滤\n- 实时健康状态显示\n- 响应式设计支持移动端\n\n技术实现：\n- 使用Vue 3 Composition API\n- Element Plus UI组件库\n- vuedraggable拖拽排序\n- 完整的错误处理和用户反馈\n- 全面的单元测试覆盖（15个测试用例全部通过）\n\nAPI集成：\n- 扩展aiConfig.js添加故障转移相关API\n- 支持策略CRUD操作\n- 手动切换和审计日志API\n- 健康状态查询API\n\n组件已添加到路由配置，可通过 /english/failover-config 访问。",
+        "testStrategy": "进行全面的测试，包括：\n- 单元测试（15个测试用例全部通过）\n- 功能测试：拖拽排序、策略保存、模拟降级显示、手动切换、审计日志查看、健康状态显示\n- 响应式测试：在不同设备上测试界面\n- 集成测试：API调用和错误处理",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "创建FallbackConfig组件",
+            "description": "完整的故障转移策略管理界面",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "实现拖拽排序轮询列表",
+            "description": "使用vuedraggable库实现提供商拖拽排序",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "添加权限控制开关（模型白名单）",
+            "description": "集成ModelWhitelistDialog组件",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "显示当前激活的降级状态",
+            "description": "实时显示当前活跃提供商和健康状态",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "实现手动切换按钮",
+            "description": "支持手动切换提供商和原因记录",
+            "status": "done",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 14,
@@ -1208,7 +1254,7 @@
           1,
           14
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": []
       },
       {
@@ -1765,7 +1811,7 @@
     ],
     "metadata": {
       "created": "2025-08-31T08:10:56.593Z",
-      "updated": "2025-09-01T11:48:58.541Z",
+      "updated": "2025-09-01T12:17:18.805Z",
       "description": "Tasks for ai-config-ui context"
     }
   }

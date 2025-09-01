@@ -171,6 +171,56 @@ export const aiConfigAPI = {
     })
   },
 
+  // 获取消费趋势数据
+  getConsumptionTrends(params = {}) {
+    return request.get('/ai/consumption-trends/', { params })
+  },
+
+  // 获取消费饼图数据
+  getConsumptionPieChart(params = {}) {
+    return request.get('/ai/consumption-pie-chart/', { params })
+  },
+
+  // 获取消费热力图数据
+  getConsumptionHeatmap(params = {}) {
+    return request.get('/ai/consumption-heatmap/', { params })
+  },
+
+  // 获取详细消费明细
+  getConsumptionDetails(params = {}) {
+    return request.get('/ai/consumption-details/', { params })
+  },
+
+  // 获取预算设置
+  getBudgetSettings() {
+    return request.get('/ai/budget-settings/')
+  },
+
+  // 更新预算设置
+  updateBudgetSettings(data) {
+    return request.put('/ai/budget-settings/', data)
+  },
+
+  // 获取告警配置
+  getAlertConfigs() {
+    return request.get('/ai/alert-configs/')
+  },
+
+  // 创建告警配置
+  createAlertConfig(data) {
+    return request.post('/ai/alert-configs/', data)
+  },
+
+  // 更新告警配置
+  updateAlertConfig(id, data) {
+    return request.put(`/ai/alert-configs/${id}/`, data)
+  },
+
+  // 删除告警配置
+  deleteAlertConfig(id) {
+    return request.delete(`/ai/alert-configs/${id}/`)
+  },
+
   // 使用配额管理
   getQuotas() {
     return request.get('/ai/quotas/')

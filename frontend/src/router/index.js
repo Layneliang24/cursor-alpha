@@ -119,6 +119,12 @@ const routes = [
     meta: { title: '故障转移配置', requiresAuth: true },
   },
   {
+    path: '/english/statistics',
+    name: 'Statistics',
+    component: () => import('@/components/ai-config/StatisticsView.vue'),
+    meta: { title: '统计分析', requiresAuth: true },
+  },
+  {
     path: '/english/monitoring',
     name: 'MonitoringDashboard',
     component: () => import('@/views/english/MonitoringDashboard.vue'),
