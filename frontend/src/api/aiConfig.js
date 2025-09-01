@@ -211,6 +211,21 @@ export const aiConfigAPI = {
     return request.delete(`/ai/failover-strategies/${id}/`)
   },
 
+  // 手动切换提供商
+  switchProvider(strategyId, data) {
+    return request.post(`/ai/failover-strategies/${strategyId}/switch/`, data)
+  },
+
+  // 获取策略审计日志
+  getStrategyAuditLogs(strategyId, params = {}) {
+    return request.get(`/ai/failover-strategies/${strategyId}/audit_logs/`, { params })
+  },
+
+  // 获取策略健康状态
+  getStrategyHealthStatus(strategyId) {
+    return request.get(`/ai/failover-strategies/${strategyId}/health_status/`)
+  },
+
   // 系统操作
   testAllConnections() {
     return request.post('/ai/test-all-connections/')

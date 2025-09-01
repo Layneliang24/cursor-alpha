@@ -113,6 +113,12 @@ const routes = [
     meta: { title: 'AI服务配置', requiresAuth: true },
   },
   {
+    path: '/english/failover-config',
+    name: 'FailoverConfig',
+    component: () => import('@/components/ai-config/FallbackConfig.vue'),
+    meta: { title: '故障转移配置', requiresAuth: true },
+  },
+  {
     path: '/english/monitoring',
     name: 'MonitoringDashboard',
     component: () => import('@/views/english/MonitoringDashboard.vue'),

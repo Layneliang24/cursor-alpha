@@ -53,7 +53,8 @@
     "use-sound": "^5.0.0",
     "vue": "^3.3.4",
     "vue-echarts": "^6.7.3",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@pinia/testing": "^1.0.2",
