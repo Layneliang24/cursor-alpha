@@ -24,7 +24,7 @@
 
 
 ### 代办项目
-
+- [ ] 接入Figma MCP工具，让Figma专业设计前端页面，AI进行代码生成。
 - [ ] Bmad-method项目研究
 - [ ] strands agent SDK
 - [ ] CI/CD自动流程跑通，云服务器优化
