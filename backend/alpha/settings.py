@@ -99,6 +99,7 @@ INSTALLED_APPS = [
     'mdeditor',
     'django_extensions',
     'django_cryptography',
+    'channels',
     
     # Local apps
     'apps.users',
@@ -765,4 +766,26 @@ SECURITY_LOGGING = {
     'log_xss_attempts': True,
     'log_rate_limit_violations': True,
     'log_authentication_failures': True,
+}
+
+# Django Channels配置
+ASGI_APPLICATION = 'alpha.asgi.application'
+
+# Channels层配置
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        # 生产环境使用Redis
+        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        # 'CONFIG': {
+        #     'hosts': [('127.0.0.1', 6379)],
+        # },
+    },
+}
+
+# WebSocket配置
+WEBSOCKET_CONFIG = {
+    'heartbeat_interval': 30,  # 心跳间隔（秒）
+    'reconnect_interval': 5,   # 重连间隔（秒）
+    'max_reconnect_attempts': 10,  # 最大重连次数
 }

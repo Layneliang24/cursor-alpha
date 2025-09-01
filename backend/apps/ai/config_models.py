@@ -17,6 +17,9 @@ from cryptography.fernet import Fernet
 from django.conf import settings
 from django_cryptography.fields import encrypt
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class AIProviderType(models.TextChoices):
@@ -962,3 +965,237 @@ class ProviderHealthStatus(models.Model):
         
         jitter_end = self.strategy.last_switch_at + timedelta(seconds=self.strategy.jitter_window)
         return timezone.now() < jitter_end
+
+
+class UserSettings(models.Model):
+    """用户设置模型"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='settings')
+    
+    # 个人信息设置
+    display_name = models.CharField(max_length=100, blank=True, verbose_name='显示名称')
+    avatar_url = models.URLField(blank=True, verbose_name='头像URL')
+    bio = models.TextField(blank=True, verbose_name='个人简介')
+    
+    # 偏好设置
+    theme = models.CharField(
+        max_length=20, 
+        choices=[('light', '浅色'), ('dark', '深色'), ('auto', '自动')],
+        default='auto',
+        verbose_name='主题'
+    )
+    language = models.CharField(
+        max_length=10,
+        choices=[('zh-CN', '中文'), ('en-US', 'English')],
+        default='zh-CN',
+        verbose_name='语言'
+    )
+    timezone = models.CharField(max_length=50, default='Asia/Shanghai', verbose_name='时区')
+    
+    # 通知设置
+    email_notifications = models.BooleanField(default=True, verbose_name='邮件通知')
+    push_notifications = models.BooleanField(default=True, verbose_name='推送通知')
+    notification_frequency = models.CharField(
+        max_length=20,
+        choices=[('immediate', '立即'), ('daily', '每日'), ('weekly', '每周')],
+        default='immediate',
+        verbose_name='通知频率'
+    )
+    
+    # 安全设置
+    two_factor_enabled = models.BooleanField(default=False, verbose_name='双因素认证')
+    session_timeout = models.IntegerField(default=30, verbose_name='会话超时(分钟)')
+    login_notifications = models.BooleanField(default=True, verbose_name='登录通知')
+    
+    # 系统设置
+    auto_save = models.BooleanField(default=True, verbose_name='自动保存')
+    debug_mode = models.BooleanField(default=False, verbose_name='调试模式')
+    analytics_enabled = models.BooleanField(default=True, verbose_name='启用分析')
+    
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+    
+    class Meta:
+        verbose_name = '用户设置'
+        verbose_name_plural = '用户设置'
+    
+    def __str__(self):
+        return f"{self.user.username} 的设置"
+
+
+class SystemConfig(models.Model):
+    """系统配置模型"""
+    key = models.CharField(max_length=100, unique=True, verbose_name='配置键')
+    value = models.JSONField(verbose_name='配置值')
+    description = models.TextField(blank=True, verbose_name='配置描述')
+    category = models.CharField(
+        max_length=50,
+        choices=[
+            ('general', '通用'),
+            ('security', '安全'),
+            ('performance', '性能'),
+            ('integration', '集成'),
+            ('notification', '通知')
+        ],
+        default='general',
+        verbose_name='配置分类'
+    )
+    is_public = models.BooleanField(default=False, verbose_name='是否公开')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='更新时间')
+    
+    class Meta:
+        verbose_name = '系统配置'
+        verbose_name_plural = '系统配置'
+    
+    def __str__(self):
+        return f"{self.key}: {self.value}"
+
+
+class LoginHistory(models.Model):
+    """登录历史模型"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='login_history', verbose_name='用户')
+    ip_address = models.GenericIPAddressField(verbose_name='IP地址')
+    user_agent = models.TextField(verbose_name='用户代理')
+    location = models.CharField(max_length=100, blank=True, verbose_name='登录地点')
+    device_type = models.CharField(
+        max_length=20,
+        choices=[('desktop', '桌面'), ('mobile', '移动'), ('tablet', '平板')],
+        verbose_name='设备类型'
+    )
+    browser = models.CharField(max_length=50, blank=True, verbose_name='浏览器')
+    os = models.CharField(max_length=50, blank=True, verbose_name='操作系统')
+    success = models.BooleanField(default=True, verbose_name='登录成功')
+    login_time = models.DateTimeField(auto_now_add=True, verbose_name='登录时间')
+    
+    class Meta:
+        verbose_name = '登录历史'
+        verbose_name_plural = '登录历史'
+        ordering = ['-login_time']
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.login_time}"
+
+
+class DeviceSession(models.Model):
+    """设备会话模型"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='device_sessions', verbose_name='用户')
+    session_key = models.CharField(max_length=100, unique=True, verbose_name='会话键')
+    device_name = models.CharField(max_length=100, verbose_name='设备名称')
+    device_type = models.CharField(
+        max_length=20,
+        choices=[('desktop', '桌面'), ('mobile', '移动'), ('tablet', '平板')],
+        verbose_name='设备类型'
+    )
+    ip_address = models.GenericIPAddressField(verbose_name='IP地址')
+    user_agent = models.TextField(verbose_name='用户代理')
+    is_active = models.BooleanField(default=True, verbose_name='是否活跃')
+    last_activity = models.DateTimeField(auto_now=True, verbose_name='最后活动时间')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    
+    class Meta:
+        verbose_name = '设备会话'
+        verbose_name_plural = '设备会话'
+        ordering = ['-last_activity']
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.device_name}"
+
+
+class ConfigTemplate(models.Model):
+    """配置模板"""
+    
+    # 基础信息
+    name = models.CharField(max_length=100, help_text="模板名称")
+    description = models.TextField(blank=True, help_text="模板描述")
+    
+    # 配置数据
+    config_data = models.JSONField(
+        default=dict,
+        encoder=DjangoJSONEncoder,
+        help_text="配置数据"
+    )
+    
+    # 标签信息
+    tags = models.JSONField(
+        default=list,
+        encoder=DjangoJSONEncoder,
+        help_text="标签列表"
+    )
+    
+    # 状态信息
+    is_public = models.BooleanField(default=False, help_text="是否为公共模板")
+    is_active = models.BooleanField(default=True)
+    
+    # 关联信息
+    created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='config_templates')
+    
+    # 时间戳
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'ai_config_templates'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['created_by', 'is_active']),
+            models.Index(fields=['is_public', 'is_active']),
+        ]
+    
+    def __str__(self):
+        return f"{self.name} - {self.created_by.username}"
+
+
+class ConfigVersion(models.Model):
+    """配置版本"""
+    
+    # 基础信息
+    version_name = models.CharField(max_length=100, help_text="版本名称")
+    description = models.TextField(blank=True, help_text="版本描述")
+    
+    # 配置数据
+    config_data = models.JSONField(
+        default=dict,
+        encoder=DjangoJSONEncoder,
+        help_text="配置数据"
+    )
+    
+    # 版本信息
+    version_hash = models.CharField(max_length=64, unique=True, help_text="版本哈希")
+    parent_version = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='child_versions',
+        help_text="父版本"
+    )
+    
+    # 状态信息
+    is_active = models.BooleanField(default=True)
+    
+    # 关联信息
+    created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='config_versions')
+    
+    # 时间戳
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'ai_config_versions'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['created_by', 'is_active']),
+            models.Index(fields=['version_hash']),
+            models.Index(fields=['parent_version']),
+        ]
+    
+    def __str__(self):
+        return f"{self.version_name} - {self.created_by.username}"
+    
+    def save(self, *args, **kwargs):
+        """保存时自动生成版本哈希"""
+        if not self.version_hash:
+            import hashlib
+            config_str = json.dumps(self.config_data, sort_keys=True)
+            self.version_hash = hashlib.sha256(config_str.encode()).hexdigest()
+        super().save(*args, **kwargs)

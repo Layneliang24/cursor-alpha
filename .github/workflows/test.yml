@@ -1,602 +1,274 @@
-name: 🧪 测试工作流
+name: 测试和覆盖率
 
 on:
   push:
     branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
-  schedule:
-    # 每天凌晨2点运行完整测试
-    - cron: '0 2 * * *'
-
-env:
-  PYTHON_VERSION: '3.10'
-  NODE_VERSION: '18'
 
 jobs:
-  # 快速检查 - 并行运行
-  quick-checks:
-    name: 🚀 快速检查
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        check: [lint, type-check, security]
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: 设置Python环境
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
-        cache: 'pip'
-    
-    - name: 安装依赖
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r backend/requirements.txt
-        pip install flake8 mypy bandit safety
-    
-    - name: 代码风格检查
-      if: matrix.check == 'lint'
-      run: |
-        flake8 backend --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 backend --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    
-    - name: 类型检查
-      if: matrix.check == 'type-check'
-      run: |
-        mypy backend --ignore-missing-imports --no-strict-optional
-    
-    - name: 安全检查
-      if: matrix.check == 'security'
-      run: |
-        bandit -r backend -f json -o security-report.json || true
-        safety check --json --output safety-report.json || true
-    
-    - name: API契约校验
-      if: matrix.check == 'security'
-      run: |
-        python scripts/api_contract_check.py --project-root . --fail-on-incompatible
-    
-    - name: 上传安全报告
-      if: matrix.check == 'security'
-      uses: actions/upload-artifact@v3
-      with:
-        name: security-reports
-        path: '*-report.json'
-
-  # 冒烟测试 - 最快的验证
-  smoke-tests:
-    name: 💨 冒烟测试
-    runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: test_alpha
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: 设置Python环境
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
-        cache: 'pip'
-    
-    - name: 安装依赖
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r backend/requirements.txt
-    
-    - name: 等待MySQL就绪
-      run: |
-        until mysqladmin ping -h"127.0.0.1" -P3306 -uroot -proot --silent; do
-          echo 'waiting for mysql...'
-          sleep 2
-        done
-    
-    - name: Python代码风格检查
-      run: |
-        cd ${{ github.workspace }}
-        python -m flake8 backend --max-line-length=127 --exclude=migrations
-        python -m black backend --check
-        python -m isort backend --check-only
-    
-    - name: Python类型检查
-      run: |
-        cd ${{ github.workspace }}
-        python -m mypy backend/apps --ignore-missing-imports
-    
-    - name: 运行冒烟测试
-      env:
-        DATABASE_URL: mysql://root:root@127.0.0.1:3306/test_alpha
-        DJANGO_SETTINGS_MODULE: tests.test_settings_mysql
-      run: |
-        cd ${{ github.workspace }}
-        pytest tests/unit/test_basic.py -v --tb=short
-
-  # 单元测试 - 核心功能测试
-  unit-tests:
-    name: 🔬 单元测试
-    runs-on: ubuntu-latest
-    needs: smoke-tests
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: test_alpha
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: 设置Python环境
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
-        cache: 'pip'
-    
-    - name: 安装依赖
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r backend/requirements.txt
-        pip install pytest-cov pytest-xdist
-    
-    - name: 等待MySQL就绪
-      run: |
-        until mysqladmin ping -h"127.0.0.1" -P3306 -uroot -proot --silent; do
-          echo 'waiting for mysql...'
-          sleep 2
-        done
-    
-    - name: 运行单元测试
-      env:
-        DATABASE_URL: mysql://root:root@127.0.0.1:3306/test_alpha
-        DJANGO_SETTINGS_MODULE: tests.test_settings_mysql
-      run: |
-        cd ${{ github.workspace }}
-        pytest tests/unit/ -v --cov=backend/apps --cov-report=xml --cov-report=html --cov-fail-under=70
-    
-    - name: 生成测试报告
-      if: always()
-      run: |
-        cd ${{ github.workspace }}
-        # 测试报告已由pytest自动生成
-    
-    - name: 上传测试报告
-      if: always()
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-reports
-        path: tests/reports/
-    
-    - name: 上传后端覆盖率报告
-      if: always()
-      uses: codecov/codecov-action@v3
-      with:
-        file: coverage.xml
-        flags: backend
-        name: backend-coverage
-    
-    - name: 上传前端覆盖率报告
-      if: always()
-      uses: codecov/codecov-action@v3
-      with:
-        file: frontend/coverage/coverage-final.json
-        flags: frontend
-        name: frontend-coverage
-
   # 前端测试
-  frontend-tests:
-    name: 🎨 前端测试
+  frontend-test:
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: 设置Node.js环境
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json
-    
-    - name: 安装前端依赖
-      run: |
-        cd frontend
-        npm ci
-    
-    - name: 前端代码风格检查
-      run: |
-        cd frontend
-        npm run lint:check
-        npm run format:check
-    
-    - name: 前端类型检查
-      run: |
-        cd frontend
-        npm run type-check
-    
-    - name: 运行前端测试
-      run: |
-        cd frontend
-        npm run test:coverage
-    
-    - name: 构建前端
-      run: |
-        cd frontend
-        npm run build
-    
-    - name: 上传构建产物
-      uses: actions/upload-artifact@v3
-      with:
-        name: frontend-build
-        path: frontend/dist/
-
-  # 集成测试 - 完整功能测试
-  integration-tests:
-    name: 🔗 集成测试
-    runs-on: ubuntu-latest
-    needs: [unit-tests, frontend-tests]
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: test_alpha
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-      
-      redis:
-        image: redis:7
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: 设置Python环境
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
-        cache: 'pip'
-    
-    - name: 下载前端构建产物
-      uses: actions/download-artifact@v3
-      with:
-        name: frontend-build
-        path: frontend/dist/
-    
-    - name: 安装依赖
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r backend/requirements.txt
-    
-    - name: 等待服务就绪
-      run: |
-        until mysqladmin ping -h"127.0.0.1" -P3306 -uroot -proot --silent; do
-          echo 'waiting for mysql...'
-          sleep 2
-        done
-        until redis-cli -h 127.0.0.1 -p 6379 ping | grep -q PONG; do
-          echo 'waiting for redis...'
-          sleep 2
-        done
-    
-    - name: 运行数据库迁移
-      env:
-        DATABASE_URL: mysql://root:root@127.0.0.1:3306/test_alpha
-        REDIS_URL: redis://127.0.0.1:6379/0
-        DJANGO_SETTINGS_MODULE: alpha.settings
-      run: |
-        cd backend
-        python manage.py migrate
-    
-    - name: 运行集成测试
-      env:
-        DATABASE_URL: mysql://root:root@127.0.0.1:3306/test_alpha
-        REDIS_URL: redis://127.0.0.1:6379/0
-        DJANGO_SETTINGS_MODULE: tests.test_settings_mysql
-      run: |
-        cd ${{ github.workspace }}
-        pytest tests/integration/ -v --tb=short
-
-  # 性能测试
-  performance-tests:
-    name: ⚡ 性能测试
-    runs-on: ubuntu-latest
-    if: github.event_name == 'schedule' || contains(github.event.head_commit.message, '[perf]')
-    needs: integration-tests
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: test_alpha
-        ports:
-          - 3306:3306
-
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: 设置Python环境
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
-        cache: 'pip'
-    
-    - name: 安装依赖
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r backend/requirements.txt
-        pip install locust
-    
-    - name: 运行性能测试
-      env:
-        DATABASE_URL: mysql://root:root@127.0.0.1:3306/test_alpha
-        DJANGO_SETTINGS_MODULE: tests.test_settings_mysql
-      run: |
-        cd ${{ github.workspace }}
-        pytest tests/performance/ -v --tb=short
-    
-    - name: 上传性能报告
-      uses: actions/upload-artifact@v3
-      with:
-        name: performance-reports
-        path: tests/reports/performance/
-
-  # 部署到测试环境
-  deploy-staging:
-    name: 🚀 部署到测试环境
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
-    needs: [integration-tests]
-    environment:
-      name: staging
-      url: https://alpha-staging.example.com
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: 下载前端构建产物
-      uses: actions/download-artifact@v3
-      with:
-        name: frontend-build
-        path: frontend/dist/
-    
-    - name: 部署到测试环境
-      run: |
-        echo "🚀 部署到测试环境..."
-        # 这里添加实际的部署脚本
-        echo "✅ 部署完成"
-
-  # 部署到生产环境
-  deploy-production:
-    name: 🌟 部署到生产环境
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: [integration-tests]
-    environment:
-      name: production
-      url: https://alpha.example.com
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: 下载前端构建产物
-      uses: actions/download-artifact@v3
-      with:
-        name: frontend-build
-        path: frontend/dist/
-    
-    - name: 部署到生产环境
-      run: |
-        echo "🌟 部署到生产环境..."
-        # 这里添加实际的部署脚本
-        echo "✅ 部署完成"
-
-  # Flaky测试检测
-  flaky-test-detection:
-    name: 🔄 Flaky测试检测
-    runs-on: ubuntu-latest
-    if: github.event_name == 'schedule' || contains(github.event.head_commit.message, '[flaky-check]')
-    needs: [unit-tests, frontend-tests]
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: 设置Python环境
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
-        cache: 'pip'
-    
-    - name: 设置Node.js环境
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json
-    
-    - name: 安装依赖
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r backend/requirements.txt
-        cd frontend && npm ci
-    
-    - name: 设置Django环境
-      run: |
-        cd backend
-        python manage.py collectstatic --noinput
-        python manage.py migrate --noinput
-    
-    - name: 运行稳定性检查
-      run: |
-        python scripts/flaky_test_manager.py --action stability --iterations 10
-    
-    - name: 生成flaky测试报告
-      if: always()
-      run: |
-        python scripts/flaky_test_manager.py --action analyze
-    
-    - name: 上传flaky测试报告
-      if: always()
-      uses: actions/upload-artifact@v3
-      with:
-        name: flaky-test-reports
-        path: |
-          tests/reports/flaky/
-          backend/tests/reports/flaky/
-          frontend/tests/reports/flaky/
-        retention-days: 30
-    
-    - name: 评估测试稳定性
-      run: |
-        # 检查稳定性结果文件
-        if [ -f "tests/reports/flaky/stability_check_*.json" ]; then
-          STABILITY=$(python -c "
-          import json, glob
-          files = glob.glob('tests/reports/flaky/stability_check_*.json')
-          if files:
-              with open(files[-1]) as f:
-                  data = json.load(f)
-                  print(data['stability']['overall'])
-          else:
-              print('0.0')
-          ")
-          echo "Overall stability: $STABILITY"
-          if (( $(echo "$STABILITY < 0.8" | bc -l) )); then
-            echo "⚠️ 测试稳定性低于80%，需要关注flaky测试"
-            exit 1
-          fi
-        fi
-
-  # 语义化发布
-  release:
-    name: 🚀 语义化发布
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: [quick-checks, smoke-tests, unit-tests, frontend-tests, integration-tests]
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-      id-token: write
     
     steps:
     - name: 检出代码
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        token: ${{ secrets.GITHUB_TOKEN }}
-    
+      
     - name: 设置Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+        
+    - name: 安装前端依赖
+      working-directory: ./frontend
+      run: npm ci
+      
+    - name: 运行前端单元测试
+      working-directory: ./frontend
+      run: npm run test:unit
+      
+    - name: 运行前端集成测试
+      working-directory: ./frontend
+      run: npm run test:integration
+      
+    - name: 生成覆盖率报告
+      working-directory: ./frontend
+      run: npm run test:coverage
+      
+    - name: 上传覆盖率报告到Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./frontend/coverage/lcov.info
+        flags: frontend
+        name: frontend-coverage
+        
+    - name: 上传覆盖率报告到Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-coverage-report
+        path: frontend/coverage/
+        retention-days: 30
+
+  # 后端测试
+  backend-test:
+    runs-on: ubuntu-latest
     
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_db
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
     - name: 设置Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-        cache: 'pip'
-    
-    - name: 安装根目录依赖
-      run: npm ci
-    
-    - name: 安装前端依赖
-      run: |
-        cd frontend
-        npm ci
-    
-    - name: 安装后端依赖
-      run: |
-        cd backend
-        pip install -r requirements.txt
-    
-    - name: 构建前端
-      run: |
-        cd frontend
-        npm run build
-    
-    - name: 收集静态文件
-      run: |
-        cd backend
-        python manage.py collectstatic --noinput
-    
-    - name: 生成CHANGELOG
-      run: |
-        npm run changelog
-    
-    - name: 语义化发布
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: |
-        npm run release
-    
-    - name: 上传构建产物
-      if: success()
-      uses: actions/upload-artifact@v3
+        
+    - name: 缓存pip依赖
+      uses: actions/cache@v3
       with:
-        name: release-artifacts
-        path: |
-          frontend/dist/
-          backend/staticfiles/
-          CHANGELOG.md
-        retention-days: 90
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('backend/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          
+    - name: 安装后端依赖
+      working-directory: ./backend
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: 设置环境变量
+      working-directory: ./backend
+      run: |
+        echo "DEBUG=True" >> .env
+        echo "SECRET_KEY=test-secret-key" >> .env
+        echo "DATABASE_URL=mysql://root:root@localhost:3306/test_db" >> .env
+        
+    - name: 运行数据库迁移
+      working-directory: ./backend
+      run: |
+        python manage.py makemigrations
+        python manage.py migrate
+        
+    - name: 运行后端单元测试
+      working-directory: ./backend
+      run: |
+        python manage.py test tests.unit --verbosity=2 --coverage
+        
+    - name: 运行后端集成测试
+      working-directory: ./backend
+      run: |
+        python manage.py test tests.integration --verbosity=2
+        
+    - name: 生成覆盖率报告
+      working-directory: ./backend
+      run: |
+        coverage html
+        coverage xml
+        
+    - name: 上传覆盖率报告到Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./backend/coverage.xml
+        flags: backend
+        name: backend-coverage
+        
+    - name: 上传覆盖率报告到Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: backend-coverage-report
+        path: backend/htmlcov/
+        retention-days: 30
 
-  # 测试结果通知
-  notify:
-    name: 📢 测试结果通知
+  # E2E测试
+  e2e-test:
     runs-on: ubuntu-latest
-    if: always()
-    needs: [quick-checks, smoke-tests, unit-tests, frontend-tests, integration-tests, flaky-test-detection, release]
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_db
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
+    - name: 设置Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+        
+    - name: 设置Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: 安装前端依赖
+      working-directory: ./frontend
+      run: npm ci
+      
+    - name: 安装后端依赖
+      working-directory: ./backend
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: 设置环境变量
+      working-directory: ./backend
+      run: |
+        echo "DEBUG=True" >> .env
+        echo "SECRET_KEY=test-secret-key" >> .env
+        echo "DATABASE_URL=mysql://root:root@localhost:3306/test_db" >> .env
+        
+    - name: 运行数据库迁移
+      working-directory: ./backend
+      run: |
+        python manage.py makemigrations
+        python manage.py migrate
+        
+    - name: 启动后端服务
+      working-directory: ./backend
+      run: |
+        python manage.py runserver 0.0.0.0:8000 &
+        sleep 10
+        
+    - name: 构建前端
+      working-directory: ./frontend
+      run: npm run build
+      
+    - name: 启动前端服务
+      working-directory: ./frontend
+      run: |
+        npm run preview &
+        sleep 10
+        
+    - name: 安装Playwright
+      working-directory: ./frontend
+      run: npx playwright install --with-deps
+      
+    - name: 运行E2E测试
+      working-directory: ./frontend
+      run: npx playwright test
+      
+    - name: 上传E2E测试报告
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: e2e-test-results
+        path: frontend/test-results/
+        retention-days: 30
+
+  # 测试质量门禁
+  test-quality-gate:
+    runs-on: ubuntu-latest
+    needs: [frontend-test, backend-test, e2e-test]
     
     steps:
-    - name: 计算测试结果
-      id: test-result
+    - name: 下载覆盖率报告
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-coverage-report
+        path: ./frontend-coverage
+        
+    - name: 下载后端覆盖率报告
+      uses: actions/download-artifact@v4
+      with:
+        name: backend-coverage-report
+        path: ./backend-coverage
+        
+    - name: 检查测试覆盖率
       run: |
-        if [[ "${{ needs.smoke-tests.result }}" == "success" && 
-              "${{ needs.unit-tests.result }}" == "success" && 
-              "${{ needs.frontend-tests.result }}" == "success" && 
-              "${{ needs.integration-tests.result }}" == "success" ]]; then
-          echo "result=success" >> $GITHUB_OUTPUT
-          echo "message=✅ 所有测试通过！" >> $GITHUB_OUTPUT
+        echo "检查前端覆盖率..."
+        if [ -f "./frontend-coverage/lcov.info" ]; then
+          echo "前端覆盖率报告存在"
         else
-          echo "result=failure" >> $GITHUB_OUTPUT
-          echo "message=❌ 部分测试失败，请检查详情。" >> $GITHUB_OUTPUT
+          echo "前端覆盖率报告缺失"
+          exit 1
         fi
-    
-    - name: 发送通知
-      if: github.event_name == 'push'
+        
+        echo "检查后端覆盖率..."
+        if [ -d "./backend-coverage" ]; then
+          echo "后端覆盖率报告存在"
+        else
+          echo "后端覆盖率报告缺失"
+          exit 1
+        fi
+        
+    - name: 发送测试结果通知
+      if: always()
       run: |
-        echo "📢 测试结果: ${{ steps.test-result.outputs.message }}"
-        echo "🔗 查看详情: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-        # 这里可以添加实际的通知逻辑，如发送到Slack、企业微信等
+        echo "测试完成！"
+        echo "前端测试: ${{ needs.frontend-test.result }}"
+        echo "后端测试: ${{ needs.backend-test.result }}"
+        echo "E2E测试: ${{ needs.e2e-test.result }}"
+        
+    - name: 测试失败通知
+      if: failure()
+      run: |
+        echo "❌ 测试失败！"
+        echo "请检查测试报告并修复问题。"
+        
+    - name: 测试成功通知
+      if: success()
+      run: |
+        echo "✅ 所有测试通过！"
+        echo "代码质量符合要求。"

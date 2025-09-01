@@ -6,19 +6,19 @@
       <div class="login-left">
         <div class="welcome-text">
           <h1>Alpha</h1>
-          <p>技术博客网站 - 测试CI/CD</p>
+          <p>{{ $t('login.subtitle') }}</p>
           <div class="features">
             <div class="feature-item">
               <el-icon><Document /></el-icon>
-              <span>丰富的技术文章</span>
+              <span>{{ $t('login.features.richArticles') }}</span>
             </div>
             <div class="feature-item">
               <el-icon><User /></el-icon>
-              <span>专业的技术社区</span>
+              <span>{{ $t('login.features.professionalCommunity') }}</span>
             </div>
             <div class="feature-item">
               <el-icon><Star /></el-icon>
-              <span>优质的学习体验</span>
+              <span>{{ $t('login.features.qualityExperience') }}</span>
             </div>
           </div>
         </div>
@@ -27,8 +27,8 @@
       <div class="login-right">
         <div class="login-card">
           <div class="card-header">
-            <h2>欢迎回来</h2>
-            <p>登录您的账户</p>
+            <h2>{{ $t('login.welcomeBack') }}</h2>
+            <p>{{ $t('login.loginYourAccount') }}</p>
             
             <!-- 用户头像预览 -->
             <div v-if="verifiedUser" class="user-preview">
@@ -52,21 +52,21 @@
         label-width="80px"
         @submit.prevent="handleLogin"
       >
-        <el-form-item label="用户名" prop="username">
+        <el-form-item :label="$t('login.username')" prop="username">
           <el-input
             v-model="loginForm.username"
-            placeholder="请输入用户名或邮箱"
+            :placeholder="$t('login.usernamePlaceholder')"
             prefix-icon="User"
             size="large"
             @input="clearVerifiedUser"
           />
         </el-form-item>
         
-        <el-form-item label="密码" prop="password">
+        <el-form-item :label="$t('login.password')" prop="password">
           <el-input
             v-model="loginForm.password"
             type="password"
-            placeholder="请输入密码"
+            :placeholder="$t('login.passwordPlaceholder')"
             prefix-icon="Lock"
             size="large"
             show-password
@@ -75,11 +75,11 @@
           />
         </el-form-item>
         
-        <el-form-item label="验证码" prop="captcha">
+        <el-form-item :label="$t('login.captcha')" prop="captcha">
           <div class="captcha-container">
             <el-input
               v-model="loginForm.captcha"
-              placeholder="请输入验证码"
+              :placeholder="$t('login.captchaPlaceholder')"
               prefix-icon="Key"
               size="large"
               style="flex: 1; margin-right: 10px;"

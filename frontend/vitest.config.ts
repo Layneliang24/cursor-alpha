@@ -23,6 +23,9 @@ export default defineConfig({
     include: [
       'src/**/__tests__/**/*.{test,spec}.{js,ts,jsx,tsx}',
       'tests/unit/**/*.{test,spec}.{js,ts,jsx,tsx}',
+      'tests/integration/**/*.{test,spec}.{js,ts,jsx,tsx}',
+      'tests/e2e/**/*.{test,spec}.{js,ts,jsx,tsx}',
+      'tests/build/**/*.{test,spec}.{js,ts,jsx,tsx}',
     ],
     setupFiles: ['./tests/setupTests.ts'],
     coverage: {

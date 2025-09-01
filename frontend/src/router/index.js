@@ -131,6 +131,18 @@ const routes = [
     meta: { title: '监控仪表板', requiresAuth: true },
   },
   {
+    path: '/english/config-management',
+    name: 'ConfigManagement',
+    component: () => import('@/views/english/ConfigManagement.vue'),
+    meta: { title: '配置管理', requiresAuth: true },
+  },
+  {
+    path: '/english/settings',
+    name: 'Settings',
+    component: () => import('@/views/english/Settings.vue'),
+    meta: { title: '系统设置', requiresAuth: true },
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/auth/Login.vue'),

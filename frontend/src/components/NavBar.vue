@@ -14,47 +14,52 @@
     
     <el-menu-item index="/articles">
       <el-icon><Document /></el-icon>
-      <span>文章</span>
+      <span>{{ $t('nav.articles') }}</span>
     </el-menu-item>
     
-    <el-sub-menu index="english">
-      <template #title>
-        <el-icon><Document /></el-icon>
-        <span>英语学习</span>
-      </template>
-      <el-menu-item index="/english/news-dashboard">
-        <el-icon><Notification /></el-icon>
-        新闻仪表板
-      </el-menu-item>
-      <el-menu-item index="/english/words">
-        <el-icon><Document /></el-icon>
-        单词学习
-      </el-menu-item>
-      <el-menu-item index="/english/expressions">
-        <el-icon><ChatDotRound /></el-icon>
-        地道表达
-      </el-menu-item>
-      <el-menu-item index="/english/news">
-        <el-icon><List /></el-icon>
-        新闻列表
-      </el-menu-item>
-    </el-sub-menu>
+    <!-- 语言切换器 -->
+    <div class="language-switcher-container">
+      <LanguageSwitcher />
+    </div>
+    
+          <el-sub-menu index="english">
+        <template #title>
+          <el-icon><Document /></el-icon>
+          <span>{{ $t('nav.englishLearning') }}</span>
+        </template>
+        <el-menu-item index="/english/news-dashboard">
+          <el-icon><Notification /></el-icon>
+          {{ $t('nav.newsDashboard') }}
+        </el-menu-item>
+        <el-menu-item index="/english/words">
+          <el-icon><Document /></el-icon>
+          {{ $t('nav.wordLearning') }}
+        </el-menu-item>
+        <el-menu-item index="/english/expressions">
+          <el-icon><ChatDotRound /></el-icon>
+          {{ $t('nav.expressions') }}
+        </el-menu-item>
+        <el-menu-item index="/english/news">
+          <el-icon><List /></el-icon>
+          {{ $t('nav.newsList') }}
+        </el-menu-item>
+      </el-sub-menu>
     
     <template v-if="!authStore.isAuthenticated">
       <el-menu-item index="/login">
         <el-icon><User /></el-icon>
-        <span>登录</span>
+        <span>{{ $t('nav.login') }}</span>
       </el-menu-item>
       <el-menu-item index="/register" class="register-menu-item">
         <el-icon><UserFilled /></el-icon>
-        <span>注册</span>
+        <span>{{ $t('nav.register') }}</span>
       </el-menu-item>
     </template>
     
     <template v-else>
       <el-menu-item index="/articles/create" class="create-menu-item">
         <el-icon><EditPen /></el-icon>
-        <span>发布文章</span>
+        <span>{{ $t('nav.createArticle') }}</span>
       </el-menu-item>
       
       <el-sub-menu index="user">
@@ -66,15 +71,15 @@
         </template>
         <el-menu-item index="/user/profile">
           <el-icon><User /></el-icon>
-          个人中心
+          {{ $t('nav.profile') }}
         </el-menu-item>
         <el-menu-item index="/user/articles">
           <el-icon><Document /></el-icon>
-          我的文章
+          {{ $t('nav.myArticles') }}
         </el-menu-item>
         <el-menu-item @click="handleLogout">
           <el-icon><SwitchButton /></el-icon>
-          退出登录
+          {{ $t('nav.logout') }}
         </el-menu-item>
       </el-sub-menu>
     </template>
@@ -84,6 +89,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { 
@@ -97,6 +103,7 @@ import {
   ChatDotRound,
   List
 } from '@element-plus/icons-vue'
+import LanguageSwitcher from './common/LanguageSwitcher.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -120,14 +127,16 @@ router.afterEach(() => {
   updateActiveIndex()
 })
 
+const { t } = useI18n()
+
 const handleLogout = async () => {
   try {
     await ElMessageBox.confirm(
-      '确定要退出登录吗？',
-      '提示',
+      t('confirm.logoutConfirm'),
+      t('common.info'),
       {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        confirmButtonText: t('common.confirm'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning'
       }
     )
@@ -135,7 +144,7 @@ const handleLogout = async () => {
     router.push('/')
   } catch (error) {
     if (error !== 'cancel') {
-      console.error('退出登录失败:', error)
+      console.error(t('errors.logoutFailed'), error)
     }
   }
 }
@@ -186,5 +195,11 @@ const handleLogout = async () => {
 
 :deep(.el-menu-item i) {
   margin-right: 5px;
+}
+
+.language-switcher-container {
+  display: flex;
+  align-items: center;
+  margin: 0 16px;
 }
 </style>

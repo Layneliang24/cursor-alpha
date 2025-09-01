@@ -64,12 +64,37 @@ export default defineConfig({
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-        manualChunks: {
+        manualChunks: (id) => {
           // 第三方库分离
-          'vendor': ['vue', 'vue-router', 'pinia'],
-          'ui': ['element-plus', '@element-plus/icons-vue'],
-          'charts': ['echarts'],
-          // 地道表达模块暂时使用自动分包
+          if (id.includes('node_modules')) {
+            if (id.includes('vue') || id.includes('pinia') || id.includes('vue-router')) {
+              return 'vendor-vue'
+            }
+            if (id.includes('element-plus') || id.includes('@element-plus')) {
+              return 'vendor-ui'
+            }
+            if (id.includes('echarts')) {
+              return 'vendor-charts'
+            }
+            if (id.includes('axios') || id.includes('socket.io')) {
+              return 'vendor-http'
+            }
+            // 其他第三方库
+            return 'vendor-other'
+          }
+          // 业务代码分离
+          if (id.includes('views/english')) {
+            return 'english-module'
+          }
+          if (id.includes('views/chinese')) {
+            return 'chinese-module'
+          }
+          if (id.includes('components/ai-config')) {
+            return 'ai-config-module'
+          }
+          if (id.includes('components/common')) {
+            return 'common-components'
+          }
         },
       },
     },

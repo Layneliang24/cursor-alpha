@@ -265,6 +265,87 @@
           </div>
         </div>
       </div>
+
+      <!-- 配置管理页 -->
+      <div v-if="activeTab === 'config-management'" class="tab-content">
+        <div class="config-management-header">
+          <h2>配置管理</h2>
+          <p class="config-management-subtitle">管理AI服务配置的导入导出、模板和版本历史</p>
+        </div>
+        
+        <div class="config-management-content">
+          <router-link to="/english/config-management" class="config-management-link">
+            <el-button type="primary" size="large" icon="Setting">
+              进入配置管理
+            </el-button>
+          </router-link>
+          
+          <div class="config-management-features">
+            <div class="feature-card">
+              <h3>导入导出</h3>
+              <p>支持JSON/YAML格式的配置导入导出，方便配置的备份和迁移</p>
+            </div>
+            
+            <div class="feature-card">
+              <h3>模板管理</h3>
+              <p>创建和管理配置模板，快速应用常用配置</p>
+            </div>
+            
+            <div class="feature-card">
+              <h3>版本历史</h3>
+              <p>查看配置变更历史，支持版本回滚</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 系统设置页 -->
+      <div v-if="activeTab === 'settings'" class="tab-content">
+        <div class="settings-header">
+          <h2>系统设置</h2>
+          <p class="settings-subtitle">管理个人信息、偏好设置、安全选项和系统配置</p>
+        </div>
+        
+        <div class="settings-content">
+          <router-link to="/english/settings" class="settings-link">
+            <el-button type="primary" size="large" icon="Setting">
+              进入系统设置
+            </el-button>
+          </router-link>
+          
+          <div class="settings-features">
+            <div class="feature-card">
+              <h3>个人信息</h3>
+              <p>管理个人资料、头像和基本信息</p>
+            </div>
+            
+            <div class="feature-card">
+              <h3>偏好设置</h3>
+              <p>自定义主题、语言和时区设置</p>
+            </div>
+            
+            <div class="feature-card">
+              <h3>安全设置</h3>
+              <p>管理密码、双因素认证和安全选项</p>
+            </div>
+            
+            <div class="feature-card">
+              <h3>通知设置</h3>
+              <p>配置邮件和推送通知偏好</p>
+            </div>
+            
+            <div class="feature-card">
+              <h3>登录历史</h3>
+              <p>查看账户登录记录和设备信息</p>
+            </div>
+            
+            <div class="feature-card">
+              <h3>设备管理</h3>
+              <p>管理活跃设备和会话</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -324,7 +405,9 @@ export default {
       { key: 'providers', label: '提供商管理', icon: 'icon-server' },
       { key: 'keys', label: 'API密钥', icon: 'icon-key' },
       { key: 'models', label: '模型配置', icon: 'icon-brain' },
-      { key: 'analytics', label: '统计分析', icon: 'icon-chart' }
+              { key: 'analytics', label: '统计分析', icon: 'icon-chart' },
+        { key: 'config-management', label: '配置管理', icon: 'icon-settings' },
+        { key: 'settings', label: '系统设置', icon: 'icon-setting' }
     ]
     
     // 提供商管理相关方法
@@ -1018,6 +1101,111 @@ export default {
 .set-default-btn:hover {
   background: #d9f7be;
   border-color: #95de64;
+}
+
+/* 配置管理样式 */
+.config-management-header {
+  margin-bottom: 2rem;
+}
+
+/* 系统设置样式 */
+.settings-header {
+  margin-bottom: 2rem;
+}
+
+.settings-subtitle {
+  color: #606266;
+  margin-top: 0.5rem;
+}
+
+.settings-content {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.settings-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+}
+
+.settings-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.settings-features .feature-card {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e4e7ed;
+  transition: all 0.3s ease;
+}
+
+.settings-features .feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.settings-features .feature-card h3 {
+  color: #303133;
+  margin-bottom: 0.5rem;
+  font-size: 16px;
+}
+
+.settings-features .feature-card p {
+  color: #606266;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.config-management-subtitle {
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.config-management-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.config-management-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+}
+
+.config-management-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.feature-card {
+  background: #fff;
+  border: 1px solid #e4e7ed;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.feature-card h3 {
+  color: #303133;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.feature-card p {
+  color: #606266;
+  line-height: 1.5;
+  margin: 0;
 }
 
 /* Element Plus 对话框自定义样式 */

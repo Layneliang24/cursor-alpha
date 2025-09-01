@@ -8,11 +8,17 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from .config_models import (
     AIProvider, APIKey, AIModel, PromptTemplate, ModelConfig, TokenUsage,
-    FailoverStrategy, FailoverRule, UsageQuota
+    FailoverStrategy, FailoverRule, UsageQuota, ConfigTemplate, ConfigVersion,
+    UserSettings, SystemConfig, LoginHistory, DeviceSession
 )
 from apps.common.security import (
     InputValidator, PROVIDER_NAME_VALIDATOR, MODEL_NAME_VALIDATOR
 )
+import os
+import json
+import hashlib
+from django.utils import timezone
+import yaml
 
 User = get_user_model()
 
@@ -499,3 +505,234 @@ class FailoverStrategySerializer(serializers.ModelSerializer):
             'is_active', 'is_default', 'rules', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'user_name', 'rules', 'created_at', 'updated_at']
+
+
+class UserSettingsSerializer(serializers.ModelSerializer):
+    """用户设置序列化器"""
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    user_email = serializers.CharField(source='user.email', read_only=True)
+    
+    class Meta:
+        model = UserSettings
+        fields = [
+            'id', 'user', 'user_name', 'user_email', 'display_name', 'avatar_url', 'bio',
+            'theme', 'language', 'timezone', 'email_notifications', 'push_notifications',
+            'notification_frequency', 'two_factor_enabled', 'session_timeout',
+            'login_notifications', 'auto_save', 'debug_mode', 'analytics_enabled',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'user', 'user_name', 'user_email', 'created_at', 'updated_at']
+    
+    def create(self, validated_data):
+        """创建用户设置"""
+        user = self.context['request'].user
+        validated_data['user'] = user
+        return super().create(validated_data)
+
+
+class SystemConfigSerializer(serializers.ModelSerializer):
+    """系统配置序列化器"""
+    
+    class Meta:
+        model = SystemConfig
+        fields = ['id', 'key', 'value', 'description', 'category', 'is_public', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+
+class LoginHistorySerializer(serializers.ModelSerializer):
+    """登录历史序列化器"""
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    
+    class Meta:
+        model = LoginHistory
+        fields = [
+            'id', 'user', 'user_name', 'ip_address', 'user_agent', 'location',
+            'device_type', 'browser', 'os', 'success', 'login_time'
+        ]
+        read_only_fields = ['id', 'user', 'user_name', 'ip_address', 'user_agent', 'location',
+                           'device_type', 'browser', 'os', 'success', 'login_time']
+
+
+class DeviceSessionSerializer(serializers.ModelSerializer):
+    """设备会话序列化器"""
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    
+    class Meta:
+        model = DeviceSession
+        fields = [
+            'id', 'user', 'user_name', 'session_key', 'device_name', 'device_type',
+            'ip_address', 'user_agent', 'is_active', 'last_activity', 'created_at'
+        ]
+        read_only_fields = ['id', 'user', 'user_name', 'session_key', 'ip_address', 
+                           'user_agent', 'last_activity', 'created_at']
+
+
+class PasswordChangeSerializer(serializers.Serializer):
+    """密码修改序列化器"""
+    old_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True, min_length=8)
+    confirm_password = serializers.CharField(write_only=True)
+    
+    def validate(self, attrs):
+        """验证密码"""
+        if attrs['new_password'] != attrs['confirm_password']:
+            raise serializers.ValidationError("新密码和确认密码不匹配")
+        return attrs
+    
+    def validate_old_password(self, value):
+        """验证旧密码"""
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("旧密码不正确")
+        return value
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    """用户资料序列化器"""
+    settings = UserSettingsSerializer(read_only=True)
+    
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'date_joined', 'settings']
+        read_only_fields = ['id', 'date_joined']
+
+
+class ConfigExportSerializer(serializers.Serializer):
+    """配置导出序列化器"""
+    providers = AIProviderSerializer(many=True, read_only=True)
+    strategies = FailoverStrategySerializer(many=True, read_only=True)
+    settings = serializers.DictField(read_only=True)
+    version = serializers.CharField(read_only=True)
+    export_time = serializers.DateTimeField(read_only=True)
+    metadata = serializers.DictField(read_only=True)
+
+    def to_representation(self, instance):
+        """自定义导出格式"""
+        data = super().to_representation(instance)
+        data['export_time'] = timezone.now().isoformat()
+        data['version'] = '1.0.0'
+        data['metadata'] = {
+            'total_providers': len(data.get('providers', [])),
+            'total_strategies': len(data.get('strategies', [])),
+            'export_format': self.context.get('format', 'json')
+        }
+        return data
+
+
+class ConfigImportSerializer(serializers.Serializer):
+    """配置导入序列化器"""
+    file = serializers.FileField(required=True)
+    format = serializers.ChoiceField(choices=['json', 'yaml'], default='json')
+    validate_only = serializers.BooleanField(default=False)
+    overwrite_existing = serializers.BooleanField(default=False)
+    
+    def validate_file(self, value):
+        """验证文件格式和大小"""
+        # 检查文件大小（最大10MB）
+        if value.size > 10 * 1024 * 1024:
+            raise serializers.ValidationError("文件大小不能超过10MB")
+        
+        # 检查文件扩展名
+        allowed_extensions = ['.json', '.yaml', '.yml']
+        file_extension = os.path.splitext(value.name)[1].lower()
+        if file_extension not in allowed_extensions:
+            raise serializers.ValidationError(f"不支持的文件格式，支持格式：{', '.join(allowed_extensions)}")
+        
+        return value
+    
+    def validate(self, data):
+        """验证配置内容"""
+        try:
+            file_content = data['file'].read().decode('utf-8')
+            format_type = data['format']
+            
+            if format_type == 'json':
+                config_data = json.loads(file_content)
+            else:  # yaml
+                import yaml
+                config_data = yaml.safe_load(file_content)
+            
+            # 验证配置结构
+            required_fields = ['providers', 'strategies', 'version']
+            for field in required_fields:
+                if field not in config_data:
+                    raise serializers.ValidationError(f"缺少必需字段：{field}")
+            
+            # 验证版本兼容性
+            version = config_data.get('version', '')
+            if not self._is_version_compatible(version):
+                raise serializers.ValidationError(f"不兼容的配置版本：{version}")
+            
+            # 验证提供商配置
+            if 'providers' in config_data:
+                for provider in config_data['providers']:
+                    self._validate_provider_config(provider)
+            
+            # 验证策略配置
+            if 'strategies' in config_data:
+                for strategy in config_data['strategies']:
+                    self._validate_strategy_config(strategy)
+            
+            data['parsed_config'] = config_data
+            return data
+            
+        except (json.JSONDecodeError, yaml.YAMLError) as e:
+            raise serializers.ValidationError(f"配置文件格式错误：{str(e)}")
+        except Exception as e:
+            raise serializers.ValidationError(f"配置验证失败：{str(e)}")
+    
+    def _is_version_compatible(self, version):
+        """检查版本兼容性"""
+        # 简单的版本兼容性检查
+        try:
+            major_version = version.split('.')[0]
+            return major_version == '1'
+        except:
+            return False
+    
+    def _validate_provider_config(self, provider):
+        """验证提供商配置"""
+        required_fields = ['name', 'provider_type']
+        for field in required_fields:
+            if field not in provider:
+                raise serializers.ValidationError(f"提供商配置缺少必需字段：{field}")
+    
+    def _validate_strategy_config(self, strategy):
+        """验证策略配置"""
+        required_fields = ['name']
+        for field in required_fields:
+            if field not in strategy:
+                raise serializers.ValidationError(f"策略配置缺少必需字段：{field}")
+
+
+class ConfigTemplateSerializer(serializers.ModelSerializer):
+    """配置模板序列化器"""
+    class Meta:
+        model = ConfigTemplate
+        fields = '__all__'
+        read_only_fields = ('created_at', 'updated_at', 'created_by')
+    
+    def create(self, validated_data):
+        """创建模板时设置创建者"""
+        validated_data['created_by'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+class ConfigVersionSerializer(serializers.ModelSerializer):
+    """配置版本序列化器"""
+    class Meta:
+        model = ConfigVersion
+        fields = '__all__'
+        read_only_fields = ('created_at', 'created_by', 'version_hash')
+    
+    def create(self, validated_data):
+        """创建版本时设置创建者和版本哈希"""
+        validated_data['created_by'] = self.context['request'].user
+        validated_data['version_hash'] = self._generate_version_hash(validated_data['config_data'])
+        return super().create(validated_data)
+    
+    def _generate_version_hash(self, config_data):
+        """生成配置版本哈希"""
+        import hashlib
+        config_str = json.dumps(config_data, sort_keys=True)
+        return hashlib.md5(config_str.encode()).hexdigest()

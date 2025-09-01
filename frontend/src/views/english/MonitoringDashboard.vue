@@ -84,6 +84,7 @@
     <div class="connection-status" :class="{ 'connected': wsConnected, 'disconnected': !wsConnected }">
       <i :class="wsConnected ? 'el-icon-success' : 'el-icon-warning'"></i>
       {{ wsConnected ? '实时连接已建立' : '实时连接断开' }}
+      <span v-if="!wsConnected" class="reconnect-info">正在尝试重连...</span>
     </div>
   </div>
 </template>
@@ -95,7 +96,7 @@ import ServiceStatusPanel from '@/components/monitoring/ServiceStatusPanel.vue'
 import MetricsChart from '@/components/monitoring/MetricsChart.vue'
 import AlarmTable from '@/components/monitoring/AlarmTable.vue'
 import { useMonitoringStore } from '@/stores/modules/monitoringStore'
-import { useWebSocketConnection } from '@/composables/useWebSocket'
+import { useAIWebSocket } from '@/composables/useWebSocket'
 
 export default {
   name: 'MonitoringDashboard',
@@ -119,62 +120,43 @@ export default {
     
     // WebSocket连接
     const { 
-      connected: wsConnected, 
-      connect: connectWS, 
-      disconnect: disconnectWS,
-      send: sendWSMessage
-    } = useWebSocketConnection()
+      isConnected: wsConnected, 
+      connectionStatus: wsStatus,
+      providerStatus,
+      usageStats,
+      strategyStatus,
+      alerts
+    } = useAIWebSocket()
     
-    // 服务状态数据
-    const serviceStatuses = ref([
-      {
-        id: 'openai-gpt4',
-        name: 'OpenAI GPT-4',
-        status: 'online',
-        responseTime: 1250,
-        lastHeartbeat: new Date(),
-        uptime: '99.9%',
-        requestCount: 15420,
-        errorRate: 0.1
-      },
-      {
-        id: 'claude-sonnet',
-        name: 'Claude Sonnet',
-        status: 'online',
-        responseTime: 890,
-        lastHeartbeat: new Date(),
-        uptime: '99.8%',
-        requestCount: 8930,
-        errorRate: 0.2
-      },
-      {
-        id: 'gemini-pro',
-        name: 'Gemini Pro',
-        status: 'offline',
-        responseTime: null,
-        lastHeartbeat: new Date(Date.now() - 300000), // 5分钟前
-        uptime: '98.5%',
-        requestCount: 5670,
-        errorRate: 2.1
-      },
-      {
-        id: 'local-llama',
-        name: 'Local Llama',
-        status: 'warning',
-        responseTime: 3200,
-        lastHeartbeat: new Date(),
-        uptime: '97.2%',
-        requestCount: 2340,
-        errorRate: 1.5
-      }
-    ])
+    // 服务状态数据 - 使用WebSocket实时数据
+    const serviceStatuses = computed(() => {
+      return providerStatus.value.map(provider => ({
+        id: provider.id,
+        name: provider.name,
+        status: provider.is_healthy ? 'online' : 'offline',
+        responseTime: provider.avg_response_time || 0,
+        lastHeartbeat: provider.last_check ? new Date(provider.last_check) : new Date(),
+        uptime: '99.9%', // 可以从历史数据计算
+        requestCount: 0, // 可以从统计数据获取
+        errorRate: provider.is_healthy ? 0.1 : 5.0
+      }))
+    })
     
     // 性能数据
     const responseTimeData = ref([])
     const successRateData = ref([])
     
-    // 告警日志数据
-    const alarmLogs = ref([])
+    // 告警日志数据 - 使用WebSocket实时告警
+    const alarmLogs = computed(() => {
+      return alerts.value.map(alert => ({
+        id: `alert_${alert.strategy_id}_${alert.timestamp}`,
+        timestamp: new Date(alert.timestamp),
+        level: alert.alert_type === 'degradation' ? 'warning' : 'error',
+        service: alert.strategy_name,
+        message: alert.message,
+        isRead: false
+      }))
+    })
     
     // 计算属性
     const unreadAlarmsCount = computed(() => {

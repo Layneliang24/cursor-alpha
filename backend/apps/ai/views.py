@@ -4,14 +4,19 @@ AI配置管理API视图
 
 import logging
 from datetime import datetime, timedelta
+from decimal import Decimal
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 from django.utils import timezone
+from django.http import HttpResponse
+import json
+import yaml
 from django.utils.decorators import method_decorator
-from django.db.models import Count, Sum, Avg
+from django.db.models import Count, Sum, Avg, Q
 from django.db import transaction
 from apps.rbac.permissions import RBACPermission, CanManageAIConfig
 from apps.rbac.services import AuditService
@@ -21,12 +26,16 @@ from apps.common.ssl_config import APIKeySecurityManager
 
 from .config_models import (
     AIProvider, APIKey, AIModel, PromptTemplate, ModelConfig, TokenUsage,
-    FailoverStrategy, FailoverRule, UsageQuota
+    FailoverStrategy, FailoverRule, UsageQuota, ConfigTemplate, ConfigVersion,
+    UserSettings, SystemConfig, LoginHistory, DeviceSession
 )
 from .serializers import (
     AIProviderSerializer, APIKeySerializer, APIKeyCreateSerializer,
     AIModelSerializer, PromptTemplateSerializer, ModelConfigSerializer, TokenUsageSerializer,
-    FailoverStrategySerializer, FailoverRuleSerializer, UsageQuotaSerializer
+    FailoverStrategySerializer, FailoverRuleSerializer, UsageQuotaSerializer,
+    ConfigExportSerializer, ConfigImportSerializer, ConfigTemplateSerializer, ConfigVersionSerializer,
+    UserSettingsSerializer, SystemConfigSerializer, LoginHistorySerializer, DeviceSessionSerializer,
+    UserProfileSerializer, PasswordChangeSerializer
 )
 from .adapters.factory import AIAdapterFactory
 
@@ -912,7 +921,7 @@ class ModelDiscoveryViewSet(viewsets.ViewSet):
                 'provider__display_name'
             ).annotate(
                 model_count=Count('id'),
-                recommended_count=Count('id', filter=models.Q(is_recommended=True))
+                recommended_count=Count('id', filter=Q(is_recommended=True))
             ).order_by('-model_count')
             
             # 按功能统计
@@ -1882,3 +1891,480 @@ class ModelConfigViewSet(DatabaseSecurityMixin, viewsets.ModelViewSet):
                 {'error': f'复制配置失败: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class ConfigExportView(APIView):
+    """配置导出视图"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """导出配置"""
+        try:
+            format_type = request.GET.get('format', 'json')
+            
+            # 获取所有配置数据
+            providers = AIProvider.objects.all()
+            strategies = FailoverStrategy.objects.all()
+            
+            # 构建导出数据
+            export_data = {
+                'providers': AIProviderSerializer(providers, many=True).data,
+                'strategies': FailoverStrategySerializer(strategies, many=True).data,
+                'settings': self._get_system_settings(),
+                'version': '1.0.0',
+                'export_time': datetime.now().isoformat(),
+                'metadata': {
+                    'total_providers': providers.count(),
+                    'total_strategies': strategies.count(),
+                    'export_format': format_type
+                }
+            }
+            
+            # 创建版本记录
+            ConfigVersion.objects.create(
+                config_data=export_data,
+                version_name=f"Export_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+                description=f"配置导出 - {format_type.upper()}格式",
+                created_by=request.user
+            )
+            
+            # 根据格式返回响应
+            if format_type == 'yaml':
+                yaml_content = yaml.dump(export_data, default_flow_style=False, allow_unicode=True)
+                response = HttpResponse(yaml_content, content_type='application/x-yaml')
+                response['Content-Disposition'] = f'attachment; filename="ai_config_{datetime.now().strftime("%Y%m%d_%H%M%S")}.yaml"'
+            else:
+                json_content = json.dumps(export_data, ensure_ascii=False, indent=2)
+                response = HttpResponse(json_content, content_type='application/json')
+                response['Content-Disposition'] = f'attachment; filename="ai_config_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json"'
+            
+            return response
+            
+        except Exception as e:
+            return Response(
+                {'error': f'导出失败：{str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    def _get_system_settings(self):
+        """获取系统设置"""
+        return {
+            'default_timeout': 30,
+            'max_retries': 3,
+            'health_check_interval': 60,
+            'log_level': 'INFO'
+        }
+
+
+class ConfigImportView(APIView):
+    """配置导入视图"""
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        """导入配置"""
+        try:
+            serializer = ConfigImportSerializer(data=request.data, context={'request': request})
+            if not serializer.is_valid():
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+            config_data = serializer.validated_data['parsed_config']
+            validate_only = serializer.validated_data.get('validate_only', False)
+            overwrite_existing = serializer.validated_data.get('overwrite_existing', False)
+            
+            if validate_only:
+                # 仅验证，不导入
+                return Response({
+                    'message': '配置验证通过',
+                    'config_summary': {
+                        'providers_count': len(config_data.get('providers', [])),
+                        'strategies_count': len(config_data.get('strategies', [])),
+                        'version': config_data.get('version', 'unknown')
+                    }
+                })
+            
+            # 执行导入
+            import_result = self._import_config(config_data, overwrite_existing, request.user)
+            
+            return Response({
+                'message': '配置导入成功',
+                'import_result': import_result
+            })
+            
+        except Exception as e:
+            return Response(
+                {'error': f'导入失败：{str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    def _import_config(self, config_data, overwrite_existing, user):
+        """执行配置导入"""
+        result = {
+            'providers_imported': 0,
+            'strategies_imported': 0,
+            'providers_updated': 0,
+            'strategies_updated': 0,
+            'errors': []
+        }
+        
+        # 导入提供商配置
+        if 'providers' in config_data:
+            for provider_data in config_data['providers']:
+                try:
+                    provider_name = provider_data.get('name')
+                    existing_provider = AIProvider.objects.filter(name=provider_name).first()
+                    
+                    if existing_provider and not overwrite_existing:
+                        result['errors'].append(f"提供商 {provider_name} 已存在，跳过导入")
+                        continue
+                    
+                    if existing_provider:
+                        # 更新现有提供商
+                        for field, value in provider_data.items():
+                            if hasattr(existing_provider, field):
+                                setattr(existing_provider, field, value)
+                        existing_provider.save()
+                        result['providers_updated'] += 1
+                    else:
+                        # 创建新提供商
+                        AIProvider.objects.create(**provider_data)
+                        result['providers_imported'] += 1
+                        
+                except Exception as e:
+                    result['errors'].append(f"导入提供商 {provider_name} 失败：{str(e)}")
+        
+        # 导入策略配置
+        if 'strategies' in config_data:
+            for strategy_data in config_data['strategies']:
+                try:
+                    strategy_name = strategy_data.get('name')
+                    existing_strategy = FailoverStrategy.objects.filter(name=strategy_name).first()
+                    
+                    if existing_strategy and not overwrite_existing:
+                        result['errors'].append(f"策略 {strategy_name} 已存在，跳过导入")
+                        continue
+                    
+                    if existing_strategy:
+                        # 更新现有策略
+                        for field, value in strategy_data.items():
+                            if hasattr(existing_strategy, field):
+                                setattr(existing_strategy, field, value)
+                        existing_strategy.save()
+                        result['strategies_updated'] += 1
+                    else:
+                        # 创建新策略
+                        FailoverStrategy.objects.create(**strategy_data)
+                        result['strategies_imported'] += 1
+                        
+                except Exception as e:
+                    result['errors'].append(f"导入策略 {strategy_name} 失败：{str(e)}")
+        
+        # 创建导入版本记录
+        ConfigVersion.objects.create(
+            config_data=config_data,
+            version_name=f"Import_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            description=f"配置导入 - 提供商:{result['providers_imported']} 策略:{result['strategies_imported']}",
+            created_by=user
+        )
+        
+        return result
+
+
+class ConfigTemplateViewSet(viewsets.ModelViewSet):
+    """配置模板视图集"""
+    queryset = ConfigTemplate.objects.all()
+    serializer_class = ConfigTemplateSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """过滤查询集"""
+        queryset = super().get_queryset()
+        
+        # 按创建者过滤
+        if not self.request.user.is_superuser:
+            queryset = queryset.filter(created_by=self.request.user)
+        
+        # 按标签过滤
+        tag = self.request.query_params.get('tag')
+        if tag:
+            queryset = queryset.filter(tags__contains=tag)
+        
+        return queryset.order_by('-created_at')
+    
+    def perform_create(self, serializer):
+        """创建模板"""
+        serializer.save(created_by=self.request.user)
+    
+    @action(detail=True, methods=['post'])
+    def apply(self, request, pk=None):
+        """应用模板"""
+        try:
+            template = self.get_object()
+            config_data = template.config_data
+            
+            # 执行导入
+            import_result = ConfigImportView()._import_config(
+                config_data,
+                overwrite_existing=True,
+                user=request.user
+            )
+            
+            return Response({
+                'message': f'模板 {template.name} 应用成功',
+                'import_result': import_result
+            })
+            
+        except Exception as e:
+            return Response(
+                {'error': f'应用模板失败：{str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class ConfigVersionViewSet(viewsets.ReadOnlyModelViewSet):
+    """配置版本视图集"""
+    queryset = ConfigVersion.objects.all()
+    serializer_class = ConfigVersionSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """过滤查询集"""
+        queryset = super().get_queryset()
+        
+        # 按创建者过滤
+        if not self.request.user.is_superuser:
+            queryset = queryset.filter(created_by=self.request.user)
+        
+        return queryset.order_by('-created_at')
+    
+    @action(detail=True, methods=['post'])
+    def rollback(self, request, pk=None):
+        """回滚到指定版本"""
+        try:
+            version = self.get_object()
+            config_data = version.config_data
+            
+            # 执行回滚
+            rollback_result = ConfigImportView()._import_config(
+                config_data,
+                overwrite_existing=True,
+                user=request.user
+            )
+            
+            # 创建回滚记录
+            ConfigVersion.objects.create(
+                config_data=config_data,
+                version_name=f"Rollback_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+                description=f"回滚到版本 {version.version_name}",
+                created_by=request.user
+            )
+            
+            return Response({
+                'message': f'回滚到版本 {version.version_name} 成功',
+                'rollback_result': rollback_result
+            })
+            
+        except Exception as e:
+            return Response(
+                {'error': f'回滚失败：{str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class UserSettingsViewSet(viewsets.ModelViewSet):
+    """用户设置视图集"""
+    serializer_class = UserSettingsSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """获取当前用户的设置"""
+        return UserSettings.objects.filter(user=self.request.user)
+    
+    def get_object(self):
+        """获取或创建用户设置"""
+        settings, created = UserSettings.objects.get_or_create(user=self.request.user)
+        return settings
+    
+    @action(detail=False, methods=['get', 'put', 'patch'])
+    def my_settings(self, request):
+        """获取或更新当前用户的设置"""
+        settings, created = UserSettings.objects.get_or_create(user=request.user)
+        
+        if request.method == 'GET':
+            serializer = self.get_serializer(settings)
+            return Response(serializer.data)
+        
+        elif request.method in ['PUT', 'PATCH']:
+            serializer = self.get_serializer(settings, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SystemConfigViewSet(viewsets.ModelViewSet):
+    """系统配置视图集"""
+    queryset = SystemConfig.objects.all()
+    serializer_class = SystemConfigSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """根据权限过滤配置"""
+        if self.request.user.is_staff:
+            return SystemConfig.objects.all()
+        return SystemConfig.objects.filter(is_public=True)
+    
+    @action(detail=False, methods=['get'])
+    def by_category(self, request):
+        """按分类获取配置"""
+        category = request.GET.get('category', 'general')
+        configs = self.get_queryset().filter(category=category)
+        serializer = self.get_serializer(configs, many=True)
+        return Response(serializer.data)
+
+
+class LoginHistoryViewSet(viewsets.ReadOnlyModelViewSet):
+    """登录历史视图集"""
+    serializer_class = LoginHistorySerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """获取当前用户的登录历史"""
+        return LoginHistory.objects.filter(user=self.request.user)
+    
+    @action(detail=False, methods=['get'])
+    def recent(self, request):
+        """获取最近的登录记录"""
+        limit = int(request.GET.get('limit', 10))
+        history = self.get_queryset()[:limit]
+        serializer = self.get_serializer(history, many=True)
+        return Response(serializer.data)
+
+
+class DeviceSessionViewSet(viewsets.ModelViewSet):
+    """设备会话视图集"""
+    serializer_class = DeviceSessionSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """获取当前用户的设备会话"""
+        return DeviceSession.objects.filter(user=self.request.user)
+    
+    @action(detail=True, methods=['post'])
+    def terminate(self, request, pk=None):
+        """终止设备会话"""
+        session = self.get_object()
+        session.is_active = False
+        session.save()
+        return Response({'message': '会话已终止'})
+    
+    @action(detail=False, methods=['post'])
+    def terminate_all(self, request):
+        """终止所有设备会话"""
+        self.get_queryset().update(is_active=False)
+        return Response({'message': '所有会话已终止'})
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """用户资料视图集"""
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """获取当前用户"""
+        return User.objects.filter(id=self.request.user.id)
+    
+    def get_object(self):
+        """获取当前用户"""
+        return self.request.user
+    
+    @action(detail=False, methods=['get', 'put', 'patch'])
+    def my_profile(self, request):
+        """获取或更新当前用户资料"""
+        user = request.user
+        
+        if request.method == 'GET':
+            serializer = self.get_serializer(user)
+            return Response(serializer.data)
+        
+        elif request.method in ['PUT', 'PATCH']:
+            serializer = self.get_serializer(user, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordChangeView(APIView):
+    """密码修改视图"""
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        """修改密码"""
+        serializer = PasswordChangeSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            user = request.user
+            user.set_password(serializer.validated_data['new_password'])
+            user.save()
+            
+            # 记录密码修改历史
+            LoginHistory.objects.create(
+                user=user,
+                ip_address=self._get_client_ip(request),
+                user_agent=request.META.get('HTTP_USER_AGENT', ''),
+                device_type=self._get_device_type(request),
+                browser=self._get_browser(request),
+                os=self._get_os(request),
+                success=True
+            )
+            
+            return Response({'message': '密码修改成功'})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def _get_client_ip(self, request):
+        """获取客户端IP"""
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+    
+    def _get_device_type(self, request):
+        """获取设备类型"""
+        user_agent = request.META.get('HTTP_USER_AGENT', '').lower()
+        if 'mobile' in user_agent:
+            return 'mobile'
+        elif 'tablet' in user_agent:
+            return 'tablet'
+        else:
+            return 'desktop'
+    
+    def _get_browser(self, request):
+        """获取浏览器信息"""
+        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        if 'chrome' in user_agent.lower():
+            return 'Chrome'
+        elif 'firefox' in user_agent.lower():
+            return 'Firefox'
+        elif 'safari' in user_agent.lower():
+            return 'Safari'
+        elif 'edge' in user_agent.lower():
+            return 'Edge'
+        else:
+            return 'Unknown'
+    
+    def _get_os(self, request):
+        """获取操作系统信息"""
+        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        if 'windows' in user_agent.lower():
+            return 'Windows'
+        elif 'mac' in user_agent.lower():
+            return 'macOS'
+        elif 'linux' in user_agent.lower():
+            return 'Linux'
+        elif 'android' in user_agent.lower():
+            return 'Android'
+        elif 'ios' in user_agent.lower():
+            return 'iOS'
+        else:
+            return 'Unknown'

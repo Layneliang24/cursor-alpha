@@ -42,7 +42,7 @@
       <span>内容长度已达到上限的 {{ lengthUsagePercent }}%</span>
     </div>
     
-    <!-- 自定义错误提示 */
+    <!-- 自定义错误提示 -->
     <div v-if="errorMessage" class="security-warning error-message">
       <el-icon><CircleCloseFilled /></el-icon>
       <span>{{ errorMessage }}</span>

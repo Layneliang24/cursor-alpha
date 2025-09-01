@@ -1,300 +1,193 @@
-import { ref, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { ElMessage } from 'element-plus'
+import websocketService from '@/services/websocket'
 
-/**
- * WebSocket连接管理组合式函数
- */
-export function useWebSocketConnection() {
-  const connected = ref(false)
-  const connecting = ref(false)
-  const error = ref(null)
-  
-  let ws = null
-  let reconnectTimer = null
-  let heartbeatTimer = null
-  let reconnectAttempts = 0
-  const maxReconnectAttempts = 5
-  const reconnectInterval = 3000 // 3秒
-  const heartbeatInterval = 30000 // 30秒
-  
-  let options = {
-    onOpen: null,
-    onMessage: null,
-    onClose: null,
-    onError: null,
-    onReconnect: null,
-    autoReconnect: true,
-    heartbeat: true
+export function useWebSocket() {
+  const isConnected = ref(false)
+  const connectionStatus = ref('disconnected')
+  const reconnectAttempts = ref(0)
+  const lastMessage = ref(null)
+  const messageHistory = ref([])
+
+  // 连接状态监听器
+  const updateConnectionStatus = () => {
+    const status = websocketService.getConnectionStatus()
+    isConnected.value = status.isConnected
+    reconnectAttempts.value = status.reconnectAttempts
+    connectionStatus.value = status.isConnected ? 'connected' : 'disconnected'
   }
-  
-  /**
-   * 连接WebSocket
-   * @param {string} url WebSocket URL
-   * @param {Object} connectionOptions 连接选项
-   */
-  const connect = (url, connectionOptions = {}) => {
-    if (ws && (ws.readyState === WebSocket.CONNECTING || ws.readyState === WebSocket.OPEN)) {
-      console.warn('WebSocket已连接或正在连接中')
-      return
+
+  // 消息处理器
+  const handleMessage = (data) => {
+    lastMessage.value = {
+      ...data,
+      timestamp: new Date().toISOString()
     }
+    messageHistory.value.push(lastMessage.value)
     
-    options = { ...options, ...connectionOptions }
-    connecting.value = true
-    error.value = null
-    
+    // 限制消息历史记录数量
+    if (messageHistory.value.length > 100) {
+      messageHistory.value = messageHistory.value.slice(-100)
+    }
+  }
+
+  // 连接WebSocket
+  const connect = async () => {
     try {
-      ws = new WebSocket(url)
-      
-      ws.onopen = (event) => {
-        console.log('WebSocket连接已建立')
-        connected.value = true
-        connecting.value = false
-        reconnectAttempts = 0
-        
-        // 启动心跳
-        if (options.heartbeat) {
-          startHeartbeat()
-        }
-        
-        // 触发回调
-        if (options.onOpen) {
-          options.onOpen(event)
-        }
-      }
-      
-      ws.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data)
-          
-          // 处理心跳响应
-          if (data.type === 'pong') {
-            console.log('收到心跳响应')
-            return
-          }
-          
-          // 触发消息回调
-          if (options.onMessage) {
-            options.onMessage(data, event)
-          }
-        } catch (err) {
-          console.error('解析WebSocket消息失败:', err)
-          // 原始消息回调
-          if (options.onMessage) {
-            options.onMessage(event.data, event)
-          }
-        }
-      }
-      
-      ws.onclose = (event) => {
-        console.log('WebSocket连接已关闭', event.code, event.reason)
-        connected.value = false
-        connecting.value = false
-        
-        // 停止心跳
-        stopHeartbeat()
-        
-        // 触发回调
-        if (options.onClose) {
-          options.onClose(event)
-        }
-        
-        // 自动重连
-        if (options.autoReconnect && reconnectAttempts < maxReconnectAttempts) {
-          scheduleReconnect(url)
-        }
-      }
-      
-      ws.onerror = (event) => {
-        console.error('WebSocket错误:', event)
-        error.value = event
-        connecting.value = false
-        
-        // 触发回调
-        if (options.onError) {
-          options.onError(event)
-        }
-      }
-      
-    } catch (err) {
-      console.error('创建WebSocket连接失败:', err)
-      error.value = err
-      connecting.value = false
+      connectionStatus.value = 'connecting'
+      await websocketService.connect()
+      updateConnectionStatus()
+      ElMessage.success('WebSocket连接成功')
+    } catch (error) {
+      console.error('WebSocket连接失败:', error)
+      connectionStatus.value = 'error'
+      ElMessage.error('WebSocket连接失败')
     }
   }
-  
-  /**
-   * 断开连接
-   */
+
+  // 断开WebSocket
   const disconnect = () => {
-    if (ws) {
-      // 停止自动重连
-      options.autoReconnect = false
-      clearTimeout(reconnectTimer)
-      
-      // 停止心跳
-      stopHeartbeat()
-      
-      // 关闭连接
-      if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
-        ws.close(1000, '手动断开连接')
-      }
-      
-      ws = null
-    }
-    
-    connected.value = false
-    connecting.value = false
-    error.value = null
-    reconnectAttempts = 0
+    websocketService.disconnect()
+    updateConnectionStatus()
+    ElMessage.info('WebSocket已断开')
   }
-  
-  /**
-   * 发送消息
-   * @param {*} message 要发送的消息
-   */
-  const send = (message) => {
-    if (!ws || ws.readyState !== WebSocket.OPEN) {
-      console.warn('WebSocket未连接，无法发送消息')
-      return false
-    }
-    
-    try {
-      const data = typeof message === 'string' ? message : JSON.stringify(message)
-      ws.send(data)
-      return true
-    } catch (err) {
-      console.error('发送WebSocket消息失败:', err)
-      return false
-    }
+
+  // 订阅消息类型
+  const subscribe = (type, callback) => {
+    return websocketService.subscribe(type, callback)
   }
-  
-  /**
-   * 安排重连
-   * @param {string} url WebSocket URL
-   */
-  const scheduleReconnect = (url) => {
-    if (reconnectTimer) {
-      clearTimeout(reconnectTimer)
-    }
-    
-    reconnectAttempts++
-    const delay = Math.min(reconnectInterval * Math.pow(1.5, reconnectAttempts - 1), 30000)
-    
-    console.log(`${delay / 1000}秒后尝试第${reconnectAttempts}次重连...`)
-    
-    // 触发重连回调
-    if (options.onReconnect) {
-      options.onReconnect(reconnectAttempts, delay)
-    }
-    
-    reconnectTimer = setTimeout(() => {
-      if (reconnectAttempts <= maxReconnectAttempts) {
-        console.log(`开始第${reconnectAttempts}次重连...`)
-        connect(url, options)
-      } else {
-        console.error('达到最大重连次数，停止重连')
-        error.value = new Error('连接失败，已达到最大重连次数')
-      }
-    }, delay)
+
+  // 请求状态更新
+  const requestStatus = () => {
+    websocketService.requestStatus()
   }
-  
-  /**
-   * 启动心跳
-   */
-  const startHeartbeat = () => {
-    if (!options.heartbeat) return
+
+  // 发送消息
+  const sendMessage = (data) => {
+    websocketService.send(data)
+  }
+
+  // 清理函数
+  const cleanup = () => {
+    websocketService.disconnect()
+  }
+
+  // 组件挂载时连接
+  onMounted(() => {
+    connect()
     
-    stopHeartbeat() // 确保没有重复的定时器
+    // 定期更新连接状态
+    const statusInterval = setInterval(updateConnectionStatus, 1000)
     
-    heartbeatTimer = setInterval(() => {
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        send({ type: 'ping', timestamp: Date.now() })
-      }
-    }, heartbeatInterval)
-  }
-  
-  /**
-   * 停止心跳
-   */
-  const stopHeartbeat = () => {
-    if (heartbeatTimer) {
-      clearInterval(heartbeatTimer)
-      heartbeatTimer = null
-    }
-  }
-  
-  /**
-   * 手动重连
-   * @param {string} url WebSocket URL
-   */
-  const reconnect = (url) => {
-    disconnect()
-    reconnectAttempts = 0
-    setTimeout(() => {
-      connect(url, options)
-    }, 1000)
-  }
-  
-  /**
-   * 获取连接状态
-   */
-  const getReadyState = () => {
-    if (!ws) return WebSocket.CLOSED
-    return ws.readyState
-  }
-  
-  /**
-   * 获取连接状态文本
-   */
-  const getReadyStateText = () => {
-    const state = getReadyState()
-    const stateMap = {
-      [WebSocket.CONNECTING]: '连接中',
-      [WebSocket.OPEN]: '已连接',
-      [WebSocket.CLOSING]: '关闭中',
-      [WebSocket.CLOSED]: '已关闭'
-    }
-    return stateMap[state] || '未知'
-  }
-  
-  // 组件卸载时自动清理
-  onUnmounted(() => {
-    disconnect()
+    // 组件卸载时清理
+    onUnmounted(() => {
+      clearInterval(statusInterval)
+      cleanup()
+    })
   })
-  
+
   return {
     // 状态
-    connected,
-    connecting,
-    error,
+    isConnected,
+    connectionStatus,
+    reconnectAttempts,
+    lastMessage,
+    messageHistory,
     
     // 方法
     connect,
     disconnect,
-    send,
-    reconnect,
-    getReadyState,
-    getReadyStateText,
-    
-    // 只读状态
-    reconnectAttempts: () => reconnectAttempts,
-    maxReconnectAttempts: () => maxReconnectAttempts
+    subscribe,
+    requestStatus,
+    sendMessage,
+    cleanup
   }
 }
 
-/**
- * 简化的WebSocket Hook，用于单一连接
- * @param {string} url WebSocket URL
- * @param {Object} options 连接选项
- */
-export function useWebSocket(url, options = {}) {
-  const connection = useWebSocketConnection()
+// 专门用于AI监控的WebSocket组合函数
+export function useAIWebSocket() {
+  const { isConnected, connectionStatus, subscribe, requestStatus } = useWebSocket()
   
-  // 自动连接
-  if (url) {
-    connection.connect(url, options)
+  const providerStatus = ref([])
+  const usageStats = ref({})
+  const strategyStatus = ref([])
+  const alerts = ref([])
+
+  // 订阅AI相关消息
+  const subscribeToAIUpdates = () => {
+    // 订阅提供商状态更新
+    subscribe('provider_status_update', (data) => {
+      const index = providerStatus.value.findIndex(p => p.id === data.id)
+      if (index > -1) {
+        providerStatus.value[index] = data
+      } else {
+        providerStatus.value.push(data)
+      }
+    })
+
+    // 订阅Token使用统计更新
+    subscribe('token_usage_update', (data) => {
+      usageStats.value = data
+    })
+
+    // 订阅故障转移告警
+    subscribe('fallback_alert', (data) => {
+      alerts.value.unshift(data)
+      // 限制告警数量
+      if (alerts.value.length > 50) {
+        alerts.value = alerts.value.slice(0, 50)
+      }
+      
+      // 显示告警消息
+      ElMessage.warning(`故障转移告警: ${data.message}`)
+    })
+
+    // 订阅状态更新
+    subscribe('status_update', (data) => {
+      if (data.providers) {
+        providerStatus.value = data.providers
+      }
+      if (data.usage_stats) {
+        usageStats.value = data.usage_stats
+      }
+      if (data.strategies) {
+        strategyStatus.value = data.strategies
+      }
+    })
+
+    // 订阅初始状态
+    subscribe('initial_status', (data) => {
+      if (data.providers) {
+        providerStatus.value = data.providers
+      }
+      if (data.usage_stats) {
+        usageStats.value = data.usage_stats
+      }
+      if (data.strategies) {
+        strategyStatus.value = data.strategies
+      }
+    })
   }
-  
-  return connection
+
+  // 组件挂载时订阅
+  onMounted(() => {
+    subscribeToAIUpdates()
+  })
+
+  return {
+    // 连接状态
+    isConnected,
+    connectionStatus,
+    
+    // AI数据
+    providerStatus,
+    usageStats,
+    strategyStatus,
+    alerts,
+    
+    // 方法
+    requestStatus
+  }
 }
 
 /**
