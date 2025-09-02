@@ -1,0 +1,18 @@
+# Task ID: 32
+# Title: 重建核心功能测试
+# Status: pending
+# Dependencies: 28, 31
+# Priority: high
+# Description: 重建核心功能的测试套件，确保100%通过
+# Details:
+根据问题报告，修复核心功能测试：
+1. 修复编码问题
+2. 重构非标准测试
+3. 补充依赖
+4. 移除非测试代码
+5. 统一使用pytest（后端）和vitest（前端）
+
+核心功能包括：用户管理、课程学习、AI功能等
+
+# Test Strategy:
+运行核心功能测试，验证通过率达到100%

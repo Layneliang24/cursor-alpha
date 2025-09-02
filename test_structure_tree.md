@@ -1,0 +1,191 @@
+# 项目测试文件结构树
+
+## 📊 统计信息
+
+- **测试文件总数**: 146
+- **测试目录数量**: 5
+- **框架类型分布**:
+  - python: 100 个文件
+  - javascript: 46 个文件
+
+## 📂 目录结构
+
+### 📁 tests/
+
+#### 🔧 pytest (69 个文件)
+
+- `debug_key_error_test.py` (7.6 KB)
+- `simple_submit_test.py` (5.9 KB)
+- `test_calendar_fix.py` (2.3 KB)
+- `test_quick_validation.py` (8.2 KB)
+- `test_runner_optimized.py` (18.2 KB)
+- `test_simple_validation.py` (6.6 KB)
+- `test_chapter_word_counts_api.py` (5.6 KB)
+- `test_frontend_api_simulation.py` (7.3 KB)
+- `test_frontend_api_wrapper.py` (5.8 KB)
+- `test_typing_words_api.py` (7.6 KB)
+- `test_api_documentation.py` (16.7 KB)
+- `test_data_factory.py` (16.5 KB)
+- `test_edge_cases.py` (17.6 KB)
+- `test_progress_bar_display.py` (9.5 KB)
+- `test_typing_component_lifecycle.py` (11.1 KB)
+- `test_vue_components.py` (8.2 KB)
+- `test_api.py` (12.1 KB)
+- `test_end_to_end_workflow.py` (11.9 KB)
+- `test_fixes_verification.py` (10.7 KB)
+- `test_full_workflow_integration.py` (21.4 KB)
+- `test_news_api.py` (3.7 KB)
+- `test_typing_practice_submit_integration.py` (13.2 KB)
+- `test_chapter_completion_integration.py` (8.2 KB)
+- `test_chapter_completion_simple.py` (8.0 KB)
+- `test_performance_regression.py` (12.3 KB)
+- `test_permissions.py` (18.7 KB)
+- `test_user_authentication.py` (19.0 KB)
+- `test_data_analysis_regression.py` (25.9 KB)
+- `test_pause_resume.py` (20.4 KB)
+- `test_pronunciation.py` (12.1 KB)
+- `test_typing_practice_submit_regression.py` (16.2 KB)
+- `test_ai_module.py` (5.1 KB)
+- `test_api_docs_cache.py` (18.8 KB)
+- `test_article_management.py` (22.5 KB)
+- `test_async_tasks.py` (20.3 KB)
+- `test_basic.py` (4.9 KB)
+- `test_bbc_news_save.py` (13.2 KB)
+- `test_cnn_crawler.py` (8.7 KB)
+- `test_common_module.py` (13.9 KB)
+- `test_data_analysis.py` (19.5 KB)
+- `test_data_quality.py` (20.3 KB)
+- `test_data_storage.py` (19.0 KB)
+- `test_english_api.py` (39.1 KB)
+- `test_english_learning.py` (20.7 KB)
+- `test_english_security.py` (15.7 KB)
+- `test_expression_crawler.py` (14.0 KB)
+- `test_fundus_crawler.py` (2.0 KB)
+- `test_idiomatic_expressions.py` (19.2 KB)
+- `test_jobs.py` (0.6 KB)
+- `test_jobs_module.py` (5.7 KB)
+- `test_links_module.py` (14.9 KB)
+- `test_models.py` (9.7 KB)
+- `test_model_fields_fix.py` (12.5 KB)
+- `test_mysql_connection.py` (4.2 KB)
+- `test_news_dashboard.py` (12.4 KB)
+- `test_news_visibility_removal.py` (7.5 KB)
+- `test_permissions_comprehensive.py` (19.6 KB)
+- `test_search_module.py` (8.6 KB)
+- `test_simple.py` (4.2 KB)
+- `test_specialized_crawlers.py` (18.2 KB)
+- `test_storage_core.py` (13.5 KB)
+- `test_task_system.py` (15.1 KB)
+- `test_techcrunch_and_image_cleanup.py` (16.5 KB)
+- `test_todos.py` (0.6 KB)
+- `test_typing_practice.py` (14.2 KB)
+- `test_typing_practice_api.py` (13.8 KB)
+- `test_typing_practice_submit.py` (13.4 KB)
+- `test_user_auth.py` (17.2 KB)
+- `test_helpers.py` (19.3 KB)
+
+#### 🔧 unknown_python (7 个文件)
+
+- `test_settings.py` (1.7 KB)
+- `test_settings_ci.py` (5.5 KB)
+- `test_settings_mysql.py` (2.2 KB)
+- `test_bbc_fix_verification.py` (8.5 KB)
+- `test_bbc_simple.py` (3.6 KB)
+- `test_quality_monitor.py` (19.4 KB)
+- `test_report_generator.py` (23.5 KB)
+
+#### 🔧 vitest (1 个文件)
+
+- `example_requirement.spec.js` (0.6 KB)
+
+#### 🔧 django_test (4 个文件)
+
+- `test_articles.py` (0.1 KB)
+- `test_categories.py` (0.1 KB)
+- `test_users.py` (0.1 KB)
+- `test_data_manager.py` (15.7 KB)
+
+### 📁 backend/tests/
+
+#### 🔧 pytest (11 个文件)
+
+- `test_ai_config_encryption.py` (3.1 KB)
+- `test_flaky_examples.py` (6.7 KB)
+- `test_ai_service_management.py` (20.2 KB)
+- `test_api_cache_performance.py` (11.6 KB)
+- `test_ai_adapters.py` (24.9 KB)
+- `test_ai_config_models.py` (15.1 KB)
+- `test_ai_serializers.py` (19.1 KB)
+- `test_ai_views.py` (19.6 KB)
+- `test_basic_models.py` (14.2 KB)
+- `test_cache_strategy.py` (6.9 KB)
+- `test_core_functionality.py` (11.9 KB)
+
+### 📁 backend/apps/ai/tests/
+
+#### 🔧 pytest (9 个文件)
+
+- `test_api_views.py` (25.5 KB)
+- `test_config_import_export.py` (15.7 KB)
+- `test_failover_auto_switch.py` (14.0 KB)
+- `test_manual_switch.py` (22.1 KB)
+- `test_model_config.py` (14.0 KB)
+- `test_model_discovery.py` (16.4 KB)
+- `test_monitoring.py` (22.7 KB)
+- `test_security.py` (21.3 KB)
+- `test_token_statistics.py` (17.2 KB)
+
+### 📁 frontend/tests/
+
+#### 🔧 vitest (41 个文件)
+
+- `flaky-examples.test.js` (8.8 KB)
+- `build.test.js` (5.1 KB)
+- `acceptance.test.js` (7.6 KB)
+- `ai-assistant-advanced.spec.ts` (11.2 KB)
+- `ai-config.e2e.test.js` (10.7 KB)
+- `basic-navigation.spec.ts` (1.5 KB)
+- `idiomatic-expressions.spec.ts` (3.4 KB)
+- `learning-analytics.spec.ts` (11.4 KB)
+- `learning-modes.spec.ts` (8.9 KB)
+- `user-login-flow.spec.ts` (6.2 KB)
+- `routing.test.js` (2.6 KB)
+- `aiConfig.integration.test.js` (6.4 KB)
+- `AIConfig.integration.test.js` (8.5 KB)
+- `cross-browser-learning.test.js` (13.9 KB)
+- `cross-browser-login.test.js` (13.0 KB)
+- `basic.test.js` (0.8 KB)
+- `core-functionality.test.js` (0.5 KB)
+- `idiomatic_expressions_requirement.test.js` (0.7 KB)
+- `security.test.ts` (8.5 KB)
+- `aiConfig.test.js` (6.6 KB)
+- `AIAssistantChat.simple.test.js` (7.1 KB)
+- `AIAssistantChat.test.js` (16.4 KB)
+- `ExpressionCard.simple.test.js` (7.6 KB)
+- `ExpressionCard.test.js` (15.3 KB)
+- `LearningAnalyticsDashboard.simple.test.js` (17.6 KB)
+- `LearningAnalyticsDashboard.test.js` (21.4 KB)
+- `LoadingIndicator.test.js` (10.4 KB)
+- `SafeHTML.test.ts` (4.4 KB)
+- `ScenarioPlayer.simple.test.js` (14.1 KB)
+- `ScenarioPlayer.test.js` (17.1 KB)
+- `SecureInput.test.ts` (8.5 KB)
+- `LanguageSwitcher.test.js` (3.4 KB)
+- `useLoading.test.js` (10.1 KB)
+- `ConfigImportExport.test.js` (7.1 KB)
+- `ConfigManagement.test.js` (2.9 KB)
+- `i18n.test.js` (8.4 KB)
+- `optimization.test.js` (10.2 KB)
+- `Settings.test.js` (3.6 KB)
+- `auth.test.js` (8.0 KB)
+- `dateUtils.test.js` (4.3 KB)
+- `errorHandler.test.js` (12.0 KB)
+
+### 📁 e2e/tests/
+
+#### 🔧 vitest (4 个文件)
+
+- `analytics.spec.ts` (10.3 KB)
+- `auth.spec.ts` (7.1 KB)
+- `dictionary.spec.ts` (9.2 KB)
+- `user-journey.spec.ts` (14.5 KB)

@@ -1,0 +1,77 @@
+# Task ID: 26
+# Title: 分析测试文件结构
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: 分析所有1,734个测试文件的组织结构，生成结构图和依赖关系图
+# Details:
+使用脚本遍历所有测试目录，收集每个测试文件的路径、框架类型、依赖关系。生成树状结构图和依赖关系图。
+伪代码:
+```python
+import os
+from collections import defaultdict
+
+test_dirs = ['tests', 'backend/apps/ai/tests', 'backend/tests', 'frontend/tests']
+file_structure = defaultdict(list)
+
+def analyze_structure(root_dir):
+    for dirpath, dirnames, filenames in os.walk(root_dir):
+        relative_path = os.path.relpath(dirpath, root_dir)
+        test_files = [f for f in filenames if is_test_file(f)]
+        file_structure[relative_path].extend(test_files)
+
+for test_dir in test_dirs:
+    analyze_structure(test_dir)
+
+# 生成树状图
+# 生成依赖关系图（通过导入分析）
+```
+
+# Test Strategy:
+验证生成的图表是否包含所有测试目录和文件，检查依赖关系是否正确
+
+# Subtasks:
+## 1. 实现目录遍历脚本 [pending]
+### Dependencies: None
+### Description: 开发脚本遍历所有测试目录，收集文件路径和基础信息
+### Details:
+使用Python的os.walk遍历'tests', 'backend/apps/ai/tests', 'backend/tests', 'frontend/tests'目录，识别测试文件（通过文件名模式如test_*.py），记录相对路径和文件名到数据结构中
+
+## 2. 分析框架类型和依赖关系 [pending]
+### Dependencies: 26.1
+### Description: 扩展脚本以识别测试框架类型并解析文件间依赖
+### Details:
+1. 通过文件内容分析框架类型（pytest/unittest/Jest）
+2. 解析import语句建立依赖关系图
+3. 处理跨语言依赖（Python/JavaScript）
+
+## 3. 构建树状结构图 [pending]
+### Dependencies: 26.1
+### Description: 基于目录结构生成可视化树状图
+### Details:
+使用Graphviz或类似工具：
+1. 将目录路径转换为节点层级
+2. 文件作为叶子节点
+3. 标注各节点框架类型
+4. 输出SVG/PNG格式图表
+
+## 4. 生成依赖关系图 [pending]
+### Dependencies: 26.2
+### Description: 创建测试文件间的依赖关系可视化
+### Details:
+1. 将依赖关系数据转换为有向图
+2. 使用不同颜色区分框架类型
+3. 聚合高频依赖路径
+4. 实现交互式缩放和搜索功能
+
+## 5. 生成综合报告 [pending]
+### Dependencies: 26.3, 26.4
+### Description: 整合分析结果输出结构化报告
+### Details:
+创建包含：
+1. 目录结构统计（各层级文件数量）
+2. 框架类型分布
+3. 依赖关系复杂度指标
+4. 图表嵌入链接
+5. 异常依赖路径标记
+

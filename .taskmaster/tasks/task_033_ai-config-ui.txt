@@ -1,0 +1,14 @@
+# Task ID: 33
+# Title: 统一测试框架
+# Status: pending
+# Dependencies: 32
+# Priority: medium
+# Description: 统一测试框架和工具链
+# Details:
+1. 后端：将所有测试迁移到pytest（包括Django TestCase）
+2. 前端：统一使用vitest（单元测试）和playwright（E2E）
+3. 配置统一的覆盖率工具：coverage.py + vitest coverage
+4. 配置pytest-benchmark用于性能测试
+
+# Test Strategy:
+检查所有测试文件是否使用指定框架，覆盖率工具是否正常工作

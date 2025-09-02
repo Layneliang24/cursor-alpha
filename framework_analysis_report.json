@@ -1,0 +1,4754 @@
+{
+  "framework_statistics": {
+    "pytest": 89,
+    "unknown_python": 7,
+    "vitest": 46,
+    "django_test": 4
+  },
+  "file_framework_mapping": {
+    "tests\\debug_key_error_test.py": {
+      "frameworks": [
+        "pytest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 6246
+    },
+    "tests\\simple_submit_test.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 5273
+    },
+    "tests\\test_calendar_fix.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 1894
+    },
+    "tests\\test_quick_validation.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 7133
+    },
+    "tests\\test_runner_optimized.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 16312
+    },
+    "tests\\test_settings.py": {
+      "frameworks": [
+        "unknown_python"
+      ],
+      "primary": "unknown_python",
+      "content_length": 1488
+    },
+    "tests\\test_settings_ci.py": {
+      "frameworks": [
+        "unknown_python"
+      ],
+      "primary": "unknown_python",
+      "content_length": 4931
+    },
+    "tests\\test_settings_mysql.py": {
+      "frameworks": [
+        "unknown_python"
+      ],
+      "primary": "unknown_python",
+      "content_length": 1928
+    },
+    "tests\\test_simple_validation.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 6023
+    },
+    "tests\\api\\test_chapter_word_counts_api.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 4901
+    },
+    "tests\\api\\test_frontend_api_simulation.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 6190
+    },
+    "tests\\api\\test_frontend_api_wrapper.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 5005
+    },
+    "tests\\api\\test_typing_words_api.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 6681
+    },
+    "tests\\api_docs\\test_api_documentation.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 15284
+    },
+    "tests\\data_management\\test_data_factory.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 14696
+    },
+    "tests\\e2e\\example_requirement.spec.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 552
+    },
+    "tests\\edge_cases\\test_edge_cases.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 15578
+    },
+    "tests\\frontend\\test_progress_bar_display.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 7584
+    },
+    "tests\\frontend\\test_typing_component_lifecycle.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 9032
+    },
+    "tests\\frontend\\test_vue_components.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 7210
+    },
+    "tests\\integration\\test_api.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 11543
+    },
+    "tests\\integration\\test_bbc_fix_verification.py": {
+      "frameworks": [
+        "unknown_python"
+      ],
+      "primary": "unknown_python",
+      "content_length": 7608
+    },
+    "tests\\integration\\test_end_to_end_workflow.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 11308
+    },
+    "tests\\integration\\test_fixes_verification.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 9472
+    },
+    "tests\\integration\\test_full_workflow_integration.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 19378
+    },
+    "tests\\integration\\test_news_api.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 3142
+    },
+    "tests\\integration\\test_typing_practice_submit_integration.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 12355
+    },
+    "tests\\new_features\\test_chapter_completion_integration.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 6486
+    },
+    "tests\\new_features\\test_chapter_completion_simple.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 6950
+    },
+    "tests\\performance\\test_performance_regression.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 10894
+    },
+    "tests\\regression\\auth\\test_permissions.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 17039
+    },
+    "tests\\regression\\auth\\test_user_authentication.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 17873
+    },
+    "tests\\regression\\english\\test_data_analysis_regression.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 24748
+    },
+    "tests\\regression\\english\\test_pause_resume.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 19472
+    },
+    "tests\\regression\\english\\test_pronunciation.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 11271
+    },
+    "tests\\regression\\english\\test_typing_practice_submit_regression.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 14967
+    },
+    "tests\\unit\\test_ai_module.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 4456
+    },
+    "tests\\unit\\test_api_docs_cache.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 17195
+    },
+    "tests\\unit\\test_articles.py": {
+      "frameworks": [
+        "django_test"
+      ],
+      "primary": "django_test",
+      "content_length": 60
+    },
+    "tests\\unit\\test_article_management.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 20629
+    },
+    "tests\\unit\\test_async_tasks.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 19840
+    },
+    "tests\\unit\\test_basic.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 4338
+    },
+    "tests\\unit\\test_bbc_news_save.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 12414
+    },
+    "tests\\unit\\test_bbc_simple.py": {
+      "frameworks": [
+        "unknown_python"
+      ],
+      "primary": "unknown_python",
+      "content_length": 3287
+    },
+    "tests\\unit\\test_categories.py": {
+      "frameworks": [
+        "django_test"
+      ],
+      "primary": "django_test",
+      "content_length": 60
+    },
+    "tests\\unit\\test_cnn_crawler.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 7713
+    },
+    "tests\\unit\\test_common_module.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 12250
+    },
+    "tests\\unit\\test_data_analysis.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 18702
+    },
+    "tests\\unit\\test_data_quality.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 19017
+    },
+    "tests\\unit\\test_data_storage.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 17808
+    },
+    "tests\\unit\\test_english_api.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 37188
+    },
+    "tests\\unit\\test_english_learning.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 19018
+    },
+    "tests\\unit\\test_english_security.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 14539
+    },
+    "tests\\unit\\test_expression_crawler.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 13171
+    },
+    "tests\\unit\\test_fundus_crawler.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 1755
+    },
+    "tests\\unit\\test_idiomatic_expressions.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 17702
+    },
+    "tests\\unit\\test_jobs.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 576
+    },
+    "tests\\unit\\test_jobs_module.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 4946
+    },
+    "tests\\unit\\test_links_module.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 13511
+    },
+    "tests\\unit\\test_models.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 8927
+    },
+    "tests\\unit\\test_model_fields_fix.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 10964
+    },
+    "tests\\unit\\test_mysql_connection.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 3810
+    },
+    "tests\\unit\\test_news_dashboard.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 11288
+    },
+    "tests\\unit\\test_news_visibility_removal.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 6343
+    },
+    "tests\\unit\\test_permissions_comprehensive.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 17620
+    },
+    "tests\\unit\\test_search_module.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 8233
+    },
+    "tests\\unit\\test_simple.py": {
+      "frameworks": [
+        "pytest"
+      ],
+      "primary": "pytest",
+      "content_length": 3738
+    },
+    "tests\\unit\\test_specialized_crawlers.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 17012
+    },
+    "tests\\unit\\test_storage_core.py": {
+      "frameworks": [
+        "pytest",
+        "unittest"
+      ],
+      "primary": "pytest",
+      "content_length": 12557
+    },
+    "tests\\unit\\test_task_system.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 14066
+    },
+    "tests\\unit\\test_techcrunch_and_image_cleanup.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 14643
+    },
+    "tests\\unit\\test_todos.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 579
+    },
+    "tests\\unit\\test_typing_practice.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 13635
+    },
+    "tests\\unit\\test_typing_practice_api.py": {
+      "frameworks": [
+        "pytest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 13035
+    },
+    "tests\\unit\\test_typing_practice_submit.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 12455
+    },
+    "tests\\unit\\test_users.py": {
+      "frameworks": [
+        "django_test"
+      ],
+      "primary": "django_test",
+      "content_length": 60
+    },
+    "tests\\unit\\test_user_auth.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 16236
+    },
+    "tests\\utils\\test_data_manager.py": {
+      "frameworks": [
+        "django_test"
+      ],
+      "primary": "django_test",
+      "content_length": 14084
+    },
+    "tests\\utils\\test_helpers.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 17654
+    },
+    "tests\\utils\\test_quality_monitor.py": {
+      "frameworks": [
+        "unknown_python"
+      ],
+      "primary": "unknown_python",
+      "content_length": 18059
+    },
+    "tests\\utils\\test_report_generator.py": {
+      "frameworks": [
+        "unknown_python"
+      ],
+      "primary": "unknown_python",
+      "content_length": 22431
+    },
+    "backend\\tests\\test_ai_config_encryption.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 2806
+    },
+    "backend\\tests\\test_flaky_examples.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 5735
+    },
+    "backend\\tests\\integration\\test_ai_service_management.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 18518
+    },
+    "backend\\tests\\integration\\test_api_cache_performance.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 10465
+    },
+    "backend\\tests\\unit\\test_ai_adapters.py": {
+      "frameworks": [
+        "pytest",
+        "unittest"
+      ],
+      "primary": "pytest",
+      "content_length": 24029
+    },
+    "backend\\tests\\unit\\test_ai_config_models.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 14515
+    },
+    "backend\\tests\\unit\\test_ai_serializers.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 17994
+    },
+    "backend\\tests\\unit\\test_ai_views.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 18761
+    },
+    "backend\\tests\\unit\\test_basic_models.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 13552
+    },
+    "backend\\tests\\unit\\test_cache_strategy.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 6080
+    },
+    "backend\\tests\\unit\\test_core_functionality.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 10915
+    },
+    "backend\\apps\\ai\\tests\\test_api_views.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 24099
+    },
+    "backend\\apps\\ai\\tests\\test_config_import_export.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 14997
+    },
+    "backend\\apps\\ai\\tests\\test_failover_auto_switch.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 12773
+    },
+    "backend\\apps\\ai\\tests\\test_manual_switch.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 20896
+    },
+    "backend\\apps\\ai\\tests\\test_model_config.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 12953
+    },
+    "backend\\apps\\ai\\tests\\test_model_discovery.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 15395
+    },
+    "backend\\apps\\ai\\tests\\test_monitoring.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 21402
+    },
+    "backend\\apps\\ai\\tests\\test_security.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 19025
+    },
+    "backend\\apps\\ai\\tests\\test_token_statistics.py": {
+      "frameworks": [
+        "pytest",
+        "unittest",
+        "django_test"
+      ],
+      "primary": "pytest",
+      "content_length": 16455
+    },
+    "frontend\\tests\\flaky-examples.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 7731
+    },
+    "frontend\\tests\\build\\build.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 4497
+    },
+    "frontend\\tests\\e2e\\acceptance.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 6905
+    },
+    "frontend\\tests\\e2e\\ai-assistant-advanced.spec.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 9863
+    },
+    "frontend\\tests\\e2e\\ai-config.e2e.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 9192
+    },
+    "frontend\\tests\\e2e\\basic-navigation.spec.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 1312
+    },
+    "frontend\\tests\\e2e\\idiomatic-expressions.spec.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 2609
+    },
+    "frontend\\tests\\e2e\\learning-analytics.spec.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 9805
+    },
+    "frontend\\tests\\e2e\\learning-modes.spec.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 7688
+    },
+    "frontend\\tests\\e2e\\user-login-flow.spec.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 5452
+    },
+    "frontend\\tests\\integration\\routing.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 2401
+    },
+    "frontend\\tests\\integration\\api\\aiConfig.integration.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 5976
+    },
+    "frontend\\tests\\integration\\components\\AIConfig.integration.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 7660
+    },
+    "frontend\\tests\\selenium\\cross-browser-learning.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 12234
+    },
+    "frontend\\tests\\selenium\\cross-browser-login.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 11890
+    },
+    "frontend\\tests\\unit\\basic.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 707
+    },
+    "frontend\\tests\\unit\\core-functionality.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 457
+    },
+    "frontend\\tests\\unit\\idiomatic_expressions_requirement.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 634
+    },
+    "frontend\\tests\\unit\\security.test.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 7753
+    },
+    "frontend\\tests\\unit\\api\\aiConfig.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 6500
+    },
+    "frontend\\tests\\unit\\components\\AIAssistantChat.simple.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 6760
+    },
+    "frontend\\tests\\unit\\components\\AIAssistantChat.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 14650
+    },
+    "frontend\\tests\\unit\\components\\ExpressionCard.simple.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 7580
+    },
+    "frontend\\tests\\unit\\components\\ExpressionCard.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 14309
+    },
+    "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.simple.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 17316
+    },
+    "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 19991
+    },
+    "frontend\\tests\\unit\\components\\LoadingIndicator.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 9421
+    },
+    "frontend\\tests\\unit\\components\\SafeHTML.test.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 3839
+    },
+    "frontend\\tests\\unit\\components\\ScenarioPlayer.simple.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 13680
+    },
+    "frontend\\tests\\unit\\components\\ScenarioPlayer.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 15478
+    },
+    "frontend\\tests\\unit\\components\\SecureInput.test.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 7684
+    },
+    "frontend\\tests\\unit\\components\\common\\LanguageSwitcher.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 3359
+    },
+    "frontend\\tests\\unit\\composables\\useLoading.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 9210
+    },
+    "frontend\\tests\\unit\\config\\ConfigImportExport.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 6485
+    },
+    "frontend\\tests\\unit\\config\\ConfigManagement.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 2681
+    },
+    "frontend\\tests\\unit\\i18n\\i18n.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 7819
+    },
+    "frontend\\tests\\unit\\performance\\optimization.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 9488
+    },
+    "frontend\\tests\\unit\\settings\\Settings.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 3381
+    },
+    "frontend\\tests\\unit\\stores\\auth.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 7895
+    },
+    "frontend\\tests\\unit\\utils\\dateUtils.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 4277
+    },
+    "frontend\\tests\\unit\\utils\\errorHandler.test.js": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 10618
+    },
+    "e2e\\tests\\analytics.spec.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 8926
+    },
+    "e2e\\tests\\auth.spec.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 6025
+    },
+    "e2e\\tests\\dictionary.spec.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 8001
+    },
+    "e2e\\tests\\user-journey.spec.ts": {
+      "frameworks": [
+        "vitest",
+        "playwright",
+        "jest"
+      ],
+      "primary": "vitest",
+      "content_length": 13232
+    }
+  },
+  "dependency_analysis": {
+    "tests\\debug_key_error_test.py": {
+      "framework": "pytest",
+      "total_deps": 8,
+      "external_deps": [
+        "apps.english.services",
+        "django.contrib.auth",
+        "os",
+        "apps",
+        "django",
+        "apps.english.models",
+        "datetime",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.english.services": 1,
+        "django.contrib.auth": 1,
+        "os": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "datetime": 1,
+        "sys": 1
+      },
+      "content_length": 6246
+    },
+    "tests\\simple_submit_test.py": {
+      "framework": "pytest",
+      "total_deps": 10,
+      "external_deps": [
+        "apps.users.models",
+        "rest_framework_simplejwt.tokens",
+        "json",
+        "os",
+        "apps",
+        "django",
+        "apps.english.models",
+        "rest_framework_simplejwt",
+        "requests",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.users.models": 1,
+        "rest_framework_simplejwt.tokens": 1,
+        "json": 1,
+        "os": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "rest_framework_simplejwt": 1,
+        "requests": 1,
+        "sys": 1
+      },
+      "content_length": 5273
+    },
+    "tests\\test_calendar_fix.py": {
+      "framework": "pytest",
+      "total_deps": 7,
+      "external_deps": [
+        "backend.apps.english.services",
+        "os",
+        "backend",
+        "django",
+        "datetime",
+        "django.contrib.auth.models",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "backend.apps.english.services": 1,
+        "os": 1,
+        "backend": 1,
+        "django": 1,
+        "datetime": 1,
+        "django.contrib.auth.models": 1,
+        "sys": 1
+      },
+      "content_length": 1894
+    },
+    "tests\\test_quick_validation.py": {
+      "framework": "pytest",
+      "total_deps": 4,
+      "external_deps": [
+        "subprocess",
+        "pathlib",
+        "os",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "subprocess": 1,
+        "pathlib": 1,
+        "os": 1,
+        "sys": 1
+      },
+      "content_length": 7133
+    },
+    "tests\\test_runner_optimized.py": {
+      "framework": "pytest",
+      "total_deps": 9,
+      "external_deps": [
+        "dataclasses",
+        "time",
+        "subprocess",
+        "pathlib",
+        "enum",
+        "os",
+        "argparse",
+        "typing",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "dataclasses": 1,
+        "time": 1,
+        "subprocess": 1,
+        "pathlib": 1,
+        "enum": 1,
+        "os": 1,
+        "argparse": 1,
+        "typing": 1,
+        "sys": 1
+      },
+      "content_length": 16312
+    },
+    "tests\\test_settings.py": {
+      "framework": "unknown_python",
+      "total_deps": 5,
+      "external_deps": [
+        "alpha",
+        "pathlib",
+        "alpha.settings",
+        "os",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "alpha": 1,
+        "pathlib": 1,
+        "alpha.settings": 1,
+        "os": 1,
+        "sys": 1
+      },
+      "content_length": 1488
+    },
+    "tests\\test_settings_ci.py": {
+      "framework": "unknown_python",
+      "total_deps": 1,
+      "external_deps": [
+        "os"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "os": 1
+      },
+      "content_length": 4931
+    },
+    "tests\\test_settings_mysql.py": {
+      "framework": "unknown_python",
+      "total_deps": 5,
+      "external_deps": [
+        "alpha",
+        "pathlib",
+        "alpha.settings",
+        "os",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "alpha": 1,
+        "pathlib": 1,
+        "alpha.settings": 1,
+        "os": 1,
+        "sys": 1
+      },
+      "content_length": 1928
+    },
+    "tests\\test_simple_validation.py": {
+      "framework": "pytest",
+      "total_deps": 3,
+      "external_deps": [
+        "pathlib",
+        "os",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "pathlib": 1,
+        "os": 1,
+        "sys": 1
+      },
+      "content_length": 6023
+    },
+    "tests\\api\\test_chapter_word_counts_api.py": {
+      "framework": "pytest",
+      "total_deps": 3,
+      "external_deps": [
+        "datetime",
+        "json",
+        "requests"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "datetime": 1,
+        "json": 1,
+        "requests": 1
+      },
+      "content_length": 4901
+    },
+    "tests\\api\\test_frontend_api_simulation.py": {
+      "framework": "pytest",
+      "total_deps": 4,
+      "external_deps": [
+        "datetime",
+        "json",
+        "requests",
+        "time"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "datetime": 1,
+        "json": 1,
+        "requests": 1,
+        "time": 1
+      },
+      "content_length": 6190
+    },
+    "tests\\api\\test_frontend_api_wrapper.py": {
+      "framework": "pytest",
+      "total_deps": 3,
+      "external_deps": [
+        "datetime",
+        "json",
+        "requests"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "datetime": 1,
+        "json": 1,
+        "requests": 1
+      },
+      "content_length": 5005
+    },
+    "tests\\api\\test_typing_words_api.py": {
+      "framework": "pytest",
+      "total_deps": 4,
+      "external_deps": [
+        "datetime",
+        "json",
+        "requests",
+        "time"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "datetime": 1,
+        "json": 1,
+        "requests": 1,
+        "time": 1
+      },
+      "content_length": 6681
+    },
+    "tests\\api_docs\\test_api_documentation.py": {
+      "framework": "pytest",
+      "total_deps": 11,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.categories.models",
+        "pytest",
+        "rest_framework.test",
+        "apps.articles.models",
+        "json",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.articles.models": 1,
+        "json": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 15284
+    },
+    "tests\\data_management\\test_data_factory.py": {
+      "framework": "pytest",
+      "total_deps": 13,
+      "external_deps": [
+        "apps.users.models",
+        "tests",
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.categories.models",
+        "pytest",
+        "rest_framework.test",
+        "apps.articles.models",
+        "tests.factories",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.users.models": 1,
+        "tests": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.articles.models": 1,
+        "tests.factories": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 14696
+    },
+    "tests\\e2e\\example_requirement.spec.js": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 552
+    },
+    "tests\\edge_cases\\test_edge_cases.py": {
+      "framework": "pytest",
+      "total_deps": 11,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.categories.models",
+        "pytest",
+        "rest_framework.test",
+        "apps.articles.models",
+        "json",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.articles.models": 1,
+        "json": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 15578
+    },
+    "tests\\frontend\\test_progress_bar_display.py": {
+      "framework": "pytest",
+      "total_deps": 4,
+      "external_deps": [
+        "json",
+        "requests",
+        "time",
+        "typing"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "json": 1,
+        "requests": 1,
+        "time": 1,
+        "typing": 1
+      },
+      "content_length": 7584
+    },
+    "tests\\frontend\\test_typing_component_lifecycle.py": {
+      "framework": "pytest",
+      "total_deps": 4,
+      "external_deps": [
+        "json",
+        "requests",
+        "time",
+        "typing"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "json": 1,
+        "requests": 1,
+        "time": 1,
+        "typing": 1
+      },
+      "content_length": 9032
+    },
+    "tests\\frontend\\test_vue_components.py": {
+      "framework": "pytest",
+      "total_deps": 6,
+      "external_deps": [
+        "pytest",
+        "pathlib",
+        "os",
+        "django",
+        "django.test",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "pytest": 1,
+        "pathlib": 1,
+        "os": 1,
+        "django": 1,
+        "django.test": 1,
+        "sys": 1
+      },
+      "content_length": 7210
+    },
+    "tests\\integration\\test_api.py": {
+      "framework": "pytest",
+      "total_deps": 12,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.categories.models",
+        "pytest",
+        "rest_framework.test",
+        "apps.articles.models",
+        "json",
+        "django.urls",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.articles.models": 1,
+        "json": 1,
+        "django.urls": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 11543
+    },
+    "tests\\integration\\test_bbc_fix_verification.py": {
+      "framework": "unknown_python",
+      "total_deps": 7,
+      "external_deps": [
+        "os",
+        "apps",
+        "django",
+        "apps.english.models",
+        "apps.english.news_crawler",
+        "sys",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "os": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "apps.english.news_crawler": 1,
+        "sys": 1,
+        "django.utils": 1
+      },
+      "content_length": 7608
+    },
+    "tests\\integration\\test_end_to_end_workflow.py": {
+      "framework": "pytest",
+      "total_deps": 14,
+      "external_deps": [
+        "apps.users.models",
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.categories.models",
+        "pytest",
+        "rest_framework.test",
+        "apps.articles.models",
+        "json",
+        "apps",
+        "django",
+        "apps.english.models",
+        "datetime",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.users.models": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.articles.models": 1,
+        "json": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "datetime": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 11308
+    },
+    "tests\\integration\\test_fixes_verification.py": {
+      "framework": "pytest",
+      "total_deps": 2,
+      "external_deps": [
+        "os",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "os": 1,
+        "sys": 1
+      },
+      "content_length": 9472
+    },
+    "tests\\integration\\test_full_workflow_integration.py": {
+      "framework": "pytest",
+      "total_deps": 11,
+      "external_deps": [
+        "apps.users.models",
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.categories.models",
+        "pytest",
+        "rest_framework.test",
+        "apps.articles.models",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.users.models": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.articles.models": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 19378
+    },
+    "tests\\integration\\test_news_api.py": {
+      "framework": "pytest",
+      "total_deps": 3,
+      "external_deps": [
+        "json",
+        "requests",
+        "time"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "json": 1,
+        "requests": 1,
+        "time": 1
+      },
+      "content_length": 3142
+    },
+    "tests\\integration\\test_typing_practice_submit_integration.py": {
+      "framework": "pytest",
+      "total_deps": 13,
+      "external_deps": [
+        "django.core.cache",
+        "time",
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "rest_framework_simplejwt.tokens",
+        "apps",
+        "django",
+        "apps.english.models",
+        "rest_framework_simplejwt",
+        "django.test",
+        "apps.english.services"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.core.cache": 1,
+        "time": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "rest_framework_simplejwt.tokens": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "rest_framework_simplejwt": 1,
+        "django.test": 1,
+        "apps.english.services": 1
+      },
+      "content_length": 12355
+    },
+    "tests\\new_features\\test_chapter_completion_integration.py": {
+      "framework": "pytest",
+      "total_deps": 8,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "json",
+        "django.urls",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "json": 1,
+        "django.urls": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 6486
+    },
+    "tests\\new_features\\test_chapter_completion_simple.py": {
+      "framework": "pytest",
+      "total_deps": 4,
+      "external_deps": [
+        "django.contrib.auth",
+        "django.test",
+        "django",
+        "pytest"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "django.test": 1,
+        "django": 1,
+        "pytest": 1
+      },
+      "content_length": 6950
+    },
+    "tests\\performance\\test_performance_regression.py": {
+      "framework": "pytest",
+      "total_deps": 12,
+      "external_deps": [
+        "time",
+        "apps.users.models",
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.categories.models",
+        "pytest",
+        "rest_framework.test",
+        "apps.articles.models",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "time": 1,
+        "apps.users.models": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.articles.models": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 10894
+    },
+    "tests\\regression\\auth\\test_permissions.py": {
+      "framework": "pytest",
+      "total_deps": 12,
+      "external_deps": [
+        "apps.users.models",
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.categories.models",
+        "pytest",
+        "rest_framework.test",
+        "apps.articles.models",
+        "django.contrib.contenttypes.models",
+        "apps",
+        "django",
+        "django.test",
+        "django.contrib.auth.models"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.users.models": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.articles.models": 1,
+        "django.contrib.contenttypes.models": 1,
+        "apps": 1,
+        "django": 1,
+        "django.test": 1,
+        "django.contrib.auth.models": 1
+      },
+      "content_length": 17039
+    },
+    "tests\\regression\\auth\\test_user_authentication.py": {
+      "framework": "pytest",
+      "total_deps": 12,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "django.utils.http",
+        "django.urls",
+        "django.core",
+        "django",
+        "django.contrib.auth.tokens",
+        "datetime",
+        "django.utils.encoding",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "django.utils.http": 1,
+        "django.urls": 1,
+        "django.core": 1,
+        "django": 1,
+        "django.contrib.auth.tokens": 1,
+        "datetime": 1,
+        "django.utils.encoding": 1,
+        "django.test": 1
+      },
+      "content_length": 17873
+    },
+    "tests\\regression\\english\\test_data_analysis_regression.py": {
+      "framework": "pytest",
+      "total_deps": 12,
+      "external_deps": [
+        "tests",
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "tests.utils.test_helpers",
+        "json",
+        "apps",
+        "django",
+        "apps.english.models",
+        "datetime",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "tests": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "tests.utils.test_helpers": 1,
+        "json": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "datetime": 1,
+        "django.test": 1
+      },
+      "content_length": 24748
+    },
+    "tests\\regression\\english\\test_pause_resume.py": {
+      "framework": "pytest",
+      "total_deps": 14,
+      "external_deps": [
+        "time",
+        "tests",
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "pytest",
+        "rest_framework.test",
+        "tests.utils.test_helpers",
+        "unittest.mock",
+        "apps",
+        "django",
+        "apps.english.models",
+        "datetime",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "time": 1,
+        "tests": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "tests.utils.test_helpers": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "datetime": 1,
+        "django.test": 1
+      },
+      "content_length": 19472
+    },
+    "tests\\regression\\english\\test_pronunciation.py": {
+      "framework": "pytest",
+      "total_deps": 13,
+      "external_deps": [
+        "tests",
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "pytest",
+        "rest_framework.test",
+        "tests.utils.test_helpers",
+        "json",
+        "unittest.mock",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "tests": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "tests.utils.test_helpers": 1,
+        "json": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 11271
+    },
+    "tests\\regression\\english\\test_typing_practice_submit_regression.py": {
+      "framework": "pytest",
+      "total_deps": 10,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "rest_framework_simplejwt.tokens",
+        "apps",
+        "django",
+        "apps.english.models",
+        "rest_framework_simplejwt",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "rest_framework_simplejwt.tokens": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "rest_framework_simplejwt": 1,
+        "django.test": 1
+      },
+      "content_length": 14967
+    },
+    "tests\\unit\\test_ai_module.py": {
+      "framework": "pytest",
+      "total_deps": 6,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "rest_framework.test",
+        "pytest",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "rest_framework.test": 1,
+        "pytest": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 4456
+    },
+    "tests\\unit\\test_api_docs_cache.py": {
+      "framework": "pytest",
+      "total_deps": 13,
+      "external_deps": [
+        "django.core.cache",
+        "apps.english.cache_strategy",
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "pytest",
+        "rest_framework.test",
+        "json",
+        "unittest.mock",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.core.cache": 1,
+        "apps.english.cache_strategy": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "json": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 17195
+    },
+    "tests\\unit\\test_articles.py": {
+      "framework": "django_test",
+      "total_deps": 2,
+      "external_deps": [
+        "django.test",
+        "django"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.test": 1,
+        "django": 1
+      },
+      "content_length": 60
+    },
+    "tests\\unit\\test_article_management.py": {
+      "framework": "pytest",
+      "total_deps": 10,
+      "external_deps": [
+        "apps.users.models",
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.categories.models",
+        "pytest",
+        "rest_framework.test",
+        "apps.articles.models",
+        "apps",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.users.models": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.articles.models": 1,
+        "apps": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 20629
+    },
+    "tests\\unit\\test_async_tasks.py": {
+      "framework": "pytest",
+      "total_deps": 9,
+      "external_deps": [
+        "celery",
+        "unittest",
+        "pytest",
+        "celery.result",
+        "unittest.mock",
+        "django",
+        "django.test",
+        "sys",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "celery": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "celery.result": 1,
+        "unittest.mock": 1,
+        "django": 1,
+        "django.test": 1,
+        "sys": 1,
+        "django.utils": 1
+      },
+      "content_length": 19840
+    },
+    "tests\\unit\\test_basic.py": {
+      "framework": "pytest",
+      "total_deps": 7,
+      "external_deps": [
+        "django.db.utils",
+        "django.contrib.auth",
+        "django.core.management",
+        "pytest",
+        "django.db",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.db.utils": 1,
+        "django.contrib.auth": 1,
+        "django.core.management": 1,
+        "pytest": 1,
+        "django.db": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 4338
+    },
+    "tests\\unit\\test_bbc_news_save.py": {
+      "framework": "pytest",
+      "total_deps": 12,
+      "external_deps": [
+        "tempfile",
+        "unittest",
+        "os",
+        "apps",
+        "django",
+        "sys",
+        "unittest.mock",
+        "apps.english.models",
+        "django.test",
+        "apps.english.news_crawler",
+        "shutil",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "tempfile": 1,
+        "unittest": 1,
+        "os": 1,
+        "apps": 1,
+        "django": 1,
+        "sys": 1,
+        "unittest.mock": 1,
+        "apps.english.models": 1,
+        "django.test": 1,
+        "apps.english.news_crawler": 1,
+        "shutil": 1,
+        "django.utils": 1
+      },
+      "content_length": 12414
+    },
+    "tests\\unit\\test_bbc_simple.py": {
+      "framework": "unknown_python",
+      "total_deps": 7,
+      "external_deps": [
+        "os",
+        "apps",
+        "django",
+        "apps.english.models",
+        "apps.english.news_crawler",
+        "sys",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "os": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "apps.english.news_crawler": 1,
+        "sys": 1,
+        "django.utils": 1
+      },
+      "content_length": 3287
+    },
+    "tests\\unit\\test_categories.py": {
+      "framework": "django_test",
+      "total_deps": 2,
+      "external_deps": [
+        "django.test",
+        "django"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.test": 1,
+        "django": 1
+      },
+      "content_length": 60
+    },
+    "tests\\unit\\test_cnn_crawler.py": {
+      "framework": "pytest",
+      "total_deps": 3,
+      "external_deps": [
+        "logging",
+        "os",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "logging": 1,
+        "os": 1,
+        "sys": 1
+      },
+      "content_length": 7713
+    },
+    "tests\\unit\\test_common_module.py": {
+      "framework": "pytest",
+      "total_deps": 11,
+      "external_deps": [
+        "django.contrib.auth",
+        "apps.categories.models",
+        "pytest",
+        "apps.articles.models",
+        "django.db",
+        "apps",
+        "django",
+        "datetime",
+        "apps.common.models",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "apps.articles.models": 1,
+        "django.db": 1,
+        "apps": 1,
+        "django": 1,
+        "datetime": 1,
+        "apps.common.models": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 12250
+    },
+    "tests\\unit\\test_data_analysis.py": {
+      "framework": "pytest",
+      "total_deps": 11,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "apps",
+        "django",
+        "apps.english.models",
+        "datetime",
+        "django.test",
+        "apps.english.services",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "datetime": 1,
+        "django.test": 1,
+        "apps.english.services": 1,
+        "django.utils": 1
+      },
+      "content_length": 18702
+    },
+    "tests\\unit\\test_data_quality.py": {
+      "framework": "pytest",
+      "total_deps": 11,
+      "external_deps": [
+        "apps.english.expression_crawler",
+        "unittest",
+        "pytest",
+        "json",
+        "unittest.mock",
+        "apps",
+        "django",
+        "django.test",
+        "apps.english.data_quality",
+        "sys",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.english.expression_crawler": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "json": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "django.test": 1,
+        "apps.english.data_quality": 1,
+        "sys": 1,
+        "django.utils": 1
+      },
+      "content_length": 19017
+    },
+    "tests\\unit\\test_data_storage.py": {
+      "framework": "pytest",
+      "total_deps": 12,
+      "external_deps": [
+        "django.core.cache",
+        "time",
+        "apps.english.expression_crawler",
+        "unittest",
+        "pytest",
+        "unittest.mock",
+        "apps",
+        "django",
+        "apps.english.data_storage",
+        "apps.english.models",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.core.cache": 1,
+        "time": 1,
+        "apps.english.expression_crawler": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.data_storage": 1,
+        "apps.english.models": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 17808
+    },
+    "tests\\unit\\test_english_api.py": {
+      "framework": "pytest",
+      "total_deps": 10,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "pytest",
+        "rest_framework.test",
+        "django.urls",
+        "apps",
+        "django",
+        "unittest.mock",
+        "apps.english.models"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "django.urls": 1,
+        "apps": 1,
+        "django": 1,
+        "unittest.mock": 1,
+        "apps.english.models": 1
+      },
+      "content_length": 37188
+    },
+    "tests\\unit\\test_english_learning.py": {
+      "framework": "pytest",
+      "total_deps": 9,
+      "external_deps": [
+        "apps.users.models",
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.users.models": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 19018
+    },
+    "tests\\unit\\test_english_security.py": {
+      "framework": "pytest",
+      "total_deps": 15,
+      "external_deps": [
+        "django.core.cache",
+        "apps.english.security",
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "pytest",
+        "rest_framework.test",
+        "json",
+        "unittest.mock",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test",
+        "apps.english.api_management",
+        "django.contrib.auth.models"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.core.cache": 1,
+        "apps.english.security": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "json": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1,
+        "apps.english.api_management": 1,
+        "django.contrib.auth.models": 1
+      },
+      "content_length": 14539
+    },
+    "tests\\unit\\test_expression_crawler.py": {
+      "framework": "pytest",
+      "total_deps": 10,
+      "external_deps": [
+        "apps.english.expression_crawler",
+        "unittest",
+        "pytest",
+        "bs4",
+        "unittest.mock",
+        "apps",
+        "django",
+        "datetime",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.english.expression_crawler": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "bs4": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "datetime": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 13171
+    },
+    "tests\\unit\\test_fundus_crawler.py": {
+      "framework": "pytest",
+      "total_deps": 5,
+      "external_deps": [
+        "os",
+        "apps",
+        "django",
+        "apps.english.fundus_crawler",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "os": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.fundus_crawler": 1,
+        "sys": 1
+      },
+      "content_length": 1755
+    },
+    "tests\\unit\\test_idiomatic_expressions.py": {
+      "framework": "pytest",
+      "total_deps": 10,
+      "external_deps": [
+        "django.contrib.auth",
+        "pytest",
+        "decimal",
+        "apps",
+        "django",
+        "django.core.exceptions",
+        "datetime",
+        "apps.english.models",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "pytest": 1,
+        "decimal": 1,
+        "apps": 1,
+        "django": 1,
+        "django.core.exceptions": 1,
+        "datetime": 1,
+        "apps.english.models": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 17702
+    },
+    "tests\\unit\\test_jobs.py": {
+      "framework": "pytest",
+      "total_deps": 5,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "rest_framework.test",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "rest_framework.test": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 576
+    },
+    "tests\\unit\\test_jobs_module.py": {
+      "framework": "pytest",
+      "total_deps": 8,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "django",
+        "datetime",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "django": 1,
+        "datetime": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 4946
+    },
+    "tests\\unit\\test_links_module.py": {
+      "framework": "pytest",
+      "total_deps": 8,
+      "external_deps": [
+        "django.db.utils",
+        "apps.links.models",
+        "django.contrib.auth",
+        "pytest",
+        "apps",
+        "django",
+        "django.core.exceptions",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.db.utils": 1,
+        "apps.links.models": 1,
+        "django.contrib.auth": 1,
+        "pytest": 1,
+        "apps": 1,
+        "django": 1,
+        "django.core.exceptions": 1,
+        "django.test": 1
+      },
+      "content_length": 13511
+    },
+    "tests\\unit\\test_models.py": {
+      "framework": "pytest",
+      "total_deps": 12,
+      "external_deps": [
+        "apps.users.models",
+        "django.contrib.auth",
+        "apps.categories.models",
+        "pytest",
+        "apps.articles.models",
+        "apps",
+        "django",
+        "django.core.exceptions",
+        "datetime",
+        "apps.english.models",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.users.models": 1,
+        "django.contrib.auth": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "apps.articles.models": 1,
+        "apps": 1,
+        "django": 1,
+        "django.core.exceptions": 1,
+        "datetime": 1,
+        "apps.english.models": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 8927
+    },
+    "tests\\unit\\test_model_fields_fix.py": {
+      "framework": "pytest",
+      "total_deps": 6,
+      "external_deps": [
+        "django.contrib.auth",
+        "pytest",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "pytest": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 10964
+    },
+    "tests\\unit\\test_mysql_connection.py": {
+      "framework": "pytest",
+      "total_deps": 6,
+      "external_deps": [
+        "django.db.utils",
+        "pytest",
+        "django.db",
+        "django",
+        "django.test",
+        "django.conf"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.db.utils": 1,
+        "pytest": 1,
+        "django.db": 1,
+        "django": 1,
+        "django.test": 1,
+        "django.conf": 1
+      },
+      "content_length": 3810
+    },
+    "tests\\unit\\test_news_dashboard.py": {
+      "framework": "pytest",
+      "total_deps": 9,
+      "external_deps": [
+        "django.contrib.auth",
+        "unittest",
+        "pytest",
+        "unittest.mock",
+        "apps",
+        "django",
+        "django.urls",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "django.urls": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 11288
+    },
+    "tests\\unit\\test_news_visibility_removal.py": {
+      "framework": "pytest",
+      "total_deps": 9,
+      "external_deps": [
+        "time",
+        "apps.users.models",
+        "json",
+        "os",
+        "apps",
+        "django",
+        "apps.english.models",
+        "requests",
+        "sys"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "time": 1,
+        "apps.users.models": 1,
+        "json": 1,
+        "os": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "requests": 1,
+        "sys": 1
+      },
+      "content_length": 6343
+    },
+    "tests\\unit\\test_permissions_comprehensive.py": {
+      "framework": "pytest",
+      "total_deps": 16,
+      "external_deps": [
+        "apps.users.models",
+        "django.contrib.auth",
+        "rest_framework",
+        "django.http",
+        "apps.categories.models",
+        "pytest",
+        "rest_framework.test",
+        "apps.articles.models",
+        "django.contrib.contenttypes.models",
+        "apps",
+        "django",
+        "django.contrib.auth.decorators",
+        "django.core.exceptions",
+        "apps.english.models",
+        "django.test",
+        "django.contrib.auth.models"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.users.models": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "django.http": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.articles.models": 1,
+        "django.contrib.contenttypes.models": 1,
+        "apps": 1,
+        "django": 1,
+        "django.contrib.auth.decorators": 1,
+        "django.core.exceptions": 1,
+        "apps.english.models": 1,
+        "django.test": 1,
+        "django.contrib.auth.models": 1
+      },
+      "content_length": 17620
+    },
+    "tests\\unit\\test_search_module.py": {
+      "framework": "pytest",
+      "total_deps": 11,
+      "external_deps": [
+        "apps.users.models",
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.categories.models",
+        "pytest",
+        "rest_framework.test",
+        "apps.articles.models",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.users.models": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.categories.models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.articles.models": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 8233
+    },
+    "tests\\unit\\test_simple.py": {
+      "framework": "pytest",
+      "total_deps": 3,
+      "external_deps": [
+        "os",
+        "sys",
+        "pytest"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "os": 1,
+        "sys": 1,
+        "pytest": 1
+      },
+      "content_length": 3738
+    },
+    "tests\\unit\\test_specialized_crawlers.py": {
+      "framework": "pytest",
+      "total_deps": 11,
+      "external_deps": [
+        "apps.english.specialized_crawlers",
+        "apps.english.expression_crawler",
+        "unittest",
+        "pytest",
+        "json",
+        "bs4",
+        "unittest.mock",
+        "apps",
+        "django",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.english.specialized_crawlers": 1,
+        "apps.english.expression_crawler": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "json": 1,
+        "bs4": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 17012
+    },
+    "tests\\unit\\test_storage_core.py": {
+      "framework": "pytest",
+      "total_deps": 6,
+      "external_deps": [
+        "dataclasses",
+        "time",
+        "unittest",
+        "pytest",
+        "unittest.mock",
+        "typing"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "dataclasses": 1,
+        "time": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "unittest.mock": 1,
+        "typing": 1
+      },
+      "content_length": 12557
+    },
+    "tests\\unit\\test_task_system.py": {
+      "framework": "pytest",
+      "total_deps": 7,
+      "external_deps": [
+        "django.core.cache",
+        "unittest",
+        "pytest",
+        "unittest.mock",
+        "django",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.core.cache": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "unittest.mock": 1,
+        "django": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 14066
+    },
+    "tests\\unit\\test_techcrunch_and_image_cleanup.py": {
+      "framework": "pytest",
+      "total_deps": 13,
+      "external_deps": [
+        "tempfile",
+        "django.core.files.uploadedfile",
+        "unittest",
+        "pytest",
+        "os",
+        "apps",
+        "django",
+        "unittest.mock",
+        "apps.english.models",
+        "django.test",
+        "apps.english.news_crawler",
+        "django.conf",
+        "shutil"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "tempfile": 1,
+        "django.core.files.uploadedfile": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "os": 1,
+        "apps": 1,
+        "django": 1,
+        "unittest.mock": 1,
+        "apps.english.models": 1,
+        "django.test": 1,
+        "apps.english.news_crawler": 1,
+        "django.conf": 1,
+        "shutil": 1
+      },
+      "content_length": 14643
+    },
+    "tests\\unit\\test_todos.py": {
+      "framework": "pytest",
+      "total_deps": 5,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "rest_framework.test",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "rest_framework.test": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 579
+    },
+    "tests\\unit\\test_typing_practice.py": {
+      "framework": "pytest",
+      "total_deps": 9,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.english.serializers",
+        "pytest",
+        "rest_framework.test",
+        "apps",
+        "django",
+        "apps.english.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.english.serializers": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "django.test": 1
+      },
+      "content_length": 13635
+    },
+    "tests\\unit\\test_typing_practice_api.py": {
+      "framework": "pytest",
+      "total_deps": 9,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "django.urls",
+        "apps",
+        "django",
+        "apps.english.models",
+        "datetime"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "django.urls": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "datetime": 1
+      },
+      "content_length": 13035
+    },
+    "tests\\unit\\test_typing_practice_submit.py": {
+      "framework": "pytest",
+      "total_deps": 12,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "rest_framework_simplejwt.tokens",
+        "json",
+        "django.urls",
+        "apps",
+        "django",
+        "apps.english.models",
+        "rest_framework_simplejwt",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "rest_framework_simplejwt.tokens": 1,
+        "json": 1,
+        "django.urls": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "rest_framework_simplejwt": 1,
+        "django.test": 1
+      },
+      "content_length": 12455
+    },
+    "tests\\unit\\test_users.py": {
+      "framework": "django_test",
+      "total_deps": 2,
+      "external_deps": [
+        "django.test",
+        "django"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.test": 1,
+        "django": 1
+      },
+      "content_length": 60
+    },
+    "tests\\unit\\test_user_auth.py": {
+      "framework": "pytest",
+      "total_deps": 13,
+      "external_deps": [
+        "apps.users.models",
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "pytest",
+        "rest_framework.test",
+        "rest_framework_simplejwt.tokens",
+        "django.urls",
+        "apps",
+        "django",
+        "unittest.mock",
+        "rest_framework_simplejwt",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "apps.users.models": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "rest_framework_simplejwt.tokens": 1,
+        "django.urls": 1,
+        "apps": 1,
+        "django": 1,
+        "unittest.mock": 1,
+        "rest_framework_simplejwt": 1,
+        "django.test": 1
+      },
+      "content_length": 16236
+    },
+    "tests\\utils\\test_data_manager.py": {
+      "framework": "django_test",
+      "total_deps": 16,
+      "external_deps": [
+        "dataclasses",
+        "tempfile",
+        "tests",
+        "django.contrib.auth",
+        "contextlib",
+        "django.core.management",
+        "pathlib",
+        "django.db",
+        "json",
+        "tests.factories",
+        "os",
+        "typing",
+        "django",
+        "django.test",
+        "django.conf",
+        "shutil"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "dataclasses": 1,
+        "tempfile": 1,
+        "tests": 1,
+        "django.contrib.auth": 1,
+        "contextlib": 1,
+        "django.core.management": 1,
+        "pathlib": 1,
+        "django.db": 1,
+        "json": 1,
+        "tests.factories": 1,
+        "os": 1,
+        "typing": 1,
+        "django": 1,
+        "django.test": 1,
+        "django.conf": 1,
+        "shutil": 1
+      },
+      "content_length": 14084
+    },
+    "tests\\utils\\test_helpers.py": {
+      "framework": "pytest",
+      "total_deps": 15,
+      "external_deps": [
+        "random",
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "pytest",
+        "string",
+        "rest_framework.test",
+        "json",
+        "os",
+        "unittest.mock",
+        "typing",
+        "django",
+        "datetime",
+        "django.urls",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "random": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "string": 1,
+        "rest_framework.test": 1,
+        "json": 1,
+        "os": 1,
+        "unittest.mock": 1,
+        "typing": 1,
+        "django": 1,
+        "datetime": 1,
+        "django.urls": 1,
+        "django.test": 1
+      },
+      "content_length": 17654
+    },
+    "tests\\utils\\test_quality_monitor.py": {
+      "framework": "unknown_python",
+      "total_deps": 10,
+      "external_deps": [
+        "dataclasses",
+        "time",
+        "subprocess",
+        "pathlib",
+        "json",
+        "os",
+        "sqlite3",
+        "typing",
+        "datetime",
+        "xml"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "dataclasses": 1,
+        "time": 1,
+        "subprocess": 1,
+        "pathlib": 1,
+        "json": 1,
+        "os": 1,
+        "sqlite3": 1,
+        "typing": 1,
+        "datetime": 1,
+        "xml": 1
+      },
+      "content_length": 18059
+    },
+    "tests\\utils\\test_report_generator.py": {
+      "framework": "unknown_python",
+      "total_deps": 12,
+      "external_deps": [
+        "dataclasses",
+        "time",
+        "jinja2",
+        "seaborn",
+        "pandas",
+        "matplotlib",
+        "pathlib",
+        "json",
+        "os",
+        "typing",
+        "datetime",
+        "xml"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "dataclasses": 1,
+        "time": 1,
+        "jinja2": 1,
+        "seaborn": 1,
+        "pandas": 1,
+        "matplotlib": 1,
+        "pathlib": 1,
+        "json": 1,
+        "os": 1,
+        "typing": 1,
+        "datetime": 1,
+        "xml": 1
+      },
+      "content_length": 22431
+    },
+    "backend\\tests\\test_ai_config_encryption.py": {
+      "framework": "pytest",
+      "total_deps": 6,
+      "external_deps": [
+        "django.contrib.auth",
+        "apps.ai.config_models",
+        "pytest",
+        "apps",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "apps.ai.config_models": 1,
+        "pytest": 1,
+        "apps": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 2806
+    },
+    "backend\\tests\\test_flaky_examples.py": {
+      "framework": "pytest",
+      "total_deps": 7,
+      "external_deps": [
+        "random",
+        "time",
+        "unittest",
+        "pytest",
+        "unittest.mock",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "random": 1,
+        "time": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "unittest.mock": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 5735
+    },
+    "backend\\tests\\integration\\test_ai_service_management.py": {
+      "framework": "pytest",
+      "total_deps": 16,
+      "external_deps": [
+        "asyncio",
+        "django.core.cache",
+        "time",
+        "apps.ai.services.load_balancer",
+        "apps.ai.services.manager",
+        "rest_framework",
+        "unittest",
+        "pytest",
+        "rest_framework.test",
+        "apps.ai.services.degradation",
+        "apps.ai.adapters.base",
+        "unittest.mock",
+        "apps",
+        "django",
+        "django.test",
+        "django.contrib.auth.models"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "asyncio": 1,
+        "django.core.cache": 1,
+        "time": 1,
+        "apps.ai.services.load_balancer": 1,
+        "apps.ai.services.manager": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps.ai.services.degradation": 1,
+        "apps.ai.adapters.base": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "django.test": 1,
+        "django.contrib.auth.models": 1
+      },
+      "content_length": 18518
+    },
+    "backend\\tests\\integration\\test_api_cache_performance.py": {
+      "framework": "pytest",
+      "total_deps": 13,
+      "external_deps": [
+        "django.test",
+        "django.core.cache",
+        "time",
+        "apps.api.cache_strategy",
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "django.urls",
+        "apps",
+        "django",
+        "apps.english.models",
+        "requests"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.test": 1,
+        "django.core.cache": 1,
+        "time": 1,
+        "apps.api.cache_strategy": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "django.urls": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.english.models": 1,
+        "requests": 1
+      },
+      "content_length": 10465
+    },
+    "backend\\tests\\unit\\test_ai_adapters.py": {
+      "framework": "pytest",
+      "total_deps": 12,
+      "external_deps": [
+        "asyncio",
+        "apps.ai.adapters.claude_adapter",
+        "apps.ai.adapters.google_adapter",
+        "apps.ai.adapters.factory",
+        "apps.ai.adapters.exceptions",
+        "unittest",
+        "pytest",
+        "json",
+        "apps.ai.adapters.base",
+        "unittest.mock",
+        "apps",
+        "apps.ai.adapters.openai_adapter"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "asyncio": 1,
+        "apps.ai.adapters.claude_adapter": 1,
+        "apps.ai.adapters.google_adapter": 1,
+        "apps.ai.adapters.factory": 1,
+        "apps.ai.adapters.exceptions": 1,
+        "unittest": 1,
+        "pytest": 1,
+        "json": 1,
+        "apps.ai.adapters.base": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "apps.ai.adapters.openai_adapter": 1
+      },
+      "content_length": 24029
+    },
+    "backend\\tests\\unit\\test_ai_config_models.py": {
+      "framework": "pytest",
+      "total_deps": 10,
+      "external_deps": [
+        "django.contrib.auth",
+        "apps.ai.config_models",
+        "pytest",
+        "django.db",
+        "decimal",
+        "apps",
+        "django",
+        "django.core.exceptions",
+        "datetime",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "apps.ai.config_models": 1,
+        "pytest": 1,
+        "django.db": 1,
+        "decimal": 1,
+        "apps": 1,
+        "django": 1,
+        "django.core.exceptions": 1,
+        "datetime": 1,
+        "django.test": 1
+      },
+      "content_length": 14515
+    },
+    "backend\\tests\\unit\\test_ai_serializers.py": {
+      "framework": "pytest",
+      "total_deps": 9,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.ai.serializers",
+        "apps.ai.config_models",
+        "pytest",
+        "rest_framework.test",
+        "apps",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.ai.serializers": 1,
+        "apps.ai.config_models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 17994
+    },
+    "backend\\tests\\unit\\test_ai_views.py": {
+      "framework": "pytest",
+      "total_deps": 9,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.ai.config_models",
+        "pytest",
+        "rest_framework.test",
+        "django.urls",
+        "apps",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.ai.config_models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "django.urls": 1,
+        "apps": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 18761
+    },
+    "backend\\tests\\unit\\test_basic_models.py": {
+      "framework": "pytest",
+      "total_deps": 6,
+      "external_deps": [
+        "django.contrib.auth",
+        "apps.ai.config_models",
+        "pytest",
+        "apps",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "apps.ai.config_models": 1,
+        "pytest": 1,
+        "apps": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 13552
+    },
+    "backend\\tests\\unit\\test_cache_strategy.py": {
+      "framework": "pytest",
+      "total_deps": 6,
+      "external_deps": [
+        "django.core.cache",
+        "apps.api.cache_strategy",
+        "pytest",
+        "apps",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.core.cache": 1,
+        "apps.api.cache_strategy": 1,
+        "pytest": 1,
+        "apps": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 6080
+    },
+    "backend\\tests\\unit\\test_core_functionality.py": {
+      "framework": "pytest",
+      "total_deps": 8,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "apps.ai.config_models",
+        "pytest",
+        "rest_framework.test",
+        "apps",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "apps.ai.config_models": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "apps": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 10915
+    },
+    "backend\\apps\\ai\\tests\\test_api_views.py": {
+      "framework": "pytest",
+      "total_deps": 17,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "apps.ai.config_models",
+        "rest_framework.test",
+        "rest_framework_simplejwt.tokens",
+        "json",
+        "decimal",
+        "unittest.mock",
+        "apps",
+        "django",
+        "django.urls",
+        "datetime",
+        "apps.ai.adapters.base",
+        "rest_framework_simplejwt",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "apps.ai.config_models": 1,
+        "rest_framework.test": 1,
+        "rest_framework_simplejwt.tokens": 1,
+        "json": 1,
+        "decimal": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "django.urls": 1,
+        "datetime": 1,
+        "apps.ai.adapters.base": 1,
+        "rest_framework_simplejwt": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 24099
+    },
+    "backend\\apps\\ai\\tests\\test_config_import_export.py": {
+      "framework": "pytest",
+      "total_deps": 9,
+      "external_deps": [
+        "tempfile",
+        "django.contrib.auth",
+        "rest_framework",
+        "rest_framework.test",
+        "json",
+        "os",
+        "django.urls",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "tempfile": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "rest_framework.test": 1,
+        "json": 1,
+        "os": 1,
+        "django.urls": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 14997
+    },
+    "backend\\apps\\ai\\tests\\test_failover_auto_switch.py": {
+      "framework": "pytest",
+      "total_deps": 6,
+      "external_deps": [
+        "django.contrib.auth",
+        "pytest",
+        "django",
+        "datetime",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "pytest": 1,
+        "django": 1,
+        "datetime": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 12773
+    },
+    "backend\\apps\\ai\\tests\\test_manual_switch.py": {
+      "framework": "pytest",
+      "total_deps": 9,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "pytest",
+        "rest_framework.test",
+        "django.urls",
+        "django",
+        "datetime",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "pytest": 1,
+        "rest_framework.test": 1,
+        "django.urls": 1,
+        "django": 1,
+        "datetime": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 20896
+    },
+    "backend\\apps\\ai\\tests\\test_model_config.py": {
+      "framework": "pytest",
+      "total_deps": 10,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "rest_framework.test",
+        "json",
+        "decimal",
+        "django.urls",
+        "apps",
+        "django",
+        "apps.ai.models",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "rest_framework.test": 1,
+        "json": 1,
+        "decimal": 1,
+        "django.urls": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.ai.models": 1,
+        "django.test": 1
+      },
+      "content_length": 12953
+    },
+    "backend\\apps\\ai\\tests\\test_model_discovery.py": {
+      "framework": "pytest",
+      "total_deps": 10,
+      "external_deps": [
+        "asyncio",
+        "django.core.cache",
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "rest_framework.test",
+        "json",
+        "unittest.mock",
+        "django",
+        "django.test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "asyncio": 1,
+        "django.core.cache": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "rest_framework.test": 1,
+        "json": 1,
+        "unittest.mock": 1,
+        "django": 1,
+        "django.test": 1
+      },
+      "content_length": 15395
+    },
+    "backend\\apps\\ai\\tests\\test_monitoring.py": {
+      "framework": "pytest",
+      "total_deps": 10,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "rest_framework.test",
+        "json",
+        "unittest.mock",
+        "django",
+        "datetime",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "rest_framework.test": 1,
+        "json": 1,
+        "unittest.mock": 1,
+        "django": 1,
+        "datetime": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 21402
+    },
+    "backend\\apps\\ai\\tests\\test_security.py": {
+      "framework": "pytest",
+      "total_deps": 15,
+      "external_deps": [
+        "time",
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "apps.ai.config_models",
+        "rest_framework.test",
+        "json",
+        "django.urls",
+        "apps",
+        "django",
+        "unittest.mock",
+        "django.core.exceptions",
+        "apps.common.security",
+        "django.test",
+        "apps.rbac.models"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "time": 1,
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "apps.ai.config_models": 1,
+        "rest_framework.test": 1,
+        "json": 1,
+        "django.urls": 1,
+        "apps": 1,
+        "django": 1,
+        "unittest.mock": 1,
+        "django.core.exceptions": 1,
+        "apps.common.security": 1,
+        "django.test": 1,
+        "apps.rbac.models": 1
+      },
+      "content_length": 19025
+    },
+    "backend\\apps\\ai\\tests\\test_token_statistics.py": {
+      "framework": "pytest",
+      "total_deps": 17,
+      "external_deps": [
+        "django.contrib.auth",
+        "rest_framework",
+        "unittest",
+        "rest_framework.test",
+        "apps.ai.services.token_statistics",
+        "rest_framework_simplejwt.tokens",
+        "json",
+        "decimal",
+        "unittest.mock",
+        "apps",
+        "django",
+        "apps.ai.models",
+        "datetime",
+        "django.urls",
+        "rest_framework_simplejwt",
+        "django.test",
+        "django.utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "django.contrib.auth": 1,
+        "rest_framework": 1,
+        "unittest": 1,
+        "rest_framework.test": 1,
+        "apps.ai.services.token_statistics": 1,
+        "rest_framework_simplejwt.tokens": 1,
+        "json": 1,
+        "decimal": 1,
+        "unittest.mock": 1,
+        "apps": 1,
+        "django": 1,
+        "apps.ai.models": 1,
+        "datetime": 1,
+        "django.urls": 1,
+        "rest_framework_simplejwt": 1,
+        "django.test": 1,
+        "django.utils": 1
+      },
+      "content_length": 16455
+    },
+    "frontend\\tests\\flaky-examples.test.js": {
+      "framework": "vitest",
+      "total_deps": 3,
+      "external_deps": [
+        "vitest",
+        "vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 7731
+    },
+    "frontend\\tests\\build\\build.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "path",
+        "child_process",
+        "fs"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "path": 1,
+        "child_process": 1,
+        "fs": 1
+      },
+      "content_length": 4497
+    },
+    "frontend\\tests\\e2e\\acceptance.test.js": {
+      "framework": "vitest",
+      "total_deps": 5,
+      "external_deps": [
+        "pinia",
+        "vitest",
+        "vue-router",
+        "vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "pinia": 1,
+        "vitest": 1,
+        "vue-router": 1,
+        "vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 6905
+    },
+    "frontend\\tests\\e2e\\ai-assistant-advanced.spec.ts": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 9863
+    },
+    "frontend\\tests\\e2e\\ai-config.e2e.test.js": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 9192
+    },
+    "frontend\\tests\\e2e\\basic-navigation.spec.ts": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 1312
+    },
+    "frontend\\tests\\e2e\\idiomatic-expressions.spec.ts": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 2609
+    },
+    "frontend\\tests\\e2e\\learning-analytics.spec.ts": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 9805
+    },
+    "frontend\\tests\\e2e\\learning-modes.spec.ts": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 7688
+    },
+    "frontend\\tests\\e2e\\user-login-flow.spec.ts": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 5452
+    },
+    "frontend\\tests\\integration\\routing.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "vue-router",
+        "pinia",
+        "vue"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "vue-router": 1,
+        "pinia": 1,
+        "vue": 1
+      },
+      "content_length": 2401
+    },
+    "frontend\\tests\\integration\\api\\aiConfig.integration.test.js": {
+      "framework": "vitest",
+      "total_deps": 5,
+      "external_deps": [
+        "msw",
+        "vitest",
+        "@pinia/testing",
+        "msw/node",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "msw": 1,
+        "vitest": 1,
+        "@pinia/testing": 1,
+        "msw/node": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 5976
+    },
+    "frontend\\tests\\integration\\components\\AIConfig.integration.test.js": {
+      "framework": "vitest",
+      "total_deps": 5,
+      "external_deps": [
+        "msw",
+        "vitest",
+        "@pinia/testing",
+        "msw/node",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "msw": 1,
+        "vitest": 1,
+        "@pinia/testing": 1,
+        "msw/node": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 7660
+    },
+    "frontend\\tests\\unit\\basic.test.js": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "vitest"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1
+      },
+      "content_length": 707
+    },
+    "frontend\\tests\\unit\\core-functionality.test.js": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "vitest"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1
+      },
+      "content_length": 457
+    },
+    "frontend\\tests\\unit\\idiomatic_expressions_requirement.test.js": {
+      "framework": "vitest",
+      "total_deps": 3,
+      "external_deps": [
+        "vitest",
+        "@/components/IdiomaticExpressionsRequirementComponent.vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/components/IdiomaticExpressionsRequirementComponent.vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 634
+    },
+    "frontend\\tests\\unit\\security.test.ts": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "vitest"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1
+      },
+      "content_length": 7753
+    },
+    "frontend\\tests\\unit\\api\\aiConfig.test.js": {
+      "framework": "vitest",
+      "total_deps": 2,
+      "external_deps": [
+        "vitest",
+        "@/api/aiConfig"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/api/aiConfig": 1
+      },
+      "content_length": 6500
+    },
+    "frontend\\tests\\unit\\components\\AIAssistantChat.simple.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "@pinia/testing",
+        "@/components/idiomatic-expressions/AIAssistantChat.vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@pinia/testing": 1,
+        "@/components/idiomatic-expressions/AIAssistantChat.vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 6760
+    },
+    "frontend\\tests\\unit\\components\\AIAssistantChat.test.js": {
+      "framework": "vitest",
+      "total_deps": 5,
+      "external_deps": [
+        "element-plus",
+        "vitest",
+        "@/stores/modules/learningStore",
+        "@/components/idiomatic-expressions/AIAssistantChat.vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "element-plus": 1,
+        "vitest": 1,
+        "@/stores/modules/learningStore": 1,
+        "@/components/idiomatic-expressions/AIAssistantChat.vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 14650
+    },
+    "frontend\\tests\\unit\\components\\ExpressionCard.simple.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "@/components/idiomatic-expressions/ExpressionCard.vue",
+        "@pinia/testing",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/components/idiomatic-expressions/ExpressionCard.vue": 1,
+        "@pinia/testing": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 7580
+    },
+    "frontend\\tests\\unit\\components\\ExpressionCard.test.js": {
+      "framework": "vitest",
+      "total_deps": 6,
+      "external_deps": [
+        "vitest",
+        "@/stores/modules/learningStore",
+        "@/components/idiomatic-expressions/ExpressionCard.vue",
+        "@pinia/testing",
+        "@/stores/modules/expressionStore",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/stores/modules/learningStore": 1,
+        "@/components/idiomatic-expressions/ExpressionCard.vue": 1,
+        "@pinia/testing": 1,
+        "@/stores/modules/expressionStore": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 14309
+    },
+    "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.simple.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "@pinia/testing",
+        "@/components/charts/analytics/LearningAnalyticsDashboard.vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@pinia/testing": 1,
+        "@/components/charts/analytics/LearningAnalyticsDashboard.vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 17316
+    },
+    "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "@/components/charts/analytics/LearningAnalyticsDashboard.vue",
+        "element-plus",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/components/charts/analytics/LearningAnalyticsDashboard.vue": 1,
+        "element-plus": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 19991
+    },
+    "frontend\\tests\\unit\\components\\LoadingIndicator.test.js": {
+      "framework": "vitest",
+      "total_deps": 3,
+      "external_deps": [
+        "vitest",
+        "@/components/common/LoadingIndicator.vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/components/common/LoadingIndicator.vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 9421
+    },
+    "frontend\\tests\\unit\\components\\SafeHTML.test.ts": {
+      "framework": "vitest",
+      "total_deps": 3,
+      "external_deps": [
+        "vitest",
+        "@/components/common/SafeHTML.vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/components/common/SafeHTML.vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 3839
+    },
+    "frontend\\tests\\unit\\components\\ScenarioPlayer.simple.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "@/components/idiomatic-expressions/ScenarioPlayer.vue",
+        "@pinia/testing",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/components/idiomatic-expressions/ScenarioPlayer.vue": 1,
+        "@pinia/testing": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 13680
+    },
+    "frontend\\tests\\unit\\components\\ScenarioPlayer.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "@/components/idiomatic-expressions/ScenarioPlayer.vue",
+        "element-plus",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/components/idiomatic-expressions/ScenarioPlayer.vue": 1,
+        "element-plus": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 15478
+    },
+    "frontend\\tests\\unit\\components\\SecureInput.test.ts": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "element-plus",
+        "@/components/common/SecureInput.vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "element-plus": 1,
+        "@/components/common/SecureInput.vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 7684
+    },
+    "frontend\\tests\\unit\\components\\common\\LanguageSwitcher.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "vue-i18n",
+        "@/components/common/LanguageSwitcher.vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "vue-i18n": 1,
+        "@/components/common/LanguageSwitcher.vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 3359
+    },
+    "frontend\\tests\\unit\\composables\\useLoading.test.js": {
+      "framework": "vitest",
+      "total_deps": 5,
+      "external_deps": [
+        "pinia",
+        "vitest",
+        "@/composables/useLoading",
+        "vue",
+        "@/stores/modules/loadingStore"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "pinia": 1,
+        "vitest": 1,
+        "@/composables/useLoading": 1,
+        "vue": 1,
+        "@/stores/modules/loadingStore": 1
+      },
+      "content_length": 9210
+    },
+    "frontend\\tests\\unit\\config\\ConfigImportExport.test.js": {
+      "framework": "vitest",
+      "total_deps": 5,
+      "external_deps": [
+        "element-plus",
+        "vitest",
+        "@/api/configImportExport",
+        "@/components/config/ConfigImportExport.vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "element-plus": 1,
+        "vitest": 1,
+        "@/api/configImportExport": 1,
+        "@/components/config/ConfigImportExport.vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 6485
+    },
+    "frontend\\tests\\unit\\config\\ConfigManagement.test.js": {
+      "framework": "vitest",
+      "total_deps": 7,
+      "external_deps": [
+        "vitest",
+        "@/components/config/ConfigImportExport.vue",
+        "@/views/english/ConfigManagement.vue",
+        "vue-router",
+        "@/components/config/ConfigVersionManager.vue",
+        "@/components/config/ConfigTemplateManager.vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/components/config/ConfigImportExport.vue": 1,
+        "@/views/english/ConfigManagement.vue": 1,
+        "vue-router": 1,
+        "@/components/config/ConfigVersionManager.vue": 1,
+        "@/components/config/ConfigTemplateManager.vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 2681
+    },
+    "frontend\\tests\\unit\\i18n\\i18n.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "vue-i18n",
+        "@/i18n/locales/en-US",
+        "@/i18n/locales/zh-CN"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "vue-i18n": 1,
+        "@/i18n/locales/en-US": 1,
+        "@/i18n/locales/zh-CN": 1
+      },
+      "content_length": 7819
+    },
+    "frontend\\tests\\unit\\performance\\optimization.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "@/utils/chartOptimization",
+        "@/utils/lazyLoad",
+        "@/router/performance"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/utils/chartOptimization": 1,
+        "@/utils/lazyLoad": 1,
+        "@/router/performance": 1
+      },
+      "content_length": 9488
+    },
+    "frontend\\tests\\unit\\settings\\Settings.test.js": {
+      "framework": "vitest",
+      "total_deps": 4,
+      "external_deps": [
+        "vitest",
+        "vue-router",
+        "@/views/english/Settings.vue",
+        "@vue/test-utils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "vue-router": 1,
+        "@/views/english/Settings.vue": 1,
+        "@vue/test-utils": 1
+      },
+      "content_length": 3381
+    },
+    "frontend\\tests\\unit\\stores\\auth.test.js": {
+      "framework": "vitest",
+      "total_deps": 3,
+      "external_deps": [
+        "vitest",
+        "pinia",
+        "@/stores/auth"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "pinia": 1,
+        "@/stores/auth": 1
+      },
+      "content_length": 7895
+    },
+    "frontend\\tests\\unit\\utils\\dateUtils.test.js": {
+      "framework": "vitest",
+      "total_deps": 2,
+      "external_deps": [
+        "vitest",
+        "@/utils/dateUtils"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/utils/dateUtils": 1
+      },
+      "content_length": 4277
+    },
+    "frontend\\tests\\unit\\utils\\errorHandler.test.js": {
+      "framework": "vitest",
+      "total_deps": 3,
+      "external_deps": [
+        "vitest",
+        "@/utils/errorHandler",
+        "element-plus"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "vitest": 1,
+        "@/utils/errorHandler": 1,
+        "element-plus": 1
+      },
+      "content_length": 10618
+    },
+    "e2e\\tests\\analytics.spec.ts": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 8926
+    },
+    "e2e\\tests\\auth.spec.ts": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 6025
+    },
+    "e2e\\tests\\dictionary.spec.ts": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 8001
+    },
+    "e2e\\tests\\user-journey.spec.ts": {
+      "framework": "vitest",
+      "total_deps": 1,
+      "external_deps": [
+        "@playwright/test"
+      ],
+      "internal_deps": [],
+      "dep_types": {
+        "@playwright/test": 1
+      },
+      "content_length": 13232
+    }
+  },
+  "summary": {
+    "total_files_analyzed": 146,
+    "framework_distribution": {
+      "pytest": 89,
+      "unknown_python": 7,
+      "vitest": 46,
+      "django_test": 4
+    },
+    "avg_dependencies_per_file": 7.076388888888889
+  }
+}

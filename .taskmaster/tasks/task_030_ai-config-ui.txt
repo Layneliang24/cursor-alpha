@@ -1,0 +1,15 @@
+# Task ID: 30
+# Title: 实现通配符自动收录机制
+# Status: pending
+# Dependencies: 29
+# Priority: medium
+# Description: 实现自动发现脚本，新增测试文件零配置即可被收录
+# Details:
+扩展Makefile，使用通配符动态发现测试文件：
+1. 后端：使用pytest的自动发现机制（默认已支持）
+2. 前端：配置vitest和playwright的testMatch模式
+
+确保新增文件只要符合命名模式（*_test.py, *.spec.js等）就会被自动包含
+
+# Test Strategy:
+添加新测试文件，验证是否被自动发现和执行

@@ -1,0 +1,32 @@
+# Task ID: 29
+# Title: 设计统一测试入口Makefile
+# Status: pending
+# Dependencies: 28
+# Priority: medium
+# Description: 设计统一的测试入口Makefile，支持一个命令执行所有测试
+# Details:
+创建Makefile，包含以下目标：
+- test: 运行所有测试
+- test-backend: 运行后端测试
+- test-frontend: 运行前端测试
+- test-coverage: 生成覆盖率报告
+
+使用通配符自动发现测试文件，例如：
+```makefile
+BACKEND_TEST_DIRS = tests backend/apps/ai/tests backend/tests
+FRONTEND_TEST_DIRS = frontend/tests
+
+test:
+	$(MAKE) test-backend
+	$(MAKE) test-frontend
+
+test-backend:
+	pytest $(BACKEND_TEST_DIRS)
+
+test-frontend:
+	cd frontend && vitest run
+	cd frontend && playwright test
+```
+
+# Test Strategy:
+执行Makefile各目标，验证是否能正确运行对应测试

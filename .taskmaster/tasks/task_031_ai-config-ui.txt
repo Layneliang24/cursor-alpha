@@ -1,0 +1,17 @@
+# Task ID: 31
+# Title: 集成多框架测试
+# Status: pending
+# Dependencies: 30
+# Priority: medium
+# Description: 集成所有测试框架到统一入口
+# Details:
+在Makefile中集成：
+1. Django测试：通过pytest运行
+2. Pytest：直接运行
+3. Vitest：前端单元测试
+4. Playwright：前端E2E测试
+
+处理环境依赖，确保各框架在统一命令下可执行
+
+# Test Strategy:
+执行Makefile test命令，验证所有框架的测试都被执行

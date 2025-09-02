@@ -1,0 +1,2823 @@
+{
+  "summary": {
+    "total_test_files": 146,
+    "test_directories": 5,
+    "framework_distribution": {
+      "python": 100,
+      "javascript": 46
+    }
+  },
+  "directory_structure": {
+    "tests": [
+      {
+        "file": "tests\\debug_key_error_test.py",
+        "type": "python",
+        "size": 7736
+      },
+      {
+        "file": "tests\\simple_submit_test.py",
+        "type": "python",
+        "size": 6070
+      },
+      {
+        "file": "tests\\test_calendar_fix.py",
+        "type": "python",
+        "size": 2363
+      },
+      {
+        "file": "tests\\test_quick_validation.py",
+        "type": "python",
+        "size": 8353
+      },
+      {
+        "file": "tests\\test_runner_optimized.py",
+        "type": "python",
+        "size": 18681
+      },
+      {
+        "file": "tests\\test_settings.py",
+        "type": "python",
+        "size": 1738
+      },
+      {
+        "file": "tests\\test_settings_ci.py",
+        "type": "python",
+        "size": 5672
+      },
+      {
+        "file": "tests\\test_settings_mysql.py",
+        "type": "python",
+        "size": 2240
+      },
+      {
+        "file": "tests\\test_simple_validation.py",
+        "type": "python",
+        "size": 6750
+      },
+      {
+        "file": "tests\\api\\test_chapter_word_counts_api.py",
+        "type": "python",
+        "size": 5771
+      },
+      {
+        "file": "tests\\api\\test_frontend_api_simulation.py",
+        "type": "python",
+        "size": 7428
+      },
+      {
+        "file": "tests\\api\\test_frontend_api_wrapper.py",
+        "type": "python",
+        "size": 5940
+      },
+      {
+        "file": "tests\\api\\test_typing_words_api.py",
+        "type": "python",
+        "size": 7811
+      },
+      {
+        "file": "tests\\api_docs\\test_api_documentation.py",
+        "type": "python",
+        "size": 17067
+      },
+      {
+        "file": "tests\\data_management\\test_data_factory.py",
+        "type": "python",
+        "size": 16874
+      },
+      {
+        "file": "tests\\e2e\\example_requirement.spec.js",
+        "type": "javascript",
+        "size": 623
+      },
+      {
+        "file": "tests\\edge_cases\\test_edge_cases.py",
+        "type": "python",
+        "size": 18065
+      },
+      {
+        "file": "tests\\frontend\\test_progress_bar_display.py",
+        "type": "python",
+        "size": 9719
+      },
+      {
+        "file": "tests\\frontend\\test_typing_component_lifecycle.py",
+        "type": "python",
+        "size": 11406
+      },
+      {
+        "file": "tests\\frontend\\test_vue_components.py",
+        "type": "python",
+        "size": 8430
+      },
+      {
+        "file": "tests\\integration\\test_api.py",
+        "type": "python",
+        "size": 12435
+      },
+      {
+        "file": "tests\\integration\\test_bbc_fix_verification.py",
+        "type": "python",
+        "size": 8718
+      },
+      {
+        "file": "tests\\integration\\test_end_to_end_workflow.py",
+        "type": "python",
+        "size": 12152
+      },
+      {
+        "file": "tests\\integration\\test_fixes_verification.py",
+        "type": "python",
+        "size": 10949
+      },
+      {
+        "file": "tests\\integration\\test_full_workflow_integration.py",
+        "type": "python",
+        "size": 21897
+      },
+      {
+        "file": "tests\\integration\\test_news_api.py",
+        "type": "python",
+        "size": 3803
+      },
+      {
+        "file": "tests\\integration\\test_typing_practice_submit_integration.py",
+        "type": "python",
+        "size": 13545
+      },
+      {
+        "file": "tests\\new_features\\test_chapter_completion_integration.py",
+        "type": "python",
+        "size": 8405
+      },
+      {
+        "file": "tests\\new_features\\test_chapter_completion_simple.py",
+        "type": "python",
+        "size": 8232
+      },
+      {
+        "file": "tests\\performance\\test_performance_regression.py",
+        "type": "python",
+        "size": 12582
+      },
+      {
+        "file": "tests\\regression\\auth\\test_permissions.py",
+        "type": "python",
+        "size": 19153
+      },
+      {
+        "file": "tests\\regression\\auth\\test_user_authentication.py",
+        "type": "python",
+        "size": 19502
+      },
+      {
+        "file": "tests\\regression\\english\\test_data_analysis_regression.py",
+        "type": "python",
+        "size": 26504
+      },
+      {
+        "file": "tests\\regression\\english\\test_pause_resume.py",
+        "type": "python",
+        "size": 20910
+      },
+      {
+        "file": "tests\\regression\\english\\test_pronunciation.py",
+        "type": "python",
+        "size": 12408
+      },
+      {
+        "file": "tests\\regression\\english\\test_typing_practice_submit_regression.py",
+        "type": "python",
+        "size": 16608
+      },
+      {
+        "file": "tests\\unit\\test_ai_module.py",
+        "type": "python",
+        "size": 5188
+      },
+      {
+        "file": "tests\\unit\\test_api_docs_cache.py",
+        "type": "python",
+        "size": 19235
+      },
+      {
+        "file": "tests\\unit\\test_articles.py",
+        "type": "python",
+        "size": 63
+      },
+      {
+        "file": "tests\\unit\\test_article_management.py",
+        "type": "python",
+        "size": 23085
+      },
+      {
+        "file": "tests\\unit\\test_async_tasks.py",
+        "type": "python",
+        "size": 20793
+      },
+      {
+        "file": "tests\\unit\\test_basic.py",
+        "type": "python",
+        "size": 4992
+      },
+      {
+        "file": "tests\\unit\\test_bbc_news_save.py",
+        "type": "python",
+        "size": 13530
+      },
+      {
+        "file": "tests\\unit\\test_bbc_simple.py",
+        "type": "python",
+        "size": 3665
+      },
+      {
+        "file": "tests\\unit\\test_categories.py",
+        "type": "python",
+        "size": 63
+      },
+      {
+        "file": "tests\\unit\\test_cnn_crawler.py",
+        "type": "python",
+        "size": 8873
+      },
+      {
+        "file": "tests\\unit\\test_common_module.py",
+        "type": "python",
+        "size": 14269
+      },
+      {
+        "file": "tests\\unit\\test_data_analysis.py",
+        "type": "python",
+        "size": 19946
+      },
+      {
+        "file": "tests\\unit\\test_data_quality.py",
+        "type": "python",
+        "size": 20738
+      },
+      {
+        "file": "tests\\unit\\test_data_storage.py",
+        "type": "python",
+        "size": 19473
+      },
+      {
+        "file": "tests\\unit\\test_english_api.py",
+        "type": "python",
+        "size": 40009
+      },
+      {
+        "file": "tests\\unit\\test_english_learning.py",
+        "type": "python",
+        "size": 21196
+      },
+      {
+        "file": "tests\\unit\\test_english_security.py",
+        "type": "python",
+        "size": 16116
+      },
+      {
+        "file": "tests\\unit\\test_expression_crawler.py",
+        "type": "python",
+        "size": 14354
+      },
+      {
+        "file": "tests\\unit\\test_fundus_crawler.py",
+        "type": "python",
+        "size": 2010
+      },
+      {
+        "file": "tests\\unit\\test_idiomatic_expressions.py",
+        "type": "python",
+        "size": 19663
+      },
+      {
+        "file": "tests\\unit\\test_jobs.py",
+        "type": "python",
+        "size": 593
+      },
+      {
+        "file": "tests\\unit\\test_jobs_module.py",
+        "type": "python",
+        "size": 5836
+      },
+      {
+        "file": "tests\\unit\\test_links_module.py",
+        "type": "python",
+        "size": 15272
+      },
+      {
+        "file": "tests\\unit\\test_models.py",
+        "type": "python",
+        "size": 9971
+      },
+      {
+        "file": "tests\\unit\\test_model_fields_fix.py",
+        "type": "python",
+        "size": 12777
+      },
+      {
+        "file": "tests\\unit\\test_mysql_connection.py",
+        "type": "python",
+        "size": 4312
+      },
+      {
+        "file": "tests\\unit\\test_news_dashboard.py",
+        "type": "python",
+        "size": 12712
+      },
+      {
+        "file": "tests\\unit\\test_news_visibility_removal.py",
+        "type": "python",
+        "size": 7656
+      },
+      {
+        "file": "tests\\unit\\test_permissions_comprehensive.py",
+        "type": "python",
+        "size": 20099
+      },
+      {
+        "file": "tests\\unit\\test_search_module.py",
+        "type": "python",
+        "size": 8853
+      },
+      {
+        "file": "tests\\unit\\test_simple.py",
+        "type": "python",
+        "size": 4320
+      },
+      {
+        "file": "tests\\unit\\test_specialized_crawlers.py",
+        "type": "python",
+        "size": 18669
+      },
+      {
+        "file": "tests\\unit\\test_storage_core.py",
+        "type": "python",
+        "size": 13817
+      },
+      {
+        "file": "tests\\unit\\test_task_system.py",
+        "type": "python",
+        "size": 15484
+      },
+      {
+        "file": "tests\\unit\\test_techcrunch_and_image_cleanup.py",
+        "type": "python",
+        "size": 16896
+      },
+      {
+        "file": "tests\\unit\\test_todos.py",
+        "type": "python",
+        "size": 596
+      },
+      {
+        "file": "tests\\unit\\test_typing_practice.py",
+        "type": "python",
+        "size": 14528
+      },
+      {
+        "file": "tests\\unit\\test_typing_practice_api.py",
+        "type": "python",
+        "size": 14158
+      },
+      {
+        "file": "tests\\unit\\test_typing_practice_submit.py",
+        "type": "python",
+        "size": 13724
+      },
+      {
+        "file": "tests\\unit\\test_users.py",
+        "type": "python",
+        "size": 63
+      },
+      {
+        "file": "tests\\unit\\test_user_auth.py",
+        "type": "python",
+        "size": 17564
+      },
+      {
+        "file": "tests\\utils\\test_data_manager.py",
+        "type": "python",
+        "size": 16050
+      },
+      {
+        "file": "tests\\utils\\test_helpers.py",
+        "type": "python",
+        "size": 19725
+      },
+      {
+        "file": "tests\\utils\\test_quality_monitor.py",
+        "type": "python",
+        "size": 19862
+      },
+      {
+        "file": "tests\\utils\\test_report_generator.py",
+        "type": "python",
+        "size": 24061
+      }
+    ],
+    "backend/tests": [
+      {
+        "file": "backend\\tests\\test_ai_config_encryption.py",
+        "type": "python",
+        "size": 3218
+      },
+      {
+        "file": "backend\\tests\\test_flaky_examples.py",
+        "type": "python",
+        "size": 6896
+      },
+      {
+        "file": "backend\\tests\\integration\\test_ai_service_management.py",
+        "type": "python",
+        "size": 20654
+      },
+      {
+        "file": "backend\\tests\\integration\\test_api_cache_performance.py",
+        "type": "python",
+        "size": 11865
+      },
+      {
+        "file": "backend\\tests\\unit\\test_ai_adapters.py",
+        "type": "python",
+        "size": 25485
+      },
+      {
+        "file": "backend\\tests\\unit\\test_ai_config_models.py",
+        "type": "python",
+        "size": 15492
+      },
+      {
+        "file": "backend\\tests\\unit\\test_ai_serializers.py",
+        "type": "python",
+        "size": 19533
+      },
+      {
+        "file": "backend\\tests\\unit\\test_ai_views.py",
+        "type": "python",
+        "size": 20052
+      },
+      {
+        "file": "backend\\tests\\unit\\test_basic_models.py",
+        "type": "python",
+        "size": 14579
+      },
+      {
+        "file": "backend\\tests\\unit\\test_cache_strategy.py",
+        "type": "python",
+        "size": 7068
+      },
+      {
+        "file": "backend\\tests\\unit\\test_core_functionality.py",
+        "type": "python",
+        "size": 12186
+      }
+    ],
+    "backend/apps/ai/tests": [
+      {
+        "file": "backend\\apps\\ai\\tests\\test_api_views.py",
+        "type": "python",
+        "size": 26064
+      },
+      {
+        "file": "backend\\apps\\ai\\tests\\test_config_import_export.py",
+        "type": "python",
+        "size": 16085
+      },
+      {
+        "file": "backend\\apps\\ai\\tests\\test_failover_auto_switch.py",
+        "type": "python",
+        "size": 14381
+      },
+      {
+        "file": "backend\\apps\\ai\\tests\\test_manual_switch.py",
+        "type": "python",
+        "size": 22674
+      },
+      {
+        "file": "backend\\apps\\ai\\tests\\test_model_config.py",
+        "type": "python",
+        "size": 14310
+      },
+      {
+        "file": "backend\\apps\\ai\\tests\\test_model_discovery.py",
+        "type": "python",
+        "size": 16812
+      },
+      {
+        "file": "backend\\apps\\ai\\tests\\test_monitoring.py",
+        "type": "python",
+        "size": 23208
+      },
+      {
+        "file": "backend\\apps\\ai\\tests\\test_security.py",
+        "type": "python",
+        "size": 21795
+      },
+      {
+        "file": "backend\\apps\\ai\\tests\\test_token_statistics.py",
+        "type": "python",
+        "size": 17581
+      }
+    ],
+    "frontend/tests": [
+      {
+        "file": "frontend\\tests\\flaky-examples.test.js",
+        "type": "javascript",
+        "size": 9047
+      },
+      {
+        "file": "frontend\\tests\\build\\build.test.js",
+        "type": "javascript",
+        "size": 5256
+      },
+      {
+        "file": "frontend\\tests\\e2e\\acceptance.test.js",
+        "type": "javascript",
+        "size": 7752
+      },
+      {
+        "file": "frontend\\tests\\e2e\\ai-assistant-advanced.spec.ts",
+        "type": "javascript",
+        "size": 11450
+      },
+      {
+        "file": "frontend\\tests\\e2e\\ai-config.e2e.test.js",
+        "type": "javascript",
+        "size": 10933
+      },
+      {
+        "file": "frontend\\tests\\e2e\\basic-navigation.spec.ts",
+        "type": "javascript",
+        "size": 1574
+      },
+      {
+        "file": "frontend\\tests\\e2e\\idiomatic-expressions.spec.ts",
+        "type": "javascript",
+        "size": 3456
+      },
+      {
+        "file": "frontend\\tests\\e2e\\learning-analytics.spec.ts",
+        "type": "javascript",
+        "size": 11635
+      },
+      {
+        "file": "frontend\\tests\\e2e\\learning-modes.spec.ts",
+        "type": "javascript",
+        "size": 9131
+      },
+      {
+        "file": "frontend\\tests\\e2e\\user-login-flow.spec.ts",
+        "type": "javascript",
+        "size": 6376
+      },
+      {
+        "file": "frontend\\tests\\integration\\routing.test.js",
+        "type": "javascript",
+        "size": 2669
+      },
+      {
+        "file": "frontend\\tests\\integration\\api\\aiConfig.integration.test.js",
+        "type": "javascript",
+        "size": 6524
+      },
+      {
+        "file": "frontend\\tests\\integration\\components\\AIConfig.integration.test.js",
+        "type": "javascript",
+        "size": 8723
+      },
+      {
+        "file": "frontend\\tests\\selenium\\cross-browser-learning.test.js",
+        "type": "javascript",
+        "size": 14197
+      },
+      {
+        "file": "frontend\\tests\\selenium\\cross-browser-login.test.js",
+        "type": "javascript",
+        "size": 13275
+      },
+      {
+        "file": "frontend\\tests\\unit\\basic.test.js",
+        "type": "javascript",
+        "size": 841
+      },
+      {
+        "file": "frontend\\tests\\unit\\core-functionality.test.js",
+        "type": "javascript",
+        "size": 543
+      },
+      {
+        "file": "frontend\\tests\\unit\\idiomatic_expressions_requirement.test.js",
+        "type": "javascript",
+        "size": 706
+      },
+      {
+        "file": "frontend\\tests\\unit\\security.test.ts",
+        "type": "javascript",
+        "size": 8664
+      },
+      {
+        "file": "frontend\\tests\\unit\\api\\aiConfig.test.js",
+        "type": "javascript",
+        "size": 6710
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\AIAssistantChat.simple.test.js",
+        "type": "javascript",
+        "size": 7293
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\AIAssistantChat.test.js",
+        "type": "javascript",
+        "size": 16834
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\ExpressionCard.simple.test.js",
+        "type": "javascript",
+        "size": 7819
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\ExpressionCard.test.js",
+        "type": "javascript",
+        "size": 15635
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.simple.test.js",
+        "type": "javascript",
+        "size": 18032
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.test.js",
+        "type": "javascript",
+        "size": 21923
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\LoadingIndicator.test.js",
+        "type": "javascript",
+        "size": 10623
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\SafeHTML.test.ts",
+        "type": "javascript",
+        "size": 4507
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\ScenarioPlayer.simple.test.js",
+        "type": "javascript",
+        "size": 14457
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\ScenarioPlayer.test.js",
+        "type": "javascript",
+        "size": 17526
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\SecureInput.test.ts",
+        "type": "javascript",
+        "size": 8678
+      },
+      {
+        "file": "frontend\\tests\\unit\\components\\common\\LanguageSwitcher.test.js",
+        "type": "javascript",
+        "size": 3495
+      },
+      {
+        "file": "frontend\\tests\\unit\\composables\\useLoading.test.js",
+        "type": "javascript",
+        "size": 10349
+      },
+      {
+        "file": "frontend\\tests\\unit\\config\\ConfigImportExport.test.js",
+        "type": "javascript",
+        "size": 7258
+      },
+      {
+        "file": "frontend\\tests\\unit\\config\\ConfigManagement.test.js",
+        "type": "javascript",
+        "size": 2961
+      },
+      {
+        "file": "frontend\\tests\\unit\\i18n\\i18n.test.js",
+        "type": "javascript",
+        "size": 8620
+      },
+      {
+        "file": "frontend\\tests\\unit\\performance\\optimization.test.js",
+        "type": "javascript",
+        "size": 10478
+      },
+      {
+        "file": "frontend\\tests\\unit\\settings\\Settings.test.js",
+        "type": "javascript",
+        "size": 3641
+      },
+      {
+        "file": "frontend\\tests\\unit\\stores\\auth.test.js",
+        "type": "javascript",
+        "size": 8187
+      },
+      {
+        "file": "frontend\\tests\\unit\\utils\\dateUtils.test.js",
+        "type": "javascript",
+        "size": 4444
+      },
+      {
+        "file": "frontend\\tests\\unit\\utils\\errorHandler.test.js",
+        "type": "javascript",
+        "size": 12295
+      }
+    ],
+    "e2e/tests": [
+      {
+        "file": "e2e\\tests\\analytics.spec.ts",
+        "type": "javascript",
+        "size": 10502
+      },
+      {
+        "file": "e2e\\tests\\auth.spec.ts",
+        "type": "javascript",
+        "size": 7257
+      },
+      {
+        "file": "e2e\\tests\\dictionary.spec.ts",
+        "type": "javascript",
+        "size": 9395
+      },
+      {
+        "file": "e2e\\tests\\user-journey.spec.ts",
+        "type": "javascript",
+        "size": 14819
+      }
+    ]
+  },
+  "tree_structure": {
+    "tests": {
+      "__files__": [
+        {
+          "file": "tests\\debug_key_error_test.py",
+          "type": "python",
+          "size": 7736
+        },
+        {
+          "file": "tests\\simple_submit_test.py",
+          "type": "python",
+          "size": 6070
+        },
+        {
+          "file": "tests\\test_calendar_fix.py",
+          "type": "python",
+          "size": 2363
+        },
+        {
+          "file": "tests\\test_quick_validation.py",
+          "type": "python",
+          "size": 8353
+        },
+        {
+          "file": "tests\\test_runner_optimized.py",
+          "type": "python",
+          "size": 18681
+        },
+        {
+          "file": "tests\\test_settings.py",
+          "type": "python",
+          "size": 1738
+        },
+        {
+          "file": "tests\\test_settings_ci.py",
+          "type": "python",
+          "size": 5672
+        },
+        {
+          "file": "tests\\test_settings_mysql.py",
+          "type": "python",
+          "size": 2240
+        },
+        {
+          "file": "tests\\test_simple_validation.py",
+          "type": "python",
+          "size": 6750
+        },
+        {
+          "file": "tests\\api\\test_chapter_word_counts_api.py",
+          "type": "python",
+          "size": 5771
+        },
+        {
+          "file": "tests\\api\\test_frontend_api_simulation.py",
+          "type": "python",
+          "size": 7428
+        },
+        {
+          "file": "tests\\api\\test_frontend_api_wrapper.py",
+          "type": "python",
+          "size": 5940
+        },
+        {
+          "file": "tests\\api\\test_typing_words_api.py",
+          "type": "python",
+          "size": 7811
+        },
+        {
+          "file": "tests\\api_docs\\test_api_documentation.py",
+          "type": "python",
+          "size": 17067
+        },
+        {
+          "file": "tests\\data_management\\test_data_factory.py",
+          "type": "python",
+          "size": 16874
+        },
+        {
+          "file": "tests\\e2e\\example_requirement.spec.js",
+          "type": "javascript",
+          "size": 623
+        },
+        {
+          "file": "tests\\edge_cases\\test_edge_cases.py",
+          "type": "python",
+          "size": 18065
+        },
+        {
+          "file": "tests\\frontend\\test_progress_bar_display.py",
+          "type": "python",
+          "size": 9719
+        },
+        {
+          "file": "tests\\frontend\\test_typing_component_lifecycle.py",
+          "type": "python",
+          "size": 11406
+        },
+        {
+          "file": "tests\\frontend\\test_vue_components.py",
+          "type": "python",
+          "size": 8430
+        },
+        {
+          "file": "tests\\integration\\test_api.py",
+          "type": "python",
+          "size": 12435
+        },
+        {
+          "file": "tests\\integration\\test_bbc_fix_verification.py",
+          "type": "python",
+          "size": 8718
+        },
+        {
+          "file": "tests\\integration\\test_end_to_end_workflow.py",
+          "type": "python",
+          "size": 12152
+        },
+        {
+          "file": "tests\\integration\\test_fixes_verification.py",
+          "type": "python",
+          "size": 10949
+        },
+        {
+          "file": "tests\\integration\\test_full_workflow_integration.py",
+          "type": "python",
+          "size": 21897
+        },
+        {
+          "file": "tests\\integration\\test_news_api.py",
+          "type": "python",
+          "size": 3803
+        },
+        {
+          "file": "tests\\integration\\test_typing_practice_submit_integration.py",
+          "type": "python",
+          "size": 13545
+        },
+        {
+          "file": "tests\\new_features\\test_chapter_completion_integration.py",
+          "type": "python",
+          "size": 8405
+        },
+        {
+          "file": "tests\\new_features\\test_chapter_completion_simple.py",
+          "type": "python",
+          "size": 8232
+        },
+        {
+          "file": "tests\\performance\\test_performance_regression.py",
+          "type": "python",
+          "size": 12582
+        },
+        {
+          "file": "tests\\regression\\auth\\test_permissions.py",
+          "type": "python",
+          "size": 19153
+        },
+        {
+          "file": "tests\\regression\\auth\\test_user_authentication.py",
+          "type": "python",
+          "size": 19502
+        },
+        {
+          "file": "tests\\regression\\english\\test_data_analysis_regression.py",
+          "type": "python",
+          "size": 26504
+        },
+        {
+          "file": "tests\\regression\\english\\test_pause_resume.py",
+          "type": "python",
+          "size": 20910
+        },
+        {
+          "file": "tests\\regression\\english\\test_pronunciation.py",
+          "type": "python",
+          "size": 12408
+        },
+        {
+          "file": "tests\\regression\\english\\test_typing_practice_submit_regression.py",
+          "type": "python",
+          "size": 16608
+        },
+        {
+          "file": "tests\\unit\\test_ai_module.py",
+          "type": "python",
+          "size": 5188
+        },
+        {
+          "file": "tests\\unit\\test_api_docs_cache.py",
+          "type": "python",
+          "size": 19235
+        },
+        {
+          "file": "tests\\unit\\test_articles.py",
+          "type": "python",
+          "size": 63
+        },
+        {
+          "file": "tests\\unit\\test_article_management.py",
+          "type": "python",
+          "size": 23085
+        },
+        {
+          "file": "tests\\unit\\test_async_tasks.py",
+          "type": "python",
+          "size": 20793
+        },
+        {
+          "file": "tests\\unit\\test_basic.py",
+          "type": "python",
+          "size": 4992
+        },
+        {
+          "file": "tests\\unit\\test_bbc_news_save.py",
+          "type": "python",
+          "size": 13530
+        },
+        {
+          "file": "tests\\unit\\test_bbc_simple.py",
+          "type": "python",
+          "size": 3665
+        },
+        {
+          "file": "tests\\unit\\test_categories.py",
+          "type": "python",
+          "size": 63
+        },
+        {
+          "file": "tests\\unit\\test_cnn_crawler.py",
+          "type": "python",
+          "size": 8873
+        },
+        {
+          "file": "tests\\unit\\test_common_module.py",
+          "type": "python",
+          "size": 14269
+        },
+        {
+          "file": "tests\\unit\\test_data_analysis.py",
+          "type": "python",
+          "size": 19946
+        },
+        {
+          "file": "tests\\unit\\test_data_quality.py",
+          "type": "python",
+          "size": 20738
+        },
+        {
+          "file": "tests\\unit\\test_data_storage.py",
+          "type": "python",
+          "size": 19473
+        },
+        {
+          "file": "tests\\unit\\test_english_api.py",
+          "type": "python",
+          "size": 40009
+        },
+        {
+          "file": "tests\\unit\\test_english_learning.py",
+          "type": "python",
+          "size": 21196
+        },
+        {
+          "file": "tests\\unit\\test_english_security.py",
+          "type": "python",
+          "size": 16116
+        },
+        {
+          "file": "tests\\unit\\test_expression_crawler.py",
+          "type": "python",
+          "size": 14354
+        },
+        {
+          "file": "tests\\unit\\test_fundus_crawler.py",
+          "type": "python",
+          "size": 2010
+        },
+        {
+          "file": "tests\\unit\\test_idiomatic_expressions.py",
+          "type": "python",
+          "size": 19663
+        },
+        {
+          "file": "tests\\unit\\test_jobs.py",
+          "type": "python",
+          "size": 593
+        },
+        {
+          "file": "tests\\unit\\test_jobs_module.py",
+          "type": "python",
+          "size": 5836
+        },
+        {
+          "file": "tests\\unit\\test_links_module.py",
+          "type": "python",
+          "size": 15272
+        },
+        {
+          "file": "tests\\unit\\test_models.py",
+          "type": "python",
+          "size": 9971
+        },
+        {
+          "file": "tests\\unit\\test_model_fields_fix.py",
+          "type": "python",
+          "size": 12777
+        },
+        {
+          "file": "tests\\unit\\test_mysql_connection.py",
+          "type": "python",
+          "size": 4312
+        },
+        {
+          "file": "tests\\unit\\test_news_dashboard.py",
+          "type": "python",
+          "size": 12712
+        },
+        {
+          "file": "tests\\unit\\test_news_visibility_removal.py",
+          "type": "python",
+          "size": 7656
+        },
+        {
+          "file": "tests\\unit\\test_permissions_comprehensive.py",
+          "type": "python",
+          "size": 20099
+        },
+        {
+          "file": "tests\\unit\\test_search_module.py",
+          "type": "python",
+          "size": 8853
+        },
+        {
+          "file": "tests\\unit\\test_simple.py",
+          "type": "python",
+          "size": 4320
+        },
+        {
+          "file": "tests\\unit\\test_specialized_crawlers.py",
+          "type": "python",
+          "size": 18669
+        },
+        {
+          "file": "tests\\unit\\test_storage_core.py",
+          "type": "python",
+          "size": 13817
+        },
+        {
+          "file": "tests\\unit\\test_task_system.py",
+          "type": "python",
+          "size": 15484
+        },
+        {
+          "file": "tests\\unit\\test_techcrunch_and_image_cleanup.py",
+          "type": "python",
+          "size": 16896
+        },
+        {
+          "file": "tests\\unit\\test_todos.py",
+          "type": "python",
+          "size": 596
+        },
+        {
+          "file": "tests\\unit\\test_typing_practice.py",
+          "type": "python",
+          "size": 14528
+        },
+        {
+          "file": "tests\\unit\\test_typing_practice_api.py",
+          "type": "python",
+          "size": 14158
+        },
+        {
+          "file": "tests\\unit\\test_typing_practice_submit.py",
+          "type": "python",
+          "size": 13724
+        },
+        {
+          "file": "tests\\unit\\test_users.py",
+          "type": "python",
+          "size": 63
+        },
+        {
+          "file": "tests\\unit\\test_user_auth.py",
+          "type": "python",
+          "size": 17564
+        },
+        {
+          "file": "tests\\utils\\test_data_manager.py",
+          "type": "python",
+          "size": 16050
+        },
+        {
+          "file": "tests\\utils\\test_helpers.py",
+          "type": "python",
+          "size": 19725
+        },
+        {
+          "file": "tests\\utils\\test_quality_monitor.py",
+          "type": "python",
+          "size": 19862
+        },
+        {
+          "file": "tests\\utils\\test_report_generator.py",
+          "type": "python",
+          "size": 24061
+        }
+      ]
+    },
+    "backend": {
+      "tests": {
+        "__files__": [
+          {
+            "file": "backend\\tests\\test_ai_config_encryption.py",
+            "type": "python",
+            "size": 3218
+          },
+          {
+            "file": "backend\\tests\\test_flaky_examples.py",
+            "type": "python",
+            "size": 6896
+          },
+          {
+            "file": "backend\\tests\\integration\\test_ai_service_management.py",
+            "type": "python",
+            "size": 20654
+          },
+          {
+            "file": "backend\\tests\\integration\\test_api_cache_performance.py",
+            "type": "python",
+            "size": 11865
+          },
+          {
+            "file": "backend\\tests\\unit\\test_ai_adapters.py",
+            "type": "python",
+            "size": 25485
+          },
+          {
+            "file": "backend\\tests\\unit\\test_ai_config_models.py",
+            "type": "python",
+            "size": 15492
+          },
+          {
+            "file": "backend\\tests\\unit\\test_ai_serializers.py",
+            "type": "python",
+            "size": 19533
+          },
+          {
+            "file": "backend\\tests\\unit\\test_ai_views.py",
+            "type": "python",
+            "size": 20052
+          },
+          {
+            "file": "backend\\tests\\unit\\test_basic_models.py",
+            "type": "python",
+            "size": 14579
+          },
+          {
+            "file": "backend\\tests\\unit\\test_cache_strategy.py",
+            "type": "python",
+            "size": 7068
+          },
+          {
+            "file": "backend\\tests\\unit\\test_core_functionality.py",
+            "type": "python",
+            "size": 12186
+          }
+        ]
+      },
+      "apps": {
+        "ai": {
+          "tests": {
+            "__files__": [
+              {
+                "file": "backend\\apps\\ai\\tests\\test_api_views.py",
+                "type": "python",
+                "size": 26064
+              },
+              {
+                "file": "backend\\apps\\ai\\tests\\test_config_import_export.py",
+                "type": "python",
+                "size": 16085
+              },
+              {
+                "file": "backend\\apps\\ai\\tests\\test_failover_auto_switch.py",
+                "type": "python",
+                "size": 14381
+              },
+              {
+                "file": "backend\\apps\\ai\\tests\\test_manual_switch.py",
+                "type": "python",
+                "size": 22674
+              },
+              {
+                "file": "backend\\apps\\ai\\tests\\test_model_config.py",
+                "type": "python",
+                "size": 14310
+              },
+              {
+                "file": "backend\\apps\\ai\\tests\\test_model_discovery.py",
+                "type": "python",
+                "size": 16812
+              },
+              {
+                "file": "backend\\apps\\ai\\tests\\test_monitoring.py",
+                "type": "python",
+                "size": 23208
+              },
+              {
+                "file": "backend\\apps\\ai\\tests\\test_security.py",
+                "type": "python",
+                "size": 21795
+              },
+              {
+                "file": "backend\\apps\\ai\\tests\\test_token_statistics.py",
+                "type": "python",
+                "size": 17581
+              }
+            ]
+          }
+        }
+      }
+    },
+    "frontend": {
+      "tests": {
+        "__files__": [
+          {
+            "file": "frontend\\tests\\flaky-examples.test.js",
+            "type": "javascript",
+            "size": 9047
+          },
+          {
+            "file": "frontend\\tests\\build\\build.test.js",
+            "type": "javascript",
+            "size": 5256
+          },
+          {
+            "file": "frontend\\tests\\e2e\\acceptance.test.js",
+            "type": "javascript",
+            "size": 7752
+          },
+          {
+            "file": "frontend\\tests\\e2e\\ai-assistant-advanced.spec.ts",
+            "type": "javascript",
+            "size": 11450
+          },
+          {
+            "file": "frontend\\tests\\e2e\\ai-config.e2e.test.js",
+            "type": "javascript",
+            "size": 10933
+          },
+          {
+            "file": "frontend\\tests\\e2e\\basic-navigation.spec.ts",
+            "type": "javascript",
+            "size": 1574
+          },
+          {
+            "file": "frontend\\tests\\e2e\\idiomatic-expressions.spec.ts",
+            "type": "javascript",
+            "size": 3456
+          },
+          {
+            "file": "frontend\\tests\\e2e\\learning-analytics.spec.ts",
+            "type": "javascript",
+            "size": 11635
+          },
+          {
+            "file": "frontend\\tests\\e2e\\learning-modes.spec.ts",
+            "type": "javascript",
+            "size": 9131
+          },
+          {
+            "file": "frontend\\tests\\e2e\\user-login-flow.spec.ts",
+            "type": "javascript",
+            "size": 6376
+          },
+          {
+            "file": "frontend\\tests\\integration\\routing.test.js",
+            "type": "javascript",
+            "size": 2669
+          },
+          {
+            "file": "frontend\\tests\\integration\\api\\aiConfig.integration.test.js",
+            "type": "javascript",
+            "size": 6524
+          },
+          {
+            "file": "frontend\\tests\\integration\\components\\AIConfig.integration.test.js",
+            "type": "javascript",
+            "size": 8723
+          },
+          {
+            "file": "frontend\\tests\\selenium\\cross-browser-learning.test.js",
+            "type": "javascript",
+            "size": 14197
+          },
+          {
+            "file": "frontend\\tests\\selenium\\cross-browser-login.test.js",
+            "type": "javascript",
+            "size": 13275
+          },
+          {
+            "file": "frontend\\tests\\unit\\basic.test.js",
+            "type": "javascript",
+            "size": 841
+          },
+          {
+            "file": "frontend\\tests\\unit\\core-functionality.test.js",
+            "type": "javascript",
+            "size": 543
+          },
+          {
+            "file": "frontend\\tests\\unit\\idiomatic_expressions_requirement.test.js",
+            "type": "javascript",
+            "size": 706
+          },
+          {
+            "file": "frontend\\tests\\unit\\security.test.ts",
+            "type": "javascript",
+            "size": 8664
+          },
+          {
+            "file": "frontend\\tests\\unit\\api\\aiConfig.test.js",
+            "type": "javascript",
+            "size": 6710
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\AIAssistantChat.simple.test.js",
+            "type": "javascript",
+            "size": 7293
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\AIAssistantChat.test.js",
+            "type": "javascript",
+            "size": 16834
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\ExpressionCard.simple.test.js",
+            "type": "javascript",
+            "size": 7819
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\ExpressionCard.test.js",
+            "type": "javascript",
+            "size": 15635
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.simple.test.js",
+            "type": "javascript",
+            "size": 18032
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.test.js",
+            "type": "javascript",
+            "size": 21923
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\LoadingIndicator.test.js",
+            "type": "javascript",
+            "size": 10623
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\SafeHTML.test.ts",
+            "type": "javascript",
+            "size": 4507
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\ScenarioPlayer.simple.test.js",
+            "type": "javascript",
+            "size": 14457
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\ScenarioPlayer.test.js",
+            "type": "javascript",
+            "size": 17526
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\SecureInput.test.ts",
+            "type": "javascript",
+            "size": 8678
+          },
+          {
+            "file": "frontend\\tests\\unit\\components\\common\\LanguageSwitcher.test.js",
+            "type": "javascript",
+            "size": 3495
+          },
+          {
+            "file": "frontend\\tests\\unit\\composables\\useLoading.test.js",
+            "type": "javascript",
+            "size": 10349
+          },
+          {
+            "file": "frontend\\tests\\unit\\config\\ConfigImportExport.test.js",
+            "type": "javascript",
+            "size": 7258
+          },
+          {
+            "file": "frontend\\tests\\unit\\config\\ConfigManagement.test.js",
+            "type": "javascript",
+            "size": 2961
+          },
+          {
+            "file": "frontend\\tests\\unit\\i18n\\i18n.test.js",
+            "type": "javascript",
+            "size": 8620
+          },
+          {
+            "file": "frontend\\tests\\unit\\performance\\optimization.test.js",
+            "type": "javascript",
+            "size": 10478
+          },
+          {
+            "file": "frontend\\tests\\unit\\settings\\Settings.test.js",
+            "type": "javascript",
+            "size": 3641
+          },
+          {
+            "file": "frontend\\tests\\unit\\stores\\auth.test.js",
+            "type": "javascript",
+            "size": 8187
+          },
+          {
+            "file": "frontend\\tests\\unit\\utils\\dateUtils.test.js",
+            "type": "javascript",
+            "size": 4444
+          },
+          {
+            "file": "frontend\\tests\\unit\\utils\\errorHandler.test.js",
+            "type": "javascript",
+            "size": 12295
+          }
+        ]
+      }
+    },
+    "e2e": {
+      "tests": {
+        "__files__": [
+          {
+            "file": "e2e\\tests\\analytics.spec.ts",
+            "type": "javascript",
+            "size": 10502
+          },
+          {
+            "file": "e2e\\tests\\auth.spec.ts",
+            "type": "javascript",
+            "size": 7257
+          },
+          {
+            "file": "e2e\\tests\\dictionary.spec.ts",
+            "type": "javascript",
+            "size": 9395
+          },
+          {
+            "file": "e2e\\tests\\user-journey.spec.ts",
+            "type": "javascript",
+            "size": 14819
+          }
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "tests\\debug_key_error_test.py": [
+      "apps.english.services",
+      "django.contrib.auth",
+      "os",
+      "apps",
+      "django",
+      "apps.english.models",
+      "datetime",
+      "sys"
+    ],
+    "tests\\simple_submit_test.py": [
+      "apps.users.models",
+      "rest_framework_simplejwt.tokens",
+      "json",
+      "os",
+      "apps",
+      "django",
+      "apps.english.models",
+      "rest_framework_simplejwt",
+      "requests",
+      "sys"
+    ],
+    "tests\\test_calendar_fix.py": [
+      "backend.apps.english.services",
+      "os",
+      "backend",
+      "django",
+      "datetime",
+      "django.contrib.auth.models",
+      "sys"
+    ],
+    "tests\\test_quick_validation.py": [
+      "subprocess",
+      "pathlib",
+      "os",
+      "sys"
+    ],
+    "tests\\test_runner_optimized.py": [
+      "dataclasses",
+      "time",
+      "subprocess",
+      "pathlib",
+      "enum",
+      "os",
+      "argparse",
+      "typing",
+      "sys"
+    ],
+    "tests\\test_settings.py": [
+      "alpha",
+      "pathlib",
+      "alpha.settings",
+      "os",
+      "sys"
+    ],
+    "tests\\test_settings_ci.py": [
+      "os"
+    ],
+    "tests\\test_settings_mysql.py": [
+      "alpha",
+      "pathlib",
+      "alpha.settings",
+      "os",
+      "sys"
+    ],
+    "tests\\test_simple_validation.py": [
+      "pathlib",
+      "os",
+      "sys"
+    ],
+    "tests\\api\\test_chapter_word_counts_api.py": [
+      "datetime",
+      "json",
+      "requests"
+    ],
+    "tests\\api\\test_frontend_api_simulation.py": [
+      "datetime",
+      "json",
+      "requests",
+      "time"
+    ],
+    "tests\\api\\test_frontend_api_wrapper.py": [
+      "datetime",
+      "json",
+      "requests"
+    ],
+    "tests\\api\\test_typing_words_api.py": [
+      "datetime",
+      "json",
+      "requests",
+      "time"
+    ],
+    "tests\\api_docs\\test_api_documentation.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.categories.models",
+      "pytest",
+      "rest_framework.test",
+      "apps.articles.models",
+      "json",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\data_management\\test_data_factory.py": [
+      "apps.users.models",
+      "tests",
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.categories.models",
+      "pytest",
+      "rest_framework.test",
+      "apps.articles.models",
+      "tests.factories",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\e2e\\example_requirement.spec.js": [
+      "@playwright/test"
+    ],
+    "tests\\edge_cases\\test_edge_cases.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.categories.models",
+      "pytest",
+      "rest_framework.test",
+      "apps.articles.models",
+      "json",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\frontend\\test_progress_bar_display.py": [
+      "json",
+      "requests",
+      "time",
+      "typing"
+    ],
+    "tests\\frontend\\test_typing_component_lifecycle.py": [
+      "json",
+      "requests",
+      "time",
+      "typing"
+    ],
+    "tests\\frontend\\test_vue_components.py": [
+      "pytest",
+      "pathlib",
+      "os",
+      "django",
+      "django.test",
+      "sys"
+    ],
+    "tests\\integration\\test_api.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.categories.models",
+      "pytest",
+      "rest_framework.test",
+      "apps.articles.models",
+      "json",
+      "django.urls",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\integration\\test_bbc_fix_verification.py": [
+      "os",
+      "apps",
+      "django",
+      "apps.english.models",
+      "apps.english.news_crawler",
+      "sys",
+      "django.utils"
+    ],
+    "tests\\integration\\test_end_to_end_workflow.py": [
+      "apps.users.models",
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.categories.models",
+      "pytest",
+      "rest_framework.test",
+      "apps.articles.models",
+      "json",
+      "apps",
+      "django",
+      "apps.english.models",
+      "datetime",
+      "django.test",
+      "django.utils"
+    ],
+    "tests\\integration\\test_fixes_verification.py": [
+      "os",
+      "sys"
+    ],
+    "tests\\integration\\test_full_workflow_integration.py": [
+      "apps.users.models",
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.categories.models",
+      "pytest",
+      "rest_framework.test",
+      "apps.articles.models",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\integration\\test_news_api.py": [
+      "json",
+      "requests",
+      "time"
+    ],
+    "tests\\integration\\test_typing_practice_submit_integration.py": [
+      "django.core.cache",
+      "time",
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "rest_framework_simplejwt.tokens",
+      "apps",
+      "django",
+      "apps.english.models",
+      "rest_framework_simplejwt",
+      "django.test",
+      "apps.english.services"
+    ],
+    "tests\\new_features\\test_chapter_completion_integration.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "json",
+      "django.urls",
+      "django",
+      "django.test"
+    ],
+    "tests\\new_features\\test_chapter_completion_simple.py": [
+      "django.contrib.auth",
+      "django.test",
+      "django",
+      "pytest"
+    ],
+    "tests\\performance\\test_performance_regression.py": [
+      "time",
+      "apps.users.models",
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.categories.models",
+      "pytest",
+      "rest_framework.test",
+      "apps.articles.models",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\regression\\auth\\test_permissions.py": [
+      "apps.users.models",
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.categories.models",
+      "pytest",
+      "rest_framework.test",
+      "apps.articles.models",
+      "django.contrib.contenttypes.models",
+      "apps",
+      "django",
+      "django.test",
+      "django.contrib.auth.models"
+    ],
+    "tests\\regression\\auth\\test_user_authentication.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "django.utils.http",
+      "django.urls",
+      "django.core",
+      "django",
+      "django.contrib.auth.tokens",
+      "datetime",
+      "django.utils.encoding",
+      "django.test"
+    ],
+    "tests\\regression\\english\\test_data_analysis_regression.py": [
+      "tests",
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "tests.utils.test_helpers",
+      "json",
+      "apps",
+      "django",
+      "apps.english.models",
+      "datetime",
+      "django.test"
+    ],
+    "tests\\regression\\english\\test_pause_resume.py": [
+      "time",
+      "tests",
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "pytest",
+      "rest_framework.test",
+      "tests.utils.test_helpers",
+      "unittest.mock",
+      "apps",
+      "django",
+      "apps.english.models",
+      "datetime",
+      "django.test"
+    ],
+    "tests\\regression\\english\\test_pronunciation.py": [
+      "tests",
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "pytest",
+      "rest_framework.test",
+      "tests.utils.test_helpers",
+      "json",
+      "unittest.mock",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\regression\\english\\test_typing_practice_submit_regression.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "rest_framework_simplejwt.tokens",
+      "apps",
+      "django",
+      "apps.english.models",
+      "rest_framework_simplejwt",
+      "django.test"
+    ],
+    "tests\\unit\\test_ai_module.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "rest_framework.test",
+      "pytest",
+      "django",
+      "django.test"
+    ],
+    "tests\\unit\\test_api_docs_cache.py": [
+      "django.core.cache",
+      "apps.english.cache_strategy",
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "pytest",
+      "rest_framework.test",
+      "json",
+      "unittest.mock",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\unit\\test_articles.py": [
+      "django.test",
+      "django"
+    ],
+    "tests\\unit\\test_article_management.py": [
+      "apps.users.models",
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.categories.models",
+      "pytest",
+      "rest_framework.test",
+      "apps.articles.models",
+      "apps",
+      "django",
+      "django.test"
+    ],
+    "tests\\unit\\test_async_tasks.py": [
+      "celery",
+      "unittest",
+      "pytest",
+      "celery.result",
+      "unittest.mock",
+      "django",
+      "django.test",
+      "sys",
+      "django.utils"
+    ],
+    "tests\\unit\\test_basic.py": [
+      "django.db.utils",
+      "django.contrib.auth",
+      "django.core.management",
+      "pytest",
+      "django.db",
+      "django",
+      "django.test"
+    ],
+    "tests\\unit\\test_bbc_news_save.py": [
+      "tempfile",
+      "unittest",
+      "os",
+      "apps",
+      "django",
+      "sys",
+      "unittest.mock",
+      "apps.english.models",
+      "django.test",
+      "apps.english.news_crawler",
+      "shutil",
+      "django.utils"
+    ],
+    "tests\\unit\\test_bbc_simple.py": [
+      "os",
+      "apps",
+      "django",
+      "apps.english.models",
+      "apps.english.news_crawler",
+      "sys",
+      "django.utils"
+    ],
+    "tests\\unit\\test_categories.py": [
+      "django.test",
+      "django"
+    ],
+    "tests\\unit\\test_cnn_crawler.py": [
+      "logging",
+      "os",
+      "sys"
+    ],
+    "tests\\unit\\test_common_module.py": [
+      "django.contrib.auth",
+      "apps.categories.models",
+      "pytest",
+      "apps.articles.models",
+      "django.db",
+      "apps",
+      "django",
+      "datetime",
+      "apps.common.models",
+      "django.test",
+      "django.utils"
+    ],
+    "tests\\unit\\test_data_analysis.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "apps",
+      "django",
+      "apps.english.models",
+      "datetime",
+      "django.test",
+      "apps.english.services",
+      "django.utils"
+    ],
+    "tests\\unit\\test_data_quality.py": [
+      "apps.english.expression_crawler",
+      "unittest",
+      "pytest",
+      "json",
+      "unittest.mock",
+      "apps",
+      "django",
+      "django.test",
+      "apps.english.data_quality",
+      "sys",
+      "django.utils"
+    ],
+    "tests\\unit\\test_data_storage.py": [
+      "django.core.cache",
+      "time",
+      "apps.english.expression_crawler",
+      "unittest",
+      "pytest",
+      "unittest.mock",
+      "apps",
+      "django",
+      "apps.english.data_storage",
+      "apps.english.models",
+      "django.test",
+      "django.utils"
+    ],
+    "tests\\unit\\test_english_api.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "pytest",
+      "rest_framework.test",
+      "django.urls",
+      "apps",
+      "django",
+      "unittest.mock",
+      "apps.english.models"
+    ],
+    "tests\\unit\\test_english_learning.py": [
+      "apps.users.models",
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\unit\\test_english_security.py": [
+      "django.core.cache",
+      "apps.english.security",
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "pytest",
+      "rest_framework.test",
+      "json",
+      "unittest.mock",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test",
+      "apps.english.api_management",
+      "django.contrib.auth.models"
+    ],
+    "tests\\unit\\test_expression_crawler.py": [
+      "apps.english.expression_crawler",
+      "unittest",
+      "pytest",
+      "bs4",
+      "unittest.mock",
+      "apps",
+      "django",
+      "datetime",
+      "django.test",
+      "django.utils"
+    ],
+    "tests\\unit\\test_fundus_crawler.py": [
+      "os",
+      "apps",
+      "django",
+      "apps.english.fundus_crawler",
+      "sys"
+    ],
+    "tests\\unit\\test_idiomatic_expressions.py": [
+      "django.contrib.auth",
+      "pytest",
+      "decimal",
+      "apps",
+      "django",
+      "django.core.exceptions",
+      "datetime",
+      "apps.english.models",
+      "django.test",
+      "django.utils"
+    ],
+    "tests\\unit\\test_jobs.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "rest_framework.test",
+      "django",
+      "django.test"
+    ],
+    "tests\\unit\\test_jobs_module.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "django",
+      "datetime",
+      "django.test",
+      "django.utils"
+    ],
+    "tests\\unit\\test_links_module.py": [
+      "django.db.utils",
+      "apps.links.models",
+      "django.contrib.auth",
+      "pytest",
+      "apps",
+      "django",
+      "django.core.exceptions",
+      "django.test"
+    ],
+    "tests\\unit\\test_models.py": [
+      "apps.users.models",
+      "django.contrib.auth",
+      "apps.categories.models",
+      "pytest",
+      "apps.articles.models",
+      "apps",
+      "django",
+      "django.core.exceptions",
+      "datetime",
+      "apps.english.models",
+      "django.test",
+      "django.utils"
+    ],
+    "tests\\unit\\test_model_fields_fix.py": [
+      "django.contrib.auth",
+      "pytest",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\unit\\test_mysql_connection.py": [
+      "django.db.utils",
+      "pytest",
+      "django.db",
+      "django",
+      "django.test",
+      "django.conf"
+    ],
+    "tests\\unit\\test_news_dashboard.py": [
+      "django.contrib.auth",
+      "unittest",
+      "pytest",
+      "unittest.mock",
+      "apps",
+      "django",
+      "django.urls",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\unit\\test_news_visibility_removal.py": [
+      "time",
+      "apps.users.models",
+      "json",
+      "os",
+      "apps",
+      "django",
+      "apps.english.models",
+      "requests",
+      "sys"
+    ],
+    "tests\\unit\\test_permissions_comprehensive.py": [
+      "apps.users.models",
+      "django.contrib.auth",
+      "rest_framework",
+      "django.http",
+      "apps.categories.models",
+      "pytest",
+      "rest_framework.test",
+      "apps.articles.models",
+      "django.contrib.contenttypes.models",
+      "apps",
+      "django",
+      "django.contrib.auth.decorators",
+      "django.core.exceptions",
+      "apps.english.models",
+      "django.test",
+      "django.contrib.auth.models"
+    ],
+    "tests\\unit\\test_search_module.py": [
+      "apps.users.models",
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.categories.models",
+      "pytest",
+      "rest_framework.test",
+      "apps.articles.models",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\unit\\test_simple.py": [
+      "os",
+      "sys",
+      "pytest"
+    ],
+    "tests\\unit\\test_specialized_crawlers.py": [
+      "apps.english.specialized_crawlers",
+      "apps.english.expression_crawler",
+      "unittest",
+      "pytest",
+      "json",
+      "bs4",
+      "unittest.mock",
+      "apps",
+      "django",
+      "django.test",
+      "django.utils"
+    ],
+    "tests\\unit\\test_storage_core.py": [
+      "dataclasses",
+      "time",
+      "unittest",
+      "pytest",
+      "unittest.mock",
+      "typing"
+    ],
+    "tests\\unit\\test_task_system.py": [
+      "django.core.cache",
+      "unittest",
+      "pytest",
+      "unittest.mock",
+      "django",
+      "django.test",
+      "django.utils"
+    ],
+    "tests\\unit\\test_techcrunch_and_image_cleanup.py": [
+      "tempfile",
+      "django.core.files.uploadedfile",
+      "unittest",
+      "pytest",
+      "os",
+      "apps",
+      "django",
+      "unittest.mock",
+      "apps.english.models",
+      "django.test",
+      "apps.english.news_crawler",
+      "django.conf",
+      "shutil"
+    ],
+    "tests\\unit\\test_todos.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "rest_framework.test",
+      "django",
+      "django.test"
+    ],
+    "tests\\unit\\test_typing_practice.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.english.serializers",
+      "pytest",
+      "rest_framework.test",
+      "apps",
+      "django",
+      "apps.english.models",
+      "django.test"
+    ],
+    "tests\\unit\\test_typing_practice_api.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "django.urls",
+      "apps",
+      "django",
+      "apps.english.models",
+      "datetime"
+    ],
+    "tests\\unit\\test_typing_practice_submit.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "rest_framework_simplejwt.tokens",
+      "json",
+      "django.urls",
+      "apps",
+      "django",
+      "apps.english.models",
+      "rest_framework_simplejwt",
+      "django.test"
+    ],
+    "tests\\unit\\test_users.py": [
+      "django.test",
+      "django"
+    ],
+    "tests\\unit\\test_user_auth.py": [
+      "apps.users.models",
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "pytest",
+      "rest_framework.test",
+      "rest_framework_simplejwt.tokens",
+      "django.urls",
+      "apps",
+      "django",
+      "unittest.mock",
+      "rest_framework_simplejwt",
+      "django.test"
+    ],
+    "tests\\utils\\test_data_manager.py": [
+      "dataclasses",
+      "tempfile",
+      "tests",
+      "django.contrib.auth",
+      "contextlib",
+      "django.core.management",
+      "pathlib",
+      "django.db",
+      "json",
+      "tests.factories",
+      "os",
+      "typing",
+      "django",
+      "django.test",
+      "django.conf",
+      "shutil"
+    ],
+    "tests\\utils\\test_helpers.py": [
+      "random",
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "pytest",
+      "string",
+      "rest_framework.test",
+      "json",
+      "os",
+      "unittest.mock",
+      "typing",
+      "django",
+      "datetime",
+      "django.urls",
+      "django.test"
+    ],
+    "tests\\utils\\test_quality_monitor.py": [
+      "dataclasses",
+      "time",
+      "subprocess",
+      "pathlib",
+      "json",
+      "os",
+      "sqlite3",
+      "typing",
+      "datetime",
+      "xml"
+    ],
+    "tests\\utils\\test_report_generator.py": [
+      "dataclasses",
+      "time",
+      "jinja2",
+      "seaborn",
+      "pandas",
+      "matplotlib",
+      "pathlib",
+      "json",
+      "os",
+      "typing",
+      "datetime",
+      "xml"
+    ],
+    "backend\\tests\\test_ai_config_encryption.py": [
+      "django.contrib.auth",
+      "apps.ai.config_models",
+      "pytest",
+      "apps",
+      "django",
+      "django.test"
+    ],
+    "backend\\tests\\test_flaky_examples.py": [
+      "random",
+      "time",
+      "unittest",
+      "pytest",
+      "unittest.mock",
+      "django",
+      "django.test"
+    ],
+    "backend\\tests\\integration\\test_ai_service_management.py": [
+      "asyncio",
+      "django.core.cache",
+      "time",
+      "apps.ai.services.load_balancer",
+      "apps.ai.services.manager",
+      "rest_framework",
+      "unittest",
+      "pytest",
+      "rest_framework.test",
+      "apps.ai.services.degradation",
+      "apps.ai.adapters.base",
+      "unittest.mock",
+      "apps",
+      "django",
+      "django.test",
+      "django.contrib.auth.models"
+    ],
+    "backend\\tests\\integration\\test_api_cache_performance.py": [
+      "django.test",
+      "django.core.cache",
+      "time",
+      "apps.api.cache_strategy",
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "django.urls",
+      "apps",
+      "django",
+      "apps.english.models",
+      "requests"
+    ],
+    "backend\\tests\\unit\\test_ai_adapters.py": [
+      "asyncio",
+      "apps.ai.adapters.claude_adapter",
+      "apps.ai.adapters.google_adapter",
+      "apps.ai.adapters.factory",
+      "apps.ai.adapters.exceptions",
+      "unittest",
+      "pytest",
+      "json",
+      "apps.ai.adapters.base",
+      "unittest.mock",
+      "apps",
+      "apps.ai.adapters.openai_adapter"
+    ],
+    "backend\\tests\\unit\\test_ai_config_models.py": [
+      "django.contrib.auth",
+      "apps.ai.config_models",
+      "pytest",
+      "django.db",
+      "decimal",
+      "apps",
+      "django",
+      "django.core.exceptions",
+      "datetime",
+      "django.test"
+    ],
+    "backend\\tests\\unit\\test_ai_serializers.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.ai.serializers",
+      "apps.ai.config_models",
+      "pytest",
+      "rest_framework.test",
+      "apps",
+      "django",
+      "django.test"
+    ],
+    "backend\\tests\\unit\\test_ai_views.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.ai.config_models",
+      "pytest",
+      "rest_framework.test",
+      "django.urls",
+      "apps",
+      "django",
+      "django.test"
+    ],
+    "backend\\tests\\unit\\test_basic_models.py": [
+      "django.contrib.auth",
+      "apps.ai.config_models",
+      "pytest",
+      "apps",
+      "django",
+      "django.test"
+    ],
+    "backend\\tests\\unit\\test_cache_strategy.py": [
+      "django.core.cache",
+      "apps.api.cache_strategy",
+      "pytest",
+      "apps",
+      "django",
+      "django.test"
+    ],
+    "backend\\tests\\unit\\test_core_functionality.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "apps.ai.config_models",
+      "pytest",
+      "rest_framework.test",
+      "apps",
+      "django",
+      "django.test"
+    ],
+    "backend\\apps\\ai\\tests\\test_api_views.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "apps.ai.config_models",
+      "rest_framework.test",
+      "rest_framework_simplejwt.tokens",
+      "json",
+      "decimal",
+      "unittest.mock",
+      "apps",
+      "django",
+      "django.urls",
+      "datetime",
+      "apps.ai.adapters.base",
+      "rest_framework_simplejwt",
+      "django.test",
+      "django.utils"
+    ],
+    "backend\\apps\\ai\\tests\\test_config_import_export.py": [
+      "tempfile",
+      "django.contrib.auth",
+      "rest_framework",
+      "rest_framework.test",
+      "json",
+      "os",
+      "django.urls",
+      "django",
+      "django.test"
+    ],
+    "backend\\apps\\ai\\tests\\test_failover_auto_switch.py": [
+      "django.contrib.auth",
+      "pytest",
+      "django",
+      "datetime",
+      "django.test",
+      "django.utils"
+    ],
+    "backend\\apps\\ai\\tests\\test_manual_switch.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "pytest",
+      "rest_framework.test",
+      "django.urls",
+      "django",
+      "datetime",
+      "django.test",
+      "django.utils"
+    ],
+    "backend\\apps\\ai\\tests\\test_model_config.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "rest_framework.test",
+      "json",
+      "decimal",
+      "django.urls",
+      "apps",
+      "django",
+      "apps.ai.models",
+      "django.test"
+    ],
+    "backend\\apps\\ai\\tests\\test_model_discovery.py": [
+      "asyncio",
+      "django.core.cache",
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "rest_framework.test",
+      "json",
+      "unittest.mock",
+      "django",
+      "django.test"
+    ],
+    "backend\\apps\\ai\\tests\\test_monitoring.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "rest_framework.test",
+      "json",
+      "unittest.mock",
+      "django",
+      "datetime",
+      "django.test",
+      "django.utils"
+    ],
+    "backend\\apps\\ai\\tests\\test_security.py": [
+      "time",
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "apps.ai.config_models",
+      "rest_framework.test",
+      "json",
+      "django.urls",
+      "apps",
+      "django",
+      "unittest.mock",
+      "django.core.exceptions",
+      "apps.common.security",
+      "django.test",
+      "apps.rbac.models"
+    ],
+    "backend\\apps\\ai\\tests\\test_token_statistics.py": [
+      "django.contrib.auth",
+      "rest_framework",
+      "unittest",
+      "rest_framework.test",
+      "apps.ai.services.token_statistics",
+      "rest_framework_simplejwt.tokens",
+      "json",
+      "decimal",
+      "unittest.mock",
+      "apps",
+      "django",
+      "apps.ai.models",
+      "datetime",
+      "django.urls",
+      "rest_framework_simplejwt",
+      "django.test",
+      "django.utils"
+    ],
+    "frontend\\tests\\flaky-examples.test.js": [
+      "vitest",
+      "vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\build\\build.test.js": [
+      "vitest",
+      "path",
+      "child_process",
+      "fs"
+    ],
+    "frontend\\tests\\e2e\\acceptance.test.js": [
+      "pinia",
+      "vitest",
+      "vue-router",
+      "vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\e2e\\ai-assistant-advanced.spec.ts": [
+      "@playwright/test"
+    ],
+    "frontend\\tests\\e2e\\ai-config.e2e.test.js": [
+      "@playwright/test"
+    ],
+    "frontend\\tests\\e2e\\basic-navigation.spec.ts": [
+      "@playwright/test"
+    ],
+    "frontend\\tests\\e2e\\idiomatic-expressions.spec.ts": [
+      "@playwright/test"
+    ],
+    "frontend\\tests\\e2e\\learning-analytics.spec.ts": [
+      "@playwright/test"
+    ],
+    "frontend\\tests\\e2e\\learning-modes.spec.ts": [
+      "@playwright/test"
+    ],
+    "frontend\\tests\\e2e\\user-login-flow.spec.ts": [
+      "@playwright/test"
+    ],
+    "frontend\\tests\\integration\\routing.test.js": [
+      "vitest",
+      "vue-router",
+      "pinia",
+      "vue"
+    ],
+    "frontend\\tests\\integration\\api\\aiConfig.integration.test.js": [
+      "msw",
+      "vitest",
+      "@pinia/testing",
+      "msw/node",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\integration\\components\\AIConfig.integration.test.js": [
+      "msw",
+      "vitest",
+      "@pinia/testing",
+      "msw/node",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\basic.test.js": [
+      "vitest"
+    ],
+    "frontend\\tests\\unit\\core-functionality.test.js": [
+      "vitest"
+    ],
+    "frontend\\tests\\unit\\idiomatic_expressions_requirement.test.js": [
+      "vitest",
+      "@/components/IdiomaticExpressionsRequirementComponent.vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\security.test.ts": [
+      "vitest"
+    ],
+    "frontend\\tests\\unit\\api\\aiConfig.test.js": [
+      "vitest",
+      "@/api/aiConfig"
+    ],
+    "frontend\\tests\\unit\\components\\AIAssistantChat.simple.test.js": [
+      "vitest",
+      "@pinia/testing",
+      "@/components/idiomatic-expressions/AIAssistantChat.vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\components\\AIAssistantChat.test.js": [
+      "element-plus",
+      "vitest",
+      "@/stores/modules/learningStore",
+      "@/components/idiomatic-expressions/AIAssistantChat.vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\components\\ExpressionCard.simple.test.js": [
+      "vitest",
+      "@/components/idiomatic-expressions/ExpressionCard.vue",
+      "@pinia/testing",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\components\\ExpressionCard.test.js": [
+      "vitest",
+      "@/stores/modules/learningStore",
+      "@/components/idiomatic-expressions/ExpressionCard.vue",
+      "@pinia/testing",
+      "@/stores/modules/expressionStore",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.simple.test.js": [
+      "vitest",
+      "@pinia/testing",
+      "@/components/charts/analytics/LearningAnalyticsDashboard.vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.test.js": [
+      "vitest",
+      "@/components/charts/analytics/LearningAnalyticsDashboard.vue",
+      "element-plus",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\components\\LoadingIndicator.test.js": [
+      "vitest",
+      "@/components/common/LoadingIndicator.vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\components\\SafeHTML.test.ts": [
+      "vitest",
+      "@/components/common/SafeHTML.vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\components\\ScenarioPlayer.simple.test.js": [
+      "vitest",
+      "@/components/idiomatic-expressions/ScenarioPlayer.vue",
+      "@pinia/testing",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\components\\ScenarioPlayer.test.js": [
+      "vitest",
+      "@/components/idiomatic-expressions/ScenarioPlayer.vue",
+      "element-plus",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\components\\SecureInput.test.ts": [
+      "vitest",
+      "element-plus",
+      "@/components/common/SecureInput.vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\components\\common\\LanguageSwitcher.test.js": [
+      "vitest",
+      "vue-i18n",
+      "@/components/common/LanguageSwitcher.vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\composables\\useLoading.test.js": [
+      "pinia",
+      "vitest",
+      "@/composables/useLoading",
+      "vue",
+      "@/stores/modules/loadingStore"
+    ],
+    "frontend\\tests\\unit\\config\\ConfigImportExport.test.js": [
+      "element-plus",
+      "vitest",
+      "@/api/configImportExport",
+      "@/components/config/ConfigImportExport.vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\config\\ConfigManagement.test.js": [
+      "vitest",
+      "@/components/config/ConfigImportExport.vue",
+      "@/views/english/ConfigManagement.vue",
+      "vue-router",
+      "@/components/config/ConfigVersionManager.vue",
+      "@/components/config/ConfigTemplateManager.vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\i18n\\i18n.test.js": [
+      "vitest",
+      "vue-i18n",
+      "@/i18n/locales/en-US",
+      "@/i18n/locales/zh-CN"
+    ],
+    "frontend\\tests\\unit\\performance\\optimization.test.js": [
+      "vitest",
+      "@/utils/chartOptimization",
+      "@/utils/lazyLoad",
+      "@/router/performance"
+    ],
+    "frontend\\tests\\unit\\settings\\Settings.test.js": [
+      "vitest",
+      "vue-router",
+      "@/views/english/Settings.vue",
+      "@vue/test-utils"
+    ],
+    "frontend\\tests\\unit\\stores\\auth.test.js": [
+      "vitest",
+      "pinia",
+      "@/stores/auth"
+    ],
+    "frontend\\tests\\unit\\utils\\dateUtils.test.js": [
+      "vitest",
+      "@/utils/dateUtils"
+    ],
+    "frontend\\tests\\unit\\utils\\errorHandler.test.js": [
+      "vitest",
+      "@/utils/errorHandler",
+      "element-plus"
+    ],
+    "e2e\\tests\\analytics.spec.ts": [
+      "@playwright/test"
+    ],
+    "e2e\\tests\\auth.spec.ts": [
+      "@playwright/test"
+    ],
+    "e2e\\tests\\dictionary.spec.ts": [
+      "@playwright/test"
+    ],
+    "e2e\\tests\\user-journey.spec.ts": [
+      "@playwright/test"
+    ]
+  }
+}

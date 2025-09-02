@@ -1,0 +1,19 @@
+# Task ID: 28
+# Title: 识别和分类测试问题
+# Status: pending
+# Dependencies: 27
+# Priority: high
+# Description: 识别测试体系中的关键问题并分类
+# Details:
+基于质量评估结果，将问题分类：
+1. 编码问题（Unicode错误等）
+2. 结构问题（非标准格式）
+3. 依赖缺失
+4. 非测试代码
+5. 框架混用
+6. 重复测试
+
+为每个问题标记严重性和优先级
+
+# Test Strategy:
+检查问题分类是否覆盖所有发现的问题，优先级是否合理

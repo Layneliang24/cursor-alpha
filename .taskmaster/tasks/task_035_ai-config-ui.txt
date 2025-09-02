@@ -1,0 +1,14 @@
+# Task ID: 35
+# Title: 验证测试覆盖率和性能
+# Status: pending
+# Dependencies: 34
+# Priority: medium
+# Description: 验证测试覆盖率>80%且执行时间<10分钟
+# Details:
+1. 运行测试并生成覆盖率报告
+2. 使用性能监控工具记录测试执行时间
+3. 优化慢测试（如使用mock、并行化）
+4. 补充缺失覆盖的关键代码
+
+# Test Strategy:
+检查覆盖率报告是否达标，测试执行时间是否在10分钟内
