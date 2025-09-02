@@ -32,9 +32,9 @@ class AIProviderSerializer(serializers.ModelSerializer):
             'id', 'name', 'provider_type', 'display_name', 'description',
             'base_url', 'api_version', 'is_active', 'is_healthy',
             'last_health_check', 'avg_response_time', 'success_rate',
-            'created_at', 'updated_at'
+            'created_at', 'updated_at', 'created_by'
         ]
-        read_only_fields = ['id', 'is_healthy', 'last_health_check', 'avg_response_time', 'success_rate', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'is_healthy', 'last_health_check', 'avg_response_time', 'success_rate', 'created_at', 'updated_at', 'created_by']
     
     def validate_provider_type(self, value):
         """验证提供商类型"""
@@ -137,6 +137,14 @@ class APIKeyCreateSerializer(serializers.Serializer):
     usage_limit_monthly = serializers.IntegerField(required=False, allow_null=True)
     expires_at = serializers.DateTimeField(required=False, allow_null=True)
     
+    # 只读字段，用于响应
+    id = serializers.IntegerField(read_only=True)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    masked_key = serializers.CharField(read_only=True)
+    key_prefix = serializers.CharField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+    
     def validate_name(self, value):
         """验证密钥名称"""
         if not value or not isinstance(value, str):
@@ -173,6 +181,9 @@ class APIKeyCreateSerializer(serializers.Serializer):
         """创建API密钥"""
         raw_key = validated_data.pop('raw_key')
         user = self.context['request'].user
+        
+        # 确保validated_data中不包含user字段
+        validated_data.pop('user', None)
         
         # 创建密钥对象
         api_key = APIKey.objects.create(user=user, **validated_data)
@@ -448,16 +459,17 @@ class TokenUsageSerializer(serializers.ModelSerializer):
     
     user_name = serializers.CharField(source='user.username', read_only=True)
     model_display_name = serializers.CharField(source='model.display_name', read_only=True)
+    provider_name = serializers.CharField(source='provider.display_name', read_only=True)
     
     class Meta:
         model = TokenUsage
         fields = [
-            'id', 'user', 'user_name', 'model', 'model_display_name',
-            'request_id', 'input_tokens', 'output_tokens', 'total_tokens',
-            'cost', 'currency', 'request_time', 'response_time',
-            'created_at'
+            'id', 'user', 'user_name', 'provider', 'provider_name', 'model', 'model_display_name',
+            'api_key', 'request_id', 'conversation_id', 'input_tokens', 'output_tokens', 'total_tokens',
+            'input_cost', 'output_cost', 'total_cost', 'response_time', 'is_streaming',
+            'status', 'error_message', 'created_at'
         ]
-        read_only_fields = ['id', 'user_name', 'model_display_name', 'created_at']
+        read_only_fields = ['id', 'user_name', 'provider_name', 'model_display_name', 'created_at']
 
 
 class UsageQuotaSerializer(serializers.ModelSerializer):

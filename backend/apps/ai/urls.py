@@ -7,7 +7,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     AIProviderViewSet, APIKeyViewSet, AIModelViewSet, PromptTemplateViewSet,
-    ModelConfigViewSet, TokenUsageViewSet, UsageQuotaViewSet, 
+    ModelConfigViewSet, TokenUsageViewSet, UsageQuotaViewSet, TokenStatisticsViewSet,
     ConfigExportView, ConfigImportView, ConfigTemplateViewSet, ConfigVersionViewSet,
     UserSettingsViewSet, SystemConfigViewSet, LoginHistoryViewSet, 
     DeviceSessionViewSet, UserProfileViewSet, PasswordChangeView
@@ -25,6 +25,7 @@ router.register(r'prompt-templates', PromptTemplateViewSet, basename='prompttemp
 router.register(r'model-configs', ModelConfigViewSet, basename='modelconfig')
 router.register(r'token-usage', TokenUsageViewSet, basename='tokenusage')
 router.register(r'quotas', UsageQuotaViewSet, basename='usagequota')
+router.register(r'tokenstatistics', TokenStatisticsViewSet, basename='tokenstatistics')
 router.register(r'fallback-strategies', FailoverStrategyViewSet, basename='fallbackstrategy')
 router.register(r'provider-health', ProviderHealthViewSet, basename='providerhealth')
 

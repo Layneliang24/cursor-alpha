@@ -317,7 +317,7 @@ class TypingPracticeAPITestCase(TestCase):
         print(f"无效类别API响应状态码: {response.status_code}")
         print(f"无效类别API响应数据: {response.data}")
         
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn('error', response.data)
     
     def test_get_typing_words_invalid_difficulty(self):

@@ -427,7 +427,7 @@ class AuditService:
         
         if request:
             log_data.update({
-                'ip_address': RBACService._get_client_ip(request),
+                'ip_address': AuditService._get_client_ip(request),
                 'user_agent': request.META.get('HTTP_USER_AGENT', ''),
                 'request_method': request.method,
                 'request_url': request.build_absolute_uri()

@@ -164,7 +164,7 @@ class AIProviderSecurityTestCase(APITestCase):
             data = {
                 'provider_type': 'openai',
                 'display_name': payload,  # XSS载荷
-                'api_endpoint': 'https://api.openai.com/v1',
+                'base_url': 'https://api.openai.com/v1',
                 'is_active': True
             }
             
@@ -188,7 +188,7 @@ class AIProviderSecurityTestCase(APITestCase):
             name='test_provider',
             provider_type='openai',
             display_name='Test Provider',
-            api_endpoint='https://api.openai.com/v1',
+            base_url='https://api.openai.com/v1',
             created_by=self.user
         )
         
@@ -242,7 +242,7 @@ class AIProviderSecurityTestCase(APITestCase):
             data = {
                 'provider_type': 'openai',
                 'display_name': 'Test Provider',
-                'api_endpoint': invalid_url,
+                'base_url': invalid_url,
                 'is_active': True
             }
             
@@ -276,7 +276,7 @@ class RateLimitTestCase(APITestCase):
             name='test_provider',
             provider_type='openai',
             display_name='Test Provider',
-            api_endpoint='https://api.openai.com/v1',
+            base_url='https://api.openai.com/v1',
             created_by=self.user
         )
     
@@ -359,7 +359,7 @@ class XSSPreventionTestCase(TestCase):
             name='test_provider',
             provider_type='openai',
             display_name='Test Provider',
-            api_endpoint='https://api.openai.com/v1',
+            base_url='https://api.openai.com/v1',
             created_by=self.user
         )
         
@@ -380,9 +380,10 @@ class XSSPreventionTestCase(TestCase):
         try:
             config = ModelConfig.objects.create(
                 user=self.user,
+                provider=self.provider,
                 model=model,
                 config_name='test_config',
-                custom_parameters=xss_config
+                advanced_params=xss_config
             )
             
             # 检查保存的配置
@@ -430,7 +431,7 @@ class APISecurityTestCase(APITestCase):
             'provider_type': 'openai',
             'display_name': "<img src=x onerror=alert(1)>",
             'description': "';DROP TABLE users;--",
-            'api_endpoint': 'javascript:alert(1)',
+            'base_url': 'javascript:alert(1)',
             'is_active': True
         }
         
@@ -441,7 +442,7 @@ class APISecurityTestCase(APITestCase):
         
         # 检查错误信息
         self.assertTrue(any(
-            'display_name' in key or 'api_endpoint' in key 
+            'display_name' in key or 'base_url' in key 
             for key in response.data.keys()
         ))
     
@@ -470,7 +471,7 @@ class APISecurityTestCase(APITestCase):
         data = {
             'provider_type': 'openai',
             'display_name': 'Test Provider',
-            'api_endpoint': 'https://api.openai.com/v1'
+            'base_url': 'https://api.openai.com/v1'
         }
         
         response = unauth_client.post('/api/v1/ai/providers/', data)
@@ -520,8 +521,17 @@ class SecurityMiddlewareTestCase(TestCase):
             # 检查是否有日志记录（根据实际实现）
             # mock_logger.info.assert_called()
 
-class SecurityComplianceTestCase(TestCase):
+class SecurityComplianceTestCase(APITestCase):
     """安全合规性测试"""
+    
+    def setUp(self):
+        """测试准备"""
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='test@example.com',
+            password='testpass123'
+        )
+        self.client.force_authenticate(user=self.user)
     
     def test_password_policy_compliance(self):
         """测试密码策略合规性"""
@@ -560,7 +570,7 @@ class SecurityComplianceTestCase(TestCase):
             name='test_provider',
             provider_type='openai',
             display_name='Test Provider',
-            api_endpoint='https://api.openai.com/v1',
+            base_url='https://api.openai.com/v1',
             created_by=self.user
         )
         

@@ -346,8 +346,7 @@ class APIKeySecurityManager:
                 action=f'api_key_{action}',
                 resource_type='api_key',
                 description=f'API密钥{action}: {key_id or "unknown"}',
-                resource_id=key_id,
-                is_sensitive=True
+                resource_id=key_id
             )
         except Exception as e:
             logger.error(f"记录密钥访问日志失败: {str(e)}")

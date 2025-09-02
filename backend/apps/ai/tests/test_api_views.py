@@ -4,6 +4,7 @@ AI配置管理API测试
 
 import json
 from datetime import datetime, timedelta
+from decimal import Decimal
 from unittest.mock import patch, MagicMock
 
 from django.test import TestCase
@@ -115,7 +116,12 @@ class AIProviderViewSetTestCase(APITestCase):
             is_healthy=True,
             response_time=0.15
         )
-        mock_adapter.health_check.return_value = mock_health_result
+        
+        # 创建异步模拟
+        async def mock_health_check():
+            return mock_health_result
+        
+        mock_adapter.health_check = mock_health_check
         mock_create_adapter.return_value = mock_adapter
         
         url = reverse('ai:aiprovider-test-connection', kwargs={'pk': self.provider.pk})
@@ -136,9 +142,14 @@ class AIProviderViewSetTestCase(APITestCase):
         mock_adapter = MagicMock()
         mock_health_result = HealthCheckResult(
             is_healthy=False,
-            response_time=None
+            response_time=0.0
         )
-        mock_adapter.health_check.return_value = mock_health_result
+        
+        # 创建异步模拟
+        async def mock_health_check():
+            return mock_health_result
+        
+        mock_adapter.health_check = mock_health_check
         mock_create_adapter.return_value = mock_adapter
         
         url = reverse('ai:aiprovider-test-connection', kwargs={'pk': self.provider.pk})
@@ -193,7 +204,12 @@ class AIProviderViewSetTestCase(APITestCase):
             is_healthy=True,
             response_time=0.12
         )
-        mock_adapter.health_check.return_value = mock_health_result
+        
+        # 创建异步模拟
+        async def mock_health_check():
+            return mock_health_result
+        
+        mock_adapter.health_check = mock_health_check
         mock_create_adapter.return_value = mock_adapter
         
         url = reverse('ai:aiprovider-bulk-test')
@@ -486,18 +502,30 @@ class TokenUsageViewSetTestCase(APITestCase):
             cost_per_1k_output_tokens=0.002
         )
         
+        # 创建API密钥
+        self.api_key = APIKey.objects.create(
+            user=self.user,
+            provider=self.provider,
+            name='Test API Key',
+            is_active=True
+        )
+        self.api_key.set_key('test-key-123')
+        self.api_key.save()
+        
         # 创建使用记录
         self.usage = TokenUsage.objects.create(
             user=self.user,
+            provider=self.provider,
             model=self.model,
+            api_key=self.api_key,
             request_id='test-request-123',
             input_tokens=100,
             output_tokens=50,
             total_tokens=150,
-            cost=0.25,
-            currency='USD',
-            request_time=timezone.now() - timedelta(minutes=5),
-            response_time=timezone.now()
+            input_cost=Decimal('0.10'),
+            output_cost=Decimal('0.15'),
+            total_cost=Decimal('0.25'),
+            response_time=1.5
         )
     
     def test_list_token_usage(self):
@@ -529,26 +557,40 @@ class TokenUsageViewSetTestCase(APITestCase):
     
     def test_time_range_filter(self):
         """测试时间范围过滤"""
-        # 创建旧的使用记录
-        TokenUsage.objects.create(
+        # 创建旧的使用记录（8天前）
+        from datetime import timedelta
+        old_date = timezone.now() - timedelta(days=8)
+        
+        # 先创建记录，然后更新created_at
+        old_usage = TokenUsage.objects.create(
             user=self.user,
+            provider=self.provider,
             model=self.model,
+            api_key=self.api_key,
             request_id='old-request-123',
             input_tokens=50,
             output_tokens=25,
             total_tokens=75,
-            cost=0.125,
-            currency='USD',
-            request_time=timezone.now() - timedelta(days=10),
-            response_time=timezone.now() - timedelta(days=10)
+            input_cost=Decimal('0.05'),
+            output_cost=Decimal('0.075'),
+            total_cost=Decimal('0.125'),
+            response_time=1.0
         )
+        
+        # 直接更新数据库中的created_at字段
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "UPDATE ai_token_usage SET created_at = %s WHERE id = %s",
+                [old_date, old_usage.id]
+            )
         
         # 测试今日范围
         url = reverse('ai:tokenusage-list') + '?time_range=today'
         response = self.client.get(url)
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # 应该只有今天的记录
+        # 应该只有今天的记录（setUp中创建的1条）
         self.assertEqual(len(response.data['results']), 1)
 
 
@@ -570,15 +612,28 @@ class UsageQuotaViewSetTestCase(APITestCase):
         # 设置认证头
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
         
+        # 创建测试提供商
+        self.provider = AIProvider.objects.create(
+            name='test_provider',
+            provider_type='openai',
+            display_name='Test Provider',
+            base_url='https://api.openai.com/v1',
+            is_active=True
+        )
+        
         # 创建测试配额
         self.quota = UsageQuota.objects.create(
             user=self.user,
+            provider=self.provider,
             quota_type='monthly',
-            quota_name='Monthly Token Limit',
-            limit_amount=100000,
-            used_amount=25000,
-            currency='tokens',
-            reset_period='monthly',
+            token_limit=100000,
+            token_used=25000,
+            cost_limit=Decimal('100.00'),
+            cost_used=Decimal('25.00'),
+            request_limit=1000,
+            request_used=250,
+            period_start=timezone.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0),
+            period_end=timezone.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0) + timedelta(days=30),
             is_active=True
         )
     
@@ -589,24 +644,25 @@ class UsageQuotaViewSetTestCase(APITestCase):
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), 1)
-        self.assertEqual(response.data['results'][0]['quota_name'], 'Monthly Token Limit')
+        self.assertEqual(response.data['results'][0]['quota_type'], 'monthly')
     
     def test_create_quota(self):
         """测试创建配额"""
         url = reverse('ai:usagequota-list')
         data = {
             'quota_type': 'daily',
-            'quota_name': 'Daily Cost Limit',
-            'limit_amount': 10.0,
-            'currency': 'USD',
-            'reset_period': 'daily',
+            'token_limit': 10000,
+            'cost_limit': 10.0,
+            'request_limit': 100,
+            'period_start': timezone.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0).isoformat(),
+            'period_end': (timezone.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)).isoformat(),
             'is_active': True
         }
         
         response = self.client.post(url, data, format='json')
         
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data['quota_name'], 'Daily Cost Limit')
+        self.assertEqual(response.data['quota_type'], 'daily')
         self.assertEqual(response.data['user'], self.user.id)
     
     def test_reset_quota(self):
@@ -619,7 +675,7 @@ class UsageQuotaViewSetTestCase(APITestCase):
         
         # 验证配额已重置
         self.quota.refresh_from_db()
-        self.assertEqual(self.quota.used_amount, 0)
+        self.assertEqual(self.quota.token_used, 0)
         self.assertIsNotNone(self.quota.last_reset)
     
     def test_quota_status(self):

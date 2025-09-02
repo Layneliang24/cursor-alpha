@@ -212,9 +212,9 @@ def sensitive_operation_limit(rate: str = '5/m'):
             method=ratelimit.ALL,
             block=True
         )
-        def wrapper(self, request, *args, **kwargs):
+        def wrapper(request, *args, **kwargs):
             try:
-                return func(self, request, *args, **kwargs)
+                return func(request, *args, **kwargs)
             except Ratelimited:
                 logger.warning(
                     f"敏感操作速率限制: {get_client_ip(request)} - "
