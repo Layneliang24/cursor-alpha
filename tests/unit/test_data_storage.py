@@ -18,7 +18,7 @@ from apps.english.data_storage import (
     OptimizedDataStorage
 )
 from apps.english.expression_crawler import ExpressionItem
-from apps.english.models import IdiomaticExpression, ExpressionSource, ExpressionScenario
+from apps.english.models import IdiomaticExpression, ExpressionSource, ExpressionScenario, News
 
 
 class StorageMetricsTest(TestCase):

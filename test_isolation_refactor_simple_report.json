@@ -1,0 +1,170 @@
+{
+  "summary": {
+    "total_files_analyzed": 5,
+    "files_refactored": 5,
+    "refactor_success_rate": "100.0%",
+    "backups_created": 5
+  },
+  "file_details": [
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\isolation_refactor_backups\\test_ai_config_models.py_20250903_135350.py",
+      "score": 50,
+      "grade": "F",
+      "issues_count": 3,
+      "issues": [
+        {
+          "type": "missing_mock_imports",
+          "count": 1,
+          "examples": [
+            "No mock imports found"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "missing_environment_config",
+          "count": 1,
+          "examples": [
+            "No environment configuration"
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 11,
+          "examples": [
+            "Multiple hardcoded URLs/IPs found"
+          ],
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\isolation_refactor_backups\\test_basic_models.py_20250903_135350.py",
+      "score": 50,
+      "grade": "F",
+      "issues_count": 3,
+      "issues": [
+        {
+          "type": "missing_mock_imports",
+          "count": 1,
+          "examples": [
+            "No mock imports found"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "missing_environment_config",
+          "count": 1,
+          "examples": [
+            "No environment configuration"
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 11,
+          "examples": [
+            "Multiple hardcoded URLs/IPs found"
+          ],
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\isolation_refactor_backups\\test_links_module.py_20250903_135350.py",
+      "score": 50,
+      "grade": "F",
+      "issues_count": 3,
+      "issues": [
+        {
+          "type": "missing_mock_imports",
+          "count": 1,
+          "examples": [
+            "No mock imports found"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "missing_environment_config",
+          "count": 1,
+          "examples": [
+            "No environment configuration"
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 25,
+          "examples": [
+            "Multiple hardcoded URLs/IPs found"
+          ],
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_serializers.py",
+      "score": 50,
+      "grade": "F",
+      "issues_count": 3,
+      "issues": [
+        {
+          "type": "missing_mock_imports",
+          "count": 1,
+          "examples": [
+            "No mock imports found"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "missing_environment_config",
+          "count": 1,
+          "examples": [
+            "No environment configuration"
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 11,
+          "examples": [
+            "Multiple hardcoded URLs/IPs found"
+          ],
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_views.py",
+      "score": 50,
+      "grade": "F",
+      "issues_count": 3,
+      "issues": [
+        {
+          "type": "missing_mock_imports",
+          "count": 1,
+          "examples": [
+            "No mock imports found"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "missing_environment_config",
+          "count": 1,
+          "examples": [
+            "No environment configuration"
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 10,
+          "examples": [
+            "Multiple hardcoded URLs/IPs found"
+          ],
+          "severity": "high"
+        }
+      ]
+    }
+  ]
+}

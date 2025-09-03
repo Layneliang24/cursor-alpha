@@ -1,0 +1,237 @@
+{
+  "framework_comparison": {
+    "pytest": {
+      "advantages": [
+        "功能更强大，支持参数化测试",
+        "丰富的插件生态系统",
+        "更好的测试发现和运行机制",
+        "支持异步测试",
+        "更灵活的fixture系统",
+        "更好的错误报告和调试信息",
+        "支持标记和分组",
+        "内置覆盖率支持"
+      ],
+      "disadvantages": [
+        "学习曲线相对较陡",
+        "配置相对复杂",
+        "某些高级功能可能过度设计"
+      ],
+      "migration_complexity": "medium",
+      "compatibility_score": 85
+    },
+    "unittest": {
+      "advantages": [
+        "Python标准库，无需额外安装",
+        "语法简单，易于理解",
+        "与Django等框架集成良好",
+        "稳定的API"
+      ],
+      "disadvantages": [
+        "功能相对有限",
+        "测试发现机制不够灵活",
+        "缺乏现代测试框架的高级特性",
+        "扩展性较差",
+        "错误报告不够详细"
+      ],
+      "migration_complexity": "low",
+      "compatibility_score": 60
+    }
+  },
+  "recommendation": {
+    "chosen_framework": "pytest",
+    "reason": "功能更强大，生态系统更丰富，长期维护性更好",
+    "confidence_score": 90,
+    "migration_effort": "medium",
+    "long_term_benefits": "high"
+  },
+  "migration_strategy": {
+    "phases": {
+      "phase_1": {
+        "name": "低风险文件迁移",
+        "files": [
+          "tests\\utils\\test_helpers.py"
+        ],
+        "duration": "1-2天",
+        "approach": "直接迁移，快速验证"
+      },
+      "phase_2": {
+        "name": "中风险文件迁移",
+        "files": [
+          "tests\\regression\\english\\test_pause_resume.py",
+          "tests\\regression\\english\\test_pronunciation.py",
+          "tests\\unit\\test_api_docs_cache.py",
+          "tests\\unit\\test_async_tasks.py",
+          "tests\\unit\\test_data_quality.py"
+        ],
+        "duration": "3-5天",
+        "approach": "谨慎迁移，充分测试"
+      },
+      "phase_3": {
+        "name": "高风险文件迁移",
+        "files": [
+          "tests\\unit\\test_data_storage.py",
+          "tests\\unit\\test_english_api.py",
+          "tests\\unit\\test_english_security.py",
+          "tests\\unit\\test_expression_crawler.py",
+          "tests\\unit\\test_news_dashboard.py",
+          "tests\\unit\\test_specialized_crawlers.py",
+          "tests\\unit\\test_storage_core.py",
+          "tests\\unit\\test_task_system.py",
+          "tests\\unit\\test_techcrunch_and_image_cleanup.py",
+          "tests\\unit\\test_user_auth.py",
+          "backend\\tests\\test_flaky_examples.py",
+          "backend\\tests\\integration\\test_ai_service_management.py",
+          "backend\\tests\\unit\\test_ai_adapters.py"
+        ],
+        "duration": "5-7天",
+        "approach": "分批迁移，逐步验证"
+      }
+    },
+    "migration_approach": "渐进式迁移",
+    "rollback_strategy": "Git分支管理，每个阶段独立提交",
+    "testing_strategy": "每个文件迁移后立即运行测试验证",
+    "quality_gates": [
+      "所有测试必须通过",
+      "测试覆盖率不降低",
+      "性能不显著下降"
+    ]
+  },
+  "compatibility_matrix": {
+    "imports": {
+      "unittest.TestCase": "pytest类（移除继承）",
+      "unittest.mock": "pytest-mock或pytest内置mock",
+      "unittest.mock.patch": "pytest-mock的patch装饰器",
+      "unittest.mock.MagicMock": "pytest-mock的MagicMock",
+      "unittest.mock.Mock": "pytest-mock的Mock"
+    },
+    "assertions": {
+      "self.assertEqual(a, b)": "assert a == b",
+      "self.assertNotEqual(a, b)": "assert a != b",
+      "self.assertTrue(x)": "assert x",
+      "self.assertFalse(x)": "assert not x",
+      "self.assertIn(a, b)": "assert a in b",
+      "self.assertNotIn(a, b)": "assert a not in b",
+      "self.assertIs(a, b)": "assert a is b",
+      "self.assertIsNot(a, b)": "assert a is not b",
+      "self.assertIsInstance(a, b)": "assert isinstance(a, b)",
+      "self.assertRaises(Exception)": "pytest.raises(Exception)",
+      "self.assertAlmostEqual(a, b)": "pytest.approx(a) == b",
+      "self.assertGreater(a, b)": "assert a > b",
+      "self.assertLess(a, b)": "assert a < b"
+    },
+    "decorators": {
+      "@unittest.skip(reason)": "@pytest.mark.skip(reason=reason)",
+      "@unittest.skipIf(condition, reason)": "@pytest.mark.skipif(condition, reason=reason)",
+      "@unittest.expectedFailure": "@pytest.mark.xfail",
+      "@unittest.mock.patch(target)": "@pytest.mark.mock.patch(target)"
+    },
+    "test_discovery": {
+      "unittest.main()": "pytest命令行运行",
+      "unittest.TextTestRunner": "pytest内置运行器",
+      "unittest.TestLoader": "pytest自动发现"
+    },
+    "setup_teardown": {
+      "def setUp(self)": "def setup_method(self)",
+      "def tearDown(self)": "def teardown_method(self)",
+      "def setUpClass(cls)": "def setup_class(cls)",
+      "def tearDownClass(cls)": "def teardown_class(cls)"
+    }
+  },
+  "migration_templates": {
+    "basic_test_class": "import pytest\n\nclass TestExample:\n    \"\"\"测试示例类 - 从unittest.TestCase迁移\"\"\"\n    \n    def setup_method(self):\n        \"\"\"每个测试方法前的设置\"\"\"\n        pass\n    \n    def teardown_method(self):\n        \"\"\"每个测试方法后的清理\"\"\"\n        pass\n    \n    def test_example(self):\n        \"\"\"示例测试方法\"\"\"\n        expected = \"expected_value\"\n        actual = \"actual_value\"\n        assert actual == expected\n",
+    "mock_usage": "import pytest\nfrom unittest.mock import Mock, patch\n\nclass TestWithMocking:\n    \"\"\"使用Mock的测试类\"\"\"\n    \n    @patch('module.function')\n    def test_with_patch(self, mock_function):\n        \"\"\"使用patch装饰器的测试\"\"\"\n        mock_function.return_value = \"mocked_value\"\n        result = some_function()\n        assert result == \"mocked_value\"\n    \n    def test_with_mock_object(self):\n        \"\"\"使用Mock对象的测试\"\"\"\n        mock_obj = Mock()\n        mock_obj.method.return_value = \"mocked_result\"\n        result = mock_obj.method()\n        assert result == \"mocked_result\"\n",
+    "parametrized_test": "import pytest\n\nclass TestParametrized:\n    \"\"\"参数化测试示例\"\"\"\n    \n    @pytest.mark.parametrize(\"input,expected\", [\n        (1, 2),\n        (2, 4),\n        (3, 6)\n    ])\n    def test_multiply_by_two(self, input, expected):\n        \"\"\"参数化测试\"\"\"\n        result = input * 2\n        assert result == expected\n",
+    "fixture_usage": "import pytest\n\n@pytest.fixture\ndef sample_data():\n    \"\"\"测试数据fixture\"\"\"\n    return {\"key\": \"value\", \"number\": 42}\n\nclass TestWithFixtures:\n    \"\"\"使用fixture的测试类\"\"\"\n    \n    def test_with_fixture(self, sample_data):\n        \"\"\"使用fixture的测试\"\"\"\n        assert sample_data[\"key\"] == \"value\"\n        assert sample_data[\"number\"] == 42\n"
+  },
+  "migration_checklist": {
+    "pre_migration": [
+      "备份当前代码",
+      "创建迁移分支",
+      "安装pytest和相关插件",
+      "配置pytest配置文件",
+      "运行现有测试确保基线"
+    ],
+    "during_migration": [
+      "逐个文件进行迁移",
+      "更新导入语句",
+      "替换断言方法",
+      "更新装饰器",
+      "调整setup/teardown方法",
+      "运行测试验证",
+      "提交阶段性成果"
+    ],
+    "post_migration": [
+      "运行完整测试套件",
+      "检查测试覆盖率",
+      "性能测试验证",
+      "文档更新",
+      "团队培训",
+      "清理旧代码"
+    ],
+    "quality_checks": [
+      "所有测试通过",
+      "测试覆盖率不降低",
+      "测试执行时间合理",
+      "错误报告清晰",
+      "代码风格一致"
+    ]
+  },
+  "implementation_plan": {
+    "timeline": {
+      "week_1": {
+        "tasks": [
+          "环境准备和配置",
+          "低风险文件迁移（2-3个）",
+          "建立迁移流程"
+        ],
+        "deliverables": [
+          "pytest环境配置完成",
+          "2-3个文件迁移完成",
+          "迁移流程文档"
+        ]
+      },
+      "week_2": {
+        "tasks": [
+          "中风险文件迁移（5-6个）",
+          "测试验证和优化",
+          "问题修复和调整"
+        ],
+        "deliverables": [
+          "5-6个文件迁移完成",
+          "测试验证报告",
+          "问题修复记录"
+        ]
+      },
+      "week_3": {
+        "tasks": [
+          "高风险文件迁移（剩余文件）",
+          "完整测试套件验证",
+          "性能优化和文档完善"
+        ],
+        "deliverables": [
+          "所有文件迁移完成",
+          "完整测试验证报告",
+          "最终迁移文档"
+        ]
+      }
+    },
+    "resource_requirements": {
+      "developer_time": "3周全职",
+      "testing_time": "1周",
+      "review_time": "0.5周",
+      "total_effort": "4.5周"
+    },
+    "risk_mitigation": {
+      "technical_risks": [
+        "分批迁移，降低单次风险",
+        "充分测试，确保质量",
+        "回滚机制，快速恢复"
+      ],
+      "schedule_risks": [
+        "预留缓冲时间",
+        "并行处理低风险文件",
+        "灵活调整优先级"
+      ]
+    }
+  }
+}

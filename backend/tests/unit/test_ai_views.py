@@ -1,6 +1,12 @@
+# 测试环境配置
+import os
+os.environ['TESTING'] = 'True'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'backend.settings'
+
 """
 AI视图单元测试
 """
+from unittest.mock import Mock, patch, MagicMock, call, ANY, sentinel
 import pytest
 from django.test import TestCase
 from django.urls import reverse
@@ -599,3 +605,6 @@ class ConfigVersionViewSetTest(APITestCase):
         
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ConfigVersion.objects.count(), 2)
+
+# TODO: 考虑使用测试数据工厂来创建测试数据
+# from tests.data_management.test_data_factory import TestDataFactory

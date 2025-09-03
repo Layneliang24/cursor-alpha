@@ -1,0 +1,688 @@
+{
+  "summary": {
+    "totalFiles": 44,
+    "averageQualityScore": 41.18,
+    "averageComplexity": 7.52,
+    "averageTestCoverage": 123.86,
+    "availableTools": {
+      "eslint": false,
+      "jest": false
+    }
+  },
+  "qualityDistribution": {
+    "excellent": 0,
+    "good": 3,
+    "fair": 1,
+    "poor": 40
+  },
+  "fileQualityDetails": {
+    "tests\\e2e\\example_requirement.spec.js": {
+      "filePath": "tests\\e2e\\example_requirement.spec.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 2,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\flaky-examples.test.js": {
+      "filePath": "frontend\\tests\\flaky-examples.test.js",
+      "complexity": 15,
+      "testCoverage": {
+        "testFunctions": 17,
+        "totalFunctions": 2,
+        "coveragePercentage": 850
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 74
+    },
+    "frontend\\tests\\e2e\\acceptance.test.js": {
+      "filePath": "frontend\\tests\\e2e\\acceptance.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 14,
+        "totalFunctions": 1,
+        "coveragePercentage": 1400
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 84
+    },
+    "frontend\\tests\\e2e\\ai-assistant-advanced.spec.ts": {
+      "filePath": "frontend\\tests\\e2e\\ai-assistant-advanced.spec.ts",
+      "complexity": 33,
+      "testCoverage": {
+        "testFunctions": 8,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [
+        "超长行: 1行"
+      ],
+      "eslintScore": 0,
+      "qualityScore": 0
+    },
+    "frontend\\tests\\e2e\\ai-config.e2e.test.js": {
+      "filePath": "frontend\\tests\\e2e\\ai-config.e2e.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 15,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\e2e\\basic-navigation.spec.ts": {
+      "filePath": "frontend\\tests\\e2e\\basic-navigation.spec.ts",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 4,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\e2e\\idiomatic-expressions.spec.ts": {
+      "filePath": "frontend\\tests\\e2e\\idiomatic-expressions.spec.ts",
+      "complexity": 6,
+      "testCoverage": {
+        "testFunctions": 6,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 43
+    },
+    "frontend\\tests\\e2e\\learning-analytics.spec.ts": {
+      "filePath": "frontend\\tests\\e2e\\learning-analytics.spec.ts",
+      "complexity": 47,
+      "testCoverage": {
+        "testFunctions": 11,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [
+        "超长行: 1行"
+      ],
+      "eslintScore": 0,
+      "qualityScore": 0
+    },
+    "frontend\\tests\\e2e\\learning-modes.spec.ts": {
+      "filePath": "frontend\\tests\\e2e\\learning-modes.spec.ts",
+      "complexity": 26,
+      "testCoverage": {
+        "testFunctions": 9,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 12
+    },
+    "frontend\\tests\\e2e\\user-login-flow.spec.ts": {
+      "filePath": "frontend\\tests\\e2e\\user-login-flow.spec.ts",
+      "complexity": 9,
+      "testCoverage": {
+        "testFunctions": 8,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 40
+    },
+    "frontend\\tests\\integration\\routing.test.js": {
+      "filePath": "frontend\\tests\\integration\\routing.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 5,
+        "totalFunctions": 1,
+        "coveragePercentage": 500
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 84
+    },
+    "frontend\\tests\\integration\\api\\aiConfig.integration.test.js": {
+      "filePath": "frontend\\tests\\integration\\api\\aiConfig.integration.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 16,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\integration\\components\\AIConfig.integration.test.js": {
+      "filePath": "frontend\\tests\\integration\\components\\AIConfig.integration.test.js",
+      "complexity": 4,
+      "testCoverage": {
+        "testFunctions": 29,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\selenium\\cross-browser-learning.test.js": {
+      "filePath": "frontend\\tests\\selenium\\cross-browser-learning.test.js",
+      "complexity": 48,
+      "testCoverage": {
+        "testFunctions": 2,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 0
+    },
+    "frontend\\tests\\selenium\\cross-browser-login.test.js": {
+      "filePath": "frontend\\tests\\selenium\\cross-browser-login.test.js",
+      "complexity": 32,
+      "testCoverage": {
+        "testFunctions": 2,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 0
+    },
+    "frontend\\tests\\unit\\basic.test.js": {
+      "filePath": "frontend\\tests\\unit\\basic.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 6,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\idiomatic_expressions_requirement.test.js": {
+      "filePath": "frontend\\tests\\unit\\idiomatic_expressions_requirement.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 3,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\security.test.ts": {
+      "filePath": "frontend\\tests\\unit\\security.test.ts",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 31,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [
+        "超长行: 1行"
+      ],
+      "eslintScore": 0,
+      "qualityScore": 42
+    },
+    "frontend\\tests\\unit\\api\\aiConfig.test.js": {
+      "filePath": "frontend\\tests\\unit\\api\\aiConfig.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 19,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\components\\AIAssistantChat.simple.test.js": {
+      "filePath": "frontend\\tests\\unit\\components\\AIAssistantChat.simple.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 13,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\components\\AIAssistantChat.test.js": {
+      "filePath": "frontend\\tests\\unit\\components\\AIAssistantChat.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 51,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\components\\ExpressionCard.simple.test.js": {
+      "filePath": "frontend\\tests\\unit\\components\\ExpressionCard.simple.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 12,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\components\\ExpressionCard.test.js": {
+      "filePath": "frontend\\tests\\unit\\components\\ExpressionCard.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 41,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.simple.test.js": {
+      "filePath": "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.simple.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 16,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.test.js": {
+      "filePath": "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 39,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\components\\LoadingIndicator.test.js": {
+      "filePath": "frontend\\tests\\unit\\components\\LoadingIndicator.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 48,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\components\\SafeHTML.test.ts": {
+      "filePath": "frontend\\tests\\unit\\components\\SafeHTML.test.ts",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 13,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\components\\ScenarioPlayer.simple.test.js": {
+      "filePath": "frontend\\tests\\unit\\components\\ScenarioPlayer.simple.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 18,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\components\\ScenarioPlayer.test.js": {
+      "filePath": "frontend\\tests\\unit\\components\\ScenarioPlayer.test.js",
+      "complexity": 7,
+      "testCoverage": {
+        "testFunctions": 59,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 42
+    },
+    "frontend\\tests\\unit\\components\\SecureInput.test.ts": {
+      "filePath": "frontend\\tests\\unit\\components\\SecureInput.test.ts",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 22,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\components\\common\\LanguageSwitcher.test.js": {
+      "filePath": "frontend\\tests\\unit\\components\\common\\LanguageSwitcher.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 10,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\composables\\useLoading.test.js": {
+      "filePath": "frontend\\tests\\unit\\composables\\useLoading.test.js",
+      "complexity": 5,
+      "testCoverage": {
+        "testFunctions": 24,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\config\\ConfigImportExport.test.js": {
+      "filePath": "frontend\\tests\\unit\\config\\ConfigImportExport.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 21,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\config\\ConfigManagement.test.js": {
+      "filePath": "frontend\\tests\\unit\\config\\ConfigManagement.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 9,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\i18n\\i18n.test.js": {
+      "filePath": "frontend\\tests\\unit\\i18n\\i18n.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 27,
+        "totalFunctions": 1,
+        "coveragePercentage": 2700
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 84
+    },
+    "frontend\\tests\\unit\\performance\\optimization.test.js": {
+      "filePath": "frontend\\tests\\unit\\performance\\optimization.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 34,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\settings\\Settings.test.js": {
+      "filePath": "frontend\\tests\\unit\\settings\\Settings.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 7,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\stores\\auth.test.js": {
+      "filePath": "frontend\\tests\\unit\\stores\\auth.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 24,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\utils\\dateUtils.test.js": {
+      "filePath": "frontend\\tests\\unit\\utils\\dateUtils.test.js",
+      "complexity": 2,
+      "testCoverage": {
+        "testFunctions": 25,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "frontend\\tests\\unit\\utils\\errorHandler.test.js": {
+      "filePath": "frontend\\tests\\unit\\utils\\errorHandler.test.js",
+      "complexity": 1,
+      "testCoverage": {
+        "testFunctions": 40,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "e2e\\tests\\analytics.spec.ts": {
+      "filePath": "e2e\\tests\\analytics.spec.ts",
+      "complexity": 17,
+      "testCoverage": {
+        "testFunctions": 21,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 30
+    },
+    "e2e\\tests\\auth.spec.ts": {
+      "filePath": "e2e\\tests\\auth.spec.ts",
+      "complexity": 4,
+      "testCoverage": {
+        "testFunctions": 17,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 44
+    },
+    "e2e\\tests\\dictionary.spec.ts": {
+      "filePath": "e2e\\tests\\dictionary.spec.ts",
+      "complexity": 6,
+      "testCoverage": {
+        "testFunctions": 18,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 43
+    },
+    "e2e\\tests\\user-journey.spec.ts": {
+      "filePath": "e2e\\tests\\user-journey.spec.ts",
+      "complexity": 31,
+      "testCoverage": {
+        "testFunctions": 10,
+        "totalFunctions": 0,
+        "coveragePercentage": 0
+      },
+      "codingStandards": [],
+      "eslintScore": 0,
+      "qualityScore": 2
+    }
+  },
+  "issuesSummary": {
+    "tests\\e2e\\example_requirement.spec.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\flaky-examples.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\e2e\\acceptance.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\e2e\\ai-assistant-advanced.spec.ts": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\e2e\\ai-config.e2e.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\e2e\\basic-navigation.spec.ts": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\e2e\\idiomatic-expressions.spec.ts": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\e2e\\learning-analytics.spec.ts": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\e2e\\learning-modes.spec.ts": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\e2e\\user-login-flow.spec.ts": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\integration\\routing.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\integration\\api\\aiConfig.integration.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\integration\\components\\AIConfig.integration.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\selenium\\cross-browser-learning.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\selenium\\cross-browser-login.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\basic.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\idiomatic_expressions_requirement.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\security.test.ts": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\api\\aiConfig.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\AIAssistantChat.simple.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\AIAssistantChat.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\ExpressionCard.simple.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\ExpressionCard.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.simple.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\LearningAnalyticsDashboard.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\LoadingIndicator.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\SafeHTML.test.ts": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\ScenarioPlayer.simple.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\ScenarioPlayer.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\SecureInput.test.ts": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\components\\common\\LanguageSwitcher.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\composables\\useLoading.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\config\\ConfigImportExport.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\config\\ConfigManagement.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\i18n\\i18n.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\performance\\optimization.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\settings\\Settings.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\stores\\auth.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\utils\\dateUtils.test.js": [
+      "ESLint不可用"
+    ],
+    "frontend\\tests\\unit\\utils\\errorHandler.test.js": [
+      "ESLint不可用"
+    ],
+    "e2e\\tests\\analytics.spec.ts": [
+      "ESLint不可用"
+    ],
+    "e2e\\tests\\auth.spec.ts": [
+      "ESLint不可用"
+    ],
+    "e2e\\tests\\dictionary.spec.ts": [
+      "ESLint不可用"
+    ],
+    "e2e\\tests\\user-journey.spec.ts": [
+      "ESLint不可用"
+    ]
+  }
+}

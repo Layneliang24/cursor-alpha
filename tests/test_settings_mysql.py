@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 # 设置环境变量（必须在导入Django之前）
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'alpha.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 os.environ.setdefault('TESTING', 'true')
 
 # 添加backend目录到Python路径
@@ -17,7 +17,7 @@ backend_dir = Path(__file__).parent.parent / 'backend'
 sys.path.insert(0, str(backend_dir))
 
 # 导入原始设置
-from alpha.settings import *
+from backend.settings import *
 
 # 强制覆盖数据库设置，使用MySQL测试数据库
 DATABASES = {

@@ -2378,3 +2378,15 @@ class PasswordChangeView(APIView):
             return 'iOS'
         else:
             return 'Unknown'
+
+# 重新导出ConversationViewSet以保持向后兼容性
+from .conversation.views import ConversationViewSet
+
+__all__ = [
+    'AIProviderViewSet', 'APIKeyViewSet', 'AIModelViewSet', 'PromptTemplateViewSet',
+    'ModelConfigViewSet', 'TokenUsageViewSet', 'FailoverStrategyViewSet',
+    'FailoverRuleViewSet', 'UsageQuotaViewSet', 'ConfigExportView', 'ConfigImportView',
+    'ConfigTemplateViewSet', 'ConfigVersionViewSet', 'UserSettingsViewSet',
+    'SystemConfigViewSet', 'LoginHistoryViewSet', 'DeviceSessionViewSet',
+    'UserProfileViewSet', 'PasswordChangeView', 'ConversationViewSet'
+]

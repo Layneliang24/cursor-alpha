@@ -1,0 +1,510 @@
+{
+  "summary": {
+    "total_issues": 19,
+    "categories": {
+      "编码问题": 0,
+      "结构问题": 0,
+      "依赖缺失": 0,
+      "非测试代码": 0,
+      "框架混用": 19,
+      "重复测试": 0,
+      "质量缺陷": 0
+    },
+    "priority_distribution": {
+      "high": 0,
+      "medium": 19,
+      "low": 0
+    },
+    "severity_distribution": {
+      "high": 0,
+      "medium": 19,
+      "low": 0
+    }
+  },
+  "issues_by_category": {
+    "编码问题": [],
+    "结构问题": [],
+    "依赖缺失": [],
+    "非测试代码": [],
+    "框架混用": [
+      {
+        "file": "tests\\regression\\english\\test_pause_resume.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\regression\\english\\test_pronunciation.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_api_docs_cache.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_async_tasks.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_data_quality.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_data_storage.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_english_api.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_english_security.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_expression_crawler.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_news_dashboard.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_specialized_crawlers.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_storage_core.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_task_system.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_techcrunch_and_image_cleanup.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_user_auth.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\utils\\test_helpers.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "backend\\tests\\test_flaky_examples.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "backend\\tests\\integration\\test_ai_service_management.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "backend\\tests\\unit\\test_ai_adapters.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      }
+    ],
+    "重复测试": [],
+    "质量缺陷": []
+  },
+  "issues_by_priority": {
+    "high": [],
+    "medium": [
+      {
+        "file": "tests\\regression\\english\\test_pause_resume.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\regression\\english\\test_pronunciation.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_api_docs_cache.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_async_tasks.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_data_quality.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_data_storage.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_english_api.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_english_security.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_expression_crawler.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_news_dashboard.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_specialized_crawlers.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_storage_core.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_task_system.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_techcrunch_and_image_cleanup.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_user_auth.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\utils\\test_helpers.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "backend\\tests\\test_flaky_examples.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "backend\\tests\\integration\\test_ai_service_management.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "backend\\tests\\unit\\test_ai_adapters.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      }
+    ],
+    "low": []
+  },
+  "issues_by_severity": {
+    "high": [],
+    "medium": [
+      {
+        "file": "tests\\regression\\english\\test_pause_resume.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\regression\\english\\test_pronunciation.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_api_docs_cache.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_async_tasks.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_data_quality.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_data_storage.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_english_api.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_english_security.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\unit\\test_expression_crawler.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_news_dashboard.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_specialized_crawlers.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_storage_core.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_task_system.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_techcrunch_and_image_cleanup.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "tests\\unit\\test_user_auth.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "tests\\utils\\test_helpers.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "backend\\tests\\test_flaky_examples.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: unittest, pytest"
+      },
+      {
+        "file": "backend\\tests\\integration\\test_ai_service_management.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      },
+      {
+        "file": "backend\\tests\\unit\\test_ai_adapters.py",
+        "type": "框架混用",
+        "severity": "medium",
+        "priority": "medium",
+        "description": "多个测试框架混用",
+        "details": "混用框架: pytest, unittest"
+      }
+    ],
+    "low": []
+  },
+  "recommendations": [
+    {
+      "priority": "medium",
+      "action": "逐步修复结构和框架问题",
+      "reason": "发现 19 个中优先级问题，影响代码质量",
+      "estimated_effort": "4-8小时"
+    }
+  ]
+}

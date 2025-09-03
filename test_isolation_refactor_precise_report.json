@@ -1,0 +1,504 @@
+{
+  "summary": {
+    "total_files_analyzed": 5,
+    "files_refactored": 0,
+    "refactor_success_rate": "0.0%",
+    "backups_created": 5
+  },
+  "file_details": [
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_fixes_verification.py",
+      "score": -95,
+      "grade": "F",
+      "issues_count": 11,
+      "issues": [
+        {
+          "type": "hardcoded_urls",
+          "count": 5,
+          "examples": [
+            "https://techcrunch.com/feed/",
+            "https://techcrunch.com/category/artificial-intelligence/feed/",
+            "https://techcrunch.com/category/startups/feed/"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 2,
+          "examples": [
+            ".objects.create(",
+            ".objects.create("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".objects.filter("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".save("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 2,
+          "examples": [
+            ".delete(",
+            ".delete("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 1,
+          "examples": [
+            "subprocess."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 1,
+          "examples": [
+            "subprocess.run("
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 3,
+          "examples": [
+            "open(",
+            "open(",
+            "open("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 18,
+          "examples": [
+            "os.path.",
+            "os.path.",
+            "os.path."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "shutil."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "missing_mock_imports",
+          "count": 1,
+          "examples": [
+            "No mock imports found"
+          ],
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_fixes_verification.py",
+      "score": -95,
+      "grade": "F",
+      "issues_count": 11,
+      "issues": [
+        {
+          "type": "hardcoded_urls",
+          "count": 5,
+          "examples": [
+            "https://techcrunch.com/feed/",
+            "https://techcrunch.com/category/artificial-intelligence/feed/",
+            "https://techcrunch.com/category/startups/feed/"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 2,
+          "examples": [
+            ".objects.create(",
+            ".objects.create("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".objects.filter("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".save("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 2,
+          "examples": [
+            ".delete(",
+            ".delete("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 1,
+          "examples": [
+            "subprocess."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 1,
+          "examples": [
+            "subprocess.run("
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 3,
+          "examples": [
+            "open(",
+            "open(",
+            "open("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 18,
+          "examples": [
+            "os.path.",
+            "os.path.",
+            "os.path."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "shutil."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "missing_mock_imports",
+          "count": 1,
+          "examples": [
+            "No mock imports found"
+          ],
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_techcrunch_and_image_cleanup.py",
+      "score": -60,
+      "grade": "F",
+      "issues_count": 10,
+      "issues": [
+        {
+          "type": "hardcoded_urls",
+          "count": 15,
+          "examples": [
+            "https://techcrunch.com/feed/",
+            "https://techcrunch.com/category/artificial-intelligence/feed/",
+            "https://techcrunch.com/category/startups/feed/"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 6,
+          "examples": [
+            ".objects.create(",
+            ".objects.create(",
+            ".objects.create("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 5,
+          "examples": [
+            ".objects.filter(",
+            ".objects.filter(",
+            ".objects.filter("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".save("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 6,
+          "examples": [
+            ".delete(",
+            ".delete(",
+            ".delete("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 4,
+          "examples": [
+            "requests.",
+            "requests.",
+            "requests."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "open("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 9,
+          "examples": [
+            "os.path.",
+            "os.path.",
+            "os.path."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "shutil."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "missing_environment_config",
+          "count": 1,
+          "examples": [
+            "No environment configuration"
+          ],
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_techcrunch_and_image_cleanup.py",
+      "score": -60,
+      "grade": "F",
+      "issues_count": 10,
+      "issues": [
+        {
+          "type": "hardcoded_urls",
+          "count": 15,
+          "examples": [
+            "https://techcrunch.com/feed/",
+            "https://techcrunch.com/category/artificial-intelligence/feed/",
+            "https://techcrunch.com/category/startups/feed/"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 6,
+          "examples": [
+            ".objects.create(",
+            ".objects.create(",
+            ".objects.create("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 5,
+          "examples": [
+            ".objects.filter(",
+            ".objects.filter(",
+            ".objects.filter("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".save("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 6,
+          "examples": [
+            ".delete(",
+            ".delete(",
+            ".delete("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 4,
+          "examples": [
+            "requests.",
+            "requests.",
+            "requests."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "open("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 9,
+          "examples": [
+            "os.path.",
+            "os.path.",
+            "os.path."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "shutil."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "missing_environment_config",
+          "count": 1,
+          "examples": [
+            "No environment configuration"
+          ],
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_security.py",
+      "score": -45,
+      "grade": "F",
+      "issues_count": 9,
+      "issues": [
+        {
+          "type": "hardcoded_urls",
+          "count": 8,
+          "examples": [
+            "https://api.openai.com/v1",
+            "https://api.openai.com/v1",
+            "https://api.openai.com/v1"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 1,
+          "examples": [
+            "ftp://malicious.com"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 1,
+          "examples": [
+            "file:///etc/passwd"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 17,
+          "examples": [
+            ".objects.create(",
+            ".objects.create(",
+            ".objects.create("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 3,
+          "examples": [
+            ".objects.get(",
+            ".objects.get(",
+            ".objects.get("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".objects.filter("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".save("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".delete("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "missing_environment_config",
+          "count": 1,
+          "examples": [
+            "No environment configuration"
+          ],
+          "severity": "medium"
+        }
+      ]
+    }
+  ]
+}

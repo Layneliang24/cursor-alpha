@@ -1,0 +1,27 @@
+{
+  "summary": {
+    "total_files": 2,
+    "syntax_valid": 2,
+    "import_success": 0,
+    "runnable": 0,
+    "validation_failed": 2
+  },
+  "file_details": [
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_serializers.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_views.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    }
+  ]
+}

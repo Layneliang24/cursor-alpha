@@ -1,0 +1,1971 @@
+{
+  "summary": {
+    "total_files": 245,
+    "syntax_valid": 235,
+    "import_success": 84,
+    "runnable": 61,
+    "validation_failed": 184
+  },
+  "file_details": [
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\test_cnn_simple.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\test_e2e_idiomatic_learning.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\test_file_filter.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\test_isolation_analyzer.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\test_techcrunch_and_image_cleanup.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\test_api_direct.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\test_hot_reload.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\test_report_system.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\test_urls_simple.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\migration_backups\\test_api_docs_cache_20250903_123457.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\migration_backups\\test_async_tasks_20250903_123503.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\migration_backups\\test_data_quality_20250903_123514.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\migration_backups\\test_helpers_20250903_121852.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\migration_backups\\test_helpers_20250903_122934.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\migration_backups\\test_helpers_20250903_123000.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\migration_backups\\test_helpers_20250903_123034.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\migration_backups\\test_helpers_20250903_123353.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\migration_backups\\test_pause_resume_20250903_123439.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\migration_backups\\test_pronunciation_20250903_123450.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\scripts\\test_pipeline.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'req_to_test_pipeline'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_calendar_fix.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_quick_validation.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_runner_optimized.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_settings.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_settings_ci.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "attempted relative import with no known parent package"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_settings_mysql.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_simple_validation.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\api\\test_chapter_word_counts_api.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\api\\test_frontend_api_simulation.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\api\\test_frontend_api_wrapper.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\api\\test_typing_words_api.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\api_docs\\test_api_documentation.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\data_management\\test_data_factory.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\edge_cases\\test_edge_cases.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\frontend\\test_progress_bar_display.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\frontend\\test_typing_component_lifecycle.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\frontend\\test_vue_components.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_api.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_bbc_fix_verification.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_end_to_end_workflow.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_fixes_verification.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_full_workflow_integration.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_news_api.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_typing_practice_submit_integration.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\new_features\\test_chapter_completion_integration.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\new_features\\test_chapter_completion_simple.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\performance\\test_performance_regression.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_ai_module.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_api_docs_cache.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_articles.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_article_management.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_async_tasks.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_basic.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_bbc_news_save.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_bbc_simple.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_categories.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_cnn_crawler.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_common_module.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_data_analysis.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_data_quality.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_data_storage.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_english_api.py",
+      "syntax_valid": false,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "SyntaxError",
+      "error_message": "Sorry: IndentationError: unexpected indent (test_english_api.py, line 87)"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_english_learning.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_english_security.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_expression_crawler.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_fundus_crawler.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_idiomatic_expressions.py",
+      "syntax_valid": false,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "SyntaxError",
+      "error_message": "Sorry: IndentationError: unexpected indent (test_idiomatic_expressions.py, line 100)"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_jobs.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_jobs_module.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_links_module.py",
+      "syntax_valid": false,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "SyntaxError",
+      "error_message": "Sorry: IndentationError: unexpected indent (test_links_module.py, line 92)"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_models.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_model_fields_fix.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_mysql_connection.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_news_dashboard.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_news_visibility_removal.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_permissions_comprehensive.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_search_module.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_simple.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_specialized_crawlers.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_storage_core.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_task_system.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_techcrunch_and_image_cleanup.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_todos.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_typing_practice.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_typing_practice_api.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_typing_practice_submit.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_users.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_user_auth.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\utils\\test_data_manager.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\utils\\test_helpers.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\utils\\test_quality_monitor.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\utils\\test_report_generator.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'seaborn'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\auth\\test_permissions.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\auth\\test_user_authentication.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\english\\test_data_analysis_regression.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\english\\test_pause_resume.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\english\\test_pronunciation.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\english\\test_typing_practice_submit_regression.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\test_ai_config_encryption.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\test_flaky_examples.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\integration\\test_ai_service_management.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\integration\\test_api_cache_performance.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_adapters.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_config_models.py",
+      "syntax_valid": false,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "SyntaxError",
+      "error_message": "Sorry: IndentationError: unexpected indent (test_ai_config_models.py, line 89)"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_serializers.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_views.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_basic_models.py",
+      "syntax_valid": false,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "SyntaxError",
+      "error_message": "Sorry: IndentationError: unexpected indent (test_basic_models.py, line 84)"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_cache_strategy.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_core_functionality.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\english\\test_api.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_api_views.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_config_import_export.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_failover_auto_switch.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "attempted relative import with no known parent package"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_manual_switch.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_model_config.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_model_discovery.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_monitoring.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_security.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_token_statistics.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\conftest.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\factories.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\fix_api_paths.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\frontend_test_runner.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\quick_start.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\run_coverage_report.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\run_fixed_tests.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\run_full_tests.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\run_module_tests.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\run_new_tests.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\run_regression_tests.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\run_stable_tests.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\run_submit_api_tests.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\run_tests.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\run_tests_strategic.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\simple_submit_test.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_calendar_fix.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_quick_validation.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_runner_optimized.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_settings.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_settings_ci.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "attempted relative import with no known parent package"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_settings_mysql.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\test_simple_validation.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\verify_fixes.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\__init__.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\api\\check_chapter_word_counts.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\api\\test_chapter_word_counts_api.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\api\\test_frontend_api_simulation.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\api\\test_frontend_api_wrapper.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\api\\test_typing_words_api.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\api_docs\\test_api_documentation.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\data_management\\test_data_factory.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\edge_cases\\test_edge_cases.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\factories\\article_factory.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\factories\\category_factory.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\factories\\user_factory.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\frontend\\test_progress_bar_display.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\frontend\\test_typing_component_lifecycle.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\frontend\\test_vue_components.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_api.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_bbc_fix_verification.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_end_to_end_workflow.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_fixes_verification.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_full_workflow_integration.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_news_api.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_typing_practice_submit_integration.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\new_features\\test_chapter_completion_integration.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\new_features\\test_chapter_completion_simple.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\performance\\test_performance_regression.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\plugins\\pytest_flaky.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_ai_module.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_api_docs_cache.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_articles.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_article_management.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_async_tasks.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_basic.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_bbc_news_save.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_bbc_simple.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_categories.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_cnn_crawler.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_common_module.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_data_analysis.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_data_quality.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_data_storage.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_english_api.py",
+      "syntax_valid": false,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "SyntaxError",
+      "error_message": "Sorry: IndentationError: unexpected indent (test_english_api.py, line 87)"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_english_learning.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_english_security.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_expression_crawler.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_fundus_crawler.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_idiomatic_expressions.py",
+      "syntax_valid": false,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "SyntaxError",
+      "error_message": "Sorry: IndentationError: unexpected indent (test_idiomatic_expressions.py, line 100)"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_jobs.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_jobs_module.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_links_module.py",
+      "syntax_valid": false,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "SyntaxError",
+      "error_message": "Sorry: IndentationError: unexpected indent (test_links_module.py, line 92)"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_models.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_model_fields_fix.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_mysql_connection.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_news_dashboard.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_news_visibility_removal.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_permissions_comprehensive.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_search_module.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_simple.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_specialized_crawlers.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_storage_core.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_task_system.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_techcrunch_and_image_cleanup.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_todos.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_typing_practice.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_typing_practice_api.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_typing_practice_submit.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_users.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\unit\\test_user_auth.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\utils\\auth_helper.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\utils\\generate_report.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\utils\\report_generator.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'seaborn'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\utils\\test_data_manager.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\utils\\test_helpers.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\utils\\test_quality_monitor.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\utils\\test_report_generator.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'seaborn'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\auth\\test_permissions.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\auth\\test_user_authentication.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\english\\test_data_analysis_regression.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\english\\test_pause_resume.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\english\\test_pronunciation.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\regression\\english\\test_typing_practice_submit_regression.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\factories.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\test_ai_config_encryption.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\test_flaky_examples.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\integration\\test_ai_service_management.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\integration\\test_api_cache_performance.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_adapters.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_config_models.py",
+      "syntax_valid": false,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "SyntaxError",
+      "error_message": "Sorry: IndentationError: unexpected indent (test_ai_config_models.py, line 89)"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_serializers.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_ai_views.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_basic_models.py",
+      "syntax_valid": false,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "SyntaxError",
+      "error_message": "Sorry: IndentationError: unexpected indent (test_basic_models.py, line 84)"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_cache_strategy.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": true,
+      "error_type": null,
+      "error_message": null
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\tests\\unit\\test_core_functionality.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_api_views.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_config_import_export.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_failover_auto_switch.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "attempted relative import with no known parent package"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_manual_switch.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_model_config.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_model_discovery.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_monitoring.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_security.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\test_token_statistics.py",
+      "syntax_valid": true,
+      "import_success": false,
+      "runnable": false,
+      "error_type": "ImportError",
+      "error_message": "No module named 'backend.settings'"
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\backend\\apps\\ai\\tests\\__init__.py",
+      "syntax_valid": true,
+      "import_success": true,
+      "runnable": false,
+      "error_type": "NoTestStructure",
+      "error_message": "No test class or test function found"
+    }
+  ]
+}

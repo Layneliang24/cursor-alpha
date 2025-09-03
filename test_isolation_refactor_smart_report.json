@@ -1,0 +1,528 @@
+{
+  "summary": {
+    "total_files_analyzed": 5,
+    "files_refactored": 0,
+    "refactor_success_rate": "0.0%",
+    "backups_created": 5
+  },
+  "file_details": [
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\test_isolation_refactor.py",
+      "score": -95,
+      "grade": "F",
+      "issues_count": 11,
+      "issues": [
+        {
+          "type": "hardcoded_urls",
+          "count": 6,
+          "examples": [
+            "http://[^\\s]+",
+            "http://...",
+            "https://[^\\s]+"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 2,
+          "examples": [
+            "ftp://[^\\s]+",
+            "ftp://..."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 1,
+          "examples": [
+            "localhost:8000"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 1,
+          "examples": [
+            "127.0.0.1"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".save("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".delete("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 3,
+          "examples": [
+            "socket.",
+            "socket.",
+            "socket."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 5,
+          "examples": [
+            "open(",
+            "open(",
+            "open("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 2,
+          "examples": [
+            "os.path.",
+            "os.path."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "pathlib."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "shutil."
+          ],
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\test_isolation_refactor_fixed.py",
+      "score": -95,
+      "grade": "F",
+      "issues_count": 11,
+      "issues": [
+        {
+          "type": "hardcoded_urls",
+          "count": 10,
+          "examples": [
+            "http://[^\\s]+",
+            "http://...",
+            "https://[^\\s]+"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 2,
+          "examples": [
+            "ftp://[^\\s]+",
+            "ftp://..."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 1,
+          "examples": [
+            "localhost:8000"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 1,
+          "examples": [
+            "127.0.0.1"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".save("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".delete("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 3,
+          "examples": [
+            "socket.",
+            "socket.",
+            "socket."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 5,
+          "examples": [
+            "open(",
+            "open(",
+            "open("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 2,
+          "examples": [
+            "os.path.",
+            "os.path."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "pathlib."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "shutil."
+          ],
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_fixes_verification.py",
+      "score": -95,
+      "grade": "F",
+      "issues_count": 11,
+      "issues": [
+        {
+          "type": "hardcoded_urls",
+          "count": 5,
+          "examples": [
+            "https://techcrunch.com/feed/",
+            "https://techcrunch.com/category/artificial-intelligence/feed/",
+            "https://techcrunch.com/category/startups/feed/"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 2,
+          "examples": [
+            ".objects.create(",
+            ".objects.create("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".objects.filter("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".save("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 2,
+          "examples": [
+            ".delete(",
+            ".delete("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 1,
+          "examples": [
+            "subprocess."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 1,
+          "examples": [
+            "subprocess.run("
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 3,
+          "examples": [
+            "open(",
+            "open(",
+            "open("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 18,
+          "examples": [
+            "os.path.",
+            "os.path.",
+            "os.path."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "shutil."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "missing_mock_imports",
+          "count": 1,
+          "examples": [
+            "No mock imports found"
+          ],
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\tests\\integration\\test_fixes_verification.py",
+      "score": -95,
+      "grade": "F",
+      "issues_count": 11,
+      "issues": [
+        {
+          "type": "hardcoded_urls",
+          "count": 5,
+          "examples": [
+            "https://techcrunch.com/feed/",
+            "https://techcrunch.com/category/artificial-intelligence/feed/",
+            "https://techcrunch.com/category/startups/feed/"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 2,
+          "examples": [
+            ".objects.create(",
+            ".objects.create("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".objects.filter("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 1,
+          "examples": [
+            ".save("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "direct_db_operations",
+          "count": 2,
+          "examples": [
+            ".delete(",
+            ".delete("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 1,
+          "examples": [
+            "subprocess."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 1,
+          "examples": [
+            "subprocess.run("
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 3,
+          "examples": [
+            "open(",
+            "open(",
+            "open("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 18,
+          "examples": [
+            "os.path.",
+            "os.path.",
+            "os.path."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "shutil."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "missing_mock_imports",
+          "count": 1,
+          "examples": [
+            "No mock imports found"
+          ],
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "file_path": "C:\\trae_project\\cursor-alpha\\.venv\\Lib\\site-packages\\psutil\\tests\\__init__.py",
+      "score": -95,
+      "grade": "F",
+      "issues_count": 10,
+      "issues": [
+        {
+          "type": "hardcoded_urls",
+          "count": 9,
+          "examples": [
+            "https://bugs.python.org/issue33240",
+            "https://github.com/giampaolo/psutil/issues/2287",
+            "https://github.com/giampaolo/psutil/pull/2288"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "hardcoded_urls",
+          "count": 2,
+          "examples": [
+            "127.0.0.1",
+            "127.0.0.1"
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 35,
+          "examples": [
+            "socket.",
+            "socket.",
+            "socket."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 20,
+          "examples": [
+            "subprocess.",
+            "subprocess.",
+            "subprocess."
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "external_service_calls",
+          "count": 2,
+          "examples": [
+            "os.system(",
+            "os.system("
+          ],
+          "severity": "high"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 16,
+          "examples": [
+            "open(",
+            "open(",
+            "open("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 21,
+          "examples": [
+            "os.path.",
+            "os.path.",
+            "os.path."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 9,
+          "examples": [
+            "shutil.",
+            "shutil.",
+            "shutil."
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "file_system_operations",
+          "count": 1,
+          "examples": [
+            "os.mkdir("
+          ],
+          "severity": "medium"
+        },
+        {
+          "type": "missing_mock_imports",
+          "count": 1,
+          "examples": [
+            "No mock imports found"
+          ],
+          "severity": "high"
+        }
+      ]
+    }
+  ]
+}

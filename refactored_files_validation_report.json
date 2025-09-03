@@ -1,0 +1,80 @@
+{
+  "summary": {
+    "total_files": 5,
+    "syntax_valid": 0,
+    "import_successful": 0,
+    "runnable": 0,
+    "failed": 5,
+    "success_rate": "0.0%"
+  },
+  "error_analysis": {
+    "Sorry": 5
+  },
+  "detailed_results": [
+    {
+      "file_path": "tests\\unit\\test_links_module.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_links_module.py, line 92)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:25.654382"
+    },
+    {
+      "file_path": "tests\\unit\\test_idiomatic_expressions.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_idiomatic_expressions.py, line 100)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:26.053233"
+    },
+    {
+      "file_path": "backend\\tests\\unit\\test_ai_config_models.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_ai_config_models.py, line 89)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:26.394996"
+    },
+    {
+      "file_path": "tests\\unit\\test_english_api.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_english_api.py, line 87)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:26.743056"
+    },
+    {
+      "file_path": "backend\\tests\\unit\\test_basic_models.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_basic_models.py, line 84)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:27.137399"
+    }
+  ],
+  "recommendations": [
+    "有 5 个文件验证失败，需要进一步修复",
+    "部分文件存在语法错误，需要修复语法问题"
+  ],
+  "next_steps": [
+    "分析失败原因，制定修复计划",
+    "继续重构其他测试文件",
+    "建立测试可运行性检查机制",
+    "进行Task 31.4的后续工作"
+  ]
+}

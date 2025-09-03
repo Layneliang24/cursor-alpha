@@ -1,0 +1,279 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>测试问题分类详情</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            .container { max-width: 1200px; margin: 0 auto; }
+            h1 { color: #333; text-align: center; }
+            .summary { background: #f5f5f5; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+            .summary h2 { color: #555; }
+            .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+            .summary-item { background: white; padding: 15px; border-radius: 5px; text-align: center; }
+            .summary-number { font-size: 2em; font-weight: bold; color: #007bff; }
+            .summary-label { color: #666; margin-top: 5px; }
+            .issues-section { margin-top: 30px; }
+            .issues-section h2 { color: #555; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+            .issue-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+            .issue-table th, .issue-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+            .issue-table th { background-color: #f8f9fa; font-weight: bold; }
+            .priority-high { background-color: #ffe6e6; }
+            .priority-medium { background-color: #fff3cd; }
+            .priority-low { background-color: #d1ecf1; }
+            .severity-high { border-left: 4px solid #dc3545; }
+            .severity-medium { border-left: 4px solid #ffc107; }
+            .severity-low { border-left: 4px solid #28a745; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🧪 测试问题分类详情报告</h1>
+            
+            <div class="summary">
+                <h2>📊 问题统计摘要</h2>
+                <div class="summary-grid">
+    
+                    <div class="summary-item">
+                        <div class="summary-number">19</div>
+                        <div class="summary-label">总问题数</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-number">1</div>
+                        <div class="summary-label">问题类别数</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-number">0</div>
+                        <div class="summary-label">高优先级</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-number">19</div>
+                        <div class="summary-label">中优先级</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-number">0</div>
+                        <div class="summary-label">低优先级</div>
+                    </div>
+    
+                </div>
+            </div>
+    
+            <div class="issues-section">
+                <h2>🔍 框架混用</h2>
+                <table class="issue-table">
+                    <thead>
+                        <tr>
+                            <th>文件路径</th>
+                            <th>问题类型</th>
+                            <th>严重性</th>
+                            <th>优先级</th>
+                            <th>描述</th>
+                            <th>详细信息</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\regression\english\test_pause_resume.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: unittest, pytest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\regression\english\test_pronunciation.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: unittest, pytest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_api_docs_cache.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: unittest, pytest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_async_tasks.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_data_quality.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_data_storage.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_english_api.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: unittest, pytest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_english_security.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: unittest, pytest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_expression_crawler.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_news_dashboard.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_specialized_crawlers.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_storage_core.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_task_system.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_techcrunch_and_image_cleanup.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\unit\test_user_auth.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: unittest, pytest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>tests\utils\test_helpers.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>backend\tests\test_flaky_examples.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: unittest, pytest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>backend\tests\integration\test_ai_service_management.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    <tr class="priority-medium severity-medium">
+                        <td>backend\tests\unit\test_ai_adapters.py</td>
+                        <td>框架混用</td>
+                        <td>medium</td>
+                        <td>medium</td>
+                        <td>多个测试框架混用</td>
+                        <td>混用框架: pytest, unittest</td>
+                    </tr>
+                
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="issues-section">
+                <h2>💡 修复建议</h2>
+                <table class="issue-table">
+                    <thead>
+                        <tr>
+                            <th>优先级</th>
+                            <th>建议行动</th>
+                            <th>原因</th>
+                            <th>预计工作量</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                <tr class="priority-medium">
+                    <td>MEDIUM</td>
+                    <td>逐步修复结构和框架问题</td>
+                    <td>发现 19 个中优先级问题，影响代码质量</td>
+                    <td>4-8小时</td>
+                </tr>
+            
+                    </tbody>
+                </table>
+            </div>
+        
+        </div>
+    </body>
+    </html>
+    

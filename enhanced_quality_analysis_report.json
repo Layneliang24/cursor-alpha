@@ -1,0 +1,1544 @@
+{
+  "summary": {
+    "total_files": 99,
+    "average_quality_score": 67.52,
+    "average_complexity": 9.45,
+    "average_test_coverage": 64.44,
+    "available_tools": {
+      "pylint": true,
+      "coverage": false,
+      "radon": false
+    }
+  },
+  "quality_distribution": {
+    "excellent": 0,
+    "good": 36,
+    "fair": 31,
+    "poor": 32
+  },
+  "file_quality_details": {
+    "tests\\simple_submit_test.py": {
+      "file_path": "tests\\simple_submit_test.py",
+      "complexity": 13,
+      "test_coverage": {
+        "test_functions": 2,
+        "total_functions": 3,
+        "coverage_percentage": 66.66666666666666
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 71.33333333333333
+    },
+    "tests\\test_calendar_fix.py": {
+      "file_path": "tests\\test_calendar_fix.py",
+      "complexity": 9,
+      "test_coverage": {
+        "test_functions": 1,
+        "total_functions": 1,
+        "coverage_percentage": 100.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 80.0
+    },
+    "tests\\test_quick_validation.py": {
+      "file_path": "tests\\test_quick_validation.py",
+      "complexity": 31,
+      "test_coverage": {
+        "test_functions": 2,
+        "total_functions": 4,
+        "coverage_percentage": 50.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 27.0
+    },
+    "tests\\test_runner_optimized.py": {
+      "file_path": "tests\\test_runner_optimized.py",
+      "complexity": 35,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 13,
+        "coverage_percentage": 0.0
+      },
+      "coding_standards": [
+        "超长行: 1行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 0
+    },
+    "tests\\test_settings.py": {
+      "file_path": "tests\\test_settings.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 2,
+        "coverage_percentage": 0.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 44.0
+    },
+    "tests\\test_settings_ci.py": {
+      "file_path": "tests\\test_settings_ci.py",
+      "complexity": 7,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 2,
+        "coverage_percentage": 0.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 42.0
+    },
+    "tests\\test_settings_mysql.py": {
+      "file_path": "tests\\test_settings_mysql.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 2,
+        "coverage_percentage": 0.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 44.0
+    },
+    "tests\\test_simple_validation.py": {
+      "file_path": "tests\\test_simple_validation.py",
+      "complexity": 27,
+      "test_coverage": {
+        "test_functions": 4,
+        "total_functions": 11,
+        "coverage_percentage": 36.36363636363637
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 28.181818181818187
+    },
+    "tests\\api\\test_chapter_word_counts_api.py": {
+      "file_path": "tests\\api\\test_chapter_word_counts_api.py",
+      "complexity": 10,
+      "test_coverage": {
+        "test_functions": 3,
+        "total_functions": 8,
+        "coverage_percentage": 37.5
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 57.75
+    },
+    "tests\\api\\test_frontend_api_simulation.py": {
+      "file_path": "tests\\api\\test_frontend_api_simulation.py",
+      "complexity": 18,
+      "test_coverage": {
+        "test_functions": 1,
+        "total_functions": 6,
+        "coverage_percentage": 16.666666666666664
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 36.33333333333333
+    },
+    "tests\\api\\test_frontend_api_wrapper.py": {
+      "file_path": "tests\\api\\test_frontend_api_wrapper.py",
+      "complexity": 13,
+      "test_coverage": {
+        "test_functions": 4,
+        "total_functions": 8,
+        "coverage_percentage": 50.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 63.0
+    },
+    "tests\\api\\test_typing_words_api.py": {
+      "file_path": "tests\\api\\test_typing_words_api.py",
+      "complexity": 22,
+      "test_coverage": {
+        "test_functions": 3,
+        "total_functions": 7,
+        "coverage_percentage": 42.857142857142854
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 41.42857142857143
+    },
+    "tests\\api_docs\\test_api_documentation.py": {
+      "file_path": "tests\\api_docs\\test_api_documentation.py",
+      "complexity": 15,
+      "test_coverage": {
+        "test_functions": 10,
+        "total_functions": 12,
+        "coverage_percentage": 83.33333333333334
+      },
+      "coding_standards": [
+        "超长行: 2行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 72.0
+    },
+    "tests\\data_management\\test_data_factory.py": {
+      "file_path": "tests\\data_management\\test_data_factory.py",
+      "complexity": 8,
+      "test_coverage": {
+        "test_functions": 14,
+        "total_functions": 16,
+        "coverage_percentage": 87.5
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 81.0
+    },
+    "tests\\edge_cases\\test_edge_cases.py": {
+      "file_path": "tests\\edge_cases\\test_edge_cases.py",
+      "complexity": 9,
+      "test_coverage": {
+        "test_functions": 13,
+        "total_functions": 16,
+        "coverage_percentage": 81.25
+      },
+      "coding_standards": [
+        "超长行: 4行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 78.0
+    },
+    "tests\\frontend\\test_progress_bar_display.py": {
+      "file_path": "tests\\frontend\\test_progress_bar_display.py",
+      "complexity": 19,
+      "test_coverage": {
+        "test_functions": 3,
+        "total_functions": 8,
+        "coverage_percentage": 37.5
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 44.75
+    },
+    "tests\\frontend\\test_typing_component_lifecycle.py": {
+      "file_path": "tests\\frontend\\test_typing_component_lifecycle.py",
+      "complexity": 4,
+      "test_coverage": {
+        "test_functions": 1,
+        "total_functions": 7,
+        "coverage_percentage": 14.285714285714285
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 51.14285714285714
+    },
+    "tests\\frontend\\test_vue_components.py": {
+      "file_path": "tests\\frontend\\test_vue_components.py",
+      "complexity": 22,
+      "test_coverage": {
+        "test_functions": 9,
+        "total_functions": 9,
+        "coverage_percentage": 100.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 60.0
+    },
+    "tests\\integration\\test_api.py": {
+      "file_path": "tests\\integration\\test_api.py",
+      "complexity": 7,
+      "test_coverage": {
+        "test_functions": 18,
+        "total_functions": 24,
+        "coverage_percentage": 75.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 79.5
+    },
+    "tests\\integration\\test_bbc_fix_verification.py": {
+      "file_path": "tests\\integration\\test_bbc_fix_verification.py",
+      "complexity": 12,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 5,
+        "coverage_percentage": 0.0
+      },
+      "coding_standards": [
+        "超长行: 3行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 38.0
+    },
+    "tests\\integration\\test_end_to_end_workflow.py": {
+      "file_path": "tests\\integration\\test_end_to_end_workflow.py",
+      "complexity": 2,
+      "test_coverage": {
+        "test_functions": 10,
+        "total_functions": 13,
+        "coverage_percentage": 76.92307692307693
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 82.46153846153847
+    },
+    "tests\\integration\\test_fixes_verification.py": {
+      "file_path": "tests\\integration\\test_fixes_verification.py",
+      "complexity": 23,
+      "test_coverage": {
+        "test_functions": 2,
+        "total_functions": 4,
+        "coverage_percentage": 50.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 43.0
+    },
+    "tests\\integration\\test_full_workflow_integration.py": {
+      "file_path": "tests\\integration\\test_full_workflow_integration.py",
+      "complexity": 22,
+      "test_coverage": {
+        "test_functions": 9,
+        "total_functions": 13,
+        "coverage_percentage": 69.23076923076923
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 54.61538461538461
+    },
+    "tests\\integration\\test_news_api.py": {
+      "file_path": "tests\\integration\\test_news_api.py",
+      "complexity": 14,
+      "test_coverage": {
+        "test_functions": 3,
+        "total_functions": 4,
+        "coverage_percentage": 75.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 73.5
+    },
+    "tests\\integration\\test_typing_practice_submit_integration.py": {
+      "file_path": "tests\\integration\\test_typing_practice_submit_integration.py",
+      "complexity": 13,
+      "test_coverage": {
+        "test_functions": 6,
+        "total_functions": 9,
+        "coverage_percentage": 66.66666666666666
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 71.33333333333333
+    },
+    "tests\\new_features\\test_chapter_completion_integration.py": {
+      "file_path": "tests\\new_features\\test_chapter_completion_integration.py",
+      "complexity": 4,
+      "test_coverage": {
+        "test_functions": 8,
+        "total_functions": 10,
+        "coverage_percentage": 80.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "tests\\new_features\\test_chapter_completion_simple.py": {
+      "file_path": "tests\\new_features\\test_chapter_completion_simple.py",
+      "complexity": 8,
+      "test_coverage": {
+        "test_functions": 7,
+        "total_functions": 10,
+        "coverage_percentage": 70.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 76.0
+    },
+    "tests\\performance\\test_performance_regression.py": {
+      "file_path": "tests\\performance\\test_performance_regression.py",
+      "complexity": 15,
+      "test_coverage": {
+        "test_functions": 7,
+        "total_functions": 11,
+        "coverage_percentage": 63.63636363636363
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 65.81818181818181
+    },
+    "tests\\regression\\auth\\test_permissions.py": {
+      "file_path": "tests\\regression\\auth\\test_permissions.py",
+      "complexity": 3,
+      "test_coverage": {
+        "test_functions": 15,
+        "total_functions": 20,
+        "coverage_percentage": 75.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 81.5
+    },
+    "tests\\regression\\auth\\test_user_authentication.py": {
+      "file_path": "tests\\regression\\auth\\test_user_authentication.py",
+      "complexity": 6,
+      "test_coverage": {
+        "test_functions": 25,
+        "total_functions": 31,
+        "coverage_percentage": 80.64516129032258
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 83.0
+    },
+    "tests\\regression\\english\\test_data_analysis_regression.py": {
+      "file_path": "tests\\regression\\english\\test_data_analysis_regression.py",
+      "complexity": 13,
+      "test_coverage": {
+        "test_functions": 34,
+        "total_functions": 46,
+        "coverage_percentage": 73.91304347826086
+      },
+      "coding_standards": [
+        "超长行: 2行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 72.95652173913044
+    },
+    "tests\\regression\\english\\test_pause_resume.py": {
+      "file_path": "tests\\regression\\english\\test_pause_resume.py",
+      "complexity": 13,
+      "test_coverage": {
+        "test_functions": 20,
+        "total_functions": 23,
+        "coverage_percentage": 86.95652173913044
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 78.0
+    },
+    "tests\\regression\\english\\test_pronunciation.py": {
+      "file_path": "tests\\regression\\english\\test_pronunciation.py",
+      "complexity": 17,
+      "test_coverage": {
+        "test_functions": 15,
+        "total_functions": 18,
+        "coverage_percentage": 83.33333333333334
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 70.0
+    },
+    "tests\\regression\\english\\test_typing_practice_submit_regression.py": {
+      "file_path": "tests\\regression\\english\\test_typing_practice_submit_regression.py",
+      "complexity": 7,
+      "test_coverage": {
+        "test_functions": 8,
+        "total_functions": 12,
+        "coverage_percentage": 66.66666666666666
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 75.33333333333333
+    },
+    "tests\\unit\\test_ai_module.py": {
+      "file_path": "tests\\unit\\test_ai_module.py",
+      "complexity": 6,
+      "test_coverage": {
+        "test_functions": 8,
+        "total_functions": 11,
+        "coverage_percentage": 72.72727272727273
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 79.36363636363637
+    },
+    "tests\\unit\\test_api_docs_cache.py": {
+      "file_path": "tests\\unit\\test_api_docs_cache.py",
+      "complexity": 8,
+      "test_coverage": {
+        "test_functions": 27,
+        "total_functions": 36,
+        "coverage_percentage": 75.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 78.5
+    },
+    "tests\\unit\\test_articles.py": {
+      "file_path": "tests\\unit\\test_articles.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 0,
+        "coverage_percentage": 0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 44.0
+    },
+    "tests\\unit\\test_article_management.py": {
+      "file_path": "tests\\unit\\test_article_management.py",
+      "complexity": 7,
+      "test_coverage": {
+        "test_functions": 28,
+        "total_functions": 33,
+        "coverage_percentage": 84.84848484848484
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 82.0
+    },
+    "tests\\unit\\test_async_tasks.py": {
+      "file_path": "tests\\unit\\test_async_tasks.py",
+      "complexity": 6,
+      "test_coverage": {
+        "test_functions": 15,
+        "total_functions": 36,
+        "coverage_percentage": 41.66666666666667
+      },
+      "coding_standards": [
+        "超长行: 2行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 61.83333333333334
+    },
+    "tests\\unit\\test_basic.py": {
+      "file_path": "tests\\unit\\test_basic.py",
+      "complexity": 7,
+      "test_coverage": {
+        "test_functions": 14,
+        "total_functions": 14,
+        "coverage_percentage": 100.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 82.0
+    },
+    "tests\\unit\\test_bbc_news_save.py": {
+      "file_path": "tests\\unit\\test_bbc_news_save.py",
+      "complexity": 4,
+      "test_coverage": {
+        "test_functions": 8,
+        "total_functions": 11,
+        "coverage_percentage": 72.72727272727273
+      },
+      "coding_standards": [
+        "超长行: 5行",
+        "连续空行过多"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 76.36363636363637
+    },
+    "tests\\unit\\test_bbc_simple.py": {
+      "file_path": "tests\\unit\\test_bbc_simple.py",
+      "complexity": 7,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 1,
+        "coverage_percentage": 0.0
+      },
+      "coding_standards": [
+        "超长行: 1行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 40.0
+    },
+    "tests\\unit\\test_categories.py": {
+      "file_path": "tests\\unit\\test_categories.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 0,
+        "coverage_percentage": 0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 44.0
+    },
+    "tests\\unit\\test_cnn_crawler.py": {
+      "file_path": "tests\\unit\\test_cnn_crawler.py",
+      "complexity": 23,
+      "test_coverage": {
+        "test_functions": 6,
+        "total_functions": 8,
+        "coverage_percentage": 75.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 55.5
+    },
+    "tests\\unit\\test_common_module.py": {
+      "file_path": "tests\\unit\\test_common_module.py",
+      "complexity": 4,
+      "test_coverage": {
+        "test_functions": 18,
+        "total_functions": 22,
+        "coverage_percentage": 81.81818181818183
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "tests\\unit\\test_data_analysis.py": {
+      "file_path": "tests\\unit\\test_data_analysis.py",
+      "complexity": 14,
+      "test_coverage": {
+        "test_functions": 22,
+        "total_functions": 29,
+        "coverage_percentage": 75.86206896551724
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 73.93103448275862
+    },
+    "tests\\unit\\test_data_quality.py": {
+      "file_path": "tests\\unit\\test_data_quality.py",
+      "complexity": 2,
+      "test_coverage": {
+        "test_functions": 22,
+        "total_functions": 26,
+        "coverage_percentage": 84.61538461538461
+      },
+      "coding_standards": [
+        "超长行: 1行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 82.0
+    },
+    "tests\\unit\\test_data_storage.py": {
+      "file_path": "tests\\unit\\test_data_storage.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 26,
+        "total_functions": 32,
+        "coverage_percentage": 81.25
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "tests\\unit\\test_english_api.py": {
+      "file_path": "tests\\unit\\test_english_api.py",
+      "complexity": 8,
+      "test_coverage": {
+        "test_functions": 47,
+        "total_functions": 55,
+        "coverage_percentage": 85.45454545454545
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 81.0
+    },
+    "tests\\unit\\test_english_learning.py": {
+      "file_path": "tests\\unit\\test_english_learning.py",
+      "complexity": 3,
+      "test_coverage": {
+        "test_functions": 31,
+        "total_functions": 35,
+        "coverage_percentage": 88.57142857142857
+      },
+      "coding_standards": [
+        "超长行: 2行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 82.0
+    },
+    "tests\\unit\\test_english_security.py": {
+      "file_path": "tests\\unit\\test_english_security.py",
+      "complexity": 3,
+      "test_coverage": {
+        "test_functions": 17,
+        "total_functions": 23,
+        "coverage_percentage": 73.91304347826086
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 80.95652173913044
+    },
+    "tests\\unit\\test_expression_crawler.py": {
+      "file_path": "tests\\unit\\test_expression_crawler.py",
+      "complexity": 3,
+      "test_coverage": {
+        "test_functions": 20,
+        "total_functions": 24,
+        "coverage_percentage": 83.33333333333334
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "tests\\unit\\test_fundus_crawler.py": {
+      "file_path": "tests\\unit\\test_fundus_crawler.py",
+      "complexity": 7,
+      "test_coverage": {
+        "test_functions": 1,
+        "total_functions": 1,
+        "coverage_percentage": 100.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 82.0
+    },
+    "tests\\unit\\test_idiomatic_expressions.py": {
+      "file_path": "tests\\unit\\test_idiomatic_expressions.py",
+      "complexity": 2,
+      "test_coverage": {
+        "test_functions": 25,
+        "total_functions": 32,
+        "coverage_percentage": 78.125
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 83.0625
+    },
+    "tests\\unit\\test_jobs.py": {
+      "file_path": "tests\\unit\\test_jobs.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 1,
+        "total_functions": 2,
+        "coverage_percentage": 50.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 69.0
+    },
+    "tests\\unit\\test_jobs_module.py": {
+      "file_path": "tests\\unit\\test_jobs_module.py",
+      "complexity": 6,
+      "test_coverage": {
+        "test_functions": 12,
+        "total_functions": 17,
+        "coverage_percentage": 70.58823529411765
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 78.29411764705883
+    },
+    "tests\\unit\\test_links_module.py": {
+      "file_path": "tests\\unit\\test_links_module.py",
+      "complexity": 10,
+      "test_coverage": {
+        "test_functions": 19,
+        "total_functions": 23,
+        "coverage_percentage": 82.6086956521739
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 79.0
+    },
+    "tests\\unit\\test_models.py": {
+      "file_path": "tests\\unit\\test_models.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 23,
+        "total_functions": 31,
+        "coverage_percentage": 74.19354838709677
+      },
+      "coding_standards": [
+        "超长行: 1行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 79.09677419354838
+    },
+    "tests\\unit\\test_model_fields_fix.py": {
+      "file_path": "tests\\unit\\test_model_fields_fix.py",
+      "complexity": 10,
+      "test_coverage": {
+        "test_functions": 12,
+        "total_functions": 14,
+        "coverage_percentage": 85.71428571428571
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 79.0
+    },
+    "tests\\unit\\test_mysql_connection.py": {
+      "file_path": "tests\\unit\\test_mysql_connection.py",
+      "complexity": 7,
+      "test_coverage": {
+        "test_functions": 6,
+        "total_functions": 6,
+        "coverage_percentage": 100.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 82.0
+    },
+    "tests\\unit\\test_news_dashboard.py": {
+      "file_path": "tests\\unit\\test_news_dashboard.py",
+      "complexity": 5,
+      "test_coverage": {
+        "test_functions": 19,
+        "total_functions": 21,
+        "coverage_percentage": 90.47619047619048
+      },
+      "coding_standards": [
+        "连续空行过多"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 82.0
+    },
+    "tests\\unit\\test_news_visibility_removal.py": {
+      "file_path": "tests\\unit\\test_news_visibility_removal.py",
+      "complexity": 20,
+      "test_coverage": {
+        "test_functions": 4,
+        "total_functions": 5,
+        "coverage_percentage": 80.0
+      },
+      "coding_standards": [
+        "超长行: 1行",
+        "连续空行过多"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 60.0
+    },
+    "tests\\unit\\test_permissions_comprehensive.py": {
+      "file_path": "tests\\unit\\test_permissions_comprehensive.py",
+      "complexity": 5,
+      "test_coverage": {
+        "test_functions": 26,
+        "total_functions": 36,
+        "coverage_percentage": 72.22222222222221
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 80.11111111111111
+    },
+    "tests\\unit\\test_search_module.py": {
+      "file_path": "tests\\unit\\test_search_module.py",
+      "complexity": 2,
+      "test_coverage": {
+        "test_functions": 10,
+        "total_functions": 14,
+        "coverage_percentage": 71.42857142857143
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 79.71428571428572
+    },
+    "tests\\unit\\test_simple.py": {
+      "file_path": "tests\\unit\\test_simple.py",
+      "complexity": 11,
+      "test_coverage": {
+        "test_functions": 10,
+        "total_functions": 10,
+        "coverage_percentage": 100.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 82.0
+    },
+    "tests\\unit\\test_specialized_crawlers.py": {
+      "file_path": "tests\\unit\\test_specialized_crawlers.py",
+      "complexity": 6,
+      "test_coverage": {
+        "test_functions": 32,
+        "total_functions": 37,
+        "coverage_percentage": 86.48648648648648
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 83.0
+    },
+    "tests\\unit\\test_storage_core.py": {
+      "file_path": "tests\\unit\\test_storage_core.py",
+      "complexity": 32,
+      "test_coverage": {
+        "test_functions": 11,
+        "total_functions": 16,
+        "coverage_percentage": 68.75
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 34.375
+    },
+    "tests\\unit\\test_task_system.py": {
+      "file_path": "tests\\unit\\test_task_system.py",
+      "complexity": 7,
+      "test_coverage": {
+        "test_functions": 12,
+        "total_functions": 15,
+        "coverage_percentage": 80.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 82.0
+    },
+    "tests\\unit\\test_techcrunch_and_image_cleanup.py": {
+      "file_path": "tests\\unit\\test_techcrunch_and_image_cleanup.py",
+      "complexity": 8,
+      "test_coverage": {
+        "test_functions": 14,
+        "total_functions": 19,
+        "coverage_percentage": 73.68421052631578
+      },
+      "coding_standards": [
+        "连续空行过多"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 75.84210526315789
+    },
+    "tests\\unit\\test_todos.py": {
+      "file_path": "tests\\unit\\test_todos.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 1,
+        "total_functions": 2,
+        "coverage_percentage": 50.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 69.0
+    },
+    "tests\\unit\\test_typing_practice.py": {
+      "file_path": "tests\\unit\\test_typing_practice.py",
+      "complexity": 5,
+      "test_coverage": {
+        "test_functions": 16,
+        "total_functions": 18,
+        "coverage_percentage": 88.88888888888889
+      },
+      "coding_standards": [
+        "连续空行过多"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 82.0
+    },
+    "tests\\unit\\test_typing_practice_api.py": {
+      "file_path": "tests\\unit\\test_typing_practice_api.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 18,
+        "total_functions": 21,
+        "coverage_percentage": 85.71428571428571
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "tests\\unit\\test_typing_practice_submit.py": {
+      "file_path": "tests\\unit\\test_typing_practice_submit.py",
+      "complexity": 4,
+      "test_coverage": {
+        "test_functions": 12,
+        "total_functions": 14,
+        "coverage_percentage": 85.71428571428571
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "tests\\unit\\test_users.py": {
+      "file_path": "tests\\unit\\test_users.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 0,
+        "coverage_percentage": 0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 44.0
+    },
+    "tests\\unit\\test_user_auth.py": {
+      "file_path": "tests\\unit\\test_user_auth.py",
+      "complexity": 4,
+      "test_coverage": {
+        "test_functions": 24,
+        "total_functions": 30,
+        "coverage_percentage": 80.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "tests\\utils\\test_data_manager.py": {
+      "file_path": "tests\\utils\\test_data_manager.py",
+      "complexity": 39,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 29,
+        "coverage_percentage": 0.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 0
+    },
+    "tests\\utils\\test_helpers.py": {
+      "file_path": "tests\\utils\\test_helpers.py",
+      "complexity": 29,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 52,
+        "coverage_percentage": 0.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 6.0
+    },
+    "tests\\utils\\test_quality_monitor.py": {
+      "file_path": "tests\\utils\\test_quality_monitor.py",
+      "complexity": 31,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 14,
+        "coverage_percentage": 0.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 2.0
+    },
+    "tests\\utils\\test_report_generator.py": {
+      "file_path": "tests\\utils\\test_report_generator.py",
+      "complexity": 22,
+      "test_coverage": {
+        "test_functions": 0,
+        "total_functions": 10,
+        "coverage_percentage": 0.0
+      },
+      "coding_standards": [
+        "超长行: 10行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 18.0
+    },
+    "backend\\tests\\test_ai_config_encryption.py": {
+      "file_path": "backend\\tests\\test_ai_config_encryption.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 3,
+        "total_functions": 4,
+        "coverage_percentage": 75.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 81.5
+    },
+    "backend\\tests\\test_flaky_examples.py": {
+      "file_path": "backend\\tests\\test_flaky_examples.py",
+      "complexity": 16,
+      "test_coverage": {
+        "test_functions": 13,
+        "total_functions": 17,
+        "coverage_percentage": 76.47058823529412
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 70.23529411764706
+    },
+    "backend\\tests\\integration\\test_ai_service_management.py": {
+      "file_path": "backend\\tests\\integration\\test_ai_service_management.py",
+      "complexity": 12,
+      "test_coverage": {
+        "test_functions": 20,
+        "total_functions": 32,
+        "coverage_percentage": 62.5
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 71.25
+    },
+    "backend\\tests\\integration\\test_api_cache_performance.py": {
+      "file_path": "backend\\tests\\integration\\test_api_cache_performance.py",
+      "complexity": 7,
+      "test_coverage": {
+        "test_functions": 11,
+        "total_functions": 14,
+        "coverage_percentage": 78.57142857142857
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 81.28571428571428
+    },
+    "backend\\tests\\unit\\test_ai_adapters.py": {
+      "file_path": "backend\\tests\\unit\\test_ai_adapters.py",
+      "complexity": 7,
+      "test_coverage": {
+        "test_functions": 30,
+        "total_functions": 42,
+        "coverage_percentage": 71.42857142857143
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 77.71428571428572
+    },
+    "backend\\tests\\unit\\test_ai_config_models.py": {
+      "file_path": "backend\\tests\\unit\\test_ai_config_models.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 14,
+        "total_functions": 21,
+        "coverage_percentage": 66.66666666666666
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 77.33333333333333
+    },
+    "backend\\tests\\unit\\test_ai_serializers.py": {
+      "file_path": "backend\\tests\\unit\\test_ai_serializers.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 35,
+        "total_functions": 49,
+        "coverage_percentage": 71.42857142857143
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 79.71428571428572
+    },
+    "backend\\tests\\unit\\test_ai_views.py": {
+      "file_path": "backend\\tests\\unit\\test_ai_views.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 25,
+        "total_functions": 36,
+        "coverage_percentage": 69.44444444444444
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 78.72222222222223
+    },
+    "backend\\tests\\unit\\test_basic_models.py": {
+      "file_path": "backend\\tests\\unit\\test_basic_models.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 19,
+        "total_functions": 27,
+        "coverage_percentage": 70.37037037037037
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 79.18518518518519
+    },
+    "backend\\tests\\unit\\test_cache_strategy.py": {
+      "file_path": "backend\\tests\\unit\\test_cache_strategy.py",
+      "complexity": 3,
+      "test_coverage": {
+        "test_functions": 7,
+        "total_functions": 11,
+        "coverage_percentage": 63.63636363636363
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 75.81818181818181
+    },
+    "backend\\tests\\unit\\test_core_functionality.py": {
+      "file_path": "backend\\tests\\unit\\test_core_functionality.py",
+      "complexity": 9,
+      "test_coverage": {
+        "test_functions": 21,
+        "total_functions": 27,
+        "coverage_percentage": 77.77777777777779
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 78.88888888888889
+    },
+    "backend\\apps\\ai\\tests\\test_api_views.py": {
+      "file_path": "backend\\apps\\ai\\tests\\test_api_views.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 28,
+        "total_functions": 32,
+        "coverage_percentage": 87.5
+      },
+      "coding_standards": [
+        "超长行: 1行"
+      ],
+      "pylint_score": 0.0,
+      "quality_score": 82.0
+    },
+    "backend\\apps\\ai\\tests\\test_config_import_export.py": {
+      "file_path": "backend\\apps\\ai\\tests\\test_config_import_export.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 16,
+        "total_functions": 20,
+        "coverage_percentage": 80.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "backend\\apps\\ai\\tests\\test_failover_auto_switch.py": {
+      "file_path": "backend\\apps\\ai\\tests\\test_failover_auto_switch.py",
+      "complexity": 10,
+      "test_coverage": {
+        "test_functions": 10,
+        "total_functions": 11,
+        "coverage_percentage": 90.9090909090909
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 79.0
+    },
+    "backend\\apps\\ai\\tests\\test_manual_switch.py": {
+      "file_path": "backend\\apps\\ai\\tests\\test_manual_switch.py",
+      "complexity": 2,
+      "test_coverage": {
+        "test_functions": 19,
+        "total_functions": 22,
+        "coverage_percentage": 86.36363636363636
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "backend\\apps\\ai\\tests\\test_model_config.py": {
+      "file_path": "backend\\apps\\ai\\tests\\test_model_config.py",
+      "complexity": 1,
+      "test_coverage": {
+        "test_functions": 15,
+        "total_functions": 17,
+        "coverage_percentage": 88.23529411764706
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "backend\\apps\\ai\\tests\\test_model_discovery.py": {
+      "file_path": "backend\\apps\\ai\\tests\\test_model_discovery.py",
+      "complexity": 5,
+      "test_coverage": {
+        "test_functions": 21,
+        "total_functions": 25,
+        "coverage_percentage": 84.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "backend\\apps\\ai\\tests\\test_monitoring.py": {
+      "file_path": "backend\\apps\\ai\\tests\\test_monitoring.py",
+      "complexity": 3,
+      "test_coverage": {
+        "test_functions": 29,
+        "total_functions": 34,
+        "coverage_percentage": 85.29411764705883
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    },
+    "backend\\apps\\ai\\tests\\test_security.py": {
+      "file_path": "backend\\apps\\ai\\tests\\test_security.py",
+      "complexity": 23,
+      "test_coverage": {
+        "test_functions": 24,
+        "total_functions": 30,
+        "coverage_percentage": 80.0
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 58.0
+    },
+    "backend\\apps\\ai\\tests\\test_token_statistics.py": {
+      "file_path": "backend\\apps\\ai\\tests\\test_token_statistics.py",
+      "complexity": 3,
+      "test_coverage": {
+        "test_functions": 12,
+        "total_functions": 14,
+        "coverage_percentage": 85.71428571428571
+      },
+      "coding_standards": [],
+      "pylint_score": 0.0,
+      "quality_score": 84.0
+    }
+  },
+  "issues_summary": {
+    "tests\\simple_submit_test.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\test_calendar_fix.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\test_quick_validation.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\test_runner_optimized.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\test_settings.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\test_settings_ci.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\test_settings_mysql.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\test_simple_validation.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\api\\test_chapter_word_counts_api.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\api\\test_frontend_api_simulation.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\api\\test_frontend_api_wrapper.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\api\\test_typing_words_api.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\api_docs\\test_api_documentation.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\data_management\\test_data_factory.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\edge_cases\\test_edge_cases.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\frontend\\test_progress_bar_display.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\frontend\\test_typing_component_lifecycle.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\frontend\\test_vue_components.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\integration\\test_api.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\integration\\test_bbc_fix_verification.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\integration\\test_end_to_end_workflow.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\integration\\test_fixes_verification.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\integration\\test_full_workflow_integration.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\integration\\test_news_api.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\integration\\test_typing_practice_submit_integration.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\new_features\\test_chapter_completion_integration.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\new_features\\test_chapter_completion_simple.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\performance\\test_performance_regression.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\regression\\auth\\test_permissions.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\regression\\auth\\test_user_authentication.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\regression\\english\\test_data_analysis_regression.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\regression\\english\\test_pause_resume.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\regression\\english\\test_pronunciation.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\regression\\english\\test_typing_practice_submit_regression.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_ai_module.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_api_docs_cache.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_articles.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_article_management.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_async_tasks.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_basic.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_bbc_news_save.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_bbc_simple.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_categories.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_cnn_crawler.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_common_module.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_data_analysis.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_data_quality.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_data_storage.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_english_api.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_english_learning.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_english_security.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_expression_crawler.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_fundus_crawler.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_idiomatic_expressions.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_jobs.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_jobs_module.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_links_module.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_models.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_model_fields_fix.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_mysql_connection.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_news_dashboard.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_news_visibility_removal.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_permissions_comprehensive.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_search_module.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_simple.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_specialized_crawlers.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_storage_core.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_task_system.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_techcrunch_and_image_cleanup.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_todos.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_typing_practice.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_typing_practice_api.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_typing_practice_submit.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_users.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\unit\\test_user_auth.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\utils\\test_data_manager.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\utils\\test_helpers.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\utils\\test_quality_monitor.py": [
+      "pylint输出解析失败"
+    ],
+    "tests\\utils\\test_report_generator.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\tests\\test_ai_config_encryption.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\tests\\test_flaky_examples.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\tests\\integration\\test_ai_service_management.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\tests\\integration\\test_api_cache_performance.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\tests\\unit\\test_ai_adapters.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\tests\\unit\\test_ai_config_models.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\tests\\unit\\test_ai_serializers.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\tests\\unit\\test_ai_views.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\tests\\unit\\test_basic_models.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\tests\\unit\\test_cache_strategy.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\tests\\unit\\test_core_functionality.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\apps\\ai\\tests\\test_api_views.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\apps\\ai\\tests\\test_config_import_export.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\apps\\ai\\tests\\test_failover_auto_switch.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\apps\\ai\\tests\\test_manual_switch.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\apps\\ai\\tests\\test_model_config.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\apps\\ai\\tests\\test_model_discovery.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\apps\\ai\\tests\\test_monitoring.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\apps\\ai\\tests\\test_security.py": [
+      "pylint输出解析失败"
+    ],
+    "backend\\apps\\ai\\tests\\test_token_statistics.py": [
+      "pylint输出解析失败"
+    ]
+  }
+}

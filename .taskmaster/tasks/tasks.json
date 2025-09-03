@@ -1814,5 +1814,13 @@
       "updated": "2025-09-01T16:14:07.270Z",
       "description": "Tasks for ai-config-ui context"
     }
+  },
+  "test-system-rebuild": {
+    "tasks": [],
+    "metadata": {
+      "created": "2025-09-03T01:28:55.029Z",
+      "updated": "2025-09-03T01:28:55.029Z",
+      "description": "测试体系重建项目 - 分析1,734个测试文件，建立统一测试入口，实现零配置自动收录"
+    }
   }
 }

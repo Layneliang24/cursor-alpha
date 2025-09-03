@@ -16,7 +16,7 @@ from django.core.cache import cache
 from django.conf import settings
 import json
 
-from .models import IdiomaticExpression, ExpressionSource, ExpressionScenario, ExpressionScenarioLink, NewsItem
+from .models import IdiomaticExpression, ExpressionSource, ExpressionScenario, ExpressionScenarioLink, News
 from .expression_crawler import ExpressionItem
 
 logger = logging.getLogger(__name__)

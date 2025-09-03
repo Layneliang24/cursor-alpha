@@ -1,0 +1,1174 @@
+{
+  "summary": {
+    "total_files": 19,
+    "mixing_patterns": {
+      "pytest_unittest": 19
+    },
+    "risk_distribution": {
+      "high": 18,
+      "medium": 1,
+      "low": 0
+    },
+    "complexity_distribution": {
+      "high": 18,
+      "medium": 1
+    }
+  },
+  "detailed_analysis": {
+    "patterns": {
+      "pytest_unittest": [
+        "tests\\regression\\english\\test_pause_resume.py",
+        "tests\\regression\\english\\test_pronunciation.py",
+        "tests\\unit\\test_api_docs_cache.py",
+        "tests\\unit\\test_async_tasks.py",
+        "tests\\unit\\test_data_quality.py",
+        "tests\\unit\\test_data_storage.py",
+        "tests\\unit\\test_english_api.py",
+        "tests\\unit\\test_english_security.py",
+        "tests\\unit\\test_expression_crawler.py",
+        "tests\\unit\\test_news_dashboard.py",
+        "tests\\unit\\test_specialized_crawlers.py",
+        "tests\\unit\\test_storage_core.py",
+        "tests\\unit\\test_task_system.py",
+        "tests\\unit\\test_techcrunch_and_image_cleanup.py",
+        "tests\\unit\\test_user_auth.py",
+        "tests\\utils\\test_helpers.py",
+        "backend\\tests\\test_flaky_examples.py",
+        "backend\\tests\\integration\\test_ai_service_management.py",
+        "backend\\tests\\unit\\test_ai_adapters.py"
+      ],
+      "pytest_nose": [],
+      "unittest_nose": [],
+      "vitest_jest": [],
+      "jest_mocha": [],
+      "other_combinations": []
+    },
+    "complexity_scores": {
+      "tests\\regression\\english\\test_pause_resume.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "TestPauseResumeAPI",
+          "TestPauseResumeService",
+          "TestPauseResumeUnit",
+          "TestPauseResumeIntegration",
+          "TestPauseResumeFrontend"
+        ],
+        "test_functions": [
+          "test_pause_practice_session",
+          "test_resume_practice_session",
+          "test_pause_resume_workflow",
+          "test_pause_timing_accuracy",
+          "test_multiple_pause_resume_cycles",
+          "test_invalid_pause_resume_actions",
+          "test_pause_logic",
+          "test_resume_logic",
+          "test_pause_time_calculation",
+          "test_session_state_consistency",
+          "test_timer_pause_logic",
+          "test_timer_resume_logic",
+          "test_pause_duration_calculation",
+          "test_session_time_accuracy",
+          "test_pause_resume_with_practice_data",
+          "test_pause_resume_with_timer_synchronization",
+          "test_pause_resume_with_multiple_users",
+          "test_pause_resume_button_states",
+          "test_timer_display_consistency",
+          "test_pause_resume_ui_feedback"
+        ],
+        "decorators": [
+          "pytest",
+          "pytest"
+        ],
+        "lines": 513
+      },
+      "tests\\regression\\english\\test_pronunciation.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "TestPronunciationAPI",
+          "TestPronunciationService",
+          "TestPronunciationUnit",
+          "TestPronunciationIntegration",
+          "TestPronunciationFrontend"
+        ],
+        "test_functions": [
+          "test_pronunciation_audio_url_generation",
+          "test_pronunciation_fallback_mechanism",
+          "test_pronunciation_quality_validation",
+          "test_pronunciation_rate_limiting",
+          "test_youdao_api_integration",
+          "test_api_error_handling",
+          "test_pronunciation_cache_mechanism",
+          "test_pronunciation_url_validation",
+          "test_pronunciation_format_validation",
+          "test_pronunciation_workflow_integration",
+          "test_pronunciation_batch_processing",
+          "test_pronunciation_error_recovery",
+          "test_pronunciation_component_rendering",
+          "test_pronunciation_auto_play_logic",
+          "test_pronunciation_overlap_prevention"
+        ],
+        "decorators": [
+          "pytest",
+          "pytest"
+        ],
+        "lines": 341
+      },
+      "tests\\unit\\test_api_docs_cache.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "APIDocumentationTest",
+          "CacheStrategyTest",
+          "CachePreheaterTest",
+          "CacheMonitorTest",
+          "ResponseCacheMiddlewareTest",
+          "CacheIntegrationTest",
+          "CacheKeyGenerationTest"
+        ],
+        "test_functions": [
+          "test_openapi_schema_accessible",
+          "test_swagger_ui_accessible",
+          "test_redoc_accessible",
+          "test_schema_includes_english_endpoints",
+          "test_schema_includes_security_schemes",
+          "test_schema_includes_tags",
+          "test_expression_list_cache",
+          "test_expression_detail_cache",
+          "test_user_progress_cache",
+          "test_statistics_cache",
+          "test_hot_expressions_cache",
+          "test_search_results_cache",
+          "test_cache_invalidation_on_expression_save",
+          "test_cache_invalidation_on_progress_save",
+          "test_preheat_hot_expressions",
+          "test_preheat_random_pools",
+          "test_get_cache_metrics",
+          "test_log_cache_performance",
+          "test_middleware_initialization",
+          "test_make_response_cache_key",
+          "test_cacheable_path_detection",
+          "test_expression_list_caching_integration",
+          "test_expression_detail_caching_integration",
+          "test_statistics_caching_integration",
+          "test_make_key_basic",
+          "test_make_hash_key",
+          "test_hash_key_consistency"
+        ],
+        "decorators": [],
+        "lines": 509
+      },
+      "tests\\unit\\test_async_tasks.py": {
+        "score": 8,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多",
+          "使用异步语法"
+        ],
+        "imports": [
+          "pytest",
+          "unittest",
+          "unittest"
+        ],
+        "test_classes": [
+          "AsyncTasksTest",
+          "TaskMonitorTest",
+          "TaskManagerTest",
+          "CeleryIntegrationTest"
+        ],
+        "test_functions": [
+          "test_crawl_expressions_task_success",
+          "test_crawl_expressions_task_locked",
+          "test_crawl_news_task_success",
+          "test_process_data_quality_task",
+          "test_cleanup_old_data",
+          "test_task_locking",
+          "test_update_task_progress",
+          "test_get_task_info",
+          "test_get_active_tasks",
+          "test_revoke_task",
+          "test_get_task_history",
+          "test_submit_crawl_expressions_task",
+          "test_submit_crawl_news_task",
+          "test_get_dashboard_data",
+          "test_end_to_end_expression_crawling"
+        ],
+        "decorators": [],
+        "lines": 552
+      },
+      "tests\\unit\\test_data_quality.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "DataCleanerTest",
+          "QualityAssessorTest",
+          "DuplicateDetectorTest",
+          "DataProcessorTest",
+          "IntegrationTest"
+        ],
+        "test_functions": [
+          "test_clean_expression",
+          "test_clean_meaning",
+          "test_clean_examples",
+          "test_clean_expression_item",
+          "test_assess_completeness",
+          "test_assess_grammar",
+          "test_assess_relevance",
+          "test_is_type_reasonable",
+          "test_assess_expression_quality",
+          "test_is_high_quality",
+          "test_generate_content_hash",
+          "test_generate_url_hash",
+          "test_is_duplicate_by_hash",
+          "test_calculate_similarity",
+          "test_is_duplicate_by_similarity",
+          "test_mark_as_processed",
+          "test_get_duplicate_stats",
+          "test_is_valid_item",
+          "test_process_expression_items",
+          "test_process_with_rejections",
+          "test_generate_quality_report",
+          "test_full_data_processing_pipeline"
+        ],
+        "decorators": [],
+        "lines": 564
+      },
+      "tests\\unit\\test_data_storage.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "StorageMetricsTest",
+          "DatabaseConnectionManagerTest",
+          "BatchProcessorTest",
+          "PerformanceMonitorTest",
+          "DataBackupManagerTest",
+          "OptimizedDataStorageTest",
+          "IntegrationTest"
+        ],
+        "test_functions": [
+          "test_storage_metrics_creation",
+          "test_throughput_calculation",
+          "test_success_rate_calculation",
+          "test_connection_manager_creation",
+          "test_get_connection_stats",
+          "test_close_all_connections",
+          "test_batch_processor_creation",
+          "test_process_expressions_batch",
+          "test_empty_batch_processing",
+          "test_performance_monitor_creation",
+          "test_record_metrics",
+          "test_get_performance_summary_empty",
+          "test_get_performance_summary_with_data",
+          "test_get_database_performance",
+          "test_optimize_database_indexes",
+          "test_backup_manager_creation",
+          "test_create_backup",
+          "test_backup_table",
+          "test_optimized_storage_creation",
+          "test_store_expressions_empty",
+          "test_store_expressions_with_data",
+          "test_get_system_status",
+          "test_optimize_system",
+          "test_cleanup_connections",
+          "test_cleanup_cache",
+          "test_full_storage_workflow"
+        ],
+        "decorators": [],
+        "lines": 526
+      },
+      "tests\\unit\\test_english_api.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "IdiomaticExpressionAPITest",
+          "UserExpressionProgressAPITest",
+          "LearningSessionAPITest",
+          "ExpressionSourceAPITest",
+          "ExpressionScenarioAPITest",
+          "StatisticsAPITest",
+          "AIAssistantAPITest",
+          "SerializerOptimizationTest"
+        ],
+        "test_functions": [
+          "test_list_expressions",
+          "test_retrieve_expression",
+          "test_create_expression_unauthorized",
+          "test_create_expression_authorized",
+          "test_create_expression_validation",
+          "test_update_expression",
+          "test_delete_expression",
+          "test_search_expressions",
+          "test_random_expressions",
+          "test_popular_expressions",
+          "test_recent_expressions",
+          "test_expression_stats",
+          "test_list_progress",
+          "test_create_progress",
+          "test_update_progress",
+          "test_favorites",
+          "test_mark_favorite",
+          "test_update_mastery",
+          "test_progress_stats",
+          "test_unauthorized_access",
+          "test_create_review_session",
+          "test_create_new_session",
+          "test_create_favorite_session",
+          "test_create_random_session",
+          "test_session_validation",
+          "test_list_sources",
+          "test_retrieve_source",
+          "test_list_scenarios",
+          "test_retrieve_scenario",
+          "test_statistics_overview",
+          "test_statistics_learning_trend",
+          "test_statistics_mastery_analysis",
+          "test_statistics_weak_areas",
+          "test_statistics_authentication_required",
+          "test_ai_chat",
+          "test_ai_chat_empty_message",
+          "test_explain_expression",
+          "test_explain_expression_invalid_id",
+          "test_practice_dialogue",
+          "test_ai_service_unavailable",
+          "test_ai_authentication_required",
+          "test_dynamic_fields_include",
+          "test_dynamic_fields_exclude",
+          "test_batch_create_expressions",
+          "test_batch_update_expressions",
+          "test_batch_update_user_progress",
+          "test_batch_operation_limits"
+        ],
+        "decorators": [],
+        "lines": 1048
+      },
+      "tests\\unit\\test_english_security.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "SecurityPermissionsTest",
+          "APIKeyAuthenticationTest",
+          "SecurityRateLimiterTest",
+          "ContentSecurityValidatorTest",
+          "SecurityAuditLoggerTest",
+          "APIKeyManagementTest",
+          "SecurityIntegrationTest"
+        ],
+        "test_functions": [
+          "test_english_learner_permission",
+          "test_content_manager_permission",
+          "test_admin_permission",
+          "test_user_progress_owner_permission",
+          "test_generate_api_key",
+          "test_validate_api_key",
+          "test_revoke_api_key",
+          "test_login_attempts",
+          "test_api_key_requests",
+          "test_validate_expression_content",
+          "test_validate_user_input",
+          "test_log_api_access",
+          "test_log_security_event",
+          "test_log_permission_denied",
+          "test_api_key_generation_flow",
+          "test_api_key_permission_flow",
+          "test_content_security_standalone"
+        ],
+        "decorators": [],
+        "lines": 460
+      },
+      "tests\\unit\\test_expression_crawler.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "ExpressionItemTest",
+          "MockExpressionCrawler",
+          "BaseExpressionCrawlerTest",
+          "DictionaryCrawlerTest",
+          "ExpressionCrawlerServiceTest",
+          "CrawlerIntegrationTest"
+        ],
+        "test_functions": [
+          "test_expression_item_creation",
+          "test_expression_item_defaults",
+          "test_crawler_initialization",
+          "test_get_dynamic_content",
+          "test_determine_expression_type",
+          "test_determine_formality_level",
+          "test_calculate_frequency_score",
+          "test_extract_scenarios",
+          "test_clean_expression_text",
+          "test_extract_expression_data",
+          "test_dictionary_crawler_initialization",
+          "test_search_expression",
+          "test_create_expression_item",
+          "test_create_expression_item_invalid_data",
+          "test_service_initialization",
+          "test_add_crawler",
+          "test_crawl_expressions_single_source",
+          "test_crawl_expressions_all_sources",
+          "test_save_expressions_to_db",
+          "test_full_crawling_workflow"
+        ],
+        "decorators": [],
+        "lines": 388
+      },
+      "tests\\unit\\test_news_dashboard.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "NewsDashboardTestCase"
+        ],
+        "test_functions": [
+          "test_news_dashboard_page_loads",
+          "test_news_list_api_returns_data",
+          "test_news_filtering_by_source",
+          "test_news_search_functionality",
+          "test_news_visibility_toggle",
+          "test_news_deletion",
+          "test_news_crawl_api",
+          "test_news_detail_api",
+          "test_news_pagination",
+          "test_news_ordering",
+          "test_news_stats_calculation",
+          "test_news_dashboard_requires_auth",
+          "test_news_api_requires_auth",
+          "test_news_store_initialization",
+          "test_crawl_settings_persistence",
+          "test_news_filtering_logic",
+          "test_news_categorization",
+          "test_date_formatting",
+          "test_text_truncation"
+        ],
+        "decorators": [
+          "pytest"
+        ],
+        "lines": 359
+      },
+      "tests\\unit\\test_specialized_crawlers.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "CambridgeCrawlerTest",
+          "CollinsCrawlerTest",
+          "RedditCrawlerTest",
+          "UrbanDictionaryCrawlerTest",
+          "YouGlishCrawlerTest",
+          "CrawlerIntegrationTest",
+          "ExpressionQualityTest"
+        ],
+        "test_functions": [
+          "test_cambridge_crawler_initialization",
+          "test_get_selector_combinations",
+          "test_extract_phonetic_transcription",
+          "test_extract_additional_metadata",
+          "test_calculate_cambridge_frequency",
+          "test_create_expression_item",
+          "test_collins_crawler_initialization",
+          "test_get_selector_combinations",
+          "test_extract_collins_rating",
+          "test_reddit_crawler_initialization",
+          "test_is_expression_related",
+          "test_extract_meaning_from_context",
+          "test_create_usage_example",
+          "test_calculate_reddit_frequency",
+          "test_crawl_subreddit",
+          "test_extract_expressions_from_post",
+          "test_urban_crawler_initialization",
+          "test_extract_vote_count",
+          "test_calculate_urban_frequency",
+          "test_parse_urban_definition",
+          "test_youglish_crawler_initialization",
+          "test_extract_result_count",
+          "test_search_youglish_term",
+          "test_register_specialized_crawlers",
+          "test_all_crawlers_inherit_correctly",
+          "test_crawling_with_rate_limiting",
+          "test_error_handling_in_crawlers",
+          "test_metadata_consistency",
+          "test_expression_type_classification",
+          "test_formality_level_detection",
+          "test_scenario_extraction_accuracy",
+          "test_frequency_score_calculation"
+        ],
+        "decorators": [],
+        "lines": 475
+      },
+      "tests\\unit\\test_storage_core.py": {
+        "score": 5,
+        "risk_factors": [
+          "多个测试框架导入",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [],
+        "test_functions": [
+          "test_metrics_calculation",
+          "test_metrics_edge_cases",
+          "test_batch_size_calculation",
+          "test_batch_processing_simulation",
+          "test_metrics_aggregation",
+          "test_performance_thresholds",
+          "test_expression_validation",
+          "test_quality_scoring",
+          "test_error_categorization",
+          "test_retry_logic_simulation",
+          "test_circuit_breaker_pattern"
+        ],
+        "decorators": [],
+        "lines": 427
+      },
+      "tests\\unit\\test_task_system.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "TaskSystemTest",
+          "TaskConfigurationTest"
+        ],
+        "test_functions": [
+          "test_task_lock_mechanism",
+          "test_expression_crawler_service_integration",
+          "test_data_quality_processor_integration",
+          "test_news_crawler_integration",
+          "test_management_command_structure",
+          "test_task_progress_tracking",
+          "test_task_result_structure",
+          "test_queue_and_priority_concepts",
+          "test_error_handling_patterns",
+          "test_monitoring_data_structure",
+          "test_celery_configuration_structure",
+          "test_task_timeout_configuration"
+        ],
+        "decorators": [],
+        "lines": 401
+      },
+      "tests\\unit\\test_techcrunch_and_image_cleanup.py": {
+        "score": 7,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "TestTechCrunchCrawler",
+          "TestNewsImageCleanup",
+          "TestTechCrunchIntegration"
+        ],
+        "test_functions": [
+          "test_crawler_initialization",
+          "test_rss_content_retrieval",
+          "test_article_content_extraction",
+          "test_parse_rss_item_with_valid_data",
+          "test_parse_rss_item_with_invalid_data",
+          "test_content_quality_validation",
+          "test_news_deletion_with_local_image",
+          "test_news_deletion_with_external_image",
+          "test_news_deletion_without_image",
+          "test_news_update_with_image_change",
+          "test_image_cleanup_with_nonexistent_file",
+          "test_image_cleanup_with_invalid_path",
+          "test_full_crawl_process",
+          "test_crawler_error_handling"
+        ],
+        "decorators": [],
+        "lines": 444
+      },
+      "tests\\unit\\test_user_auth.py": {
+        "score": 9,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "多个测试装饰器",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "UserRegistrationTest",
+          "UserLoginTest",
+          "PasswordResetTest",
+          "PermissionVerificationTest",
+          "UserIdentityVerificationTest",
+          "UserLogoutTest"
+        ],
+        "test_functions": [
+          "test_user_registration_success",
+          "test_user_registration_password_mismatch",
+          "test_user_registration_duplicate_username",
+          "test_user_registration_duplicate_email",
+          "test_user_registration_missing_required_fields",
+          "test_user_login_success",
+          "test_user_login_with_email",
+          "test_user_login_wrong_password",
+          "test_user_login_nonexistent_user",
+          "test_user_login_missing_credentials",
+          "test_password_reset_request_success",
+          "test_password_reset_request_nonexistent_email",
+          "test_password_reset_confirm_success",
+          "test_authenticated_user_access_protected_endpoint",
+          "test_unauthenticated_user_access_protected_endpoint",
+          "test_admin_user_access_admin_endpoint",
+          "test_regular_user_access_admin_endpoint",
+          "test_user_profile_self_access",
+          "test_verify_user_identity_success",
+          "test_verify_user_identity_with_email",
+          "test_verify_user_identity_wrong_password",
+          "test_verify_user_identity_missing_credentials",
+          "test_user_logout_success",
+          "test_user_logout_without_authentication"
+        ],
+        "decorators": [
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest"
+        ],
+        "lines": 474
+      },
+      "tests\\utils\\test_helpers.py": {
+        "score": 4,
+        "risk_factors": [
+          "多个测试框架导入",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "pytest",
+          "unittest",
+          "unittest"
+        ],
+        "test_classes": [],
+        "test_functions": [],
+        "decorators": [],
+        "lines": 608
+      },
+      "backend\\tests\\test_flaky_examples.py": {
+        "score": 9,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "多个测试装饰器",
+          "文件行数多"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "FlakyTestExamples"
+        ],
+        "test_functions": [
+          "test_random_failure",
+          "test_timing_sensitive",
+          "test_external_dependency",
+          "test_stable_test",
+          "test_race_condition",
+          "test_memory_dependent",
+          "test_environment_dependent",
+          "test_another_stable_test",
+          "test_slow_and_flaky",
+          "test_database_dependent",
+          "test_function_level_flaky",
+          "test_mock_failure",
+          "test_stable_function"
+        ],
+        "decorators": [
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest"
+        ],
+        "lines": 216
+      },
+      "backend\\tests\\integration\\test_ai_service_management.py": {
+        "score": 9,
+        "risk_factors": [
+          "多个测试框架导入",
+          "混合测试类定义",
+          "测试函数数量多",
+          "文件行数多",
+          "使用yield语法",
+          "使用异步语法"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "AIServiceManagerIntegrationTest",
+          "AIServiceAPITest",
+          "LoadBalancerIntegrationTest",
+          "HealthMonitorIntegrationTest",
+          "DegradationManagerIntegrationTest",
+          "KeyManagerIntegrationTest"
+        ],
+        "test_functions": [
+          "test_service_initialization",
+          "test_dynamic_service_management",
+          "test_load_balancing_strategies",
+          "test_service_degradation",
+          "test_get_service_status_api",
+          "test_add_service_api",
+          "test_load_balancer_strategy_api",
+          "test_degradation_control_api",
+          "test_health_monitor_api",
+          "test_ai_chat_api",
+          "test_round_robin_distribution",
+          "test_weighted_distribution",
+          "test_service_exclusion",
+          "test_health_status_tracking",
+          "test_health_summary",
+          "test_forced_degradation",
+          "test_load_simulation",
+          "test_degradation_recommendations",
+          "test_key_loading_and_encryption",
+          "test_key_rotation",
+          "test_key_statistics",
+          "test_async_response_generation",
+          "test_failover_mechanism"
+        ],
+        "decorators": [
+          "pytest",
+          "pytest"
+        ],
+        "lines": 577
+      },
+      "backend\\tests\\unit\\test_ai_adapters.py": {
+        "score": 9,
+        "risk_factors": [
+          "多个测试框架导入",
+          "测试函数数量多",
+          "多个测试装饰器",
+          "文件行数多",
+          "使用yield语法",
+          "使用异步语法"
+        ],
+        "imports": [
+          "pytest",
+          "unittest"
+        ],
+        "test_classes": [
+          "CustomAdapter"
+        ],
+        "test_functions": [
+          "test_config_creation",
+          "test_config_validation",
+          "test_max_tokens_adjustment",
+          "test_message_creation",
+          "test_message_with_metadata",
+          "test_response_creation",
+          "test_cost_calculation",
+          "test_adapter_creation",
+          "test_generate_response",
+          "test_stream_response",
+          "test_health_check",
+          "test_token_estimation",
+          "test_context_validation",
+          "test_message_formatting",
+          "test_adapter_initialization",
+          "test_config_validation",
+          "test_token_estimation",
+          "test_adapter_initialization",
+          "test_message_formatting",
+          "test_config_validation",
+          "test_base_exception",
+          "test_rate_limit_exception",
+          "test_model_not_found_exception",
+          "test_retry_mechanism",
+          "test_retry_exhausted",
+          "test_non_retryable_exception",
+          "test_message_creation_helpers",
+          "test_health_status_management",
+          "test_health_check_expiry",
+          "test_openai_real_api",
+          "test_claude_real_api",
+          "test_adapter_initialization",
+          "test_message_formatting",
+          "test_token_estimation",
+          "test_create_openai_adapter",
+          "test_create_claude_adapter",
+          "test_create_google_adapter",
+          "test_infer_provider_from_model",
+          "test_unsupported_provider",
+          "test_get_supported_models",
+          "test_is_model_supported",
+          "test_get_model_info",
+          "test_register_custom_adapter"
+        ],
+        "decorators": [
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest",
+          "pytest"
+        ],
+        "lines": 735
+      }
+    },
+    "risk_assessments": {
+      "tests\\regression\\english\\test_pause_resume.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\regression\\english\\test_pronunciation.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\unit\\test_api_docs_cache.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\unit\\test_async_tasks.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 8
+      },
+      "tests\\unit\\test_data_quality.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\unit\\test_data_storage.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\unit\\test_english_api.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\unit\\test_english_security.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\unit\\test_expression_crawler.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\unit\\test_news_dashboard.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\unit\\test_specialized_crawlers.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\unit\\test_storage_core.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 5
+      },
+      "tests\\unit\\test_task_system.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\unit\\test_techcrunch_and_image_cleanup.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 7
+      },
+      "tests\\unit\\test_user_auth.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "需要重新设计装饰器使用方式",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 9
+      },
+      "tests\\utils\\test_helpers.py": {
+        "level": "medium",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 4
+      },
+      "backend\\tests\\test_flaky_examples.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "需要重新设计装饰器使用方式",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 9
+      },
+      "backend\\tests\\integration\\test_ai_service_management.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要统一测试类继承结构",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 9
+      },
+      "backend\\tests\\unit\\test_ai_adapters.py": {
+        "level": "high",
+        "details": [
+          "需要重构导入语句，可能影响其他模块",
+          "需要重新设计装饰器使用方式",
+          "大文件修复风险较高，建议分批处理"
+        ],
+        "complexity_score": 9
+      }
+    }
+  },
+  "repair_strategies": {
+    "pytest_unittest": {
+      "recommended_framework": "pytest",
+      "migration_approach": "渐进式迁移",
+      "steps": [
+        "1. 保留pytest装饰器和功能",
+        "2. 将unittest.TestCase继承改为pytest类",
+        "3. 替换unittest断言为pytest断言",
+        "4. 移除unittest特定导入"
+      ],
+      "estimated_effort": "2-4小时/文件"
+    },
+    "pytest_nose": {
+      "recommended_framework": "pytest",
+      "migration_approach": "直接替换",
+      "steps": [
+        "1. 替换nose装饰器为pytest等价物",
+        "2. 更新测试发现机制",
+        "3. 调整测试运行参数"
+      ],
+      "estimated_effort": "1-3小时/文件"
+    },
+    "vitest_jest": {
+      "recommended_framework": "vitest",
+      "migration_approach": "功能映射",
+      "steps": [
+        "1. 替换Jest API为Vitest等价物",
+        "2. 更新测试配置",
+        "3. 调整断言语法"
+      ],
+      "estimated_effort": "1-2小时/文件"
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "high",
+      "action": "优先处理高风险文件",
+      "reason": "发现 18 个高风险文件，需要谨慎处理",
+      "approach": "分批修复，每次只处理1-2个文件"
+    },
+    {
+      "priority": "high",
+      "action": "简化复杂文件结构",
+      "reason": "发现 18 个高复杂度文件",
+      "approach": "先重构代码结构，再统一测试框架"
+    },
+    {
+      "priority": "medium",
+      "action": "统一为pytest框架",
+      "reason": "发现 19 个pytest+unittest混用文件",
+      "approach": "pytest功能更强大，建议作为主导框架"
+    }
+  ]
+}

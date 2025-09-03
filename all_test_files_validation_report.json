@@ -1,0 +1,1173 @@
+{
+  "summary": {
+    "total_files": 94,
+    "syntax_valid": 84,
+    "import_successful": 21,
+    "runnable": 2,
+    "failed": 92,
+    "success_rate": "2.1%"
+  },
+  "error_analysis": {
+    "Sorry": 10,
+    "Django导入失败": 63,
+    "可运行性检查异常": 5,
+    "其他": 20
+  },
+  "detailed_results": [
+    {
+      "file_path": "tests\\unit\\test_links_module.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_links_module.py, line 92)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:25.654382"
+    },
+    {
+      "file_path": "tests\\unit\\test_idiomatic_expressions.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_idiomatic_expressions.py, line 100)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:26.053233"
+    },
+    {
+      "file_path": "backend\\tests\\unit\\test_ai_config_models.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_ai_config_models.py, line 89)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:26.394996"
+    },
+    {
+      "file_path": "tests\\unit\\test_english_api.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_english_api.py, line 87)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:26.743056"
+    },
+    {
+      "file_path": "backend\\tests\\unit\\test_basic_models.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_basic_models.py, line 84)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:27.137399"
+    },
+    {
+      "file_path": "tests\\test_calendar_fix.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:27.660939"
+    },
+    {
+      "file_path": "tests\\test_quick_validation.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": true,
+      "errors": [],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:30.962738"
+    },
+    {
+      "file_path": "tests\\test_runner_optimized.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "可运行性检查异常: name 'warnings' is not defined"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:31.356741"
+    },
+    {
+      "file_path": "tests\\test_settings.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "未找到测试函数",
+        "缺少测试函数或测试类",
+        "缺少断言语句"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:31.791530"
+    },
+    {
+      "file_path": "tests\\test_settings_ci.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "未找到测试函数",
+        "缺少测试函数或测试类",
+        "缺少断言语句"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:32.265798"
+    },
+    {
+      "file_path": "tests\\test_settings_mysql.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "未找到测试函数",
+        "缺少测试函数或测试类",
+        "缺少断言语句"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:33.212054"
+    },
+    {
+      "file_path": "tests\\test_simple_validation.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "缺少断言语句"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:33.677236"
+    },
+    {
+      "file_path": "tests\\api\\test_chapter_word_counts_api.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "缺少断言语句"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:34.326769"
+    },
+    {
+      "file_path": "tests\\api\\test_frontend_api_simulation.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "缺少断言语句"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:37.211135"
+    },
+    {
+      "file_path": "tests\\api\\test_frontend_api_wrapper.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "缺少断言语句"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:37.766596"
+    },
+    {
+      "file_path": "tests\\api\\test_typing_words_api.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "缺少断言语句"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:38.338745"
+    },
+    {
+      "file_path": "tests\\api_docs\\test_api_documentation.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:38.889499"
+    },
+    {
+      "file_path": "tests\\data_management\\test_data_factory.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:39.684086"
+    },
+    {
+      "file_path": "tests\\edge_cases\\test_edge_cases.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:40.092936"
+    },
+    {
+      "file_path": "tests\\frontend\\test_progress_bar_display.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "缺少断言语句"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:40.471694"
+    },
+    {
+      "file_path": "tests\\frontend\\test_typing_component_lifecycle.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "缺少断言语句"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:40.948006"
+    },
+    {
+      "file_path": "tests\\frontend\\test_vue_components.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:41.412908"
+    },
+    {
+      "file_path": "tests\\integration\\test_api.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:41.846628"
+    },
+    {
+      "file_path": "tests\\integration\\test_bbc_fix_verification.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:42.924500"
+    },
+    {
+      "file_path": "tests\\integration\\test_end_to_end_workflow.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:43.487247"
+    },
+    {
+      "file_path": "tests\\integration\\test_fixes_verification.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:44.005148"
+    },
+    {
+      "file_path": "tests\\integration\\test_full_workflow_integration.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:44.456705"
+    },
+    {
+      "file_path": "tests\\integration\\test_news_api.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "缺少断言语句"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:44.906231"
+    },
+    {
+      "file_path": "tests\\integration\\test_typing_practice_submit_integration.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:45.312370"
+    },
+    {
+      "file_path": "tests\\new_features\\test_chapter_completion_integration.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:45.755304"
+    },
+    {
+      "file_path": "tests\\new_features\\test_chapter_completion_simple.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:46.358302"
+    },
+    {
+      "file_path": "tests\\performance\\test_performance_regression.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:46.829494"
+    },
+    {
+      "file_path": "tests\\regression\\auth\\test_permissions.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:47.296318"
+    },
+    {
+      "file_path": "tests\\regression\\auth\\test_user_authentication.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:47.661954"
+    },
+    {
+      "file_path": "tests\\regression\\english\\test_data_analysis_regression.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:48.070152"
+    },
+    {
+      "file_path": "tests\\regression\\english\\test_pause_resume.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:48.637863"
+    },
+    {
+      "file_path": "tests\\regression\\english\\test_pronunciation.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:49.387407"
+    },
+    {
+      "file_path": "tests\\regression\\english\\test_typing_practice_submit_regression.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:50.039837"
+    },
+    {
+      "file_path": "tests\\unit\\test_ai_module.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:50.589010"
+    },
+    {
+      "file_path": "tests\\unit\\test_api_docs_cache.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:51.245346"
+    },
+    {
+      "file_path": "tests\\unit\\test_articles.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:52.037120"
+    },
+    {
+      "file_path": "tests\\unit\\test_article_management.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:52.513222"
+    },
+    {
+      "file_path": "tests\\unit\\test_async_tasks.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:52.941665"
+    },
+    {
+      "file_path": "tests\\unit\\test_basic.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:53.376690"
+    },
+    {
+      "file_path": "tests\\unit\\test_bbc_news_save.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:54.012171"
+    },
+    {
+      "file_path": "tests\\unit\\test_bbc_simple.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:54.895612"
+    },
+    {
+      "file_path": "tests\\unit\\test_categories.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:55.410847"
+    },
+    {
+      "file_path": "tests\\unit\\test_cnn_crawler.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "缺少断言语句"
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:55.879314"
+    },
+    {
+      "file_path": "tests\\unit\\test_common_module.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:56.275368"
+    },
+    {
+      "file_path": "tests\\unit\\test_data_analysis.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:56.634300"
+    },
+    {
+      "file_path": "tests\\unit\\test_data_quality.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:57.055742"
+    },
+    {
+      "file_path": "tests\\unit\\test_data_storage.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:57.588428"
+    },
+    {
+      "file_path": "tests\\unit\\test_english_api.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_english_api.py, line 87)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:58.015154"
+    },
+    {
+      "file_path": "tests\\unit\\test_english_learning.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:58.420319"
+    },
+    {
+      "file_path": "tests\\unit\\test_english_security.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:58.792559"
+    },
+    {
+      "file_path": "tests\\unit\\test_expression_crawler.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:59.178291"
+    },
+    {
+      "file_path": "tests\\unit\\test_fundus_crawler.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "缺少断言语句"
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:13:59.564155"
+    },
+    {
+      "file_path": "tests\\unit\\test_idiomatic_expressions.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_idiomatic_expressions.py, line 100)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:13:59.990583"
+    },
+    {
+      "file_path": "tests\\unit\\test_jobs.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:00.430908"
+    },
+    {
+      "file_path": "tests\\unit\\test_jobs_module.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:00.822447"
+    },
+    {
+      "file_path": "tests\\unit\\test_links_module.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_links_module.py, line 92)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:01.131257"
+    },
+    {
+      "file_path": "tests\\unit\\test_models.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:01.409548"
+    },
+    {
+      "file_path": "tests\\unit\\test_model_fields_fix.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:01.697897"
+    },
+    {
+      "file_path": "tests\\unit\\test_mysql_connection.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:02.041360"
+    },
+    {
+      "file_path": "tests\\unit\\test_news_dashboard.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:02.363996"
+    },
+    {
+      "file_path": "tests\\unit\\test_news_visibility_removal.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "缺少断言语句"
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:02.776462"
+    },
+    {
+      "file_path": "tests\\unit\\test_permissions_comprehensive.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:03.138662"
+    },
+    {
+      "file_path": "tests\\unit\\test_search_module.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:03.509861"
+    },
+    {
+      "file_path": "tests\\unit\\test_simple.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": true,
+      "errors": [],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:04.078675"
+    },
+    {
+      "file_path": "tests\\unit\\test_specialized_crawlers.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:04.642421"
+    },
+    {
+      "file_path": "tests\\unit\\test_storage_core.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "可运行性检查异常: name 'warnings' is not defined"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:05.233778"
+    },
+    {
+      "file_path": "tests\\unit\\test_task_system.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:05.702901"
+    },
+    {
+      "file_path": "tests\\unit\\test_techcrunch_and_image_cleanup.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:06.108334"
+    },
+    {
+      "file_path": "tests\\unit\\test_todos.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:06.503334"
+    },
+    {
+      "file_path": "tests\\unit\\test_typing_practice.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:06.852765"
+    },
+    {
+      "file_path": "tests\\unit\\test_typing_practice_api.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:07.170488"
+    },
+    {
+      "file_path": "tests\\unit\\test_typing_practice_submit.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:07.492680"
+    },
+    {
+      "file_path": "tests\\unit\\test_users.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:07.778767"
+    },
+    {
+      "file_path": "tests\\unit\\test_user_auth.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:08.054707"
+    },
+    {
+      "file_path": "tests\\utils\\test_data_manager.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:08.329462"
+    },
+    {
+      "file_path": "tests\\utils\\test_helpers.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:08.679774"
+    },
+    {
+      "file_path": "tests\\utils\\test_quality_monitor.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "可运行性检查异常: name 'warnings' is not defined"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:09.053084"
+    },
+    {
+      "file_path": "tests\\utils\\test_report_generator.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "可运行性检查异常: name 'warnings' is not defined"
+      ],
+      "warnings": [
+        "第三方库 seaborn 未安装"
+      ],
+      "validation_time": "2025-09-03T14:14:09.460515"
+    },
+    {
+      "file_path": "backend\\tests\\test_ai_config_encryption.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:14.298177"
+    },
+    {
+      "file_path": "backend\\tests\\test_flaky_examples.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:14.697235"
+    },
+    {
+      "file_path": "backend\\tests\\integration\\test_ai_service_management.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:15.136907"
+    },
+    {
+      "file_path": "backend\\tests\\integration\\test_api_cache_performance.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:15.494572"
+    },
+    {
+      "file_path": "backend\\tests\\unit\\test_ai_adapters.py",
+      "syntax_valid": true,
+      "import_successful": true,
+      "runnable": false,
+      "errors": [
+        "可运行性检查异常: name 'warnings' is not defined"
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:15.884352"
+    },
+    {
+      "file_path": "backend\\tests\\unit\\test_ai_config_models.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_ai_config_models.py, line 89)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:16.362909"
+    },
+    {
+      "file_path": "backend\\tests\\unit\\test_ai_serializers.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:16.725789"
+    },
+    {
+      "file_path": "backend\\tests\\unit\\test_ai_views.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:17.160897"
+    },
+    {
+      "file_path": "backend\\tests\\unit\\test_basic_models.py",
+      "syntax_valid": false,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Sorry: IndentationError: unexpected indent (test_basic_models.py, line 84)"
+      ],
+      "warnings": [],
+      "validation_time": "2025-09-03T14:14:17.494454"
+    },
+    {
+      "file_path": "backend\\tests\\unit\\test_cache_strategy.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:17.782340"
+    },
+    {
+      "file_path": "backend\\tests\\unit\\test_core_functionality.py",
+      "syntax_valid": true,
+      "import_successful": false,
+      "runnable": false,
+      "errors": [
+        "Django导入失败: Requested setting LOGGING_CONFIG, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings."
+      ],
+      "warnings": [
+        "检测到apps模块导入，可能需要Django环境"
+      ],
+      "validation_time": "2025-09-03T14:14:18.273465"
+    }
+  ],
+  "recommendations": [
+    "有 92 个文件验证失败，需要进一步修复",
+    "部分文件存在语法错误，需要修复语法问题",
+    "部分文件导入失败，需要解决依赖问题"
+  ],
+  "next_steps": [
+    "运行可运行的测试文件，验证功能正常",
+    "修复不可运行的测试文件",
+    "分析失败原因，制定修复计划",
+    "继续重构其他测试文件",
+    "建立测试可运行性检查机制",
+    "进行Task 31.4的后续工作"
+  ]
+}

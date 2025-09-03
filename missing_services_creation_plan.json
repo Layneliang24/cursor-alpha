@@ -1,0 +1,188 @@
+{
+  "summary": {
+    "total_missing_services": 1,
+    "total_missing_models": 2,
+    "total_estimated_effort": "6-10小时",
+    "priority_breakdown": {
+      "priority_1": 1,
+      "priority_2": 0,
+      "priority_3": 0,
+      "priority_4": 0,
+      "priority_5": 0
+    }
+  },
+  "services_creation_plan": {
+    "analysis": {
+      "total_count": 1,
+      "unique_services": [
+        "backend.apps.english.services.DataAnalysisService"
+      ],
+      "service_details": [
+        {
+          "full_path": "backend.apps.english.services.DataAnalysisService",
+          "module_path": "backend.apps.english.services",
+          "class_name": "DataAnalysisService",
+          "category": "data_processing",
+          "estimated_functionality": "数据分析服务，处理用户学习数据统计和分析",
+          "dependencies": [
+            "pandas",
+            "numpy",
+            "matplotlib",
+            "seaborn"
+          ],
+          "estimated_complexity": "high"
+        }
+      ],
+      "creation_priority": [
+        {
+          "service_path": "backend.apps.english.services.DataAnalysisService",
+          "priority": 1,
+          "estimated_effort": "4-6小时",
+          "dependencies": [
+            "pandas",
+            "numpy",
+            "matplotlib",
+            "seaborn"
+          ]
+        }
+      ]
+    },
+    "step_by_step_plan": [
+      {
+        "step_number": 1,
+        "service_path": "backend.apps.english.services.DataAnalysisService",
+        "priority": 1,
+        "estimated_effort": "4-6小时",
+        "actions": [
+          "创建文件: backend/apps/english/services/DataAnalysisService.py",
+          "定义服务类结构",
+          "实现核心方法",
+          "添加错误处理",
+          "编写单元测试",
+          "验证导入功能"
+        ],
+        "dependencies": [
+          "pandas",
+          "numpy",
+          "matplotlib",
+          "seaborn"
+        ],
+        "success_criteria": [
+          "服务类可以正常导入",
+          "基本方法可以调用",
+          "单元测试通过",
+          "无语法错误"
+        ]
+      }
+    ],
+    "dependencies_resolution": {
+      "external_packages": [
+        "matplotlib",
+        "numpy",
+        "pandas",
+        "seaborn"
+      ],
+      "internal_modules": [
+        "apps.users.models",
+        "apps.english.models"
+      ],
+      "database_models": [
+        "User",
+        "UserProfile",
+        "TypingSession"
+      ],
+      "configuration_files": [
+        "requirements.txt",
+        "settings.py"
+      ]
+    }
+  },
+  "models_creation_plan": {
+    "analysis": {
+      "total_count": 2,
+      "unique_models": [
+        "apps.ai.adapters.base.AIModelConfig"
+      ],
+      "model_details": [
+        {
+          "full_path": "apps.ai.adapters.base.AIModelConfig",
+          "module_path": "apps.ai.adapters.base",
+          "class_name": "AIModelConfig",
+          "category": "ai_configuration",
+          "estimated_functionality": "AI模型配置类，存储模型参数和配置信息",
+          "dependencies": [
+            "django.db.models",
+            "django.core.validators"
+          ],
+          "estimated_complexity": "low"
+        }
+      ],
+      "creation_priority": [
+        {
+          "model_path": "apps.ai.adapters.base.AIModelConfig",
+          "priority": 2,
+          "estimated_effort": "0.5-1小时",
+          "dependencies": [
+            "django.db.models",
+            "django.core.validators"
+          ]
+        }
+      ]
+    },
+    "step_by_step_plan": [
+      {
+        "step_number": 1,
+        "model_path": "apps.ai.adapters.base.AIModelConfig",
+        "priority": 2,
+        "estimated_effort": "0.5-1小时",
+        "actions": [
+          "创建文件: apps/ai/adapters/base/AIModelConfig.py",
+          "定义模型类结构",
+          "添加必要的字段",
+          "实现验证逻辑",
+          "添加序列化器",
+          "编写单元测试"
+        ],
+        "dependencies": [
+          "django.db.models",
+          "django.core.validators"
+        ],
+        "success_criteria": [
+          "模型类可以正常导入",
+          "字段定义正确",
+          "验证逻辑有效",
+          "单元测试通过"
+        ]
+      }
+    ],
+    "dependencies_resolution": {
+      "django_modules": [
+        "django.core.validators",
+        "django.db.models"
+      ],
+      "internal_modules": [
+        "apps.ai.adapters.base"
+      ],
+      "validation_modules": [
+        "django.core.validators"
+      ],
+      "configuration_files": [
+        "models.py",
+        "admin.py"
+      ]
+    }
+  },
+  "implementation_order": [
+    "创建模型: apps.ai.adapters.base.AIModelConfig",
+    "创建服务: backend.apps.english.services.DataAnalysisService"
+  ],
+  "risk_assessment": {
+    "high_risk": [
+      "服务类 backend.apps.english.services.DataAnalysisService - 复杂度高，需要充分测试"
+    ],
+    "medium_risk": [],
+    "low_risk": [
+      "模型类 apps.ai.adapters.base.AIModelConfig - 低复杂度，风险较小"
+    ]
+  }
+}

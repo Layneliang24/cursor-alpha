@@ -1,0 +1,68 @@
+{
+  "summary": {
+    "total_files": 5,
+    "successful": 0,
+    "failed": 0,
+    "success_rate": "0.0%"
+  },
+  "migration_log": [
+    {
+      "file": "tests\\regression\\english\\test_pause_resume.py",
+      "timestamp": "2025-09-03T12:34:39.517507",
+      "status": "migrated",
+      "changes_made": true
+    },
+    {
+      "file": "tests\\regression\\english\\test_pronunciation.py",
+      "timestamp": "2025-09-03T12:34:50.746454",
+      "status": "migrated",
+      "changes_made": true
+    },
+    {
+      "file": "tests\\unit\\test_api_docs_cache.py",
+      "timestamp": "2025-09-03T12:34:57.203419",
+      "status": "migrated",
+      "changes_made": true
+    },
+    {
+      "file": "tests\\unit\\test_async_tasks.py",
+      "timestamp": "2025-09-03T12:35:03.989721",
+      "status": "migrated",
+      "changes_made": true
+    },
+    {
+      "file": "tests\\unit\\test_data_quality.py",
+      "timestamp": "2025-09-03T12:35:14.521114",
+      "status": "migrated",
+      "changes_made": true
+    }
+  ],
+  "rollback_info": {
+    "tests\\regression\\english\\test_pause_resume.py": {
+      "backup_path": "migration_backups\\test_pause_resume_20250903_123439.py",
+      "timestamp": "20250903_123439",
+      "original_size": 21422
+    },
+    "tests\\regression\\english\\test_pronunciation.py": {
+      "backup_path": "migration_backups\\test_pronunciation_20250903_123450.py",
+      "timestamp": "20250903_123450",
+      "original_size": 12748
+    },
+    "tests\\unit\\test_api_docs_cache.py": {
+      "backup_path": "migration_backups\\test_api_docs_cache_20250903_123457.py",
+      "timestamp": "20250903_123457",
+      "original_size": 19235
+    },
+    "tests\\unit\\test_async_tasks.py": {
+      "backup_path": "migration_backups\\test_async_tasks_20250903_123503.py",
+      "timestamp": "20250903_123503",
+      "original_size": 20793
+    },
+    "tests\\unit\\test_data_quality.py": {
+      "backup_path": "migration_backups\\test_data_quality_20250903_123514.py",
+      "timestamp": "20250903_123514",
+      "original_size": 20738
+    }
+  },
+  "timestamp": "2025-09-03T12:35:21.352396"
+}
