@@ -10,7 +10,8 @@ from .views import (
     ModelConfigViewSet, TokenUsageViewSet, UsageQuotaViewSet, TokenStatisticsViewSet,
     ConfigExportView, ConfigImportView, ConfigTemplateViewSet, ConfigVersionViewSet,
     UserSettingsViewSet, SystemConfigViewSet, LoginHistoryViewSet, 
-    DeviceSessionViewSet, UserProfileViewSet, PasswordChangeView
+    DeviceSessionViewSet, UserProfileViewSet, PasswordChangeView,
+    ModelDiscoveryViewSet, MonitoringViewSet
 )
 from .fallback_views import FailoverStrategyViewSet, ProviderHealthViewSet
 
@@ -41,6 +42,10 @@ router.register(r'system-configs', SystemConfigViewSet, basename='system-configs
 router.register(r'login-history', LoginHistoryViewSet, basename='login-history')
 router.register(r'device-sessions', DeviceSessionViewSet, basename='device-sessions')
 router.register(r'user-profile', UserProfileViewSet, basename='user-profile')
+
+# 模型发现和监控路由
+router.register(r'model-discovery', ModelDiscoveryViewSet, basename='model-discovery')
+router.register(r'monitoring', MonitoringViewSet, basename='monitoring')
 
 app_name = 'ai'
 

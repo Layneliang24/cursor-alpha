@@ -1822,5 +1822,215 @@
       "updated": "2025-09-03T01:28:55.029Z",
       "description": "测试体系重建项目 - 分析1,734个测试文件，建立统一测试入口，实现零配置自动收录"
     }
+  },
+  "test-system-rebuild-final": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "配置测试工具链",
+        "description": "安装并配置必要的测试工具，包括pytest-cov、pytest-xdist、pytest-html、radon和coverage",
+        "details": "1. 在requirements-dev.txt中添加依赖：pytest-cov==4.1.0, pytest-xdist==3.5.0, pytest-html==4.1.1, radon==6.0.1, coverage==7.4.4\n2. 更新pytest.ini配置文件，添加相关插件配置：\n   [pytest]\n   addopts = -n auto --cov=backend --cov-report=html --html=report.html\n3. 在Makefile中添加test命令，执行pytest测试",
+        "testStrategy": "运行make test命令，验证测试工具链安装成功，测试报告和覆盖率报告生成正常",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "优化测试环境配置",
+        "description": "优化测试环境配置，包括数据库设置、环境变量和测试数据管理",
+        "details": "1. 在test_settings.py中配置测试数据库，使用内存数据库（如SQLite）加速测试\n2. 使用环境变量管理测试配置，如DJANGO_SETTINGS_MODULE=test_settings\n3. 使用pytest-fixtures管理测试数据，创建factory_boy工厂类生成测试数据\n4. 在conftest.py中定义全局fixture，如数据库连接、测试客户端等",
+        "testStrategy": "运行单元测试，验证测试环境配置正确，测试数据生成正常",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "建立Makefile统一入口",
+        "description": "创建Makefile文件，提供一键测试命令",
+        "details": "1. 创建Makefile，定义test命令：\n   test:\n\tpytest -c pytest.ini\n2. 添加其他辅助命令，如coverage-report、complexity-check等\n3. 确保Makefile支持前后端测试的统一入口",
+        "testStrategy": "运行make test命令，验证测试正常执行",
+        "priority": "high",
+        "dependencies": [
+          1,
+          2
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "编写核心模型单元测试",
+        "description": "为后端核心数据模型编写单元测试，覆盖Expression、IdiomaticExpression、UserExpressionProgress等模型",
+        "details": "1. 在backend/tests/unit/models目录下创建测试文件\n2. 使用factory_boy创建模型工厂\n3. 测试模型创建、保存、查询、更新、删除等操作\n4. 测试模型方法、属性和业务逻辑\n5. 使用pytest.mark.django_db管理数据库事务",
+        "testStrategy": "运行模型单元测试，验证测试通过，覆盖率提升",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "编写API接口单元测试",
+        "description": "为后端RESTful API编写单元测试，覆盖地道表达学习、AI助教、统计分析等接口",
+        "details": "1. 在backend/tests/unit/api目录下创建测试文件\n2. 使用APIClient模拟API请求\n3. 测试API的GET、POST、PUT、DELETE等方法\n4. 验证响应状态码、数据格式和业务逻辑\n5. 使用factory_boy创建测试数据",
+        "testStrategy": "运行API单元测试，验证测试通过，覆盖率提升",
+        "priority": "high",
+        "dependencies": [
+          4
+        ],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "编写前端组件单元测试",
+        "description": "为前端核心组件编写单元测试，包括ExpressionCard、LearningDashboard、AIAssistantChat等",
+        "details": "1. 使用Vitest + Vue Test Utils编写组件测试\n2. 测试组件渲染、props、事件、状态等\n3. 使用Pinia进行状态管理测试\n4. 使用Vue Router模拟路由\n5. 测试文件放在frontend/tests/unit目录下",
+        "testStrategy": "运行前端单元测试，验证测试通过，覆盖率提升",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "编写后端集成测试",
+        "description": "编写后端服务集成测试，验证组件间协作",
+        "details": "1. 在backend/tests/integration目录下创建测试文件\n2. 测试服务层、视图层、模型层的协作\n3. 测试外部依赖（如AI服务）的模拟\n4. 使用pytest-mock模拟外部服务\n5. 测试数据库事务和错误处理",
+        "testStrategy": "运行集成测试，验证组件协作正常",
+        "priority": "medium",
+        "dependencies": [
+          4,
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "编写前端集成测试",
+        "description": "编写前端组件集成测试，验证组件间交互",
+        "details": "1. 在frontend/tests/integration目录下创建测试文件\n2. 测试多个组件的交互和状态管理\n3. 使用Vitest和Testing Library进行测试\n4. 模拟API请求（使用MSW或vitest-mock-api）\n5. 测试路由导航和页面跳转",
+        "testStrategy": "运行前端集成测试，验证组件交互正常",
+        "priority": "medium",
+        "dependencies": [
+          6
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "编写API契约测试",
+        "description": "编写API契约测试，确保前后端API一致性",
+        "details": "1. 使用pytest-django和requests编写契约测试\n2. 测试API的请求和响应格式\n3. 使用OpenAPI规范验证API契约\n4. 测试文件放在backend/tests/contract目录下\n5. 生成API文档并验证",
+        "testStrategy": "运行契约测试，验证API契约一致",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "编写端到端测试",
+        "description": "编写端到端测试，验证用户流程",
+        "details": "1. 使用Cypress或Playwright编写端到端测试\n2. 测试核心用户流程，如登录、学习、AI助教等\n3. 配置测试环境，启动前后端服务\n4. 测试文件放在e2e目录下\n5. 使用docker-compose管理测试环境",
+        "testStrategy": "运行端到端测试，验证用户流程正常",
+        "priority": "medium",
+        "dependencies": [
+          3,
+          8,
+          9
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 11,
+        "title": "优化测试执行效率",
+        "description": "优化测试执行速度，实现并行测试",
+        "details": "1. 使用pytest-xdist实现并行测试\n2. 优化测试数据库，使用内存数据库\n3. 使用缓存减少重复计算\n4. 拆分测试用例，避免长时间测试\n5. 配置GitHub Actions并行执行",
+        "testStrategy": "运行测试，比较优化前后的执行时间",
+        "priority": "medium",
+        "dependencies": [
+          1,
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 12,
+        "title": "建立测试覆盖率监控",
+        "description": "建立测试覆盖率监控和报告",
+        "details": "1. 配置coverage.py生成覆盖率报告\n2. 在pytest.ini中配置覆盖率阈值（80%）\n3. 集成到Makefile，添加coverage-report命令\n4. 使用Coveralls或Codecov集成覆盖率报告\n5. 在CI中配置覆盖率上传",
+        "testStrategy": "运行测试，验证覆盖率报告生成，阈值检查正常",
+        "priority": "medium",
+        "dependencies": [
+          1,
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 13,
+        "title": "建立代码复杂度检查",
+        "description": "建立代码复杂度检查，确保代码质量",
+        "details": "1. 配置radon进行代码复杂度分析\n2. 在Makefile中添加complexity-check命令\n3. 设置复杂度阈值（A级）\n4. 集成到CI，复杂度超标时失败\n5. 生成复杂度报告",
+        "testStrategy": "运行复杂度检查，验证阈值生效",
+        "priority": "low",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 14,
+        "title": "建立测试质量门禁",
+        "description": "建立测试质量门禁，确保测试通过率和覆盖率",
+        "details": "1. 在Makefile中集成测试、覆盖率、复杂度检查\n2. 设置测试失败、覆盖率不足、复杂度超标时构建失败\n3. 在CI中配置质量门禁\n4. 添加测试报告通知（如Slack）\n5. 生成HTML测试报告",
+        "testStrategy": "模拟测试失败，验证质量门禁生效",
+        "priority": "medium",
+        "dependencies": [
+          11,
+          12,
+          13
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 15,
+        "title": "完善测试文档和最佳实践",
+        "description": "编写测试文档，推广测试最佳实践",
+        "details": "1. 编写测试指南，包括如何编写测试、运行测试\n2. 提供测试模板和示例\n3. 在团队内分享测试最佳实践\n4. 建立测试代码审查机制\n5. 文档放在docs/testing.md",
+        "testStrategy": "审查测试文档，验证示例代码正确",
+        "priority": "low",
+        "dependencies": [
+          14
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-09-04T03:11:39.336Z",
+      "updated": "2025-09-04T10:52:29.113Z",
+      "description": "Tasks for test-system-rebuild-final context"
+    }
   }
 }

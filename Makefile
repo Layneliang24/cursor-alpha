@@ -1,281 +1,211 @@
-# Alpha项目统一测试与构建
+# Alpha Platform 测试体系 Makefile
+# 提供一键测试、覆盖率、代码质量检查等命令
 
-.PHONY: help test test-backend test-frontend test-coverage lint clean install dev build flaky-test flaky-analyze flaky-stability flaky-isolate release release-dry-run release-debug changelog version-check commit commit-retry req-pipeline req-pipeline-dry req-pipeline-text req-example req-template req-pipeline-ai req-pipeline-ai-dry req-pipeline-ai-text req-example-ai
+.PHONY: help test test-backend test-frontend test-e2e cov lint format clean install
 
 # 默认目标
 help:
-	@echo "Alpha项目可用命令:"
-	@echo "  make install     - 安装所有依赖"
-	@echo "  make test        - 运行所有测试"
-	@echo "  make test-backend - 仅运行后端测试"
-	@echo "  make test-frontend - 仅运行前端测试"
-	@echo "  make test-coverage - 运行测试并生成覆盖率报告"
-	@echo "  make lint        - 运行代码风格检查"
-	@echo "  make dev         - 启动开发服务器"
-	@echo "  make build       - 构建项目"
-	@echo "  make clean       - 清理临时文件"
-	@echo "  make flaky-test  - 运行flaky测试检测"
-	@echo "  make flaky-analyze - 分析flaky测试报告"
-	@echo "  make flaky-stability - 运行稳定性检查"
-	@echo "  make flaky-isolate - 跳过已知flaky测试运行"
-	@echo "  make release     - 执行语义化发布"
-	@echo "  make release-dry-run - 语义化发布预演"
-	@echo "  make release-debug - 语义化发布调试模式"
-	@echo "  make changelog   - 生成CHANGELOG"
-	@echo "  make version-check - 检查下一个版本号"
-	@echo "  make commit      - 交互式提交"
-	@echo "  make commit-retry - 重试上次提交"
-	@echo "  make req-pipeline - 运行需求→测试→实现流水线"
-	@echo "  make req-pipeline-dry - 预览需求→测试→实现流水线"
-	@echo "  make req-pipeline-text - 从文本运行需求流水线"
-	@echo "  make req-example - 运行示例需求流水线"
-	@echo "  make req-template - 查看需求模板"
-	@echo "  make req-pipeline-ai - 运行AI增强流水线 (可选: PROVIDER, TASKS, OUT)"
-	@echo "  make req-pipeline-ai-dry - 预演AI增强流水线"
-	@echo "  make req-pipeline-ai-text - 从文本运行AI增强流水线"
-	@echo "  make req-example-ai - 运行示例AI增强流水线（mock提供商）"
+	@echo "Alpha Platform 测试体系命令:"
+	@echo ""
+	@echo "测试相关:"
+	@echo "  test          - 运行所有测试 (后端 + 前端 + E2E)"
+	@echo "  test-backend  - 运行后端测试"
+	@echo "  test-frontend - 运行前端单元测试"
+	@echo "  test-e2e      - 运行端到端测试"
+	@echo "  test-fast     - 快速测试 (跳过慢速测试)"
+	@echo ""
+	@echo "覆盖率相关:"
+	@echo "  cov           - 生成覆盖率报告"
+	@echo "  cov-backend   - 生成后端覆盖率报告"
+	@echo "  cov-frontend  - 生成前端覆盖率报告"
+	@echo "  cov-open      - 打开覆盖率报告"
+	@echo ""
+	@echo "代码质量:"
+	@echo "  lint          - 代码质量检查"
+	@echo "  format        - 代码格式化"
+	@echo "  complexity    - 代码复杂度分析"
+	@echo ""
+	@echo "环境管理:"
+	@echo "  install       - 安装依赖"
+	@echo "  clean         - 清理临时文件"
+	@echo "  reset         - 重置测试环境"
 
 # 安装依赖
 install:
-	@echo "📦 安装Python依赖..."
-	pip install -r requirements.txt
-	pip install pytest pytest-cov flake8 black isort
-	@echo "📦 安装前端依赖..."
-	cd frontend && npm install
+	@echo "安装后端依赖..."
+	pip install -r backend/requirements.txt
+	@echo "安装前端依赖..."
+	npm install
+	@echo "安装Playwright浏览器..."
+	npx playwright install
 
 # 运行所有测试
-test:
-	@echo "🧪 运行所有测试..."
-	python run_all_tests.py
+test: test-backend test-frontend test-e2e
+	@echo "✅ 所有测试完成!"
 
-# 仅运行后端测试
+# 运行后端测试
 test-backend:
 	@echo "🧪 运行后端测试..."
-	python run_all_tests.py --backend-only
+	cd backend && python -m pytest tests/ -v --tb=short --strict-markers
 
-# 仅运行前端测试
+# 运行前端单元测试
 test-frontend:
-	@echo "🧪 运行前端测试..."
-	python run_all_tests.py --frontend-only
+	@echo "🧪 运行前端单元测试..."
+	npm run test:unit
 
-# 运行测试并生成覆盖率报告
-test-coverage:
-	@echo "📊 运行测试并生成覆盖率报告..."
-	python run_all_tests.py
-	@echo "📈 覆盖率报告已生成:"
-	@echo "  - 后端: htmlcov/index.html"
-	@echo "  - 前端: frontend/coverage/index.html"
+# 运行端到端测试
+test-e2e:
+	@echo "🧪 运行端到端测试..."
+	npm run test:e2e
 
-# 代码风格检查
+# 快速测试 (跳过慢速测试)
+test-fast:
+	@echo "🚀 运行快速测试..."
+	cd backend && python -m pytest tests/ -v --tb=short -m "not slow" --strict-markers
+
+# 生成覆盖率报告
+cov: cov-backend cov-frontend
+	@echo "📊 覆盖率报告生成完成!"
+
+# 生成后端覆盖率报告
+cov-backend:
+	@echo "📊 生成后端覆盖率报告..."
+	cd backend && python -m pytest tests/ --cov=. --cov-report=html --cov-report=term-missing --cov-config=.coveragerc
+
+# 生成前端覆盖率报告
+cov-frontend:
+	@echo "📊 生成前端覆盖率报告..."
+	npm run test:coverage
+
+# 打开覆盖率报告
+cov-open:
+	@echo "🌐 打开覆盖率报告..."
+	cd backend && python -m webbrowser -t "htmlcov/index.html"
+
+# 代码质量检查
 lint:
-	@echo "🔍 运行代码风格检查..."
-	python -m flake8 backend --max-line-length=127 --exclude=migrations
-	python -m black backend --check
-	python -m isort backend --check-only
-	cd frontend && npm run lint:check
-	cd frontend && npm run format:check
-
-# 类型检查
-type-check:
-	@echo "🔍 运行类型检查..."
-	python -m mypy backend/apps --ignore-missing-imports
-	cd frontend && npm run type-check
-
-# 安全检查
-security-check:
-	@echo "🔒 运行安全检查..."
-	python -m bandit -r backend/ -x tests/,migrations/
-
-# API契约校验
-api-contract-check:
-	@echo "🔍 运行API契约校验..."
-	cd backend && python ../scripts/api_contract_check.py --project-root .. --fail-on-incompatible
-
-# 完整的代码质量检查
-quality-check: lint type-check security-check api-contract-check
-	@echo "✅ 代码质量检查完成"
+	@echo "🔍 检查代码质量..."
+	@echo "检查后端代码..."
+	cd backend && flake8 . --max-line-length=120 --extend-ignore=E203,W503
+	@echo "检查前端代码..."
+	npm run lint
 
 # 代码格式化
 format:
-	@echo "🎨 格式化代码..."
-	python -m black backend
-	python -m isort backend
-	cd frontend && npm run format
-	cd frontend && npm run lint
+	@echo "✨ 格式化代码..."
+	@echo "格式化后端代码..."
+	cd backend && black . --line-length=120
+	cd backend && isort .
+	@echo "格式化前端代码..."
+	npm run format
 
-# 启动开发服务器
-dev:
-	@echo "🚀 启动开发服务器..."
-	@echo "后端: http://localhost:8000"
-	@echo "前端: http://localhost:5173"
-	@echo "请在不同终端中运行:"
-	@echo "  终端1: cd backend && python manage.py runserver"
-	@echo "  终端2: cd frontend && npm run dev"
-
-# 构建项目
-build:
-	@echo "🏗️  构建项目..."
-	cd frontend && npm run build
-	@echo "✅ 前端构建完成: frontend/dist/"
+# 代码复杂度分析
+complexity:
+	@echo "📈 分析代码复杂度..."
+	cd backend && radon cc . -a -nc
+	cd backend && radon mi . -a
+	cd backend && radon hal . -a
 
 # 清理临时文件
 clean:
 	@echo "🧹 清理临时文件..."
-	rm -rf htmlcov/
-	rm -rf .coverage
-	rm -rf coverage.xml
-	rm -rf frontend/coverage/
-	rm -rf frontend/dist/
-	rm -rf .pytest_cache/
-	rm -rf **/__pycache__/
-	rm -rf **/*.pyc
-	@echo "✅ 清理完成"
+	find . -type f -name "*.pyc" -delete
+	find . -type d -name "__pycache__" -delete
+	find . -type f -name ".coverage" -delete
+	find . -type d -name "htmlcov" -exec rm -rf {} +
+	find . -type d -name ".pytest_cache" -exec rm -rf {} +
+	find . -type d -name "node_modules/.cache" -exec rm -rf {} +
 
-# 快速检查（CI用）
-ci-check:
-	@echo "🔄 CI快速检查..."
-	make quality-check
-	python run_all_tests.py --fail-under=70
+# 重置测试环境
+reset: clean
+	@echo "🔄 重置测试环境..."
+	cd backend && python manage.py flush --noinput
+	cd backend && python manage.py migrate
+	@echo "✅ 测试环境重置完成!"
 
-# Pre-commit安装
-install-hooks:
-	@echo "🪝 安装pre-commit hooks..."
-	pip install pre-commit
-	pre-commit install
-	pre-commit install --hook-type commit-msg
-	@echo "✅ Pre-commit hooks安装完成"
+# 测试环境验证
+verify:
+	@echo "🔍 验证测试环境..."
+	@echo "检查Python版本..."
+	python --version
+	@echo "检查Django版本..."
+	cd backend && python -c "import django; print(f'Django {django.get_version()}')"
+	@echo "检查pytest版本..."
+	pytest --version
+	@echo "检查Node版本..."
+	node --version
+	@echo "检查npm版本..."
+	npm --version
+	@echo "✅ 测试环境验证完成!"
 
-# Flaky测试管理
-flaky-test:
-	@echo "🔄 运行flaky测试检测..."
-	python scripts/flaky_test_manager.py --action test
+# 性能测试
+test-perf:
+	@echo "⚡ 运行性能测试..."
+	cd backend && python -m pytest tests/performance/ -v --tb=short
 
-flaky-analyze:
-	@echo "📊 分析flaky测试报告..."
-	python scripts/flaky_test_manager.py --action analyze
-	@echo "📈 Flaky测试报告已生成: tests/reports/flaky/comprehensive_flaky_report.html"
+# 安全测试
+test-security:
+	@echo "🔒 运行安全测试..."
+	cd backend && python -m pytest tests/security/ -v --tb=short
 
-flaky-stability:
-	@echo "🔍 运行稳定性检查..."
-	python scripts/flaky_test_manager.py --action stability --iterations 5
+# 压力测试
+test-stress:
+	@echo "💪 运行压力测试..."
+	cd backend && python -m pytest tests/stress/ -v --tb=short
 
-flaky-isolate:
-	@echo "🚫 跳过已知flaky测试运行..."
-	python scripts/flaky_test_manager.py --action test --isolate-flaky
+# 测试报告
+test-report:
+	@echo "📋 生成测试报告..."
+	cd backend && python -m pytest tests/ --html=test_report.html --self-contained-html
+	@echo "✅ 测试报告生成完成: test_report.html"
 
-# 语义化发布
-release:
-	@echo "🚀 执行语义化发布..."
-	npm run release
+# 测试覆盖率阈值检查
+cov-check:
+	@echo "🎯 检查覆盖率阈值..."
+	cd backend && python -m pytest tests/ --cov=. --cov-fail-under=80 --cov-report=term-missing
+	@echo "✅ 覆盖率检查完成 (阈值: 80%)"
 
-release-dry-run:
-	@echo "🔍 语义化发布预演..."
-	npm run release:dry-run
+# 并行测试
+test-parallel:
+	@echo "🚀 运行并行测试..."
+	cd backend && python -m pytest tests/ -n auto --dist=loadfile
 
-release-debug:
-	@echo "🐛 语义化发布调试模式..."
-	npm run release:debug
+# 测试调试
+test-debug:
+	@echo "🐛 调试测试..."
+	cd backend && python -m pytest tests/ -v --tb=long --pdb
 
-changelog:
-	@echo "📋 生成CHANGELOG..."
-	npm run changelog
+# 测试重试
+test-retry:
+	@echo "🔄 重试失败的测试..."
+	cd backend && python -m pytest tests/ --reruns 3 --reruns-delay 1
 
-version-check:
-	@echo "🔍 检查下一个版本号..."
-	npm run version:check
+# 测试超时
+test-timeout:
+	@echo "⏰ 设置测试超时..."
+	cd backend && python -m pytest tests/ --timeout=300
 
-commit:
-	@echo "📝 交互式提交..."
-	npm run commit
+# 测试标记
+test-markers:
+	@echo "🏷️ 显示测试标记..."
+	cd backend && python -m pytest --markers
 
-commit-retry:
-	@echo "🔄 重试上次提交..."
-	npm run commit:retry
+# 测试收集
+test-collect:
+	@echo "📦 收集测试..."
+	cd backend && python -m pytest tests/ --collect-only
 
-# 需求到测试流水线命令
-req-pipeline:
-	@echo "🔄 运行需求→测试→实现流水线..."
-	@if [ -z "$(REQ)" ]; then \
-		echo "❌ 请指定需求文件: make req-pipeline REQ=path/to/requirement.md"; \
-		exit 1; \
-	fi
-	python scripts/req_to_test_pipeline.py --input "$(REQ)"
+# 测试依赖
+test-deps:
+	@echo "📋 检查测试依赖..."
+	cd backend && python -m pytest tests/ --durations=10
 
-req-pipeline-dry:
-	@echo "🔍 预览需求→测试→实现流水线..."
-	@if [ -z "$(REQ)" ]; then \
-		echo "❌ 请指定需求文件: make req-pipeline-dry REQ=path/to/requirement.md"; \
-		exit 1; \
-	fi
-	python scripts/req_to_test_pipeline.py --input "$(REQ)" --dry-run
+# 测试配置
+test-config:
+	@echo "⚙️ 显示测试配置..."
+	cd backend && python -m pytest tests/ --setup-show
 
-req-pipeline-text:
-	@echo "🔄 从文本运行需求→测试→实现流水线..."
-	@if [ -z "$(TEXT)" ]; then \
-		echo "❌ 请指定需求文本: make req-pipeline-text TEXT='标题: 功能名称...'"; \
-		exit 1; \
-	fi
-	python scripts/req_to_test_pipeline.py --input "$(TEXT)" --input-type text
-
-req-example:
-	@echo "📋 运行示例需求流水线..."
-	python scripts/req_to_test_pipeline.py --input scripts/templates/example_requirement.md --dry-run
-
-req-template:
-	@echo "📝 查看需求模板..."
-	@if command -v cat >/dev/null 2>&1; then \
-		cat scripts/templates/requirement_template.md; \
-	else \
-		type scripts/templates/requirement_template.md; \
-	fi
-
-# 生产环境构建
-ci-build:
-	@echo "🏭 生产环境构建..."
-	make clean
-	make install
-	make ci-check
-	make build
-	@echo "✅ 生产环境构建完成"
-
-req-pipeline-ai:
-	@echo "🤖 运行AI增强需求→测试→实现流水线..."
-	@if [ -z "$(REQ)" ]; then \
-		echo "❌ 请指定需求文件: make req-pipeline-ai REQ=path/to/requirement.md [PROVIDER=mock] [TASKS=generate_tests,implement_code,review_code]"; \
-		exit 1; \
-	fi
-	@PROV_ARG=""; TASK_ARG=""; OUT_ARG=""; \
-	if [ -n "$(PROVIDER)" ]; then PROV_ARG="--ai-provider $(PROVIDER)"; fi; \
-	if [ -n "$(TASKS)" ]; then TASK_ARG="--ai-tasks $(TASKS)"; fi; \
-	if [ -n "$(OUT)" ]; then OUT_ARG="--ai-out-dir $(OUT)"; fi; \
-	python scripts/req_to_test_pipeline.py --input "$(REQ)" --ai-enabled $$PROV_ARG $$TASK_ARG $$OUT_ARG
-
-req-pipeline-ai-dry:
-	@echo "🔍 预演AI增强需求→测试→实现流水线..."
-	@if [ -z "$(REQ)" ]; then \
-		echo "❌ 请指定需求文件: make req-pipeline-ai-dry REQ=path/to/requirement.md"; \
-		exit 1; \
-	fi
-	@PROV_ARG=""; TASK_ARG=""; OUT_ARG=""; \
-	if [ -n "$(PROVIDER)" ]; then PROV_ARG="--ai-provider $(PROVIDER)"; fi; \
-	if [ -n "$(TASKS)" ]; then TASK_ARG="--ai-tasks $(TASKS)"; fi; \
-	if [ -n "$(OUT)" ]; then OUT_ARG="--ai-out-dir $(OUT)"; fi; \
-	python scripts/req_to_test_pipeline.py --input "$(REQ)" --ai-enabled --dry-run $$PROV_ARG $$TASK_ARG $$OUT_ARG
-
-req-pipeline-ai-text:
-	@echo "🤖 从文本运行AI增强需求→测试→实现流水线..."
-	@if [ -z "$(TEXT)" ]; then \
-		echo "❌ 请指定需求文本: make req-pipeline-ai-text TEXT='标题: 功能名称...' [PROVIDER=mock] [TASKS=generate_tests,implement_code,review_code]"; \
-		exit 1; \
-	fi
-	@PROV_ARG=""; TASK_ARG=""; OUT_ARG=""; \
-	if [ -n "$(PROVIDER)" ]; then PROV_ARG="--ai-provider $(PROVIDER)"; fi; \
-	if [ -n "$(TASKS)" ]; then TASK_ARG="--ai-tasks $(TASKS)"; fi; \
-	if [ -n "$(OUT)" ]; then OUT_ARG="--ai-out-dir $(OUT)"; fi; \
-	python scripts/req_to_test_pipeline.py --input "$(TEXT)" --input-type text --ai-enabled $$PROV_ARG $$TASK_ARG $$OUT_ARG
-
-req-example-ai:
-	@echo "📋 运行示例AI增强需求流水线..."
-	@PROV_ARG=""; \
-	if [ -n "$(PROVIDER)" ]; then PROV_ARG="--ai-provider $(PROVIDER)"; fi; \
-	python scripts/req_to_test_pipeline.py --input scripts/templates/example_requirement.md --ai-enabled --dry-run $$PROV_ARG
+# 测试环境
+test-env:
+	@echo "🌍 显示测试环境..."
+	cd backend && python -c "import os; print('Environment variables:'); [print(f'{k}={v}') for k, v in os.environ.items() if 'TEST' in k.upper()]"

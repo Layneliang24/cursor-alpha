@@ -243,7 +243,7 @@ class PromptTemplateSerializer(serializers.ModelSerializer):
             'is_public', 'is_system', 'is_active', 'usage_count',
             'created_by', 'created_by_name', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'usage_count', 'created_by_name', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_by', 'usage_count', 'created_by_name', 'created_at', 'updated_at']
     
     def validate_name(self, value):
         """验证模板名称"""
@@ -297,7 +297,7 @@ class ModelConfigSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at', 'last_used'
         ]
         read_only_fields = [
-            'id', 'user_name', 'provider_name', 'template_name', 
+            'id', 'user', 'user_name', 'provider_name', 'template_name', 
             'context_window', 'created_at', 'updated_at', 'last_used'
         ]
     
@@ -366,8 +366,10 @@ class ModelConfigSerializer(serializers.ModelSerializer):
                             raise serializers.ValidationError(
                                 f"max_tokens不能超过{max_allowed}（模型上下文窗口{ai_model.max_tokens} - 保留Token{reserved_tokens}）"
                             )
-                except:
-                    pass  # 如果验证失败，不阻塞保存
+                except serializers.ValidationError:
+                    raise  # 重新抛出验证错误
+                except Exception:
+                    pass  # 其他异常不阻塞保存
         
         return value
     
@@ -476,15 +478,23 @@ class UsageQuotaSerializer(serializers.ModelSerializer):
     """使用配额序列化器"""
     
     user_name = serializers.CharField(source='user.username', read_only=True)
+    provider_name = serializers.CharField(source='provider.display_name', read_only=True)
     
     class Meta:
         model = UsageQuota
         fields = [
-            'id', 'user', 'user_name', 'quota_type', 'quota_name',
-            'limit_amount', 'used_amount', 'currency', 'reset_period',
-            'last_reset', 'is_active', 'created_at', 'updated_at'
+            'id', 'user', 'user_name', 'provider', 'provider_name', 'quota_type',
+            'token_limit', 'token_used', 'cost_limit', 'cost_used',
+            'request_limit', 'request_used', 'is_active', 'is_exceeded',
+            'period_start', 'period_end', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'user_name', 'used_amount', 'last_reset', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'user', 'user_name', 'provider_name', 'token_used', 'cost_used', 'request_used', 'is_exceeded', 'created_at', 'updated_at']
+    
+    def create(self, validated_data):
+        """创建使用配额"""
+        user = self.context['request'].user
+        validated_data['user'] = user
+        return super().create(validated_data)
 
 
 class FailoverRuleSerializer(serializers.ModelSerializer):
@@ -513,7 +523,7 @@ class FailoverStrategySerializer(serializers.ModelSerializer):
     class Meta:
         model = FailoverStrategy
         fields = [
-            'id', 'user', 'user_name', 'strategy_name', 'description',
+            'id', 'user', 'user_name', 'name', 'description',
             'is_active', 'is_default', 'rules', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'user_name', 'rules', 'created_at', 'updated_at']
@@ -654,6 +664,7 @@ class ConfigImportSerializer(serializers.Serializer):
     
     def validate(self, data):
         """验证配置内容"""
+        import yaml  # 移到方法开头
         try:
             file_content = data['file'].read().decode('utf-8')
             format_type = data['format']
@@ -661,7 +672,6 @@ class ConfigImportSerializer(serializers.Serializer):
             if format_type == 'json':
                 config_data = json.loads(file_content)
             else:  # yaml
-                import yaml
                 config_data = yaml.safe_load(file_content)
             
             # 验证配置结构

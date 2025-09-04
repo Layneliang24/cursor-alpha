@@ -99,9 +99,11 @@ class AIAdapterFactory:
             
         except Exception as e:
             logger.error(f"创建AI适配器失败: {e}")
+            # 安全地获取提供商名称
+            provider_name = config.provider.value if config.provider and hasattr(config.provider, 'value') else str(config.provider)
             raise AIServiceException(
                 f"无法创建AI适配器: {str(e)}",
-                provider=config.provider.value
+                provider=provider_name
             )
     
     @classmethod
@@ -111,15 +113,18 @@ class AIAdapterFactory:
         
         # 如果没有指定提供商，尝试从模型名称推断
         if provider == AIProviderType.CUSTOM:
-            provider = cls._infer_provider_from_model(config.model_name)
-            if provider:
+            inferred_provider = cls._infer_provider_from_model(config.model_name)
+            if inferred_provider:
+                provider = inferred_provider
                 logger.info(f"从模型名称 {config.model_name} 推断提供商: {provider.value}")
         
         adapter_class = cls._adapters.get(provider)
         if not adapter_class:
+            # 安全地获取提供商名称
+            provider_name = provider.value if provider and hasattr(provider, 'value') else str(provider)
             raise ModelNotFoundException(
-                f"不支持的AI提供商: {provider.value}",
-                provider=provider.value
+                f"不支持的AI提供商: {provider_name}",
+                provider=provider_name
             )
         
         return adapter_class

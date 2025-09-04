@@ -78,6 +78,13 @@ class ConfigExportViewTest(APITestCase):
         url = reverse('ai:config-export')
         response = self.client.get(url, {'format': 'yaml'})
         
+        # 添加调试信息
+        if response.status_code != 200:
+            print(f"Status code: {response.status_code}")
+            print(f"Response content: {response.content}")
+            if hasattr(response, 'data'):
+                print(f"Response data: {response.data}")
+        
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response['Content-Type'], 'application/x-yaml')
         self.assertIn('attachment', response['Content-Disposition'])
@@ -110,6 +117,31 @@ class ConfigImportViewTest(APITestCase):
             password='testpass123'
         )
         self.client.force_authenticate(user=self.user)
+        
+        # 创建测试所需的基础数据
+        from apps.ai.config_models import AIProvider, AIModel
+        
+        # 创建一个测试提供商
+        self.test_provider = AIProvider.objects.create(
+            name='Test Provider',
+            provider_type='openai',
+            display_name='Test Provider',
+            base_url='https://api.openai.com',
+            is_active=True,
+            is_healthy=True
+        )
+        
+        # 创建一个测试模型
+        self.test_model = AIModel.objects.create(
+            model_id='gpt-3.5-turbo',
+            provider=self.test_provider,
+            display_name='GPT-3.5 Turbo',
+            description='Test model',
+            max_tokens=4096,
+            cost_per_1k_input_tokens=0.001,
+            cost_per_1k_output_tokens=0.002,
+            is_active=True
+        )
         
         # 创建测试配置文件
         self.config_data = {

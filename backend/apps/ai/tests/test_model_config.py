@@ -110,8 +110,8 @@ class ModelConfigAPITestCase(TestCase):
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()
-        self.assertEqual(len(response_data['results']), 1)
-        self.assertEqual(response_data['results'][0]['id'], config.id)
+        self.assertEqual(len(response_data), 1)
+        self.assertEqual(response_data[0]['id'], config.id)
         
     def test_get_model_config_detail(self):
         """测试获取模型配置详情"""
@@ -341,7 +341,7 @@ class PromptTemplateAPITestCase(TestCase):
         response_data = response.json()
         
         # 用户应该能看到自己的模板和系统模板
-        template_names = [t['name'] for t in response_data['results']]
+        template_names = [t['name'] for t in response_data]
         self.assertIn('用户模板', template_names)
         self.assertIn('系统模板', template_names)
         

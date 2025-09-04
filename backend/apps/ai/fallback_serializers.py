@@ -180,7 +180,7 @@ class FailoverStrategyDetailSerializer(serializers.ModelSerializer):
                 'provider_type': p.provider_type,
                 'is_healthy': p.is_healthy,
                 'models': [
-                    {'id': m.id, 'name': m.model_name, 'is_active': m.is_active}
+                    {'id': m.id, 'name': m.display_name, 'is_active': m.is_active}
                     for m in p.models.filter(is_active=True)
                 ]
             }
@@ -211,7 +211,7 @@ class FailoverStrategyCreateUpdateSerializer(serializers.ModelSerializer):
         primary_provider = self.initial_data.get('primary_provider')
         if primary_provider and value.provider_id != int(primary_provider):
             raise serializers.ValidationError(
-                f"模型 {value.model_name} 不属于选择的主提供商"
+                f"模型 {value.display_name} 不属于选择的主提供商"
             )
         return value
     
@@ -239,7 +239,7 @@ class FailoverStrategyCreateUpdateSerializer(serializers.ModelSerializer):
                 model = AIModel.objects.get(id=rule_data['fallback_model'])
                 if model.provider != provider:
                     raise serializers.ValidationError(
-                        f"模型 {model.model_name} 不属于提供商 {provider.display_name}"
+                        f"模型 {model.display_name} 不属于提供商 {provider.display_name}"
                     )
             except (AIProvider.DoesNotExist, AIModel.DoesNotExist) as e:
                 raise serializers.ValidationError(f"无效的提供商或模型ID: {e}")
