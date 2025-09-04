@@ -73,3 +73,4 @@ MIGRATION_MODULES = DisableMigrations()
 USE_TZ = False
 TIME_ZONE = 'UTC'
 
+
